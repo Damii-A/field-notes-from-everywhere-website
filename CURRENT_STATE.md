@@ -104,14 +104,38 @@ until something is actually published in the Studio.
 Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
 are deliberately last, after the remaining technical/integration work, not next.
 
-1. Set up Kit (account + API key + list/tag naming decision).
-2. Set up Paddle (account + API key + webhook secret + the actual Price, and resolve whether a
-   genuinely card-free trial is possible).
+1. Set up Kit (account + API key + tag structure — see "Email/subscriber architecture" below,
+   decided 2026-09-21). This now also covers building the trial-start flow (an email-capture
+   form + a new API route that tags the subscriber in Kit), not just list signup.
+2. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
+   configured on Paddle's side; see "Email/subscriber architecture" below for why).
 3. Wire `RESEND_API_KEY` into local `.env.local` too, for parity with what Vercel's Resend
    integration already provisioned there (not required for the live site, just for local dev).
-4. Source real photography (see "Assets needed" below).
-5. **Last**: author real content in the Studio, and get real legal copy for
+4. Decide and build the weekly recap mechanism — manual (written in Kit each week) or
+   automatic (an RSS feed this app generates, which Kit turns into an email on a schedule).
+   Undecided as of this writing.
+5. Source real photography (see "Assets needed" below).
+6. **Last**: author real content in the Studio, and get real legal copy for
    Terms/Privacy/Disclosures.
+
+## Email/subscriber architecture (decided 2026-09-21)
+
+Full reasoning in `DECISIONS.md`; summary here for quick reference when building Kit/Paddle:
+
+- **One base group**: everyone who opts in any way (direct signup, "send this list to me," or
+  starting a Reading Room trial) is tagged as a free-list subscriber and receives the weekly
+  recap of that week's Publication articles — including current Reading Room subscribers,
+  since it's different content from Reading Room's own daily catalogues.
+- **Reading Room trial is email-only, not a Paddle trial**: starting a trial just captures an
+  email and tags the person in Kit. Kit alone runs the 7 days of daily catalogue emails and the
+  trial sales sequence (as a Kit automation — no app code needed for the sequence itself).
+  Paddle is not involved until the person actually chooses to subscribe.
+- **Paddle enters only at real conversion**: a real Paddle checkout for the $5/month Price,
+  with no trial object configured on Paddle's side. Its webhook then tells Kit whenever
+  someone converts, cancels, or has a failed payment — updating their tag accordingly.
+- **Paddle's own transactional emails** (receipts, failed-payment notices) go straight to the
+  subscriber; this app and Kit are never involved in those.
+- **Still open**: how the weekly recap actually gets composed each week (see item 4 above).
 
 ## Assets needed
 
@@ -125,20 +149,19 @@ are deliberately last, after the remaining technical/integration work, not next.
 
 ## Known open items requiring the user before certain work can proceed
 
-- **Kit account** — API key, and a decision on list/tag naming for "free Publication list" vs.
-  "Reading Room active" segment (recommended structure is in `ARCHITECTURE.md` §9; final
-  naming is the user's call inside their own Kit account). Note: `lib/integrations/kit.ts` is
-  written against Kit's v4 REST API from their public docs but has never been exercised
-  against a real account — verify the exact endpoint/payload shape once one exists.
-- **Paddle account** — API key, webhook secret, and the actual $5/month + 7-day-trial Price
-  created in Paddle's dashboard (a Price ID this app checks out against). Also needs
-  resolving whether Paddle can do a genuinely card-free trial, since the landing page copy
-  promises "no credit card required" — this is a real constraint check against Paddle's
-  product capabilities, not an engineering assumption to make silently. Separately,
-  `app/api/webhooks/paddle/route.ts` has a marked TODO: resolving a webhook event's
-  `customerId` to an email address (via `paddle.customers.get`) before it can actually tag
-  the subscriber in Kit — untestable without a real account, so left as a clear gap rather
-  than guessed at.
+- **Kit account** — API key, and the tag structure decided under "Email/subscriber
+  architecture" above (final tag naming inside Kit is still the user's call). Note:
+  `lib/integrations/kit.ts` is written against Kit's v4 REST API from their public docs but has
+  never been exercised against a real account — verify the exact endpoint/payload shape once
+  one exists.
+- **Paddle account** — API key, webhook secret, and the actual $5/month Price created in
+  Paddle's dashboard (a Price ID this app checks out against). No trial needs configuring on
+  Paddle's side — see "Email/subscriber architecture" above; the earlier open question about
+  whether Paddle supports a genuinely card-free trial is now moot, since Paddle isn't used
+  during the free period at all. Separately, `app/api/webhooks/paddle/route.ts` has a marked
+  TODO: resolving a webhook event's `customerId` to an email address (via
+  `paddle.customers.get`) before it can actually tag the subscriber in Kit — untestable
+  without a real account, so left as a clear gap rather than guessed at.
 - **Production domain DNS cutover** — deliberately deferred to near the end of the build (see
   "Deployment" above). The domain's DNS is managed at Cloudflare (nameservers delegated there
   from Namecheap, which is just the registrar).

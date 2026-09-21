@@ -220,6 +220,58 @@ production app.
 
 ---
 
+## 2026-09-21 — Reading Room's free trial is tracked in Kit, not as a Paddle trial
+
+**Decision**: Starting a Reading Room trial is an email-capture action, not a Paddle checkout.
+A visitor enters only their email; the app tags them in Kit as trialing, and Kit alone runs the
+7 days of daily catalogue emails plus the trial sales sequence. Paddle is not involved until the
+person actually decides to become a paying subscriber, at which point they see a real Paddle
+checkout screen for the $5/month Price. `ReadingRoomCheckoutButton` (currently a direct Paddle.js
+checkout trigger) needs to become an email-capture form for the trial-start action, with Paddle
+checkout reserved for the "keep it going" moment.
+
+**Context**: The Reading Room landing page copy promises "no credit card required" for the
+7-day trial (`rr_landing.md`). Subscription-billing platforms like Paddle generally require a
+payment method up front for a trial, specifically so they can auto-charge it the moment the
+trial ends — a real conflict with that promise, flagged as an open question when this was first
+built (`ARCHITECTURE.md` §10, `CURRENT_STATE.md`) but not resolved until now, before Paddle
+integration work begins. Separately, V1 has no logged-in Reading Room product to gate (see "V1
+scope excludes the logged-in Reading Room product" above) — the entire "product" during the
+trial is the daily emails themselves, which Kit is already the system of record for. That
+combination means nothing about the trial actually requires Paddle at all.
+
+**Alternatives considered**: Use Paddle's own trial mechanism and accept that a card is
+collected up front, updating the landing page copy to say so. Rejected — changes a specific,
+already-written product promise without the user asking for that tradeoff, when a workable
+alternative exists that keeps the promise as written. Verify empirically whether Paddle Billing
+can do a truly card-free trial before deciding. Not pursued — even if possible, routing the free
+period through Paddle at all adds billing-platform dependency to something that doesn't need
+billing, and produces the exact same tag-based end state in Kit either way.
+
+**Reasoning**: Keeps the free period honestly free-of-card as promised, without depending on a
+specific billing platform capability that may not exist. Matches the existing "Kit is the
+list/segment system of record, Paddle is the billing system of record" split (`ARCHITECTURE.md`
+§68) — someone who hasn't paid anything has no billing state to represent yet, so there being no
+Paddle object for them is the more accurate model, not a workaround.
+
+**Consequences**: A new API route is needed to start a trial (validate email → tag in Kit as
+`reading-room-trialing` with a start date) — this becomes part of the Kit integration work, not
+a separate piece. `ReadingRoomCheckoutButton`'s current "always open Paddle checkout" behavior
+needs to branch: an email-capture form for people starting a trial, Paddle checkout only for
+people who are already trialing (or skipping the trial) and ready to subscribe. Paddle's
+subscription-lifecycle webhook (`app/api/webhooks/paddle/route.ts`) only ever sees people from
+the point they actually check out — it does not see trial-start events, since those never touch
+Paddle.
+
+**Future implications**: The 7-day countdown and "did they convert" branching for the sales
+sequence lives entirely inside a Kit automation, not in this app's code — the app's only
+responsibility is firing the initial "trial started" tag and, later, whatever Paddle webhook
+events mark a conversion or the absence of one. If Kit ever can't express the timing/branching
+needed, that would have to be reconsidered, but Kit's automation feature is built exactly for
+this kind of tag-triggered, time-delayed sequence.
+
+---
+
 ## 2026-09-21 — Content reads use a hand-rolled `groqFetch`, not `@sanity/client`'s `.fetch()`
 
 **Decision**: `lib/content/index.ts` fetches all content via `lib/sanity/groqFetch.ts`, a ~50-line

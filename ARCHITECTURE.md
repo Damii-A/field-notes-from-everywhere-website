@@ -1,9 +1,9 @@
 # Architecture — Field Notes From Everywhere
 
-Status: **proposed architecture for V1, not yet implemented.** No application code exists
-in this repository yet. This document was written during project initialization, before
-any implementation, per `AI_ENGINEERING_OPERATING_MANUAL.md` §12 and the Project
-Initializer Prompt. See `CURRENT_STATE.md` for exactly what does and doesn't exist right now.
+Status: **implemented and deployed.** This document was originally written during project
+initialization, before any code existed; it's since been kept in sync with what's actually
+built as the system evolved (see `DECISIONS.md` for the specific changes and why). See
+`CURRENT_STATE.md` for exactly what's built, connected, and still open right now.
 
 ## 1. What this system is
 
@@ -53,17 +53,22 @@ system; it does not redefine the product.
 └───────────┬───────────────────────────────┬─────────────────────┘
             │ GROQ (read)                   │ webhooks / REST
             ▼                               ▼
-   ┌─────────────────┐   ┌──────────────┐   ┌──────────────────┐
-   │  Sanity (CMS)    │   │  Kit         │   │  Paddle Billing  │
-   │  content +       │   │  (email)     │   │  (subscriptions) │
-   │  taxonomy        │   │  free list + │   │  $5/mo, 7-day    │
-   │                  │   │  RR delivery │   │  trial           │
-   └─────────────────┘   └──────────────┘   └──────────────────┘
-                                ▲                     │
-                                └─── webhook syncs ────┘
-                                  (trial/active/canceled
-                                   → Kit tag)
+   ┌─────────────────┐  ┌───────────────────┐  ┌──────────────────┐
+   │  Sanity (CMS)    │  │  Kit               │  │  Paddle Billing  │
+   │  content +       │  │  (email)           │  │  (subscriptions) │
+   │  taxonomy        │  │  free list, RR     │  │  $5/mo, no trial │
+   │                  │  │  trial tracking +  │  │  object — entered│
+   │                  │  │  delivery, sales   │  │  only at actual  │
+   │                  │  │  sequences         │  │  sign-up         │
+   └─────────────────┘  └───────────────────┘  └──────────────────┘
+                                  ▲                      │
+                                  └──── webhook syncs ────┘
+                                 (converted/canceled → Kit tag)
 ```
+
+The 7-day free trial itself is tracked entirely in Kit, not Paddle — see `DECISIONS.md`
+("Reading Room's free trial is tracked in Kit, not as a Paddle trial"). Paddle only enters the
+picture once someone actually decides to become a paying subscriber.
 
 No application database. Sanity is the content system of record, Kit is the email-list
 system of record, Paddle is the billing system of record. Nothing in V1 needs state that
@@ -208,41 +213,54 @@ the Claude Design authoring/preview environment, not a production runtime:
 
 ## 9. Kit (email)
 
-Two distinct jobs, kept separate:
+Kit is the system of record for **everything about a subscriber's state** — free list
+membership, Reading Room trial/active/lapsed status, and all actual email sending except the
+one transactional send noted below. Three distinct jobs:
 
-1. **List/segment membership and ongoing broadcast delivery** — the free Publication list
-   and (once a subscriber exists) the Reading Room's actual Monday–Saturday catalogue +
-   Sunday recap. This is Kit's job, configured in Kit's own UI/automations; this app never
-   renders or sends the recurring newsletter content itself.
-2. **The one-off "send this list to me" email** (`pub_article.md` §6.4) — the reader gets
+1. **Free-list membership and the weekly recap** — everyone who opts in any way (direct
+   signup, requesting a "send this list to me" email, or starting a Reading Room trial) is
+   tagged as a free-list subscriber. The weekly recap of that week's Publication articles goes
+   to this whole group, including current Reading Room subscribers — it's different content
+   from Reading Room's own daily catalogues, not a duplicate. Configured/sent entirely in Kit;
+   this app never renders or sends it.
+2. **Reading Room trial + subscription delivery and lifecycle** — starting a trial is an
+   email-capture action on this site (see `DECISIONS.md`, "Reading Room's free trial is
+   tracked in Kit, not as a Paddle trial"): the app validates the email and tags the person as
+   trialing (with a start date), and Kit takes over completely from there — the 7 days of
+   daily catalogue emails, the Sunday recap, and the trial sales sequence (welcome → value
+   reminders → "trial ending" → a branch depending on whether they convert), all built as a
+   Kit automation. The app's only remaining job is telling Kit when Paddle reports a real
+   lifecycle change (converted to paying, canceled, payment failed) — see §10.
+3. **The one-off "send this list to me" email** (`pub_article.md` §6.4) — the reader gets
    the specific book list from the specific article they were reading, immediately, by
-   email, and is also added to the free Publication list (disclosed in the UI copy per
-   spec). This is a **transactional** send with per-article dynamic content, which is not
-   what a marketing ESP like Kit is built to template well. See `DECISIONS.md` for the
-   recommendation to use a small transactional-email provider (Resend) for this one send,
-   while Kit still receives the subscribe/tag call for the ongoing list relationship.
+   email, and is also added to the free list (disclosed in the UI copy per spec). This is a
+   **transactional** send with per-article dynamic content, which is not what a marketing ESP
+   like Kit is built to template well — sent via Resend instead (see `DECISIONS.md`), while
+   Kit still receives the subscribe/tag call for the ongoing list relationship.
 
-`/api/subscribe` handles both the article "send this list to me" popup and any other
-free-list signup point: validates the email, calls the Kit API to add/tag the subscriber,
-and (for the "send this list" flow only) sends the transactional email with that article's
-book list.
+`/api/subscribe` handles the free-list signup point and the article "send this list to me"
+popup: validates the email, calls the Kit API to add/tag the subscriber, and (for the "send
+this list" flow only) sends the transactional email via Resend with that article's book list.
+Starting a Reading Room trial is a related but distinct action/tag, not the same endpoint.
 
 ## 10. Paddle (billing)
 
-- **Paddle Billing** (current product), overlay checkout via Paddle.js on the Reading Room
-  landing page's "Try it for free" / "Join for free" CTAs, configured against a single
-  Price: $5/month with a 7-day free trial, no card capture required beyond whatever Paddle's
-  own trial flow requires (the copy says "no credit card required" — confirm this is
-  achievable with Paddle's trial configuration before implementing; if Paddle requires a
-  card on file even during a $0 trial, that's a genuine product-copy conflict to flag, not
-  something to resolve silently).
+Paddle is entered **only at the moment someone becomes an actual paying subscriber** — not
+during the free trial (see §9 and `DECISIONS.md`). Concretely:
+
+- **Paddle Billing** (current product), overlay checkout via Paddle.js, triggered from
+  wherever a trialing (or trial-skipping) reader chooses to actually subscribe — configured
+  against a single Price: $5/month, no trial configured on the Paddle side, since the free
+  period already happened (if at all) entirely inside Kit before Paddle was ever involved.
 - `/api/webhooks/paddle` verifies Paddle's webhook signature and handles subscription
-  lifecycle events (trial started, activated, past-due, canceled) by calling the Kit API to
-  tag/untag the customer's email for the Reading Room segment — this is the entire mechanism
-  by which a paying subscriber actually starts receiving the newsletter, since there is no
-  app database or subscriber table in V1.
+  lifecycle events (activated, past-due, canceled) by calling the Kit API to tag/untag the
+  customer's email accordingly — this is the entire mechanism by which Kit knows someone is
+  now a *paying* Reading Room subscriber rather than a trialing one, since there is no app
+  database or subscriber table in V1.
 - No card data ever touches our server — Paddle's hosted/overlay checkout handles PCI scope
   entirely.
+- Paddle's own transactional emails (receipts, failed-payment notices) go straight from
+  Paddle to the customer — this app and Kit are never involved in those.
 
 ## 11. Hosting and domain
 
