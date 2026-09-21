@@ -252,6 +252,26 @@ export async function getHomeShowcase(): Promise<HomeShowcase> {
   return { when, shortlist, clubPairs };
 }
 
+export interface FeedArticle {
+  slug: string;
+  category: CategorySlug;
+  title: string;
+  publishedAt: string;
+  methodologySentence: string;
+}
+
+/** Most recent articles across every category, newest first — feeds app/feed.xml/route.ts (the RSS feed Kit's weekly-recap automation reads from). */
+export async function getFeedArticles(limit: number): Promise<FeedArticle[]> {
+  const raws = await groqFetch<
+    { slug: string; category: CategorySlug; title: string; publishedAt: string; methodologySentence: string }[]
+  >(
+    `*[_type == "article"] | order(publishedAt desc)[0...$limit]{ "slug": slug.current, category, title, publishedAt, methodologySentence }`,
+    { limit },
+    { tags: ["article"], revalidate: 300 },
+  );
+  return raws;
+}
+
 export function categoryPath(category: CategorySlug): string {
   return `/${category}`;
 }

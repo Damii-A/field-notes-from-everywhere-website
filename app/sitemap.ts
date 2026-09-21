@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATEGORY_LIST, getHubArticles } from "@/lib/content";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const SITE_URL = process.env.SITE_URL || "http://localhost:3000";
 
 const STATIC_ROUTES = ["/", "/about", "/contact", "/the-reading-room", "/terms", "/privacy-and-cookies", "/disclosures"];
 

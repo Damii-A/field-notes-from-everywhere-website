@@ -111,12 +111,29 @@ are deliberately last, after the remaining technical/integration work, not next.
    configured on Paddle's side; see "Email/subscriber architecture" below for why).
 3. Wire `RESEND_API_KEY` into local `.env.local` too, for parity with what Vercel's Resend
    integration already provisioned there (not required for the live site, just for local dev).
-4. Decide and build the weekly recap mechanism — manual (written in Kit each week) or
-   automatic (an RSS feed this app generates, which Kit turns into an email on a schedule).
-   Undecided as of this writing.
+4. **In Kit's dashboard**: set up the RSS-to-email automation for the weekly recap, pointed at
+   `<production-url>/feed.xml` (built 2026-09-21 — see below). Nothing left to build for this
+   on the app side.
 5. Source real photography (see "Assets needed" below).
 6. **Last**: author real content in the Studio, and get real legal copy for
    Terms/Privacy/Disclosures.
+
+## Weekly recap feed
+
+`app/feed.xml/route.ts` publishes a standard RSS feed of the 30 most recent Publication
+articles across all three categories (title, link, publish date, category, and the article's
+methodology sentence as the description) — built specifically so Kit's RSS-to-email automation
+can compose the weekly recap automatically, with no manual writing required each week (the user
+chose this over a manually-written recap, 2026-09-21). Point Kit's automation at
+`<production-url>/feed.xml`. Verified locally: valid RSS output, gracefully empty (no `<item>`
+entries) while the dataset has no articles yet.
+
+Also fixed while building this: `NEXT_PUBLIC_SITE_URL` was renamed to `SITE_URL` everywhere
+(code, `.env.local`, `.env.example`) — it was never actually used in any browser-facing code, so
+the `NEXT_PUBLIC_` prefix was unnecessary, and Vercel outright refused to save a public
+variable it suspected might be sensitive-looking, which blocked setting it at all under the old
+name. **On Vercel**, this needs its own new `SITE_URL` variable created (plain, not public) set
+to the production URL — the old empty `NEXT_PUBLIC_SITE_URL` there can be deleted.
 
 ## Email/subscriber architecture (decided 2026-09-21)
 

@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   },
   description:
     "Book recommendations, backed by real reader discussions. The Field Notes From Everywhere Publication and The Reading Room.",
+  alternates: {
+    types: { "application/rss+xml": "/feed.xml" },
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
