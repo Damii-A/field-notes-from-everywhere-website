@@ -58,7 +58,20 @@ export default async function HomePage() {
         >
           Your next favorite book is just a few clicks away.
         </h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: "76ch", width: "100%", textAlign: "justify" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 20,
+            maxWidth: "76ch",
+            width: "100%",
+            textAlign: "justify",
+            background: "var(--surface-well)",
+            borderRadius: "var(--radius-2xl)",
+            boxShadow: "var(--shadow-card)",
+            padding: "clamp(24px,3.4vw,44px)",
+          }}
+        >
           <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--ink-500)", margin: 0 }}>
             Somewhere out there is a book you&rsquo;re going to absolutely love. We&rsquo;d like to help you find it.
           </p>
@@ -68,8 +81,26 @@ export default async function HomePage() {
           </p>
           <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--ink-500)", margin: 0 }}>
             Here at Field Notes From Everywhere, we spend our time digging through and analysing real reader
-            discussions. What are people looking for? What are other readers recommending? Which books keep coming up
-            again and again? Then, we take the top recommendations and share them with you!
+            discussions.
+          </p>
+          <div
+            style={{
+              font: "var(--type-body)",
+              fontSize: "clamp(18px,1.6vw,22px)",
+              fontStyle: "italic",
+              color: "var(--ink-500)",
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+            }}
+          >
+            <span>What are people looking for?</span>
+            <span>What are other readers recommending?</span>
+            <span>Which books keep coming up again and again?</span>
+          </div>
+          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--ink-500)", margin: 0 }}>
+            Then, we take the top recommendations and share them with you!
           </p>
         </div>
       </section>
