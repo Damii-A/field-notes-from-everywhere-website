@@ -146,6 +146,52 @@ supports moving to a standalone Studio without a schema change if ever needed.
 
 ---
 
+## 2026-09-21 — Styling: CSS Modules + global token stylesheet, no CSS-in-JS library
+
+**Decision**: Component-scoped styles (hover states, animations, media queries) use plain
+CSS Modules, which Next.js supports natively. Design tokens live as global CSS custom
+properties (`styles/tokens/*.css`, ported verbatim from the design). One-off structural
+layout (padding/gap/flex on a single JSX element) is written as inline `style={{}}` objects
+referencing those same `var(--token)` values — matching how the design itself is authored
+(every `.dc.html` page uses inline styles against the same tokens), which made porting layout
+faithfully straightforward and low-risk of transcription error.
+
+**Context**: `styled-components` was in the original package.json drafted during
+initialization. It was never actually needed — CSS Modules covers everything V1 requires
+(hover/focus states, keyframe animations, responsive breakpoints) with zero added dependency
+and no runtime CSS-in-JS cost.
+
+**Reasoning**: Prefer simplicity (Operating Manual §5) — don't add a styling library when the
+framework's built-in mechanism suffices.
+
+**Consequences**: Removed `styled-components` from `package.json` before the first install.
+
+---
+
+## 2026-09-21 — Sanity Studio must be loaded fully client-side via `next/dynamic`
+
+**Decision**: `/studio` is a server component (`page.tsx`) that renders a client-only wrapper
+(`StudioLoader.tsx`, `"use client"`) which in turn uses `next/dynamic(..., { ssr: false })` to
+load `StudioClient.tsx` (which does the actual `next-sanity/studio` + `sanity.config` import).
+
+**Context**: A direct static import of `next-sanity/studio`/`sanity.config` in the route file
+(the pattern shown in next-sanity's own docs) crashed `next build`'s page-data-collection step
+with `createContext is not a function` — a React-instance mismatch between Node's module
+evaluation during that step and Sanity Studio's browser-only bundle. `ssr: false` on
+`next/dynamic` is also only permitted from a Client Component in the App Router, hence the
+two-file split (`StudioLoader` → `StudioClient`) rather than one.
+
+**Reasoning**: Keep Node from ever evaluating Sanity Studio's module graph; only the browser
+does, where it works as intended.
+
+**Consequences**: `/studio` builds and loads correctly (verified: `npm run build` succeeds,
+route compiles). Functionality itself is unverified beyond that, since no live Sanity project
+exists yet to actually open the Studio against (see `CURRENT_STATE.md`). If a future Sanity
+Studio major version fixes this upstream, this workaround can likely be simplified back to a
+direct import — worth a quick retry next time Sanity/Next dependencies are upgraded.
+
+---
+
 ## 2026-09-21 — Production sources mirrored into the repository
 
 **Decision**: The nine `docs/design-specs/*.md` specs and the design project's own `CLAUDE.md`

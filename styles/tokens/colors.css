@@ -1,0 +1,94 @@
+:root{
+/* --- Oat & clay: the warm neutral ground, straight from the brand palette --- */
+--paper-000:#FFFFFF;
+--paper-050:#F5F7EE;
+--paper-100:#ECEEDF;
+--oat-200:#E3E0CE;
+--clay-200:#E4D3C1;
+--clay-300:#D9C4B0;
+--clay-400:#CFAB8D;
+--clay-500:#B98E6B;
+
+/* --- Ink: soft umber, never black --- */
+--ink-900:#302B24;
+--ink-800:#3D3730;
+--ink-700:#4E463C;
+--ink-500:#736858;
+--ink-400:#948877;
+--ink-300:#B6AB9A;
+
+/* --- Sky: the cool half of the palette. Pastel for surfaces, deep for actions --- */
+--sky-100:#E4F1F5;
+--sky-200:#BBDCE5;
+--sky-500:#8FC4D2;
+--sky-600:#5C9FB2;
+--sky-700:#3B7D91;
+
+/* --- Clay accents: the warm action colour --- */
+--clay-100:#F2E3D5;
+--clay-600:#AE7B54;
+--clay-700:#8F5F3C;
+
+/* --- Sage, drawn out of the pale green paper tone --- */
+--sage-100:#E5EAD8;
+--sage-500:#B4C09E;
+--sage-600:#8B9C71;
+--sage-700:#657455;
+
+/* --- Ochre: the bookmark / marker colour --- */
+--ochre-100:#F6E7C8;
+--ochre-500:#DDB671;
+--ochre-600:#BC9143;
+
+/* --- Slate: depth, the one dark panel --- */
+--slate-100:#D9E4E8;
+--slate-500:#5A7C86;
+--slate-600:#3F606B;
+--slate-700:#2C464F;
+
+/* --- Semantic surfaces --- */
+--surface-page:var(--paper-100);
+--surface-page-deep:var(--oat-200);
+--surface-card:var(--paper-000);
+--surface-raised:var(--paper-000);
+--surface-sunken:var(--oat-200);
+--surface-well:var(--oat-200);
+--surface-cool:var(--sky-200);
+--surface-ink:var(--slate-700);
+
+/* --- Semantic text --- */
+--text-heading:var(--ink-800);
+--text-body:var(--ink-700);
+--text-muted:var(--ink-500);
+--text-faint:var(--ink-400);
+--text-inverse:var(--paper-050);
+--text-byline:var(--clay-700);
+--text-link:var(--clay-700);
+--text-link-hover:var(--clay-600);
+
+/* --- Semantic accents --- */
+--accent-primary:var(--clay-700);
+--accent-primary-strong:var(--clay-600);
+--accent-secondary:var(--sky-700);
+--accent-secondary-strong:var(--sky-600);
+--accent-tertiary:var(--sage-600);
+--accent-deep:var(--slate-700);
+--accent-mark:var(--ochre-500);
+
+/* --- Lines --- */
+--border-hairline:var(--clay-400);
+--border-soft:rgba(61,55,48,.10);
+--border-strong:var(--clay-500);
+--border-focus:var(--sky-700);
+
+/* --- Status --- */
+--status-positive:var(--sage-700);
+--status-caution:var(--ochre-600);
+--status-critical:#A4553F;
+--status-info:var(--sky-700);
+
+/* --- Gradients: used once per screen, on the primary search action only --- */
+--gradient-spectrum:linear-gradient(96deg,#BBDCE5 0%,#B4C09E 34%,#DDB671 66%,#CFAB8D 100%);
+--gradient-page:linear-gradient(180deg,#F1F3E6 0%,#ECEEDF 100%);
+--scrim-warm:linear-gradient(180deg,rgba(48,43,36,0) 0%,rgba(48,43,36,.62) 100%);
+}

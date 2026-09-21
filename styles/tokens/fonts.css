@@ -1,0 +1,9 @@
+/* Webfonts. No font binaries were supplied, so these are Google Fonts substitutions chosen to
+   match "tangerine — cute bubbly handwritten" (uploads/new font inspiration.jpg): rounded even
+   strokes, single-storey a, generous letter spacing.
+     Display = Comfortaa  — bubbly, rounded terminals, single-storey a, goes to 700.
+     Hand    = Delius     — the marker-drawn accent face, for reader quotes and field notes.
+     Body    = Nunito     — warm rounded sans that sits under the display without competing.
+     Mono    = IBM Plex Mono — research stamps, kickers, timestamps.
+   See the design system readme for the substitution note. */
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Delius&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");

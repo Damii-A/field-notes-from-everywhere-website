@@ -266,8 +266,9 @@ book list.
 | `KIT_PUBLICATION_FORM_ID` / `KIT_READING_ROOM_TAG_ID` | which list/tag a given call affects |
 | `PADDLE_API_KEY` | server-side Paddle API access |
 | `PADDLE_WEBHOOK_SECRET` | verifies Paddle → `/api/webhooks/paddle` calls |
-| `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` | Paddle.js client-side checkout |
-| `PADDLE_READING_ROOM_PRICE_ID` | the $5/mo + 7-day-trial Price to check out against |
+| `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` | Paddle.js client-side checkout (not a secret — Paddle's client SDK is designed to ship this to the browser) |
+| `NEXT_PUBLIC_PADDLE_ENVIRONMENT` | `sandbox` or `production` |
+| `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID` | the $5/mo + 7-day-trial Price to check out against (Price IDs aren't secret either — Paddle.js needs this client-side) |
 | `RESEND_API_KEY` | transactional "send this list to me" email |
 | `NEXT_PUBLIC_SITE_URL` | canonical URL for metadata/OG/sitemap |
 

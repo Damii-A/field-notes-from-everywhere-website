@@ -1,0 +1,48 @@
+:root{
+--font-display:"Comfortaa","Nunito",system-ui,sans-serif;
+--font-hand:"Delius","Comfortaa",cursive;
+--font-body:"Nunito",system-ui,-apple-system,sans-serif;
+--font-mono:"IBM Plex Mono",ui-monospace,monospace;
+
+--text-2xs:11px;
+--text-xs:12px;
+--text-sm:14px;
+--text-base:16px;
+--text-md:18px;
+--text-lg:21px;
+--text-xl:25px;
+--text-2xl:30px;
+--text-3xl:36px;
+--text-4xl:44px;
+--text-5xl:54px;
+--text-6xl:66px;
+
+--weight-regular:400;
+--weight-medium:500;
+--weight-semibold:600;
+--weight-bold:700;
+--weight-heavy:800;
+
+--leading-tight:1.12;
+--leading-snug:1.25;
+--leading-normal:1.5;
+--leading-relaxed:1.62;
+
+--tracking-tight:-0.005em;
+--tracking-normal:0em;
+--tracking-wide:0.04em;
+--tracking-caps:0.12em;
+
+/* Composite roles */
+--type-display:var(--weight-bold) var(--text-4xl)/var(--leading-tight) var(--font-display);
+--type-title:var(--weight-bold) var(--text-2xl)/var(--leading-snug) var(--font-display);
+--type-section:var(--weight-bold) var(--text-lg)/var(--leading-snug) var(--font-display);
+--type-body:var(--weight-regular) var(--text-base)/var(--leading-relaxed) var(--font-body);
+--type-body-strong:var(--weight-bold) var(--text-base)/var(--leading-normal) var(--font-body);
+--type-small:var(--weight-regular) var(--text-sm)/var(--leading-normal) var(--font-body);
+--type-label:var(--weight-semibold) var(--text-xs)/1.2 var(--font-mono);
+--type-quote:var(--weight-regular) var(--text-md)/var(--leading-relaxed) var(--font-hand);
+
+/* The display face is rounded and wide — it needs air, not tightening. */
+--tracking-display:0.005em;
+}

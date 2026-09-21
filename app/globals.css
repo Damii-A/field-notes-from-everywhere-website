@@ -1,0 +1,49 @@
+@import "../styles/tokens.css";
+
+/*
+  Reset block copied verbatim (as CSS, not inline styles) from the reset every
+  page in the design carries in its own <style> tag — see
+  docs/design-specs/DESIGN_PROJECT_BUILD_NOTES.md "Conventions the build follows".
+  --paper-000 is intentionally overridden here to #FBFBF5 (off-white), not the
+  #FFFFFF in tokens/colors.css — every built page does this same override.
+*/
+:root {
+  --paper-000: #fbfbf5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--text-body);
+  font-family: var(--font-body);
+}
+
+a {
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--text-link-hover);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
