@@ -75,8 +75,6 @@ entirely once Sanity has real articles.
 
 ## Known open items requiring the user before certain work can proceed
 
-- **Remote repository** — not yet connected. The user asked to connect one; see the setup
-  steps at the bottom of this file. Repo currently exists only on this machine.
 - **Resend account** — vendor use approved by the user (2026-09-21, see `DECISIONS.md`).
   Needs an account created and a `RESEND_API_KEY` before the "send this list to me" email
   capture can actually send (it's fully implemented in `lib/integrations/resend.ts`, just
@@ -114,20 +112,10 @@ cut from V1. In summary: no Reading Room login/Books/Past Issues, no eight-secti
 category identity → latest article → all articles (+ See more). Confirmed with the user
 2026-09-21.
 
-## Connecting a remote repository
+## Remote repository
 
-`gh` (GitHub CLI) isn't available in this environment, so this couldn't be automated. To
-connect one:
-
-1. Create a **new, empty** repository on GitHub (or another Git host) — do **not** initialize
-   it with a README, `.gitignore`, or license, since this repo already has commits.
-2. Copy its remote URL (e.g. `https://github.com/<you>/field-notes-from-everywhere.git`).
-3. Run:
-   ```
-   git remote add origin <url>
-   git push -u origin master
-   ```
-4. Confirm the push succeeded and the commit history matches.
-
-Once connected, future sessions should push completed logical work regularly per
-`AI_ENGINEERING_OPERATING_MANUAL.md` §18, §20.
+Connected 2026-09-21: `origin` → `git@github.com:Damii-A/Field-Notes-From-Everywhere-Website.git`
+(SSH — an existing `~/.ssh/id_ed25519_github` key was already authenticated for this GitHub
+account, so no new credentials were needed). `master` tracks `origin/master`. Future sessions
+should push completed logical work regularly per `AI_ENGINEERING_OPERATING_MANUAL.md` §18,
+§20.
