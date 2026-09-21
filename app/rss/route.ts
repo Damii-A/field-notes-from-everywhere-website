@@ -5,7 +5,13 @@ import { CATEGORIES, articlePath, getFeedArticles } from "@/lib/content";
  * categories — built specifically so Kit's RSS-to-email automation can turn
  * new entries into the weekly recap newsletter automatically (see
  * CURRENT_STATE.md, "Email/subscriber architecture"). Point that Kit
- * automation at `<site-url>/feed.xml`.
+ * automation at `<site-url>/feed.xml` — that's a rewrite to this route (see
+ * next.config.mjs), not this route's own path. Lives at `/rss`, not
+ * `/feed.xml`, because a literal `.xml`-named route segment was found
+ * (2026-09-21) to 404 on Vercel specifically — likely Vercel's routing layer
+ * treating any `*.xml` path as a static-asset lookup before it reaches the
+ * app — even though it worked in every local test. A plain path + an
+ * explicit rewrite sidesteps that ambiguity entirely.
  */
 const SITE_URL = process.env.SITE_URL || "http://localhost:3000";
 const FEED_ITEM_LIMIT = 30;
