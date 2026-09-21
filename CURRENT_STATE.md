@@ -120,20 +120,31 @@ are deliberately last, after the remaining technical/integration work, not next.
 
 ## Weekly recap feed
 
-`app/feed.xml/route.ts` publishes a standard RSS feed of the 30 most recent Publication
-articles across all three categories (title, link, publish date, category, and the article's
+`app/rss/route.ts` publishes a standard RSS feed of the 30 most recent Publication articles
+across all three categories (title, link, publish date, category, and the article's
 methodology sentence as the description) — built specifically so Kit's RSS-to-email automation
 can compose the weekly recap automatically, with no manual writing required each week (the user
 chose this over a manually-written recap, 2026-09-21). Point Kit's automation at
-`<production-url>/feed.xml`. Verified locally: valid RSS output, gracefully empty (no `<item>`
-entries) while the dataset has no articles yet.
+`<production-url>/feed.xml` — a `next.config.mjs` rewrite maps that public URL to the actual
+route. Verified live in production (2026-09-21): correct domain in all links, valid RSS,
+gracefully empty (no `<item>` entries) while the dataset has no articles yet.
 
-Also fixed while building this: `NEXT_PUBLIC_SITE_URL` was renamed to `SITE_URL` everywhere
-(code, `.env.local`, `.env.example`) — it was never actually used in any browser-facing code, so
-the `NEXT_PUBLIC_` prefix was unnecessary, and Vercel outright refused to save a public
-variable it suspected might be sensitive-looking, which blocked setting it at all under the old
-name. **On Vercel**, this needs its own new `SITE_URL` variable created (plain, not public) set
-to the production URL — the old empty `NEXT_PUBLIC_SITE_URL` there can be deleted.
+Two real issues surfaced and fixed while building this, worth knowing about for future work:
+
+- **A route folder literally named `feed.xml` 404'd on Vercel specifically** (worked in every
+  local test, dev and production mode) — likely Vercel's routing treating any `*.xml`-looking
+  path as a static-asset lookup before it reaches app code. Fixed by moving the real route to
+  `/rss` and rewriting `/feed.xml` to it. **Lesson: avoid literal dotted/extension-like
+  segment names for custom App Router routes on Vercel**, even though Next.js's own docs pattern
+  for this looks like it should work.
+- **`NEXT_PUBLIC_SITE_URL` → `SITE_URL`**: the `NEXT_PUBLIC_` prefix was never needed (only used
+  in server-only route handlers, never browser code), and Vercel outright refused to save it as
+  a public variable it suspected might be sensitive-looking. Separately, once saved as a plain
+  `SITE_URL` variable, Vercel's dashboard always shows it as blank on re-edit — that's normal
+  (values that look sensitive are masked and never redisplayed), not a save failure; the value
+  did take effect once a fresh deployment ran. Centralized in `lib/siteUrl.ts`, which also
+  strips any trailing slash (the value as entered on Vercel had one, which was producing a
+  double slash in `sitemap.xml`'s output).
 
 ## Email/subscriber architecture (decided 2026-09-21)
 
