@@ -1,4 +1,5 @@
 import { CATEGORIES, articlePath, getFeedArticles } from "@/lib/content";
+import { SITE_URL } from "@/lib/siteUrl";
 
 /**
  * RSS feed of the most recent Publication articles across all three
@@ -13,7 +14,6 @@ import { CATEGORIES, articlePath, getFeedArticles } from "@/lib/content";
  * app — even though it worked in every local test. A plain path + an
  * explicit rewrite sidesteps that ambiguity entirely.
  */
-const SITE_URL = process.env.SITE_URL || "http://localhost:3000";
 const FEED_ITEM_LIMIT = 30;
 
 function escapeXml(value: string): string {
