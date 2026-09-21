@@ -217,3 +217,49 @@ project) and one authoritative shipped source (the production app) than three.
 requirements brief and the as-built departures from it, but cannot independently verify exact
 current pixel-level design without either design-tool access or reading the deployed
 production app.
+
+---
+
+## 2026-09-21 — Content reads use a hand-rolled `groqFetch`, not `@sanity/client`'s `.fetch()`
+
+**Decision**: `lib/content/index.ts` fetches all content via `lib/sanity/groqFetch.ts`, a ~50-line
+function that calls Sanity's public Query HTTP API directly with `fetch()`. It does not use
+`@sanity/client`'s own `.fetch()` method for this. `@sanity/client` is still a dependency (the
+embedded Studio at `/studio` needs it), and `@sanity/image-url`/`@sanity/vision` are untouched —
+this decision is scoped to the app's own read path only.
+
+**Context**: While wiring the first real content queries and verifying them against a live test
+article, `@sanity/client@6.29.1`'s `.fetch()` consistently returned `null` for queries that
+provably matched an existing document — confirmed via: the identical query/params/token/dataset
+returning the correct result from a plain Node script and from a direct `curl` against Sanity's
+API, `client.config()` showing the correct resolved URL, and (the decisive test) a raw `fetch()`
+call to that exact resolved URL, made from inside the same Next.js server process, in the same
+request, immediately before the `@sanity/client` call — succeeding where `@sanity/client.fetch()`
+failed. This narrows the fault specifically to `@sanity/client`'s own HTTP layer as bundled/run in
+this Next.js App Router server environment; the root cause inside that library was not isolated
+further (time-boxed — see Operating Manual on not over-investing in a vendored dependency's
+internals when a clean workaround exists).
+
+**Alternatives considered**: Pin a different `@sanity/client` version — untried; no specific
+version was identified as known-good, and the bug reproduced with the version range this project
+already specifies. Keep debugging the SDK — rejected past a reasonable time-box: this app's read
+needs are simple GET queries against a public, documented HTTP API, well within reach of a small
+direct implementation. Use `next-sanity`'s helpers instead — not evaluated in depth; would still
+depend on `@sanity/client` internally and might carry the same bug.
+
+**Reasoning**: A ~50-line function against a stable, documented public API, verified working in
+this exact runtime, is more reliable here than an opaque third-party HTTP layer with a confirmed
+environment-specific bug. Operating Manual §5 (prefer simplicity) supports removing a dependency
+that isn't earning its complexity in this path.
+
+**Consequences**: `groqFetch` reimplements: GET-with-query-string for normal-sized queries,
+POST-with-JSON-body past a length threshold (matching `@sanity/client`'s own GET/POST switching
+behavior), and Next.js cache-tag/revalidate passthrough. It does **not** reimplement CDN routing,
+perspectives/drafts, mutations, or stega — none of which the app's read path currently needs. If
+a future requirement needs one of those, extend `groqFetch` deliberately rather than reaching back
+for `@sanity/client.fetch()` without re-verifying the bug is actually gone.
+
+**Future implications**: Worth a quick retry of `@sanity/client.fetch()` against a newer major
+version if one is adopted later (for the Studio's own dependency), to see if this was fixed
+upstream — but don't switch the app's read path back without first repeating the same isolation
+test (raw `fetch()` vs `client.fetch()` in the same request) that caught this.

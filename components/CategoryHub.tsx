@@ -56,58 +56,68 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
         </div>
       </section>
 
-      <section style={{ padding: category === "the-shortlist" ? 0 : "clamp(28px,3.6vw,52px) var(--gutter-screen) 0" }}>
-        <Link
-          href={`/${category}/${hub.latest.slug}`}
-          className={styles.leadCard}
-          style={{
-            background: "var(--surface-card)",
-            borderRadius: category === "the-shortlist" ? 0 : "var(--radius-2xl)",
-            overflow: "hidden",
-            boxShadow: category === "the-shortlist" ? undefined : "var(--shadow-raised)",
-          }}
-        >
-          <div className={styles.leadImage}>
-            <ImagePlaceholder label="Lead article image" />
-          </div>
-          <div className={styles.leadBody} style={{ background: colors.leadBg }}>
-            <span className={styles.leadLabel} style={{ color: colors.leadLabel }}>
-              Newest in {def.name}
-            </span>
-            <h2 className={styles.leadTitle} style={{ color: colors.leadTitle }}>
-              {hub.latest.title}
-            </h2>
-            <p className={styles.leadMeta} style={{ color: colors.leadMeta }}>
-              {hub.latest.methodologySentence}
-            </p>
-            <span className={styles.leadMeta} style={{ color: colors.leadMeta }}>
-              By {hub.latest.author} · {new Date(hub.latest.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} ·{" "}
-              {hub.latest.books.length} books
-            </span>
-          </div>
-        </Link>
-      </section>
+      {hub.latest ? (
+        <section style={{ padding: category === "the-shortlist" ? 0 : "clamp(28px,3.6vw,52px) var(--gutter-screen) 0" }}>
+          <Link
+            href={`/${category}/${hub.latest.slug}`}
+            className={styles.leadCard}
+            style={{
+              background: "var(--surface-card)",
+              borderRadius: category === "the-shortlist" ? 0 : "var(--radius-2xl)",
+              overflow: "hidden",
+              boxShadow: category === "the-shortlist" ? undefined : "var(--shadow-raised)",
+            }}
+          >
+            <div className={styles.leadImage}>
+              <ImagePlaceholder label="Lead article image" src={hub.latest.heroImage?.url} alt={hub.latest.heroImage?.alt} />
+            </div>
+            <div className={styles.leadBody} style={{ background: colors.leadBg }}>
+              <span className={styles.leadLabel} style={{ color: colors.leadLabel }}>
+                Newest in {def.name}
+              </span>
+              <h2 className={styles.leadTitle} style={{ color: colors.leadTitle }}>
+                {hub.latest.title}
+              </h2>
+              <p className={styles.leadMeta} style={{ color: colors.leadMeta }}>
+                {hub.latest.methodologySentence}
+              </p>
+              <span className={styles.leadMeta} style={{ color: colors.leadMeta }}>
+                By {hub.latest.author} · {new Date(hub.latest.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} ·{" "}
+                {hub.latest.books.length} books
+              </span>
+            </div>
+          </Link>
+        </section>
+      ) : null}
 
       <section className={styles.allSection}>
         <div className={styles.allInner}>
           <h3 className={styles.allHeading}>All articles</h3>
-          <div className={styles.allGrid}>
-            {visible.map((a) => (
-              <Link key={a.slug} href={`/${category}/${a.slug}`} className={styles.card}>
-                <div className={styles.cardImage}>
-                  <ImagePlaceholder label="Article image" />
+          {visible.length > 0 ? (
+            <>
+              <div className={styles.allGrid}>
+                {visible.map((a) => (
+                  <Link key={a.slug} href={`/${category}/${a.slug}`} className={styles.card}>
+                    <div className={styles.cardImage}>
+                      <ImagePlaceholder label="Article image" src={a.heroImage?.url} alt={a.heroImage?.alt} />
+                    </div>
+                    <span className={styles.cardTitle}>{a.title}</span>
+                    <span className={styles.cardMeta}>{a.meta}</span>
+                  </Link>
+                ))}
+              </div>
+              {moreLeft ? (
+                <div className={styles.seeMoreRow}>
+                  <Button tone="outline" size="md" onClick={() => setShown((s) => Math.min(hub.articles.length, s + HUB_PAGE_INCREMENT))}>
+                    See more
+                  </Button>
                 </div>
-                <span className={styles.cardTitle}>{a.title}</span>
-                <span className={styles.cardMeta}>{a.meta}</span>
-              </Link>
-            ))}
-          </div>
-          {moreLeft ? (
-            <div className={styles.seeMoreRow}>
-              <Button tone="outline" size="md" onClick={() => setShown((s) => Math.min(hub.articles.length, s + HUB_PAGE_INCREMENT))}>
-                See more
-              </Button>
-            </div>
+              ) : null}
+            </>
+          ) : !hub.latest ? (
+            <p style={{ font: "var(--type-body)", color: "var(--ink-700)" }}>
+              New articles are on their way — check back soon.
+            </p>
           ) : null}
         </div>
       </section>

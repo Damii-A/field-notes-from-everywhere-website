@@ -82,133 +82,139 @@ export default async function HomePage() {
       </section>
 
       {/* What to Read When rail */}
-      <section style={{ background: "var(--oat-200)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
-        <div className={styles.showcaseHeader} style={{ flexDirection: "row-reverse" }}>
-          <Link
-            href="/what-to-read-when"
-            style={{
-              display: "block",
-              font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
-              letterSpacing: "var(--tracking-tight)",
-              color: "var(--clay-700)",
-              margin: 0,
-              maxWidth: "24ch",
-              textAlign: "right",
-            }}
-          >
-            What to Read When
-          </Link>
-          <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--ink-500)", margin: 0, maxWidth: "38ch" }}>
-            For the moments when you know exactly how you want a book to make you feel, and nothing else will do.
-          </p>
-        </div>
-        <div className={styles.rail} style={{ gap: "clamp(28px,4vw,64px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
-          {showcase.when.map((a) => (
-            <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
-              <div className={styles.railCardImage}>
-                <ImagePlaceholder label="Article image" />
-              </div>
-              <span className={styles.railCardTitle}>{a.title}</span>
+      {showcase.when.length > 0 ? (
+        <section style={{ background: "var(--oat-200)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
+          <div className={styles.showcaseHeader} style={{ flexDirection: "row-reverse" }}>
+            <Link
+              href="/what-to-read-when"
+              style={{
+                display: "block",
+                font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
+                letterSpacing: "var(--tracking-tight)",
+                color: "var(--clay-700)",
+                margin: 0,
+                maxWidth: "24ch",
+                textAlign: "right",
+              }}
+            >
+              What to Read When
             </Link>
-          ))}
-        </div>
-      </section>
+            <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--ink-500)", margin: 0, maxWidth: "38ch" }}>
+              For the moments when you know exactly how you want a book to make you feel, and nothing else will do.
+            </p>
+          </div>
+          <div className={styles.rail} style={{ gap: "clamp(28px,4vw,64px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
+            {showcase.when.map((a) => (
+              <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
+                <div className={styles.railCardImage}>
+                  <ImagePlaceholder label="Article image" src={a.heroImage?.url} alt={a.heroImage?.alt} />
+                </div>
+                <span className={styles.railCardTitle}>{a.title}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* The Shortlist rail */}
-      <section style={{ background: "var(--sage-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
-        <div className={styles.showcaseHeader}>
-          <Link
-            href="/the-shortlist"
-            style={{
-              display: "block",
-              font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
-              letterSpacing: "var(--tracking-tight)",
-              color: "var(--sage-700)",
-            }}
-          >
-            The Shortlist
-          </Link>
-          <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--ink-500)", margin: 0, maxWidth: "56ch" }}>
-            The books that rose to the top of the reader recommendations we analysed. One researched interest, the
-            titles readers kept putting forward.
-          </p>
-        </div>
-        <div className={styles.rail} style={{ gap: "clamp(20px,2.4vw,32px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
-          {showcase.shortlist.map((a) => (
-            <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
-              <div className={styles.railCardImage}>
-                <ImagePlaceholder label="Article image" />
-              </div>
-              <span className={styles.railCardTitle}>{a.title}</span>
+      {showcase.shortlist.length > 0 ? (
+        <section style={{ background: "var(--sage-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
+          <div className={styles.showcaseHeader}>
+            <Link
+              href="/the-shortlist"
+              style={{
+                display: "block",
+                font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
+                letterSpacing: "var(--tracking-tight)",
+                color: "var(--sage-700)",
+              }}
+            >
+              The Shortlist
             </Link>
-          ))}
-        </div>
-      </section>
+            <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--ink-500)", margin: 0, maxWidth: "56ch" }}>
+              The books that rose to the top of the reader recommendations we analysed. One researched interest, the
+              titles readers kept putting forward.
+            </p>
+          </div>
+          <div className={styles.rail} style={{ gap: "clamp(20px,2.4vw,32px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
+            {showcase.shortlist.map((a) => (
+              <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
+                <div className={styles.railCardImage}>
+                  <ImagePlaceholder label="Article image" src={a.heroImage?.url} alt={a.heroImage?.alt} />
+                </div>
+                <span className={styles.railCardTitle}>{a.title}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* Book Club Book Picks rail */}
-      <section style={{ background: "var(--paper-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
-        <div className={styles.showcaseHeader}>
-          <Link
-            href="/book-club-book-picks"
-            style={{
-              display: "block",
-              font: "var(--weight-bold) clamp(26px,3vw,38px)/1.04 var(--font-display)",
-              letterSpacing: "var(--tracking-tight)",
-              color: "var(--slate-600)",
-              maxWidth: "24ch",
-            }}
-          >
-            Book Club Book Picks
-          </Link>
-          <p style={{ font: "var(--type-body)", color: "var(--ink-500)", margin: 0, maxWidth: "42ch" }}>
-            Books chosen for the group read: the ones worth bringing to a room full of opinions.
-          </p>
-        </div>
-        <div className={styles.rail} style={{ gap: "clamp(36px,5vw,80px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px", alignItems: "center" }}>
-          {showcase.clubPairs.map(([a, b], i) => (
-            <div key={a.slug} style={{ flex: "0 0 auto", display: "flex", alignItems: "center" }}>
-              <Link
-                href={`/${a.category}/${a.slug}`}
-                style={{
-                  width: 200,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 14,
-                  transform: "rotate(-1.6deg)",
-                }}
-              >
-                <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-raised)" }}>
-                  <ImagePlaceholder label="Article image" />
-                </div>
-                <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
-                  {a.title}
-                </span>
-              </Link>
-              <span
-                aria-hidden="true"
-                style={{ width: "clamp(18px,3vw,40px)", height: 1, background: "var(--border-strong)", flex: "0 0 auto", alignSelf: "center", marginTop: -40 }}
-              />
-              <Link
-                href={`/${b.category}/${b.slug}`}
-                style={{
-                  width: 200,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 14,
-                  transform: `rotate(1.4deg) translateY(${i === 0 ? 34 : 34}px)`,
-                }}
-              >
-                <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
-                  <ImagePlaceholder label="Article image" />
-                </div>
-                <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
-                  {b.title}
-                </span>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
+      {showcase.clubPairs.length > 0 ? (
+        <section style={{ background: "var(--paper-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
+          <div className={styles.showcaseHeader}>
+            <Link
+              href="/book-club-book-picks"
+              style={{
+                display: "block",
+                font: "var(--weight-bold) clamp(26px,3vw,38px)/1.04 var(--font-display)",
+                letterSpacing: "var(--tracking-tight)",
+                color: "var(--slate-600)",
+                maxWidth: "24ch",
+              }}
+            >
+              Book Club Book Picks
+            </Link>
+            <p style={{ font: "var(--type-body)", color: "var(--ink-500)", margin: 0, maxWidth: "42ch" }}>
+              Books chosen for the group read: the ones worth bringing to a room full of opinions.
+            </p>
+          </div>
+          <div className={styles.rail} style={{ gap: "clamp(36px,5vw,80px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px", alignItems: "center" }}>
+            {showcase.clubPairs.map(([a, b], i) => (
+              <div key={a.slug} style={{ flex: "0 0 auto", display: "flex", alignItems: "center" }}>
+                <Link
+                  href={`/${a.category}/${a.slug}`}
+                  style={{
+                    width: 200,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 14,
+                    transform: "rotate(-1.6deg)",
+                  }}
+                >
+                  <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-raised)" }}>
+                    <ImagePlaceholder label="Article image" src={a.heroImage?.url} alt={a.heroImage?.alt} />
+                  </div>
+                  <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
+                    {a.title}
+                  </span>
+                </Link>
+                <span
+                  aria-hidden="true"
+                  style={{ width: "clamp(18px,3vw,40px)", height: 1, background: "var(--border-strong)", flex: "0 0 auto", alignSelf: "center", marginTop: -40 }}
+                />
+                <Link
+                  href={`/${b.category}/${b.slug}`}
+                  style={{
+                    width: 200,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 14,
+                    transform: `rotate(1.4deg) translateY(${i === 0 ? 34 : 34}px)`,
+                  }}
+                >
+                  <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
+                    <ImagePlaceholder label="Article image" src={b.heroImage?.url} alt={b.heroImage?.alt} />
+                  </div>
+                  <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
+                    {b.title}
+                  </span>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section
         style={{

@@ -1,14 +1,70 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-21 (first implementation session)
+Last updated: 2026-09-21 (Sanity connected, content layer wired to real queries)
 
 ## What exists right now
 
 The full V1 site structure is implemented and builds/runs cleanly (`npm run build`, `npm run
-dev`), serving all pages from local mock content that matches the eventual Sanity shape —
-see "Mock content" below. Verified with `npm run build` (0 errors/warnings) and a Playwright
-smoke pass (all 6 primary routes 200, zero console errors, visually reviewed against the
-design's screenshots).
+dev`). As of this update, it's connected to a **real, live Sanity project** and reads real
+content through actual GROQ queries — not mock data. See "Sanity connection" and "Content
+layer" below. Verified with `npm run build` (0 errors/warnings), `npm run typecheck`, and a
+manual end-to-end content test (temporary Tag/Book/Article documents created directly in the
+live dataset, confirmed rendering correctly on the hub, article, and home pages with resolved
+book references and tags, then deleted).
+
+## Sanity connection
+
+- **Project**: `7ci7c80z`, dataset `production` — real, live, created 2026-09-21. Values are in
+  `.env.local` (`NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`,
+  `SANITY_API_TOKEN`). The dataset is currently **empty of real content** (nothing authored in
+  the Studio yet) — every page that depends on content handles this gracefully (see "Empty
+  content state" below) rather than crashing.
+- **CORS**: `http://localhost:3000` and `http://localhost:3001` are allowed (added via the
+  Sanity management API 2026-09-21, since neither was there by default and the embedded Studio
+  needs it to work from the browser). **Still needed**: add the production/preview domain to
+  Sanity's CORS allowlist once this deploys to Vercel — the Studio will otherwise fail there
+  with a CORS error the same way it would have here before this was added.
+- **Token exposure note**: the current `SANITY_API_TOKEN` value passed through this session's
+  transcript at least once (an IDE file-change notification echoed it automatically). Low risk
+  since it was only visible within this session, but rotating it in Sanity's dashboard before
+  going further is cheap insurance if that matters to you.
+- **`SANITY_WEBHOOK_SECRET`** is still unset. Until it's configured (both the env var and an
+  actual webhook pointed at `/api/webhooks/sanity` in Sanity's project settings), content
+  edited in the Studio won't show up on the live site until the 5-minute cache window expires
+  on its own — see "Content layer" below.
+
+## Content layer
+
+`lib/content/index.ts` now runs real GROQ queries instead of serving `lib/content/mock-data.ts`
+(deleted, along with `lib/content/slug.ts` — both fully superseded). Queries go through
+`lib/sanity/groqFetch.ts`, a small hand-rolled fetch helper — **not** `@sanity/client`'s own
+`.fetch()` method, which was found to have a confirmed environment-specific bug in this app's
+Next.js runtime (see the `DECISIONS.md` entry "Content reads use a hand-rolled `groqFetch`" for
+the full diagnosis). `@sanity/client` is still used by the embedded Studio itself.
+
+Caching: each query tags its Next.js cache entry by Sanity document type (`article`, `book`,
+`tag`, `legalPage`, `siteSettings`) with a 300-second revalidate as a safety net, matching what
+`app/api/webhooks/sanity/route.ts` already expects to invalidate on-demand once the webhook is
+configured (see above). `groqFetch` always hits `api.sanity.io` directly, never
+`apicdn.sanity.io` — the CDN's own eventual-consistency lag would otherwise undercut "content
+shows up within seconds."
+
+**Empty content state**: with nothing authored yet, every content-dependent function returns a
+sensible empty/fallback value instead of crashing — hub pages show "New articles are on their
+way," the homepage hides showcase rails with nothing to show, `getSiteSettings`/`getLegalPage`
+fall back to placeholder copy. This was necessary, not optional — the live dataset really is
+empty right now, so this path runs in production today, not just hypothetically.
+
+**Portable text**: `article.introText` and `legalPage.body` are Sanity portable text (rich
+text blocks). Intro paragraphs are flattened to plain strings (one block → one paragraph,
+matching the design's plain-paragraph treatment — see `lib/content/portableText.ts`); legal
+page bodies are rendered as real HTML via `@portabletext/to-html` (matches the rich structure
+legal copy needs — headings, lists, links).
+
+**Still using mock/placeholder behavior**: none — the "one hand-authored lead article, every
+other hub card resolves to a synthesized placeholder" mechanism from the mock-data era is gone
+entirely. Every hub card and article now comes from a real Sanity document; nothing resolves
+until something is actually published in the Studio.
 
 **Built:**
 - Design tokens ported verbatim to `styles/tokens/*.css`, global reset in `app/globals.css`.
@@ -39,29 +95,25 @@ design's screenshots).
   — all functional but gated on env vars that don't exist yet; each returns a clear error
   rather than silently no-op-ing when unconfigured (see "Known open items" below).
 - Sanity schema definitions (`sanity/schemaTypes/*`) and embedded Studio config
-  (`sanity.config.ts`, `/studio` route) — written and building correctly, not yet connected to
-  a live project.
+  (`sanity.config.ts`, `/studio` route) — connected to the real project (see "Sanity
+  connection" above); Studio login/editing itself not yet manually exercised end-to-end.
 - `sitemap.xml`, `robots.txt`, per-page metadata, 404 page.
-
-**Mock content**: `lib/content/` is the data-access layer every page reads through — see its
-top-of-file comment. It currently serves local mock data (`lib/content/mock-data.ts`)
-transcribed from the design's own real placeholder copy (not lorem ipsum), typed to the exact
-shape the Sanity schema will produce. Swapping in real Sanity queries later is a change
-inside `lib/content/index.ts` only, not a rewrite of any page. One thing to know: only one
-article per category has a full hand-authored book list (matching the fact that the design
-itself only fully built one example article per category) — every other hub card title is
-real placeholder copy but resolves, if clicked, to a synthesized article reusing that
-category's book list rather than 404ing. This is clearly commented in the code; it goes away
-entirely once Sanity has real articles.
 
 ## Immediately next
 
-1. Set up a real Sanity project and connect it (see open items below) — replace
-   `lib/content/index.ts`'s mock implementations with GROQ queries, one function at a time.
-2. Wire Kit, Paddle and Resend once those accounts/credentials exist.
-3. Source real photography (see "Assets needed" below) to replace the `ImagePlaceholder`
+1. **Author real content in the Studio** (`/studio`) — nothing will appear on the live site
+   until this happens. At minimum: a `Site settings` singleton (contact email etc. — pages fall
+   back to placeholder copy without it) and at least one `Article` per category to see the full
+   experience.
+2. **Configure the Sanity webhook** — add a webhook in Sanity's project settings pointing at
+   `<site-url>/api/webhooks/sanity`, set `SANITY_WEBHOOK_SECRET` to match, so edits show up
+   within seconds instead of waiting out the 5-minute cache window.
+3. Wire Kit, Paddle and Resend once those accounts/credentials exist.
+4. Source real photography (see "Assets needed" below) to replace the `ImagePlaceholder`
    boxes.
-4. Real legal copy for Terms/Privacy/Disclosures before public launch.
+5. Real legal copy for Terms/Privacy/Disclosures before public launch.
+6. Add the production domain to Sanity's CORS allowlist once Vercel hosting exists (see
+   "Sanity connection" above).
 
 ## Assets needed
 
@@ -79,8 +131,6 @@ entirely once Sanity has real articles.
   Needs an account created and a `RESEND_API_KEY` before the "send this list to me" email
   capture can actually send (it's fully implemented in `lib/integrations/resend.ts`, just
   unconfigured).
-- **Sanity account/project** — needs to be created (or existing one identified) and its
-  project ID/dataset name provided, or authorization to create one on the user's behalf.
 - **Kit account** — API key, and a decision on list/tag naming for "free Publication list" vs.
   "Reading Room active" segment (recommended structure is in `ARCHITECTURE.md` §9; final
   naming is the user's call inside their own Kit account). Note: `lib/integrations/kit.ts` is

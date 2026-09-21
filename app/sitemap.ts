@@ -14,7 +14,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const cat of CATEGORY_LIST) {
     entries.push({ url: `${SITE_URL}/${cat.slug}`, lastModified: new Date() });
     const hub = await getHubArticles(cat.slug);
-    entries.push({ url: `${SITE_URL}/${cat.slug}/${hub.latest.slug}`, lastModified: new Date(hub.latest.publishedAt) });
+    if (hub.latest) {
+      entries.push({ url: `${SITE_URL}/${cat.slug}/${hub.latest.slug}`, lastModified: new Date(hub.latest.publishedAt) });
+    }
     for (const a of hub.articles) {
       entries.push({ url: `${SITE_URL}/${cat.slug}/${a.slug}` });
     }
