@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -18,8 +19,14 @@ export default async function HomePage() {
           <div className={styles.heroGrid}>
             <h1 className={styles.heroHeadline}>Your TBR list is about to get a lot longer</h1>
             <div className={styles.heroImageWrap}>
-              {/* uploads/diletta-davolio-8b4FAmbxZTg-unsplash.png in the design — real photo asset needed, see CURRENT_STATE.md */}
-              <ImagePlaceholder label="Watercolour stack of four books" />
+              <Image
+                src="/images/homepage-hero-books.png"
+                alt="A watercolour illustration of a stack of four books"
+                fill
+                sizes="(max-width: 768px) 100vw, 340px"
+                style={{ objectFit: "contain" }}
+                priority
+              />
             </div>
           </div>
         </div>

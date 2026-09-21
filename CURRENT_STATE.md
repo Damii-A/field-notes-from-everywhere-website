@@ -114,9 +114,8 @@ are deliberately last, after the remaining technical/integration work, not next.
 4. **In Kit's dashboard**: set up the RSS-to-email automation for the weekly recap, pointed at
    `<production-url>/feed.xml` (built 2026-09-21 — see below). Nothing left to build for this
    on the app side.
-5. Source real photography (see "Assets needed" below).
-6. **Last**: author real content in the Studio, and get real legal copy for
-   Terms/Privacy/Disclosures.
+5. **Last**: author real content in the Studio (which brings the remaining per-article/book
+   images with it), and get real legal copy for Terms/Privacy/Disclosures.
 
 ## Weekly recap feed
 
@@ -167,10 +166,13 @@ Full reasoning in `DECISIONS.md`; summary here for quick reference when building
 
 ## Assets needed
 
-- The homepage hero photo — `uploads/diletta-davolio-8b4FAmbxZTg-unsplash.png` in the design,
-  described there as "the one real image" among otherwise-placeholder imagery. Currently an
-  `ImagePlaceholder`. Once Sanity exists this becomes a normal image upload in the Studio; no
-  code change needed beyond adding the field's actual value.
+- ~~The homepage hero photo~~ — **done (2026-09-21)**. The design's own placeholder-image slot
+  ("Watercolour stack of four books") now shows the user-supplied illustration, at
+  `public/images/homepage-hero-books.png`, wired directly into `app/page.tsx`. Note this is a
+  **static file bundled with the app**, not a Sanity asset — deliberate, since it's a fixed
+  brand/decorative image rather than editorial content that changes; if that assumption changes
+  (e.g. the user wants to swap it themselves via the Studio without a code change), it should
+  become a `siteSettings` image field instead.
 - Every other `ImagePlaceholder` across the site (article heroes, book covers, hub cards,
   Reading Room screenshots) is intentionally a placeholder until real content exists in
   Sanity — this is expected, not a bug to fix now.
