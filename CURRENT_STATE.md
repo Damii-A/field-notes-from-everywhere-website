@@ -101,19 +101,17 @@ until something is actually published in the Studio.
 
 ## Immediately next
 
-1. **Author real content in the Studio** (`/studio`) — nothing will appear on the live site
-   until this happens. At minimum: a `Site settings` singleton (contact email etc. — pages fall
-   back to placeholder copy without it) and at least one `Article` per category to see the full
-   experience.
-2. **Configure the Sanity webhook** — add a webhook in Sanity's project settings pointing at
-   `<site-url>/api/webhooks/sanity`, set `SANITY_WEBHOOK_SECRET` to match, so edits show up
-   within seconds instead of waiting out the 5-minute cache window.
-3. Wire Kit, Paddle and Resend once those accounts/credentials exist.
-4. Source real photography (see "Assets needed" below) to replace the `ImagePlaceholder`
-   boxes.
-5. Real legal copy for Terms/Privacy/Disclosures before public launch.
-6. Add the production domain to Sanity's CORS allowlist once Vercel hosting exists (see
-   "Sanity connection" above).
+Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
+are deliberately last, after the remaining technical/integration work, not next.
+
+1. Set up Kit (account + API key + list/tag naming decision).
+2. Set up Paddle (account + API key + webhook secret + the actual Price, and resolve whether a
+   genuinely card-free trial is possible).
+3. Wire `RESEND_API_KEY` into local `.env.local` too, for parity with what Vercel's Resend
+   integration already provisioned there (not required for the live site, just for local dev).
+4. Source real photography (see "Assets needed" below).
+5. **Last**: author real content in the Studio, and get real legal copy for
+   Terms/Privacy/Disclosures.
 
 ## Assets needed
 
@@ -127,10 +125,6 @@ until something is actually published in the Studio.
 
 ## Known open items requiring the user before certain work can proceed
 
-- **Resend account** — vendor use approved by the user (2026-09-21, see `DECISIONS.md`).
-  Needs an account created and a `RESEND_API_KEY` before the "send this list to me" email
-  capture can actually send (it's fully implemented in `lib/integrations/resend.ts`, just
-  unconfigured).
 - **Kit account** — API key, and a decision on list/tag naming for "free Publication list" vs.
   "Reading Room active" segment (recommended structure is in `ARCHITECTURE.md` §9; final
   naming is the user's call inside their own Kit account). Note: `lib/integrations/kit.ts` is
@@ -145,13 +139,12 @@ until something is actually published in the Studio.
   `customerId` to an email address (via `paddle.customers.get`) before it can actually tag
   the subscriber in Kit — untestable without a real account, so left as a clear gap rather
   than guessed at.
-- **Namecheap DNS access** — needed only once the app is ready to go live at the production
-  domain; not needed for early development (Vercel preview URLs are sufficient until then).
+- **Production domain DNS cutover** — deliberately deferred to near the end of the build (see
+  "Deployment" above). The domain's DNS is managed at Cloudflare (nameservers delegated there
+  from Namecheap, which is just the registrar).
 - **Real legal copy** for Terms, Privacy & Cookies, and Disclosures — currently placeholder
   in the design; needs real text (from the user or their legal counsel) before public launch.
-  Not a technical blocker for building the page template itself.
-- **Vercel hosting** — no project created yet. Routine to set up once the user wants a
-  deployed preview rather than local-only.
+  Deliberately sequenced last, alongside content authoring.
 
 ## Known limitations / explicitly out of scope for V1
 
@@ -164,8 +157,47 @@ category identity → latest article → all articles (+ See more). Confirmed wi
 
 ## Remote repository
 
-Connected 2026-09-21: `origin` → `git@github.com:Damii-A/Field-Notes-From-Everywhere-Website.git`
+Connected 2026-09-21: `origin` → `git@github.com:Damii-A/field-notes-from-everywhere-website.git`
 (SSH — an existing `~/.ssh/id_ed25519_github` key was already authenticated for this GitHub
-account, so no new credentials were needed). `master` tracks `origin/master`. Future sessions
-should push completed logical work regularly per `AI_ENGINEERING_OPERATING_MANUAL.md` §18,
-§20.
+account, so no new credentials were needed; note the repo was later renamed to all-lowercase by
+GitHub/Vercel — the remote URL was updated accordingly). `master` tracks `origin/master`. Future
+sessions should push completed logical work regularly per `AI_ENGINEERING_OPERATING_MANUAL.md`
+§18, §20.
+
+## Deployment
+
+Live on Vercel as of 2026-09-21: `https://field-notes-from-everywhere-website-o6jkwewmr.vercel.app`
+(the `-o6jkwewmr` suffix appears to be permanent, likely because the plain project name was
+already taken by another Vercel account — this is the real, stable production URL, not a
+per-deployment preview one). Deploys automatically on push to `master`.
+
+- **Env vars**: set directly in Vercel's dashboard (Environments section), not synced from
+  `.env.local`. Two things to know: (1) the Vercel Sanity marketplace integration provisions
+  its own variable names (`SANITY_STUDIO_PROJECT_ID`, `SANITY_API_PROJECT_ID`,
+  `SANITY_STUDIO_DATASET`, `SANITY_API_DATASET`, `SANITY_API_READ_TOKEN`,
+  `SANITY_API_WRITE_TOKEN`) rather than the `NEXT_PUBLIC_SANITY_*`/`SANITY_API_TOKEN` names this
+  app was originally written against — `lib/sanity/groqFetch.ts` and `sanity.config.ts` check
+  both naming conventions as a fallback, so either works; (2) `SANITY_WEBHOOK_SECRET` was added
+  manually (not integration-provisioned, since it's a value this app invented) and must match
+  what's registered in Sanity's webhook config.
+- **Resend integration**: installed via Vercel's marketplace, provisioned its own account/API
+  key. A sending domain was verified via DNS records at Cloudflare (subdomain-scoped MX record
+  under `send.<domain>`, doesn't conflict with existing email on the root domain). Inbound
+  email receiving was deliberately left off — not needed, and would have conflicted with the
+  domain's existing personal-inbox MX records.
+- **Deployment Protection**: was on by default (Vercel's own SSO-gate, blocking all public
+  access) and has been turned off so the site is actually publicly reachable.
+- **Sanity CORS + webhook**: the production URL above is in Sanity's CORS allowlist, and a
+  webhook is registered (via Sanity's API) pointing at
+  `<production-url>/api/webhooks/sanity`, using the `SANITY_WEBHOOK_SECRET` now set in both
+  places. It currently uses Sanity's default payload (no custom projection — the API rejected
+  a string projection, and a working payload shape wasn't chased further) — this still sends
+  `_type` on every change, which is enough for this app's tag-based revalidation to work, just
+  not fine-grained per-path revalidation. Improving that projection is a small future
+  refinement, not a current gap.
+- **Custom production domain**: deliberately not connected yet — Vercel's domain-connection
+  flow asks for either a nameserver handover or a root CNAME, both of which are the real DNS
+  cutover this project is holding off on until the site is otherwise ready to launch (see
+  `DECISIONS.md`/`CLAUDE.md` on treating that as a deliberate, late step, not routine).
+- **Not yet done**: Kit and Paddle accounts/integration; real content authoring (deliberately
+  sequenced last — see below); legal copy; the domain cutover above.
