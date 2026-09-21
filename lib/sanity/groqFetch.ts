@@ -13,10 +13,17 @@
  * DECISIONS.md. `@sanity/client` is still used by the embedded Studio
  * (sanity.config.ts) — this file is only for the app's own content reads.
  */
-const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-const DATASET = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+// Two naming conventions in play: our own `.env.local` (NEXT_PUBLIC_SANITY_*,
+// SANITY_API_TOKEN) and whatever Vercel's Sanity marketplace integration
+// auto-provisions on deploy (SANITY_STUDIO_*/SANITY_API_*, which don't match
+// ours) — read whichever is actually present rather than requiring the user
+// to manually duplicate values across both.
+const PROJECT_ID =
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_STUDIO_PROJECT_ID || process.env.SANITY_API_PROJECT_ID;
+const DATASET =
+  process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || process.env.SANITY_API_DATASET || "production";
 const API_VERSION = "2025-01-01";
-const TOKEN = process.env.SANITY_API_TOKEN;
+const TOKEN = process.env.SANITY_API_TOKEN || process.env.SANITY_API_READ_TOKEN;
 
 // Past this, switch from GET (query in the URL) to POST (query in the body)
 // to avoid hitting server/proxy URL-length limits — mirrors @sanity/client's
