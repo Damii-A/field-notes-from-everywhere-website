@@ -39,6 +39,9 @@ Auth.js email provider), a `readingRoomIssue` Sanity document type, and a real d
 where subscriber/access-state lives (this document doesn't answer that yet — it wasn't in
 scope to design infrastructure for a feature not being built).
 
+**Status**: confirmed with the user during initialization (2026-09-21) — this reading of V1
+scope is correct and approved.
+
 ---
 
 ## 2026-09-21 — No application database for V1
@@ -123,8 +126,8 @@ cost.
 **Consequences if approved**: one more account/API key to provision (`RESEND_API_KEY`); the
 "send this list to me" flow becomes reliable and scales with content automatically.
 
-**Status**: presented to the user in the initialization report as a recommended addition
-requiring their go-ahead, not yet implemented.
+**Status**: approved by the user during initialization (2026-09-21). Not yet implemented —
+implementation needs a `RESEND_API_KEY` (see `CURRENT_STATE.md`).
 
 ---
 

@@ -33,8 +33,11 @@ Nothing implemented yet. This is the state immediately after initialization:
 
 ## Known open items requiring the user before certain work can proceed
 
-- **Resend (or equivalent) vendor approval** — recommended in `DECISIONS.md`; needed before
-  the "send this list to me" email capture can be implemented as designed.
+- **Remote repository** — not yet connected. The user asked to connect one; see the setup
+  steps at the bottom of this file. Repo currently exists only on this machine.
+- **Resend account** — vendor use approved by the user (2026-09-21, see `DECISIONS.md`).
+  Needs an account created and a `RESEND_API_KEY` before the "send this list to me" email
+  capture can be implemented.
 - **Sanity account/project** — needs to be created (or existing one identified) and its
   project ID/dataset name provided, or authorization to create one on the user's behalf.
 - **Kit account** — API key, and a decision on list/tag naming for "free Publication list" vs.
@@ -57,4 +60,23 @@ See `DECISIONS.md` ("V1 scope excludes the logged-in Reading Room product") and
 `docs/design-specs/DESIGN_PROJECT_BUILD_NOTES.md` for the full list of what the design itself
 cut from V1. In summary: no Reading Room login/Books/Past Issues, no eight-section
 "Browse our Collections" taxonomy browsing on hubs, no Recent-Articles carousel — hubs are
-category identity → latest article → all articles (+ See more).
+category identity → latest article → all articles (+ See more). Confirmed with the user
+2026-09-21.
+
+## Connecting a remote repository
+
+`gh` (GitHub CLI) isn't available in this environment, so this couldn't be automated. To
+connect one:
+
+1. Create a **new, empty** repository on GitHub (or another Git host) — do **not** initialize
+   it with a README, `.gitignore`, or license, since this repo already has commits.
+2. Copy its remote URL (e.g. `https://github.com/<you>/field-notes-from-everywhere.git`).
+3. Run:
+   ```
+   git remote add origin <url>
+   git push -u origin master
+   ```
+4. Confirm the push succeeded and the commit history matches.
+
+Once connected, future sessions should push completed logical work regularly per
+`AI_ENGINEERING_OPERATING_MANUAL.md` §18, §20.
