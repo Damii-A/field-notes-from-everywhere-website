@@ -1,7 +1,8 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-22 (Email/subscriber architecture settled: Resend sends everything and
-holds the free list, Kit holds only confirmed Reading Room members; all env vars on Vercel)
+Last updated: 2026-09-22 (production URL correction + live `SITE_URL` bug found: see
+"Deployment" — Vercel's production URL changed and the old one is now dead; `SITE_URL` still
+points to it, so current emails would contain dead links until the user fixes it)
 
 ## What exists right now
 
@@ -174,10 +175,14 @@ somewhere on the site. `/api/subscribe` already accepts `source: "newsletter"` a
 this path today — the only live free-list entry point is the article "send this list to me"
 popup. The `newsletter` source was built speculatively, ahead of a UI that doesn't exist yet.
 
-1. Verify the live production site actually works end-to-end now that all env vars are on
-   Vercel (see "Still needed" above) — a real check, not an assumption. Try the trial-start
-   form and the send-list popup on the real URL, and manually trigger the cron route once
-   against production to confirm it isn't just working locally.
+1. **User action needed**: fix the `SITE_URL` env var on Vercel — see "Deployment" below for
+   the bug this uncovered (emails currently link to a dead URL). Everything else about
+   production was verified working end-to-end 2026-09-22 (homepage, hubs, `/rss`, cron auth,
+   trial-start validation, studio) against the correct current URL — see "Deployment" below.
+   Not yet re-verified: an actual trial-start/send-list submission through the real UI against
+   production (only done previously against the local dev server, per "Email/subscriber
+   integrations" below) and the cron route's real-content path (still safe/empty since Sanity
+   has no articles yet).
 2. **In Resend's dashboard**: build the Reading Room trial automation (welcome, 7 days of
    trial content, a conversion-check before each further email, then either a single
    "you're a member" email or a post-trial conversion series), triggered on the
@@ -311,10 +316,30 @@ sessions should push completed logical work regularly per `AI_ENGINEERING_OPERAT
 
 ## Deployment
 
-Live on Vercel as of 2026-09-21: `https://field-notes-from-everywhere-website-o6jkwewmr.vercel.app`
-(the `-o6jkwewmr` suffix appears to be permanent, likely because the plain project name was
-already taken by another Vercel account — this is the real, stable production URL, not a
-per-deployment preview one). Deploys automatically on push to `master`.
+Live on Vercel: `https://field-notes-from-everywhere-website-94ph8iele.vercel.app`. Deploys
+automatically on push to `master`.
+
+**Correction (2026-09-22)**: this file previously recorded the URL as
+`...-o6jkwewmr.vercel.app` and stated that suffix "appears to be permanent" — that was wrong.
+The suffix changed at some point (cause not diagnosed — possibly a Vercel project
+reset/relink, not necessarily tied to the earlier GitHub repo rename), and the old URL is now
+a dead/frozen deployment, not a live alias. **Don't assume this new suffix is permanent
+either** — verify against what the user actually sees before trusting this file's URL, rather
+than re-asserting permanence. This was caught because `/rss`, `/api/reading-room/start-trial`,
+and `/api/cron/weekly-recap` all 404'd and the homepage showed stale content (old CTA copy, no
+hero image) when checked against the old URL — both from a sandboxed Bash `curl` and
+independently via the WebFetch tool (different network path, same stale result), which the
+user then confirmed by pointing out they were looking at a different URL.
+
+**Live bug found and still needs the user's action**: the `SITE_URL` env var on Vercel is
+still set to the old dead URL — confirmed via `sitemap.xml` and `/rss`, both emitting
+`o6jkwewmr...` links against the correct current deployment. Since every email this app sends
+(weekly recap, "send this list to me", Reading Room trial confirmation) builds its links from
+`SITE_URL` (`lib/siteUrl.ts`), **any such email sent right now would contain dead links**.
+Needs the user to update `SITE_URL` in Vercel's dashboard to the correct current URL above —
+it's read at runtime (not build-time-inlined), so it should take effect on next
+revalidation/invocation without a redeploy, though a redeploy makes it immediate. Not yet
+independently re-verified after the user makes that change.
 
 - **Env vars**: set directly in Vercel's dashboard (Environments section), not synced from
   `.env.local`. Two things to know: (1) the Vercel Sanity marketplace integration provisions
