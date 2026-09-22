@@ -1,11 +1,12 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-22 (a cluster of production-only bugs found and fixed: `SITE_URL`,
-Sanity Studio's client-side project ID, Sanity CORS/webhook, and a broken production
-`RESEND_API_KEY` — see "Immediately next" and "Deployment". The Reading Room trial automation
-is now structurally complete and firing correctly (content still pending, deliberately). A
-standalone `/the-reading-room/subscribe` page exists for where Paddle checkout will plug in.
-Reading Room price changed to $7/month, was $5/month.)
+Last updated: 2026-09-22 (Paddle is now fully set up and verified end-to-end — real sandbox
+test purchase → webhook → Kit tag confirmed working, after finding and fixing a real bug
+along the way. Also this session: a cluster of earlier production-only bugs (`SITE_URL`,
+Sanity Studio's client-side project ID, Sanity CORS/webhook, a broken production
+`RESEND_API_KEY`), the Reading Room trial automation structure, the `/the-reading-room/subscribe`
+page, and the Reading Room price change to $7/month. Only content authoring and legal copy
+remain — see "Immediately next".)
 
 ## What exists right now
 
@@ -240,32 +241,27 @@ Caught by testing against a real inbox before this ever reached a real subscribe
 reading docs correctly the first time — worth remembering if any other automation step ever
 needs dynamic event/contact data.
 
-**Where Paddle fits — decided 2026-09-22, not yet built (needs the Paddle account first)**:
-Paddle stays completely out of the trial (see `DECISIONS.md`, "Reading Room's free trial is
-tracked in Kit, not as a Paddle trial" — trial mechanics moved to Resend since, but this
-principle didn't change). It only enters when someone actually decides to subscribe, via a
-**new standalone page**, `app/the-reading-room/subscribe/page.tsx` — every "subscribe"/"keep it
-going" CTA (the Reading Room landing page, and eventually each trial issue email's conversion
-nudge) points here, rather than triggering Paddle checkout independently from multiple places.
-Deliberately doesn't re-explain what The Reading Room is — someone reaching this page has
-already decided, so it just confirms and opens Paddle's checkout overlay via the existing
-`ReadingRoomCheckoutButton` component (built earlier, previously unused — gracefully shows
-"not configured yet" until real Paddle credentials exist, same pattern as everywhere else).
-`noindex`ed deliberately (a checkout page has no reason to rank in search) and not in
-`sitemap.ts`. **Not yet linked from anywhere** — the landing page still only has its two
-trial-start CTAs (matching the design spec, which doesn't show a skip-trial CTA — adding one
-there would be an undiscussed scope change, not done). The Paddle webhook, once built, should
-also write a matching signal into Resend (e.g. a contact property) when someone converts, so
-the trial automation's post-trial branch above has something to check — one webhook update,
-not a second sync path.
+**Where Paddle fits — built and verified end-to-end, 2026-09-22**: Paddle stays completely out
+of the trial (see `DECISIONS.md`, "Reading Room's free trial is tracked in Kit, not as a
+Paddle trial" — trial mechanics moved to Resend since, but this principle didn't change). It
+only enters when someone actually decides to subscribe, via a standalone page,
+`app/the-reading-room/subscribe/page.tsx` — every "subscribe"/"keep it going" CTA points here
+rather than triggering Paddle checkout independently from multiple places. Deliberately
+doesn't re-explain what The Reading Room is. `noindex`ed and not in `sitemap.ts` (a checkout
+page has no reason to rank in search). **Linked from the Reading Room landing page hero**
+(the "Subscribe" button added alongside "Try it free" — see below); trial issue emails will
+link here too once they have real content. See "Paddle account" under "Known open items"
+below for the full account-side build (webhook, Price, tokens) and the real bug that was
+found and fixed along the way.
 
-1. Set up Paddle (account + API key + webhook secret + the actual $7/month Price — no trial
-   configured on Paddle's side; see "Email/subscriber architecture" below for why). Unblocks
-   the Paddle webhook itself (still just a stub) and the trial automation's post-trial
-   conversion-check branch above.
-2. **Last**: author real content — Sanity articles/books/tags/Site Settings, the 7 Reading
+**Still open**: the Paddle webhook doesn't yet write a matching signal into Resend when
+someone converts, so the trial automation's post-trial conversion-check branch (above) still
+has nothing to check. Worth wiring as a small addition to the now-working webhook — one
+update, not a second sync path — but not done yet.
+
+1. **Last**: author real content — Sanity articles/books/tags/Site Settings, the 7 Reading
    Room issue templates in Resend (see above), and real legal copy for
-   Terms/Privacy/Disclosures.
+   Terms/Privacy/Disclosures. Everything else in this document is done.
 
 ## Weekly recap
 
@@ -354,14 +350,35 @@ Full reasoning in `DECISIONS.md`; summary here for quick reference:
 
 ## Known open items requiring the user before certain work can proceed
 
-- **Paddle account** — API key, webhook secret, and the actual $7/month Price created in
-  Paddle's dashboard (a Price ID this app checks out against). No trial needs configuring on
-  Paddle's side — see "Email/subscriber architecture" above; the earlier open question about
-  whether Paddle supports a genuinely card-free trial is now moot, since Paddle isn't used
-  during the free period at all. Separately, `app/api/webhooks/paddle/route.ts` has a marked
-  TODO: resolving a webhook event's `customerId` to an email address (via
-  `paddle.customers.get`) before it can actually tag the subscriber in Kit — untestable
-  without a real account, so left as a clear gap rather than guessed at.
+- **Paddle — done, 2026-09-22.** Account created, Sandbox environment. Product + $7/month
+  Price created by the user in the dashboard; client-side token and webhook destination
+  created directly via the Paddle API (same pattern as Sanity/Resend earlier — used
+  `PADDLE_API_KEY` directly rather than walking the user through more dashboard clicks). All
+  5 env vars (`PADDLE_API_KEY`, `PADDLE_WEBHOOK_SECRET`, `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN`,
+  `NEXT_PUBLIC_PADDLE_ENVIRONMENT=sandbox`, `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID`) are in
+  `.env.local` and on Vercel. Default payment link set to the production
+  `/the-reading-room/subscribe` page (works for sandbox now, no change needed at go-live).
+  The `customerId`→email resolution TODO in `app/api/webhooks/paddle/route.ts` is now
+  implemented (`paddle.customers.get`), and `setReadingRoomTag(active=false)` in
+  `lib/integrations/kit.ts` (previously an unimplemented stub) now works too, via Kit's
+  documented email-lookup-then-delete-tag pattern.
+
+  **Verified end-to-end against real accounts**, not just code review: a real sandbox test
+  purchase (Paddle's test card) → webhook delivery → Kit tag. Caught and fixed a real bug in
+  the process — the Paddle Node SDK defaults to the **production** API unless `environment` is
+  passed explicitly; `new Paddle(apiKey)` with no options was silently hitting production with
+  a sandbox key/customer, failing, and returning a bare 500 with no detail (visible only via
+  Paddle's own notification delivery logs, which showed 3 failed attempts). Fixed by passing
+  `environment` read from `NEXT_PUBLIC_PADDLE_ENVIRONMENT`. After the fix, replayed the
+  originally-failed webhook via Paddle's API (no need for a second test purchase) — delivered
+  successfully, Kit tag confirmed applied.
+
+  **Still open**: no trial is configured on Paddle's side (correct, matches
+  "Email/subscriber architecture" below — Paddle only enters at real conversion). Switching to
+  a live Price/token/webhook at actual go-live is a distinct, deliberate step, not done yet.
+  Paddle's own receipt email didn't arrive on the sandbox test purchase — likely just sandbox
+  behavior (Paddle's transactional emails are entirely outside this app's code either way),
+  worth a glance once testing with production credentials but not chased now.
 - **Production domain DNS cutover** — deliberately deferred to near the end of the build (see
   "Deployment" above). The domain's DNS is managed at Cloudflare (nameservers delegated there
   from Namecheap, which is just the registrar).
