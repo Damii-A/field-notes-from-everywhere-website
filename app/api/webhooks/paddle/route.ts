@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Paddle, EventName } from "@paddle/paddle-node-sdk";
+import { Paddle, EventName, Environment } from "@paddle/paddle-node-sdk";
 import { setReadingRoomTag } from "@/lib/integrations/kit";
 
 /**
@@ -28,7 +28,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Missing paddle-signature header" }, { status: 400 });
   }
 
-  const paddle = new Paddle(apiKey);
+  // The SDK defaults to the production API if no environment is given, even
+  // though the client-side var this reads is named NEXT_PUBLIC_ (safe to
+  // read server-side too — it's just the string "sandbox"/"production", not
+  // a secret). Confirmed via a real failed sandbox webhook delivery
+  // (2026-09-22): paddle.customers.get() was hitting production with a
+  // sandbox API key/customer, which fails and was going unhandled, turning
+  // into a bare 500 with no detail — Paddle retried 3x and gave up.
+  const environment = process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT === "production" ? Environment.production : Environment.sandbox;
+  const paddle = new Paddle(apiKey, { environment });
   let event;
   try {
     event = await paddle.webhooks.unmarshal(rawBody, webhookSecret, signature);
