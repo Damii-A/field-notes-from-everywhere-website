@@ -318,6 +318,63 @@ tags (`KIT_NEWSLETTER_TAG_ID`, `KIT_SEND_LIST_TAG_ID`) were created in the real 
 
 ---
 
+## 2026-09-22 — Move the Reading Room trial sequence from Kit to Resend Automations
+
+**Decision**: The Reading Room trial's 7-day daily-catalogue-and-sales-sequence email
+automation runs on **Resend Automations** (`resend.events.send({ event:
+"reading_room_trial_started", email })`, triggered from `/api/reading-room/start-trial`),
+not Kit. Kit's role narrows to what the user called "Reading Room memberships": the durable
+`KIT_READING_ROOM_TAG_ID` tag tracking who currently has an active trial/paid relationship,
+still applied at trial start and updated by the Paddle webhook on conversion/cancellation.
+Kit still owns the free-list tags, the weekly recap (RSS-to-email), and the "send this list
+to me" subscribe call. Resend now owns all actual multi-step sending except the weekly
+recap broadcast. This refines the 2026-09-22 "Kit object mapping" decision above — the
+`KIT_READING_ROOM_FORM_ID` Kit form created for this purpose is no longer called by app code
+(harmless to leave configured in Kit; just unused).
+
+**Context**: Setting up the Reading Room trial automation in Kit revealed it's a **paid**
+feature — Kit's free plan has no automations at all; they require the Creator plan
+($33/month). Reading Room's entire trial mechanism was designed to depend on this. Checking
+alternatives, Resend (already an approved vendor in this project, used for the "send this
+list to me" transactional email) shipped its own Automations feature in April 2026: a
+visual, event-triggered, multi-day sequence builder with wait/delay steps, and its **free
+plan includes 10,000 automation runs/month** — the feature itself isn't paywalled the way
+Kit's is.
+
+**Alternatives considered**: Pay for Kit Creator ($33/mo) — keeps everything already built
+as-is and consolidates all email in one vendor, but is a real new recurring cost for a
+feature Resend already covers for free. Build the sequence logic entirely in this app's own
+code (cron/scheduled sends) — rejected as unnecessary complexity per Operating Manual §5;
+Resend Automations already solves exactly this problem. Move the weekly recap to Resend too
+— considered and explicitly declined by the user for now, since Kit's RSS-to-email is a
+native, no-code fit for that specific job and there's no concrete reason yet to give it up.
+
+**Reasoning**: Avoids a new $33/mo recurring cost by using a capability an already-approved
+vendor added for free, rather than paying a second vendor for the same job. Confirmed the
+free plan's sending cap (100 emails/day, 3,000/month) before recommending this — acceptable
+at current (pre-launch) scale, worth revisiting if trial volume grows enough to approach it.
+Verified the exact API shape (`resend.events.send`, `{ event, email, payload? }`) against
+the installed SDK's own type definitions after upgrading `resend` from 4.8.0 (which predates
+this feature entirely) to 6.28.1, not just against marketing/doc pages — the same rigor
+applied to the Kit forms/tags bug found earlier the same day, after that bug demonstrated
+doc-only verification isn't sufficient.
+
+**Consequences**: `lib/integrations/resend.ts` gained `triggerReadingRoomTrialEvent`;
+`/api/reading-room/start-trial` now calls Resend first (required — the trial's actual value)
+and Kit's tag second (best-effort membership bookkeeping, degrades to a 207 partial-success
+response rather than failing the whole request if Kit's tag call fails). The `resend` npm
+dependency bump (4.8.0 → 6.28.1) was verified against the existing `sendBookListEmail` call
+(`emails.send`) — signature unchanged, typecheck and full `next build` both clean.
+**Still needed**: `RESEND_API_KEY` isn't in `.env.local` yet (see CURRENT_STATE.md), so this
+hasn't been verified end-to-end against a real account the way the Kit changes were; and the
+actual automation (content + timing) needs to be built in Resend's dashboard, triggered on
+the `reading_room_trial_started` event — account-side work, not code.
+
+**Status**: confirmed with the user 2026-09-22 before implementing (the newsletter-to-Resend
+question was asked separately and declined — recap stays on Kit).
+
+---
+
 ## 2026-09-21 — Content reads use a hand-rolled `groqFetch`, not `@sanity/client`'s `.fetch()`
 
 **Decision**: `lib/content/index.ts` fetches all content via `lib/sanity/groqFetch.ts`, a ~50-line

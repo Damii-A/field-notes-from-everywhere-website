@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { addSubscriberToForm, tagSubscriber, KitNotConfiguredError } from "@/lib/integrations/kit";
+import { tagSubscriber, KitNotConfiguredError } from "@/lib/integrations/kit";
+import { triggerReadingRoomTrialEvent } from "@/lib/integrations/resend";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -10,10 +11,10 @@ interface StartTrialBody {
 /**
  * Starts a Reading Room trial — email-capture only, no Paddle involved (see
  * DECISIONS.md, "Reading Room's free trial is tracked in Kit, not as a
- * Paddle trial"). Adds the subscriber to the Reading Room Kit form (which
- * triggers Kit's own 7-day daily-catalogue/sales-sequence automation) and
- * tags them with the durable "active Reading Room relationship" tag
- * directly, rather than relying on a Kit-side automation step to apply it.
+ * Paddle trial"). Resend Automations owns the actual sequence (7 days of
+ * daily catalogue emails + the trial sales sequence — see DECISIONS.md,
+ * "Move the Reading Room trial sequence from Kit to Resend Automations");
+ * Kit only tracks membership via the durable relationship tag.
  */
 export async function POST(request: Request) {
   let body: StartTrialBody;
@@ -29,18 +30,29 @@ export async function POST(request: Request) {
   }
 
   try {
-    const formId = process.env.KIT_READING_ROOM_FORM_ID;
-    const tagId = process.env.KIT_READING_ROOM_TAG_ID;
-    if (!formId || !tagId) throw new KitNotConfiguredError();
-    await addSubscriberToForm(email, formId);
-    await tagSubscriber(email, tagId);
+    await triggerReadingRoomTrialEvent(email);
   } catch (err) {
-    console.error("[api/reading-room/start-trial] Kit call failed:", err);
+    console.error("[api/reading-room/start-trial] Resend event failed:", err);
     return NextResponse.json(
       { error: "Couldn't start your trial right now. This service isn't fully configured yet — see CURRENT_STATE.md." },
       { status: 502 },
     );
   }
 
-  return NextResponse.json({ started: true });
+  try {
+    const tagId = process.env.KIT_READING_ROOM_TAG_ID;
+    if (!tagId) throw new KitNotConfiguredError();
+    await tagSubscriber(email, tagId);
+  } catch (err) {
+    console.error("[api/reading-room/start-trial] Kit membership tag failed:", err);
+    // The trial sequence already started via Resend — don't report total
+    // failure, since the reader IS trialing now, just tell the truth about
+    // the membership-tracking tag.
+    return NextResponse.json(
+      { started: true, membershipTagged: false, warning: "Trial started, but membership tracking wasn't recorded." },
+      { status: 207 },
+    );
+  }
+
+  return NextResponse.json({ started: true, membershipTagged: true });
 }

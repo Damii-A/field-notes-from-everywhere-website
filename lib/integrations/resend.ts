@@ -1,7 +1,10 @@
 /**
- * Resend — transactional email only (the "send this list to me" flow). See
- * DECISIONS.md "Recommend adding Resend as a transactional-email provider".
- * Not yet configured (no RESEND_API_KEY) — see CURRENT_STATE.md.
+ * Resend — transactional email (the "send this list to me" flow) and, as of
+ * 2026-09-22, the Reading Room trial's daily-catalogue/sales sequence via
+ * Resend Automations (see DECISIONS.md, "Move the Reading Room trial
+ * sequence from Kit to Resend Automations"). Kit remains the free-list/
+ * weekly-recap/membership-tag system; Resend now owns all actual sending
+ * except the weekly recap broadcast.
  */
 import { Resend } from "resend";
 import type { Article } from "@/lib/content";
@@ -34,6 +37,24 @@ export async function sendBookListEmail(to: string, article: Article): Promise<v
     html: `<p>Here's the list you asked for:</p><ol>${bookListHtml}</ol><p>— Field Notes From Everywhere</p>`,
   });
   if (error) throw new Error(`Resend send failed: ${error.message}`);
+}
+
+/** Kit's own event name for automations — matches whatever trigger is configured on the Reading Room trial automation in Resend's dashboard. */
+export const READING_ROOM_TRIAL_EVENT = "reading_room_trial_started";
+
+/**
+ * Fires a Resend Automations event to start the Reading Room trial sequence
+ * (7 days of daily catalogue emails + the trial sales sequence). The
+ * automation itself — content and timing — is configured in Resend's
+ * dashboard, triggered on this event name; this call only starts it.
+ */
+export async function triggerReadingRoomTrialEvent(email: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
+
+  const resend = new Resend(apiKey);
+  const { error } = await resend.events.send({ event: READING_ROOM_TRIAL_EVENT, email });
+  if (error) throw new Error(`Resend event send failed: ${error.message}`);
 }
 
 function escapeHtml(s: string): string {

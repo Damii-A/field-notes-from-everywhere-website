@@ -211,22 +211,33 @@ the Claude Design authoring/preview environment, not a production runtime:
   a full site rebuild, and the site isn't hammering Sanity on every request either.
 - Image pipeline: Sanity's asset CDN + `@sanity/image-url`, rendered through `next/image`.
 
-## 9. Kit (email)
+## 9. Kit and Resend (email)
 
-Kit is the system of record for **everything about a subscriber's state** — free list
-membership, Reading Room trial/active/lapsed status, and all actual email sending except the
-one transactional send noted below. Kit has a single audience; forms and tags are both just
-organizing labels on top of that one pool, not separate lists — which one we use for a given
-entry point depends on what it needs to *do*, not on which "list" it belongs to (confirmed
-with the user 2026-09-22, correcting an earlier build that used a form for the free list):
+Email responsibility is split between two vendors by job, not by feature area (settled
+2026-09-22, after building the Reading Room trial automation surfaced that Kit's
+automations are a paid feature — Kit Creator, $33/month — while Resend shipped its own free
+Automations feature; see `DECISIONS.md`, "Move the Reading Room trial sequence from Kit to
+Resend Automations" for the full reasoning):
 
-- **Forms trigger Kit's own automations** (a form submission is itself a valid automation
-  trigger in Kit), so the Reading Room trial signup — the one entry point that needs to kick
-  off a multi-day automated sequence — uses a **form** (`KIT_READING_ROOM_FORM_ID`).
-- **Tags are what this app's own code adds/removes directly via the API** — used for durable
-  state that changes over time (`KIT_READING_ROOM_TAG_ID`, added at trial start and by the
-  Paddle webhook on conversion, removed on cancellation — see §10) and for source attribution
-  on the general free-list entry points (`KIT_NEWSLETTER_TAG_ID`, `KIT_SEND_LIST_TAG_ID`).
+- **Kit** owns durable list/segment *state* — who's on the free list and why
+  (`KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID`, source-attribution tags), and who
+  currently has an active Reading Room relationship (`KIT_READING_ROOM_TAG_ID`, "membership"
+  in the user's words — added at trial start, updated by the Paddle webhook on
+  conversion/cancellation, see §10). It also runs the one multi-step send it has a native,
+  no-code fit for: the weekly recap, via RSS-to-email reading this app's own `/rss` feed.
+- **Resend** owns all actual multi-step/transactional *sending*: the one-off "send this list
+  to me" email, and — as of 2026-09-22 — the Reading Room trial's entire 7-day
+  daily-catalogue-and-sales-sequence, via **Resend Automations** (a visual, event-triggered
+  sequence builder Resend added in April 2026). This app triggers it with
+  `resend.events.send({ event: "reading_room_trial_started", email })`
+  (`lib/integrations/resend.ts`, `triggerReadingRoomTrialEvent`); the sequence's actual
+  content/timing is configured in Resend's dashboard, not in this app.
+
+Kit still has a single audience, and forms vs. tags within it is a choice about mechanism,
+not about which "list" someone joins (see `DECISIONS.md`, "Kit object mapping" — this predates
+and still holds for Kit's own remaining jobs, even though the Reading Room trial itself moved
+off Kit entirely). The `KIT_READING_ROOM_FORM_ID` Kit form created for the trial is no longer
+called by app code as a result — harmless to leave configured, just unused.
 
 Three distinct jobs:
 
@@ -239,13 +250,12 @@ Three distinct jobs:
    in Kit; this app never renders or sends it.
 2. **Reading Room trial + subscription delivery and lifecycle** — starting a trial is an
    email-capture action on this site (see `DECISIONS.md`, "Reading Room's free trial is
-   tracked in Kit, not as a Paddle trial"): the app adds the subscriber to the Reading Room
-   trial **form** (`KIT_READING_ROOM_FORM_ID`) and tags them with `KIT_READING_ROOM_TAG_ID`,
-   and Kit takes over completely from there — the 7 days of daily catalogue emails, the Sunday
-   recap, and the trial sales sequence (welcome → value reminders → "trial ending" → a branch
-   depending on whether they convert), all built as a Kit automation triggered off that form.
-   The app's only remaining job is telling Kit when Paddle reports a real lifecycle change
-   (converted to paying, canceled, payment failed) — see §10.
+   tracked in Kit, not as a Paddle trial"): the app fires the Resend Automations event (which
+   runs the 7 days of daily catalogue emails and the trial sales sequence — welcome → value
+   reminders → "trial ending" → a branch depending on whether they convert) and tags the
+   subscriber with `KIT_READING_ROOM_TAG_ID` for membership bookkeeping. The app's remaining
+   job is telling Kit when Paddle reports a real lifecycle change (converted to paying,
+   canceled, payment failed) — see §10.
 3. **The one-off "send this list to me" email** (`pub_article.md` §6.4) — the reader gets
    the specific book list from the specific article they were reading, immediately, by
    email, and is also added to the free list, tagged `KIT_SEND_LIST_TAG_ID` (disclosed in the
@@ -259,8 +269,10 @@ popup: validates the email, tags the subscriber in Kit by source (`KIT_NEWSLETTE
 `KIT_SEND_LIST_TAG_ID`), and (for the "send this list" flow only) sends the transactional
 email via Resend with that article's book list. Starting a Reading Room trial is a distinct
 endpoint, `/api/reading-room/start-trial`, used by `ReadingRoomTrialForm` (the "Join for
-free" / "Join The Reading Room" CTAs on `/the-reading-room`): it adds the subscriber to the
-Reading Room form and applies the durable relationship tag, with no Paddle involvement.
+free" / "Join The Reading Room" CTAs on `/the-reading-room`): it fires the Resend trial event
+(required — this is the trial's actual value to the reader) and then best-effort tags the
+subscriber in Kit for membership tracking (a Kit failure here degrades to a 207 partial
+response rather than failing the whole request, since the trial itself already started).
 
 ## 10. Paddle (billing)
 
@@ -300,15 +312,15 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `SANITY_API_TOKEN` | server-side write access (Studio auth, revalidation) |
 | `SANITY_WEBHOOK_SECRET` | verifies Sanity → `/api/webhooks/sanity` calls |
 | `KIT_API_KEY` | Kit (ConvertKit) API access |
-| `KIT_READING_ROOM_FORM_ID` | Reading Room trial signup form — triggers Kit's daily-catalogue/sales-sequence automation |
-| `KIT_READING_ROOM_TAG_ID` | durable "active Reading Room relationship" tag (trial start, Paddle conversion/cancellation) |
+| `KIT_READING_ROOM_FORM_ID` | a Kit form created for the Reading Room trial; **no longer called by app code** since the trial sequence moved to Resend Automations (see §9) — harmless, just unused |
+| `KIT_READING_ROOM_TAG_ID` | durable "active Reading Room relationship" (membership) tag (trial start, Paddle conversion/cancellation) |
 | `KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID` | source-attribution tags for the two free-list entry points |
+| `RESEND_API_KEY` | Resend API access — transactional email and, as of 2026-09-22, the Reading Room trial's Automations sequence (see §9) |
 | `PADDLE_API_KEY` | server-side Paddle API access |
 | `PADDLE_WEBHOOK_SECRET` | verifies Paddle → `/api/webhooks/paddle` calls |
 | `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` | Paddle.js client-side checkout (not a secret — Paddle's client SDK is designed to ship this to the browser) |
 | `NEXT_PUBLIC_PADDLE_ENVIRONMENT` | `sandbox` or `production` |
 | `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID` | the $5/mo + 7-day-trial Price to check out against (Price IDs aren't secret either — Paddle.js needs this client-side) |
-| `RESEND_API_KEY` | transactional "send this list to me" email |
 | `NEXT_PUBLIC_SITE_URL` | canonical URL for metadata/OG/sitemap |
 
 None of these exist yet. See `CURRENT_STATE.md` for what's actually needed from the user
