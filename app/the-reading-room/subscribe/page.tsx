@@ -26,12 +26,12 @@ export default async function ReadingRoomSubscribePage() {
       <Header />
       <main className={styles.main}>
         <div className={styles.card}>
-          <h1 className={styles.heading}>Confirm your Reading Room subscription</h1>
+          <h1 className={styles.heading}>Join The Reading Room</h1>
           <p className={styles.body}>
             You&rsquo;re one step away from full access to every Reading Room catalogue, every day.
           </p>
-          <ReadingRoomCheckoutButton className={styles.cta}>Subscribe now</ReadingRoomCheckoutButton>
           <p className={styles.priceNote}>$7/month. Cancel anytime.</p>
+          <ReadingRoomCheckoutButton className={styles.cta}>Subscribe now</ReadingRoomCheckoutButton>
           <Link href="/the-reading-room" className={styles.back}>
             Not ready yet? Back to The Reading Room
           </Link>
