@@ -71,6 +71,16 @@
   gap: 14px;
 }
 
+/* Forces the trial form (and its success/error message) onto its own full-width
+   line, ordered before the button row, instead of sitting inline next to
+   Subscribe once expanded. */
+.heroFormAbove {
+  flex-basis: 100%;
+  order: -1;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
 .heroCta {
   display: inline-flex;
   align-items: center;

@@ -9,7 +9,16 @@ import styles from "./ReadingRoomTrialForm.module.css";
  * trial is tracked in Kit, not as a Paddle trial"). Clicking the CTA reveals
  * an inline email field; submitting posts to /api/reading-room/start-trial.
  */
-export function ReadingRoomTrialForm({ ctaClassName, children }: { ctaClassName?: string; children: React.ReactNode }) {
+export function ReadingRoomTrialForm({
+  ctaClassName,
+  formClassName,
+  children,
+}: {
+  ctaClassName?: string;
+  /** Applied to the expanded form (and success/error message) alongside the base styles — use this to reposition the expanded state relative to sibling CTAs, e.g. onto its own line above a button row, without affecting the idle button. */
+  formClassName?: string;
+  children: React.ReactNode;
+}) {
   const [phase, setPhase] = useState<"idle" | "form" | "sending" | "success" | "error">("idle");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,7 +40,11 @@ export function ReadingRoomTrialForm({ ctaClassName, children }: { ctaClassName?
   }
 
   if (phase === "success") {
-    return <p className={styles.message} style={{ color: "var(--status-positive)" }}>You&rsquo;re in! Check your inbox to get started.</p>;
+    return (
+      <p className={`${styles.message} ${formClassName ?? ""}`.trim()} style={{ color: "var(--status-positive)" }}>
+        You&rsquo;re in! Check your inbox to get started.
+      </p>
+    );
   }
 
   if (phase === "idle") {
@@ -43,7 +56,7 @@ export function ReadingRoomTrialForm({ ctaClassName, children }: { ctaClassName?
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form onSubmit={handleSubmit} className={`${styles.form} ${formClassName ?? ""}`.trim()}>
       <input
         type="text"
         required

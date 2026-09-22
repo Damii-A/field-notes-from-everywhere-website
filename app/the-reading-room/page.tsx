@@ -51,7 +51,9 @@ export default async function ReadingRoomPage() {
           <h1 className={styles.heroTitle}>The Reading Room</h1>
           <p className={styles.heroByline}>by Field Notes From Everywhere</p>
           <div className={styles.heroCtaRow}>
-            <ReadingRoomTrialForm ctaClassName={styles.heroCta}>Try it free</ReadingRoomTrialForm>
+            <ReadingRoomTrialForm ctaClassName={styles.heroCta} formClassName={styles.heroFormAbove}>
+              Try it free
+            </ReadingRoomTrialForm>
             <Link href="/the-reading-room/subscribe" className={styles.heroCtaSecondary}>
               Subscribe
             </Link>
