@@ -202,27 +202,41 @@ the webhook confirmed firing (a live test article appeared within 10 seconds of 
 Vercel integration and redeploying, now verified returning real success responses in
 production.
 
-**Reading Room trial automation — started, not finished.** A minimal version exists in
-Resend (event `reading_room_trial_started` → one placeholder "welcome" email), confirmed
-firing end-to-end against a real inbox. **Blocked on a real product question before building
-the rest**, surfaced 2026-09-22: the trial is meant to deliver "7 days of daily catalogue
-content," but V1 has no actual Reading Room product behind it at all — no daily catalogues,
-no Books view, no Past Issues, nothing behind a login (see `DECISIONS.md`, "V1 scope excludes
-the logged-in Reading Room product"). Nobody has actually decided what a trialing person
-receives during those 7 days given that. **Needs the user's decision before the rest of the
-automation gets built** — this is a genuine product call, not something to improvise around.
-Also unresolved: the automation's eventual conversion-check step needs some signal that
-Resend can read, and nothing currently writes conversion status anywhere Resend can see it
-(that only lives in Kit, and only once Paddle's webhook exists) — worth deciding how to wire
-that when Paddle gets built (next item below), not before.
+**Reading Room trial automation — structure complete, content pending.** Clarified
+2026-09-22: the trial isn't a separate "trial-only" marketing sequence — a trialing reader
+just receives the same real, themed daily catalogue issues (per `rr_landing.md`: cover +
+title/author/blurb per book, Amazon-search-result-style layout) a paying member would get,
+for 7 days. Sequence, confirmed with the user: **welcome email** (explains what's coming, says
+the first issue arrives in a few minutes) → **issue 1** (~5 minutes later) → **issues 2–7**
+(one per day) → each issue ends with a conversion nudge (varied wording, possibly a
+trial-duration discount once Paddle exists). Built as a 16-step Resend Automation (trigger +
+8 send_email steps + 7 delay steps between them), confirmed firing end-to-end against a real
+inbox. **The 7 issue templates currently hold structural placeholders only** — no fake themes
+or book picks were written; that's real editorial work (themes, book selections, blurbs),
+deferred to the end of the build same as Sanity content, per the user's explicit sequencing
+preference (2026-09-21, reconfirmed 2026-09-22 for this specifically — see
+`project_content_authoring_sequencing` in agent memory). Automation id `01a0c97d-1c72-72fd-b8b3-39b58340aacc` ("Reading Room Trial Sequence"), welcome
+template id `0306e7f0-66de-44bf-a65e-a60e89532431`, issue templates 1–7 respectively:
+`5c4c4c69-92b3-44de-bf91-e87f136a7ddb`, `db73717c-bfb4-4b12-a581-8949ece27097`,
+`accc3914-eba9-48a6-8f67-8cf10770a4bf`, `6d5bebd3-4bbd-4a0b-9ab2-61671452196e`,
+`29a19992-dfaa-4f8f-abcb-0d8d08ab8bd5`, `0e033b8a-5cda-4be8-a502-28f132ac7403`,
+`695adb0a-c721-4d18-9a2a-daeb3c68a4fa` — all findable in Resend's dashboard by name
+("Reading Room - Issue N (placeholder)") too, this is just for a quick API reference.
+**Still needs, once content exists**: swap each placeholder template's `html` (PATCH
+`/templates/{id}` + re-publish — see this session's history for the exact call shape) and
+write the varied per-issue conversion-nudge copy. **Still needs regardless of
+content**: the post-trial branch — a conversion-check (member email vs. continued push) after
+issue 7 — isn't built yet, since it needs a signal Resend can read for "did they convert,"
+and nothing writes that anywhere Resend can see (only Kit has it, only once Paddle's webhook
+exists). Add that branch once Paddle is built, not before.
 
-1. **Resolve the trial-content question above** — blocks finishing the Resend automation.
-2. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
-   configured on Paddle's side; see "Email/subscriber architecture" below for why). This also
-   unblocks actually building the Paddle webhook itself, still just a stub today, and the
-   automation's conversion-check step above.
-3. **Last**: author real content in the Studio (which brings the remaining per-article/book
-   images with it), and get real legal copy for Terms/Privacy/Disclosures.
+1. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
+   configured on Paddle's side; see "Email/subscriber architecture" below for why). Unblocks
+   the Paddle webhook itself (still just a stub) and the trial automation's post-trial
+   conversion-check branch above.
+2. **Last**: author real content — Sanity articles/books/tags/Site Settings, the 7 Reading
+   Room issue templates in Resend (see above), and real legal copy for
+   Terms/Privacy/Disclosures.
 
 ## Weekly recap
 
