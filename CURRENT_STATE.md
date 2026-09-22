@@ -336,10 +336,13 @@ still set to the old dead URL — confirmed via `sitemap.xml` and `/rss`, both e
 `o6jkwewmr...` links against the correct current deployment. Since every email this app sends
 (weekly recap, "send this list to me", Reading Room trial confirmation) builds its links from
 `SITE_URL` (`lib/siteUrl.ts`), **any such email sent right now would contain dead links**.
-Needs the user to update `SITE_URL` in Vercel's dashboard to the correct current URL above —
-it's read at runtime (not build-time-inlined), so it should take effect on next
-revalidation/invocation without a redeploy, though a redeploy makes it immediate. Not yet
-independently re-verified after the user makes that change.
+Needs the user to update `SITE_URL` in Vercel's dashboard to the correct current URL above.
+**Correction**: the user did this 2026-09-22 and `sitemap.xml`/`/rss` still showed the old URL
+several minutes later (past the 5-minute ISR revalidate window, ruling out simple cache
+staleness) — so the earlier assumption that this takes effect without a redeploy was wrong.
+Vercel bakes env vars into a deployment at build time; a dashboard-only edit doesn't reach an
+already-running deployment. A redeploy (dashboard "Redeploy" on the latest deployment, no new
+commit needed) is required. Not yet re-verified after that redeploy.
 
 - **Env vars**: set directly in Vercel's dashboard (Environments section), not synced from
   `.env.local`. Two things to know: (1) the Vercel Sanity marketplace integration provisions
