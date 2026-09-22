@@ -1,8 +1,9 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-22 (production URL correction + live `SITE_URL` bug found: see
-"Deployment" — Vercel's production URL changed and the old one is now dead; `SITE_URL` still
-points to it, so current emails would contain dead links until the user fixes it)
+Last updated: 2026-09-22 (a cluster of production-only bugs found and fixed: `SITE_URL`,
+Sanity Studio's client-side project ID, Sanity CORS/webhook, and a broken production
+`RESEND_API_KEY` — see "Immediately next" and "Deployment". Also: the Reading Room trial
+automation is blocked on a real product question, not ready to finish building yet)
 
 ## What exists right now
 
@@ -117,6 +118,20 @@ holds the free list; Kit holds only confirmed, converted Reading Room members.**
   `RESEND_NEWSLETTER_SEGMENT_ID`/`RESEND_SEND_LIST_SEGMENT_ID`, created directly via
   `resend.segments.create()` (not the dashboard) since the API key already in `.env.local`
   was sufficient. `/api/subscribe` adds contacts to the right one.
+
+  **Bug found and fixed (2026-09-22)**: production's `RESEND_API_KEY` was not a valid key —
+  both `/api/subscribe` and `/api/reading-room/start-trial` returned 502 on the real production
+  URL (this had likely never actually worked in production; the earlier "verified through an
+  actual browser" note was against a **local dev server**, not production — see git commit
+  `e4c1656` for the real origin of the two-key setup: a previous session created the
+  `.env.local` key separately only because Vercel permanently masks a saved value and the
+  original marketplace-provisioned key could never be read back out — not a deliberate
+  security-separation decision). Whatever ended up in Vercel's `RESEND_API_KEY` wasn't a
+  working key for either purpose. Fixed by the user reconnecting Resend's Vercel integration
+  (Resend's own "Connect to Vercel" flow, which provisioned fresh `RESEND_API_KEY` and
+  `RESEND_EMAIL_DOMAIN` values) and redeploying. **Verified live** immediately after: both
+  routes return real success responses (`{"started":true}`, `{"subscribed":true,...}`) against
+  the production URL, not just locally.
 - **Kit** — real account connected (`KIT_API_KEY` in `.env.local`, `lib/integrations/kit.ts`
   verified against the real v4 API). Holds only `KIT_READING_ROOM_TAG_ID` — the confirmed
   member tag, added exclusively by the future Paddle webhook at actual conversion. Nothing
@@ -175,23 +190,38 @@ somewhere on the site. `/api/subscribe` already accepts `source: "newsletter"` a
 this path today — the only live free-list entry point is the article "send this list to me"
 popup. The `newsletter` source was built speculatively, ahead of a UI that doesn't exist yet.
 
-1. **User action needed**: fix the `SITE_URL` env var on Vercel — see "Deployment" below for
-   the bug this uncovered (emails currently link to a dead URL). Everything else about
-   production was verified working end-to-end 2026-09-22 (homepage, hubs, `/rss`, cron auth,
-   trial-start validation, studio) against the correct current URL — see "Deployment" below.
-   Not yet re-verified: an actual trial-start/send-list submission through the real UI against
-   production (only done previously against the local dev server, per "Email/subscriber
-   integrations" below) and the cron route's real-content path (still safe/empty since Sanity
-   has no articles yet).
-2. **In Resend's dashboard**: build the Reading Room trial automation (welcome, 7 days of
-   trial content, a conversion-check before each further email, then either a single
-   "you're a member" email or a post-trial conversion series), triggered on the
-   `reading_room_trial_started` event — account-side setup, not app code (see
-   "Email/subscriber integrations" above). App side is fully done and verified.
-3. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
+**Resolved 2026-09-22** (all verified live against production, not just locally): `SITE_URL`
+pointed at a dead per-deployment URL — fixed, now uses the stable hash-less production domain
+(see "Deployment" below for the important lesson on Vercel URL types). Sanity's embedded
+Studio never actually worked in production (client bundle fell back to a hardcoded
+placeholder project ID — see "Deployment" below); fixed in code via `next.config.mjs`.
+Sanity's CORS allowlist and publish webhook were pointed at the dead URL; both corrected and
+the webhook confirmed firing (a live test article appeared within 10 seconds of publishing).
+`RESEND_API_KEY` in production wasn't a valid key at all — `/api/subscribe` and
+`/api/reading-room/start-trial` both 502'd on production; fixed by reconnecting Resend's own
+Vercel integration and redeploying, now verified returning real success responses in
+production.
+
+**Reading Room trial automation — started, not finished.** A minimal version exists in
+Resend (event `reading_room_trial_started` → one placeholder "welcome" email), confirmed
+firing end-to-end against a real inbox. **Blocked on a real product question before building
+the rest**, surfaced 2026-09-22: the trial is meant to deliver "7 days of daily catalogue
+content," but V1 has no actual Reading Room product behind it at all — no daily catalogues,
+no Books view, no Past Issues, nothing behind a login (see `DECISIONS.md`, "V1 scope excludes
+the logged-in Reading Room product"). Nobody has actually decided what a trialing person
+receives during those 7 days given that. **Needs the user's decision before the rest of the
+automation gets built** — this is a genuine product call, not something to improvise around.
+Also unresolved: the automation's eventual conversion-check step needs some signal that
+Resend can read, and nothing currently writes conversion status anywhere Resend can see it
+(that only lives in Kit, and only once Paddle's webhook exists) — worth deciding how to wire
+that when Paddle gets built (next item below), not before.
+
+1. **Resolve the trial-content question above** — blocks finishing the Resend automation.
+2. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
    configured on Paddle's side; see "Email/subscriber architecture" below for why). This also
-   unblocks actually building the Paddle webhook itself, still just a stub today.
-4. **Last**: author real content in the Studio (which brings the remaining per-article/book
+   unblocks actually building the Paddle webhook itself, still just a stub today, and the
+   automation's conversion-check step above.
+3. **Last**: author real content in the Studio (which brings the remaining per-article/book
    images with it), and get real legal copy for Terms/Privacy/Disclosures.
 
 ## Weekly recap
@@ -336,40 +366,55 @@ verified live via a fresh direct check of both `sitemap.xml` and `/rss` (both em
 independent fetch paths. This was previously claimed "confirmed" before it actually was (see
 git history on this file) — that's corrected now with an actual verified check.
 
-**Still needs checking, not yet done (Sanity access wasn't authorized this session)**:
-Sanity's CORS allowlist and the `/api/webhooks/sanity` webhook target were both registered
-against the old `o6jkwewmr` URL per this file's earlier notes. If they still point there, the
-embedded Studio may fail CORS and on-demand revalidation on publish is silently broken. Update
-both to the hash-less production URL above (and double check the CORS entry situation — the
-allowlist may need it added fresh rather than just corrected, since the old value may still be
-sitting there unused).
+**Sanity CORS + webhook — fixed 2026-09-22**: both were pointed at the dead `o6jkwewmr` URL.
+Added the correct hash-less production URL to Sanity's CORS allowlist directly via Sanity's
+management API (`SANITY_API_TOKEN` has sufficient scope for this — no need to ask the user to
+do it by hand). Re-created the publish webhook the same way (the old one was also gone —
+`GET /hooks/projects/{id}` came back empty; whether it was ever actually working before is
+unclear). **Verified live**, not just configured: published a real temporary test article
+directly in Sanity and it appeared on `/the-shortlist` within 10 seconds — well inside the
+5-minute ISR fallback window, proving the webhook genuinely fires, not just that the config
+looks right. Deleted the test article afterward; its removal also showed up within seconds.
+Note: this Sanity project's plan allows only 2 webhooks total — 1 is now in use, 1 free.
+
+**Embedded Studio was broken in production the entire time — fixed 2026-09-22, in code.**
+`sanity.config.ts`'s fallback (`NEXT_PUBLIC_SANITY_PROJECT_ID || SANITY_STUDIO_PROJECT_ID ||
+SANITY_API_PROJECT_ID || "placeholder-project-id"`) only works for server-side code
+(`groqFetch.ts`) — the embedded Studio runs entirely in the browser, and Next.js only bakes
+`NEXT_PUBLIC_*`-prefixed vars into client bundles at build time. `SANITY_STUDIO_PROJECT_ID`
+(what Vercel's Sanity marketplace integration actually provisions) can never reach browser
+code, no matter how it's scoped in Vercel's dashboard — this was a real code gap, not a
+settings mistake, confirmed by inspecting the deployed client bundle directly (it contained
+the literal string `"placeholder-project-id"`, with `NEXT_PUBLIC_SANITY_PROJECT_ID` entirely
+absent from the compiled output). Fixed by resolving the same fallback chain in
+`next.config.mjs`'s `env` block instead, where all naming conventions ARE readable at build
+time, and re-exposing the result under the `NEXT_PUBLIC_` name. The user's earlier successful
+Studio test (2026-09-21) was almost certainly against local dev, not production — `.env.local`
+sets `NEXT_PUBLIC_SANITY_PROJECT_ID` directly, so it was never affected by this bug.
 
 - **Env vars**: set directly in Vercel's dashboard (Environments section), not synced from
   `.env.local`. Two things to know: (1) the Vercel Sanity marketplace integration provisions
   its own variable names (`SANITY_STUDIO_PROJECT_ID`, `SANITY_API_PROJECT_ID`,
   `SANITY_STUDIO_DATASET`, `SANITY_API_DATASET`, `SANITY_API_READ_TOKEN`,
   `SANITY_API_WRITE_TOKEN`) rather than the `NEXT_PUBLIC_SANITY_*`/`SANITY_API_TOKEN` names this
-  app was originally written against — `lib/sanity/groqFetch.ts` and `sanity.config.ts` check
-  both naming conventions as a fallback, so either works; (2) `SANITY_WEBHOOK_SECRET` was added
-  manually (not integration-provisioned, since it's a value this app invented) and must match
-  what's registered in Sanity's webhook config.
+  app was originally written against — `lib/sanity/groqFetch.ts` reads either via its own
+  fallback (fine, server-side); the embedded Studio needed the `next.config.mjs` fix above
+  since client-side code can't use that same fallback trick; (2) `SANITY_WEBHOOK_SECRET` was
+  added manually (not integration-provisioned, since it's a value this app invented) and must
+  match what's registered in Sanity's webhook config (now re-verified correct, see above).
 - **Resend integration**: installed via Vercel's marketplace, provisioned its own account/API
-  key. A sending domain was verified via DNS records at Cloudflare (subdomain-scoped MX record
-  under `send.<domain>`, doesn't conflict with existing email on the root domain). Inbound
-  email receiving was deliberately left off — not needed, and would have conflicted with the
-  domain's existing personal-inbox MX records.
+  key and a sending domain (verified via DNS records at Cloudflare — subdomain-scoped MX
+  record under `send.<domain>`, doesn't conflict with existing email on the root domain).
+  Inbound email receiving deliberately left off — not needed, would conflict with the domain's
+  existing personal-inbox MX records. **Bug found and fixed 2026-09-22**: whatever ended up in
+  Vercel's `RESEND_API_KEY` (likely the `.env.local` "Local dev" key pasted in by mistake — see
+  "Email/subscriber integrations" above for the full story) was not a working key in
+  production — `/api/subscribe` and `/api/reading-room/start-trial` both 502'd on the real
+  production URL. Fixed by the user reconnecting Resend's own "Connect to Vercel" flow, which
+  provisioned fresh `RESEND_API_KEY`/`RESEND_EMAIL_DOMAIN` values, then redeploying. Verified
+  live afterward — both routes now return real success responses in production.
 - **Deployment Protection**: was on by default (Vercel's own SSO-gate, blocking all public
   access) and has been turned off so the site is actually publicly reachable.
-- **Sanity CORS + webhook**: as of the original setup, the (then-current, now-dead)
-  `o6jkwewmr` production URL was added to Sanity's CORS allowlist, and a webhook was
-  registered pointing at `<that-url>/api/webhooks/sanity`, using the `SANITY_WEBHOOK_SECRET`
-  set in both places. **Needs re-checking** — see "Important lesson" above — against the real
-  hash-less production URL, not re-assumed correct. It currently uses Sanity's default payload
-  (no custom projection — the API rejected a string projection, and a working payload shape
-  wasn't chased further) — this still sends `_type` on every change, which is enough for this
-  app's tag-based revalidation to work, just not fine-grained per-path revalidation. Improving
-  that projection is a small future refinement, not a current gap — but the CORS/webhook
-  target itself is a real gap until re-verified.
 - **Custom production domain**: deliberately not connected yet — Vercel's domain-connection
   flow asks for either a nameserver handover or a root CNAME, both of which are the real DNS
   cutover this project is holding off on until the site is otherwise ready to launch (see
