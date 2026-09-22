@@ -11,6 +11,7 @@ import styles from "./ReadingRoomTrialForm.module.css";
  */
 export function ReadingRoomTrialForm({ ctaClassName, children }: { ctaClassName?: string; children: React.ReactNode }) {
   const [phase, setPhase] = useState<"idle" | "form" | "sending" | "success" | "error">("idle");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   async function handleSubmit(e: FormEvent) {
@@ -20,7 +21,7 @@ export function ReadingRoomTrialForm({ ctaClassName, children }: { ctaClassName?
       const res = await fetch("/api/reading-room/start-trial", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ name, email }),
       });
       if (!res.ok) throw new Error("request failed");
       setPhase("success");
@@ -44,9 +45,17 @@ export function ReadingRoomTrialForm({ ctaClassName, children }: { ctaClassName?
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <input
-        type="email"
+        type="text"
         required
         autoFocus
+        placeholder="First name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className={styles.input}
+      />
+      <input
+        type="email"
+        required
         placeholder="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}

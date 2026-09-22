@@ -5,6 +5,7 @@ import { triggerReadingRoomTrialEvent } from "@/lib/integrations/resend";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface StartTrialBody {
+  name: string;
   email: string;
 }
 
@@ -24,13 +25,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { email } = body;
+  const { name, email } = body;
+  if (!name || !name.trim()) {
+    return NextResponse.json({ error: "A name is required" }, { status: 400 });
+  }
   if (!email || !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "A valid email address is required" }, { status: 400 });
   }
 
   try {
-    await triggerReadingRoomTrialEvent(email);
+    await triggerReadingRoomTrialEvent(email, name);
   } catch (err) {
     console.error("[api/reading-room/start-trial] Resend event failed:", err);
     return NextResponse.json(
@@ -42,7 +46,7 @@ export async function POST(request: Request) {
   try {
     const tagId = process.env.KIT_READING_ROOM_TAG_ID;
     if (!tagId) throw new KitNotConfiguredError();
-    await tagSubscriber(email, tagId);
+    await tagSubscriber(email, tagId, name);
   } catch (err) {
     console.error("[api/reading-room/start-trial] Kit membership tag failed:", err);
     // The trial sequence already started via Resend — don't report total

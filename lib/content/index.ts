@@ -252,24 +252,44 @@ export async function getHomeShowcase(): Promise<HomeShowcase> {
   return { when, shortlist, clubPairs };
 }
 
+export interface FeedArticleBook {
+  title: string;
+  coverImage?: { url: string; alt: string };
+}
+
 export interface FeedArticle {
   slug: string;
   category: CategorySlug;
   title: string;
   publishedAt: string;
   methodologySentence: string;
+  /** First 3 books in the article's list — used by the weekly recap email's cover-row treatment. */
+  books: FeedArticleBook[];
 }
 
-/** Most recent articles across every category, newest first — feeds app/feed.xml/route.ts (the RSS feed Kit's weekly-recap automation reads from). */
+interface RawFeedArticle {
+  slug: string;
+  category: CategorySlug;
+  title: string;
+  publishedAt: string;
+  methodologySentence: string;
+  books: { title: string; coverImage: RawImage | null }[];
+}
+
+/** Most recent articles across every category, newest first — feeds app/rss/route.ts and the weekly recap cron job. */
 export async function getFeedArticles(limit: number): Promise<FeedArticle[]> {
-  const raws = await groqFetch<
-    { slug: string; category: CategorySlug; title: string; publishedAt: string; methodologySentence: string }[]
-  >(
-    `*[_type == "article"] | order(publishedAt desc)[0...$limit]{ "slug": slug.current, category, title, publishedAt, methodologySentence }`,
+  const raws = await groqFetch<RawFeedArticle[]>(
+    `*[_type == "article"] | order(publishedAt desc)[0...$limit]{
+      "slug": slug.current, category, title, publishedAt, methodologySentence,
+      "books": bookEntries[0...3].book->{ title, "coverImage": coverImage{ "url": asset->url } }
+    }`,
     { limit },
-    { tags: ["article"], revalidate: 300 },
+    { tags: ["article", "book"], revalidate: 300 },
   );
-  return raws;
+  return raws.map((r) => ({
+    ...r,
+    books: r.books.map((b) => ({ title: b.title, coverImage: b.coverImage ? { url: b.coverImage.url, alt: b.title } : undefined })),
+  }));
 }
 
 export function categoryPath(category: CategorySlug): string {

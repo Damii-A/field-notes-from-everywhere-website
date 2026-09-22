@@ -181,21 +181,32 @@ are deliberately last, after the remaining technical/integration work, not next.
 ## Weekly recap
 
 `app/rss/route.ts` publishes a standard RSS feed of the 30 most recent Publication articles
-across all three categories (title, link, publish date, category, and the article's
-methodology sentence as the description). Originally built so Kit's RSS-to-email automation
-could compose the weekly recap automatically — but Kit's RSS-to-email turned out to be a
-Creator-plan-only feature too (see `DECISIONS.md`, "Build the weekly recap ourselves via
-Resend," 2026-09-22), so the feed's actual consumer is now this app's own weekly cron job
-instead: `GET /api/cron/weekly-recap` (`vercel.json`, Sundays), which reads the last 7 days
-of articles via the same content-layer function the feed uses (`getFeedArticles`), pulls
-recipients from Kit (`listActiveSubscriberEmails`), and sends via Resend's Batch API
-(`sendWeeklyRecap`). The `/rss`/`/feed.xml` endpoint itself still exists and still works —
-useful as a plain RSS feed regardless — it's just no longer wired into an external
-automation. **Verified 2026-09-22**: the cron route correctly rejects requests without the
-right `CRON_SECRET` (401), and correctly found zero articles in the last 7 days against the
-real (still-empty) Sanity dataset — a safe, real test of the full path without emailing
-anyone, since there's nothing to send yet. Verified live in production (2026-09-21, before
-the Kit-to-Resend switch): correct domain in all links, valid RSS, gracefully empty.
+across all three categories. Originally built so Kit's RSS-to-email automation could compose
+the weekly recap automatically — but Kit's RSS-to-email turned out to be a Creator-plan-only
+feature too, so the feed's actual consumer is now this app's own weekly cron job instead:
+`GET /api/cron/weekly-recap` (`vercel.json`, Sundays). The `/rss`/`/feed.xml` endpoint itself
+still exists and still works — useful as a plain RSS feed regardless — it's just no longer
+wired into an external automation.
+
+**Recap format (2026-09-22)**: a personalized greeting ("Hi {first name}," falling back to
+"Hi there," when Kit has no name on file), an intro line, then a fixed digest of the 10 most
+recently published articles (not everything from a trailing window — publishing volume can
+exceed 20/week, which would make a full listing unreadable), each as its own block: the
+title linking to the article, the methodology sentence as a summary, and the first 3 books'
+cover images in a row. Ends with a "Go to the site" button. `getFeedArticles`
+(`lib/content/index.ts`) was extended to pull each article's first 3 book entries (title +
+cover) for this; `listActiveSubscribers` (`lib/integrations/kit.ts`, renamed from
+`listActiveSubscriberEmails`) now returns each subscriber's first name alongside their email.
+Name collection was added to every signup point (`/api/subscribe`, `/api/reading-room/start-trial`)
+specifically to support this — see `DECISIONS.md`, 2026-09-22.
+
+**Verified 2026-09-22**: the cron route correctly rejects requests without the right
+`CRON_SECRET` (401), and correctly found no articles to send against the real (still-empty)
+Sanity dataset — a safe, real test of the full path without emailing anyone, since there's
+nothing to send yet. Both `/api/subscribe` and `/api/reading-room/start-trial` correctly
+reject a missing name (400) and succeed with one, verified against the real Kit account.
+Verified live in production (2026-09-21, before the Kit-to-Resend switch): correct domain in
+all links, valid RSS, gracefully empty.
 
 Two real issues surfaced and fixed while building this, worth knowing about for future work:
 

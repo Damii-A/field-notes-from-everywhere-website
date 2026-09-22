@@ -433,6 +433,45 @@ revisiting if combined volume approaches it.
 
 ---
 
+## 2026-09-22 — Collect a name at every email signup point; redesign the weekly recap format
+
+**Decision**: `/api/subscribe` and `/api/reading-room/start-trial` now require a `name` field
+(not just email) at every signup point — the "send this list to me" popup, and the Reading
+Room trial-start form. The weekly recap email was redesigned to match a specific format: a
+personalized greeting ("Hi {first name}," falling back to "Hi there," when none is on file),
+an intro line, then each article as its own block (linked heading, the methodology sentence
+as a summary, and the first 3 books' cover images in a row), ending with a "Go to the site"
+button. It sends a fixed-size digest (10 most recent articles) rather than everything
+published in a trailing window, since publishing volume can exceed 20 articles/week and a
+full listing would be unreadable.
+
+**Context**: The user asked for "Hi {name}" personalization in the recap; nothing in the app
+collected a name anywhere before this, only email addresses. Separately, the recap's original
+"last 7 days" query logic didn't account for actual publishing volume — with 20+ articles/week,
+every article from the last 7 days would make for a very long, low-signal email.
+
+**Reasoning**: Collecting a name once, at signup, is far simpler than trying to backfill or
+infer it later, and the user flagged it as "important for future email correspondence"
+generally — not just this one email. A fixed-size digest with a link to the rest is a standard,
+readable newsletter pattern at any publishing volume, where a full trailing-window listing
+isn't.
+
+**Consequences**: `lib/integrations/kit.ts`'s `upsertSubscriber`/`tagSubscriber`/
+`addSubscriberToForm` all accept an optional `firstName`, sent to Kit's `first_name` field.
+`listActiveSubscriberEmails` was renamed `listActiveSubscribers` and now returns `{email,
+firstName}` pairs instead of bare strings, since the recap needs the name to personalize each
+recipient's copy. `lib/content/index.ts`'s `getFeedArticles` GROQ query was extended to
+include each article's first 3 `bookEntries` (title + cover image) for the cover-row
+treatment. The Resend trial-start event now carries `name` in its payload too, so the trial
+automation's emails can personalize the same way. Verified against the real Kit/Resend
+accounts: `/api/subscribe` and `/api/reading-room/start-trial` both reject a missing name
+(400) and succeed with one; the recap route still safely no-ops against the real (empty)
+Sanity dataset.
+
+**Status**: confirmed with the user 2026-09-22 before implementing.
+
+---
+
 ## 2026-09-21 — Content reads use a hand-rolled `groqFetch`, not `@sanity/client`'s `.fetch()`
 
 **Decision**: `lib/content/index.ts` fetches all content via `lib/sanity/groqFetch.ts`, a ~50-line

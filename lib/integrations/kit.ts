@@ -30,11 +30,11 @@ function kitHeaders(apiKey: string) {
 }
 
 /** Creates the subscriber in Kit if they don't already exist (POST /subscribers is an upsert). */
-async function upsertSubscriber(apiKey: string, email: string): Promise<void> {
+async function upsertSubscriber(apiKey: string, email: string, firstName?: string): Promise<void> {
   const res = await fetch(`${KIT_API_BASE}/subscribers`, {
     method: "POST",
     headers: kitHeaders(apiKey),
-    body: JSON.stringify({ email_address: email }),
+    body: JSON.stringify({ email_address: email, ...(firstName ? { first_name: firstName } : {}) }),
   });
   if (!res.ok) {
     throw new Error(`Kit create-subscriber failed: ${res.status} ${await res.text()}`);
@@ -46,9 +46,9 @@ async function upsertSubscriber(apiKey: string, email: string): Promise<void> {
  * signup form) — POST /forms/{form_id}/subscribers. The subscriber must
  * already exist in Kit, hence the upsert first.
  */
-export async function addSubscriberToForm(email: string, formId: string): Promise<void> {
+export async function addSubscriberToForm(email: string, formId: string, firstName?: string): Promise<void> {
   const apiKey = requireApiKey();
-  await upsertSubscriber(apiKey, email);
+  await upsertSubscriber(apiKey, email, firstName);
   const res = await fetch(`${KIT_API_BASE}/forms/${formId}/subscribers`, {
     method: "POST",
     headers: kitHeaders(apiKey),
@@ -64,9 +64,9 @@ export async function addSubscriberToForm(email: string, formId: string): Promis
  * /tags/{tag_id}/subscribers, addressed by email. The subscriber must
  * already exist in Kit, hence the upsert first.
  */
-export async function tagSubscriber(email: string, tagId: string): Promise<void> {
+export async function tagSubscriber(email: string, tagId: string, firstName?: string): Promise<void> {
   const apiKey = requireApiKey();
-  await upsertSubscriber(apiKey, email);
+  await upsertSubscriber(apiKey, email, firstName);
   const res = await fetch(`${KIT_API_BASE}/tags/${tagId}/subscribers`, {
     method: "POST",
     headers: kitHeaders(apiKey),
@@ -77,20 +77,26 @@ export async function tagSubscriber(email: string, tagId: string): Promise<void>
   }
 }
 
+export interface KitSubscriberInfo {
+  email: string;
+  firstName: string | null;
+}
+
 interface KitSubscribersResponse {
-  subscribers: { email_address: string }[];
+  subscribers: { email_address: string; first_name: string | null }[];
   pagination: { has_next_page: boolean; end_cursor: string | null };
 }
 
 /**
- * Every active Kit subscriber's email address, paginated (GET /subscribers,
- * up to 500/page — see developers.kit.com). Kit remains the free-list
- * source of truth (see ARCHITECTURE.md §9), so the weekly recap cron job
- * reads the recipient list from here rather than duplicating it elsewhere.
+ * Every active Kit subscriber (email + first name), paginated (GET
+ * /subscribers, up to 500/page — see developers.kit.com). Kit remains the
+ * free-list source of truth (see ARCHITECTURE.md §9), so the weekly recap
+ * cron job reads the recipient list from here rather than duplicating it
+ * elsewhere.
  */
-export async function listActiveSubscriberEmails(): Promise<string[]> {
+export async function listActiveSubscribers(): Promise<KitSubscriberInfo[]> {
   const apiKey = requireApiKey();
-  const emails: string[] = [];
+  const subscribers: KitSubscriberInfo[] = [];
   let cursor: string | null = null;
 
   do {
@@ -104,19 +110,19 @@ export async function listActiveSubscriberEmails(): Promise<string[]> {
       throw new Error(`Kit list-subscribers failed: ${res.status} ${await res.text()}`);
     }
     const data = (await res.json()) as KitSubscribersResponse;
-    emails.push(...data.subscribers.map((s) => s.email_address));
+    subscribers.push(...data.subscribers.map((s) => ({ email: s.email_address, firstName: s.first_name })));
     cursor = data.pagination.has_next_page ? data.pagination.end_cursor : null;
   } while (cursor);
 
-  return emails;
+  return subscribers;
 }
 
 /** Used by the Paddle webhook to move a customer in/out of the Reading Room segment. */
-export async function setReadingRoomTag(email: string, active: boolean): Promise<void> {
+export async function setReadingRoomTag(email: string, active: boolean, firstName?: string): Promise<void> {
   const tagId = process.env.KIT_READING_ROOM_TAG_ID;
   if (!tagId) throw new KitNotConfiguredError();
   if (active) {
-    await tagSubscriber(email, tagId);
+    await tagSubscriber(email, tagId, firstName);
     return;
   }
   // Removing a tag by email requires looking the subscriber up first —

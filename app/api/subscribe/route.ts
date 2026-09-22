@@ -7,6 +7,7 @@ import type { CategorySlug } from "@/lib/content";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface SubscribeBody {
+  name: string;
   email: string;
   source: "send-list" | "newsletter";
   articleSlug?: string;
@@ -31,7 +32,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { email, source, articleSlug, category } = body;
+  const { name, email, source, articleSlug, category } = body;
+  if (!name || !name.trim()) {
+    return NextResponse.json({ error: "A name is required" }, { status: 400 });
+  }
   if (!email || !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "A valid email address is required" }, { status: 400 });
   }
@@ -42,7 +46,7 @@ export async function POST(request: Request) {
   try {
     const tagId = source === "send-list" ? process.env.KIT_SEND_LIST_TAG_ID : process.env.KIT_NEWSLETTER_TAG_ID;
     if (!tagId) throw new KitNotConfiguredError();
-    await tagSubscriber(email, tagId);
+    await tagSubscriber(email, tagId, name);
   } catch (err) {
     console.error("[api/subscribe] Kit subscribe failed:", err);
     return NextResponse.json(

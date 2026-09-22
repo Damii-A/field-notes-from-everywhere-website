@@ -430,6 +430,7 @@ function SendListPopup({
   accent: string;
   onClose: () => void;
 }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
@@ -440,7 +441,7 @@ function SendListPopup({
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "send-list", articleSlug, category }),
+        body: JSON.stringify({ name, email, source: "send-list", articleSlug, category }),
       });
       if (!res.ok) throw new Error("request failed");
       setStatus("sent");
@@ -467,6 +468,14 @@ function SendListPopup({
               Enter your email below and we&rsquo;ll send you a list with all {bookCount} recommendations.
             </p>
             <div className={styles.popupForm}>
+              <input
+                type="text"
+                required
+                placeholder="First name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={styles.popupInput}
+              />
               <input
                 type="email"
                 required
