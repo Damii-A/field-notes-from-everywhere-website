@@ -105,41 +105,38 @@ until something is actually published in the Studio.
 ## Email/subscriber integrations: Kit + Resend (2026-09-22)
 
 **Current, accurate picture** (see `DECISIONS.md` for the several corrections that got here —
-this section describes only the end state, not the history):
+this section describes only the end state, not the history): **Resend sends everything and
+holds the free list; Kit holds only confirmed, converted Reading Room members.**
 
-- **Kit** holds the free-list tags (`KIT_NEWSLETTER_TAG_ID`, `KIT_SEND_LIST_TAG_ID` — applied
-  by `/api/subscribe`) and, separately, confirmed Reading Room members
-  (`KIT_READING_ROOM_TAG_ID`) — added **only** by the future Paddle webhook, at actual
-  conversion. Kit is not touched at all by trial-start. Real account connected
-  (`KIT_API_KEY` in `.env.local`); `lib/integrations/kit.ts` calls the real v4 API, verified
-  against `developers.kit.com` and the real account. Kit sends nothing itself in this build —
-  its Automations and RSS-to-email are both Creator-plan-only ($33/month) — except that it
-  *is* still the intended sender for the ongoing Reading Room member catalogue later (manual
-  broadcasts to the member tag, not automation, so the free-plan restriction doesn't apply).
-  `KIT_READING_ROOM_FORM_ID` (a Kit form created earlier, before this design settled) is no
-  longer called by any code — harmless to leave configured in Kit, just unused.
-- **Resend** sends everything: the one-off "send this list to me" email, the weekly recap
-  (Vercel Cron), and the entire Reading Room trial-to-conversion journey via **Resend
-  Automations** — triggered by `/api/reading-room/start-trial` firing a
-  `reading_room_trial_started` event (`triggerReadingRoomTrialEvent`), with no Kit call
-  alongside it.
-- **Still using Kit as the recipient-list source** for both `/api/subscribe`'s tags and the
-  weekly recap's audience — moving that to Resend's own contacts is agreed but not yet built
-  (see "Immediately next" below).
+- **Resend** — real account connected (`RESEND_API_KEY` in `.env.local`, independent of the
+  one Vercel's marketplace integration provisioned for production). Sends the one-off "send
+  this list to me" email, the weekly recap (Vercel Cron), and runs the entire Reading Room
+  trial-to-conversion journey via Resend Automations (`reading_room_trial_started` event, no
+  Kit call). Holds the free list itself: two Segments,
+  `RESEND_NEWSLETTER_SEGMENT_ID`/`RESEND_SEND_LIST_SEGMENT_ID`, created directly via
+  `resend.segments.create()` (not the dashboard) since the API key already in `.env.local`
+  was sufficient. `/api/subscribe` adds contacts to the right one.
+- **Kit** — real account connected (`KIT_API_KEY` in `.env.local`, `lib/integrations/kit.ts`
+  verified against the real v4 API). Holds only `KIT_READING_ROOM_TAG_ID` — the confirmed
+  member tag, added exclusively by the future Paddle webhook at actual conversion. Nothing
+  else touches Kit; `addSubscriberToForm` and `listActiveSubscribers` were deleted from
+  `lib/integrations/kit.ts` once their last callers moved to Resend (genuinely dead code, not
+  reserved for later). `KIT_READING_ROOM_FORM_ID` (a form created earlier in this design's
+  evolution) remains unused but harmless.
 
-**Verified against real accounts, 2026-09-22**: `/api/subscribe` and
-`/api/reading-room/start-trial` both succeed against the real Kit/Resend accounts (the latter
-confirmed to no longer call Kit at all — `{"started":true}` with no membership-tag field).
-`RESEND_API_KEY` is in `.env.local` (a key created directly in Resend's dashboard, independent
-of the one Vercel's marketplace integration provisioned for production).
+**Verified against real accounts, 2026-09-22**: `/api/subscribe` succeeds and the contact is
+confirmed present in the correct Resend segment with the right name (`resend.contacts.list`
+checked directly); `/api/reading-room/start-trial` succeeds with no Kit call in the path.
 
 **Still needed**:
-- Add all four `KIT_*` env vars to Vercel's environment variables too — **done by the user
-  2026-09-22**, confirmed working after a redeploy.
-- Add `RESEND_API_KEY` and `CRON_SECRET` to Vercel's environment variables (check whether
-  `RESEND_API_KEY` is already there from the marketplace integration before adding a
-  duplicate; `CRON_SECRET` must be the **same value** as `.env.local`'s, since Vercel sends
-  it back verbatim to authenticate the cron job — see "Weekly recap" below).
+- Add `KIT_API_KEY` and `KIT_READING_ROOM_TAG_ID` to Vercel's environment variables (the two
+  now-removed `KIT_NEWSLETTER_TAG_ID`/`KIT_SEND_LIST_TAG_ID` don't need adding — **the rest
+  done by the user 2026-09-22**, confirmed working after a redeploy).
+- Add `RESEND_API_KEY`, `RESEND_NEWSLETTER_SEGMENT_ID`, `RESEND_SEND_LIST_SEGMENT_ID`, and
+  `CRON_SECRET` to Vercel's environment variables (check whether `RESEND_API_KEY` is already
+  there from the marketplace integration before adding a duplicate; `CRON_SECRET` must be the
+  **same value** as `.env.local`'s, since Vercel sends it back verbatim to authenticate the
+  cron job — see "Weekly recap" below).
 - **In Resend's dashboard** (the user's own account-side task, not code): build the actual
   Reading Room trial automation (welcome, 7 days of trial content, then a conversion-check
   before each further email so it can exit into a single "you're a member" email whenever
@@ -178,22 +175,24 @@ still exists and still works — useful as a plain RSS feed regardless — it's 
 wired into an external automation.
 
 **Recap format (2026-09-22)**: a personalized greeting ("Hi {first name}," falling back to
-"Hi there," when Kit has no name on file), an intro line, then a fixed digest of the 10 most
+"Hi there," when no name is on file), an intro line, then a fixed digest of the 10 most
 recently published articles (not everything from a trailing window — publishing volume can
 exceed 20/week, which would make a full listing unreadable), each as its own block: the
 title linking to the article, the methodology sentence as a summary, and the first 3 books'
 cover images in a row. Ends with a "Go to the site" button. `getFeedArticles`
 (`lib/content/index.ts`) was extended to pull each article's first 3 book entries (title +
-cover) for this; `listActiveSubscribers` (`lib/integrations/kit.ts`, renamed from
-`listActiveSubscriberEmails`) now returns each subscriber's first name alongside their email.
-Name collection was added to every signup point (`/api/subscribe`, `/api/reading-room/start-trial`)
-specifically to support this — see `DECISIONS.md`, 2026-09-22.
+cover) for this; recipients come from Resend's two free-list Segments, merged and deduped by
+email (`listSegmentContacts`, `lib/integrations/resend.ts`), not Kit. Name collection was
+added to every signup point (`/api/subscribe`, `/api/reading-room/start-trial`) specifically
+to support this — see `DECISIONS.md`, 2026-09-22.
 
 **Verified 2026-09-22**: the cron route correctly rejects requests without the right
 `CRON_SECRET` (401), and correctly found no articles to send against the real (still-empty)
 Sanity dataset — a safe, real test of the full path without emailing anyone, since there's
-nothing to send yet. Both `/api/subscribe` and `/api/reading-room/start-trial` correctly
-reject a missing name (400) and succeed with one, verified against the real Kit account.
+nothing to send yet. The segment-listing code path was verified separately (a direct
+`resend.contacts.list({segmentId})` call), since the empty-articles case short-circuits
+before reaching it. Both `/api/subscribe` and `/api/reading-room/start-trial` correctly
+reject a missing name (400) and succeed with one, verified against the real accounts.
 Verified live in production (2026-09-21, before the Kit-to-Resend switch): correct domain in
 all links, valid RSS, gracefully empty.
 
@@ -214,14 +213,15 @@ Two real issues surfaced and fixed while building this, worth knowing about for 
   strips any trailing slash (the value as entered on Vercel had one, which was producing a
   double slash in `sitemap.xml`'s output).
 
-## Email/subscriber architecture (decided 2026-09-21, Kit/Resend split refined 2026-09-22)
+## Email/subscriber architecture (decided 2026-09-21, Kit/Resend split settled 2026-09-22)
 
 Full reasoning in `DECISIONS.md`; summary here for quick reference:
 
-- **The free list**: direct signup or "send this list to me" makes someone a Kit subscriber,
-  tagged by source, receiving the weekly recap of that week's Publication articles. Starting a
-  Reading Room trial does **not** — Kit is untouched by trial-start (see "Email/subscriber
-  integrations" above); a trial-only signup is a Resend-only relationship until they convert.
+- **The free list**: direct signup or "send this list to me" makes someone a Resend contact,
+  tagged by source (a Segment), receiving the weekly recap of that week's Publication
+  articles. Starting a Reading Room trial does **not** touch Kit or add them to the free
+  list — it's a Resend-only relationship until they convert (see "Email/subscriber
+  integrations" above).
 - **Reading Room trial is email-only, not a Paddle trial**: starting a trial just captures an
   email and fires a Resend event. **Resend** runs the entire trial-to-conversion journey
   (welcome, 7 days of catalogue content, a conversion push) with no Kit involvement at all.

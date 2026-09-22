@@ -433,6 +433,52 @@ revisiting if combined volume approaches it.
 
 ---
 
+## 2026-09-22 — Move the free list from Kit to Resend contacts
+
+**Decision**: `/api/subscribe` (newsletter signup and "send this list to me") and the weekly
+recap's recipient list both moved from Kit to Resend's own Contacts/Segments — Kit is no
+longer involved in the free list at all. Two Resend Segments (`RESEND_NEWSLETTER_SEGMENT_ID`,
+`RESEND_SEND_LIST_SEGMENT_ID`) replace the two Kit tags for source attribution.
+
+**Context**: The prior same-day decision ("Kit holds only confirmed Reading Room members,
+never trial-only signups") established that Kit should hold nothing except confirmed,
+converted members. That logic applies just as much to the free list: Resend already sends
+every free-list email (the one-off list email, and the weekly recap since the RSS-to-email
+decision above), so there was no remaining reason for Kit to be the list's system of record
+either — it was pure duplicate bookkeeping for a list Kit never acts on.
+
+**Reasoning**: Same reasoning as the Reading Room correction — the vendor that sends
+something should be the one that holds the recipient list for it, rather than a second vendor
+being a passive middleman. Resend's newer Contacts model (April 2026, replacing the old
+mandatory-Audience model with global contacts + optional Segments — see
+`https://resend.com/docs/dashboard/segments/migrating-from-audiences-to-segments`) makes this
+straightforward: a contact can belong to any number of Segments without needing an Audience
+at all, and `contacts.segments.add` addresses a contact by email directly, the same
+ergonomics Kit's tag-by-email endpoint had.
+
+**Consequences**: `lib/integrations/kit.ts` lost `addSubscriberToForm` and
+`listActiveSubscribers` entirely (both had zero remaining callers — deleted rather than left
+unused, unlike `ReadingRoomCheckoutButton`, which has a clear future use once Paddle exists).
+`lib/integrations/resend.ts` gained `addToSegment` and `listSegmentContacts`. The two Resend
+Segments were created via `resend.segments.create()` directly (not manually in the
+dashboard) — non-secret IDs, since the API key already in `.env.local` was sufficient and
+segment creation is a routine, reversible, non-account-sensitive action. `KIT_NEWSLETTER_TAG_ID`
+/ `KIT_SEND_LIST_TAG_ID` were removed from `.env.local`/`.env.example` (the Kit tags
+themselves are harmless to leave configured in Kit's dashboard, just unused going forward).
+This had to ship together with the trial-start Kit removal above, not as a truly separate
+step — leaving `/api/subscribe` still writing to Kit while `/api/reading-room/start-trial` no
+longer did would have been an inconsistent halfway state with no real benefit.
+
+**Verified against the real Resend account, 2026-09-22**: `/api/subscribe` succeeds and
+correctly adds the contact to the right segment (`{"subscribed":true,...}`); a direct
+`resend.contacts.list({segmentId})` call confirms the contact is really there with the
+correct name; the weekly recap route's segment-fetch code path matches that exact response
+shape.
+
+**Status**: confirmed with the user 2026-09-22 before implementing.
+
+---
+
 ## 2026-09-22 — Kit holds only confirmed Reading Room members, never trial-only signups
 
 **Decision**: `/api/reading-room/start-trial` no longer touches Kit at all — it only fires the

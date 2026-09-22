@@ -8,7 +8,6 @@
  */
 import { Resend } from "resend";
 import { articlePath, type Article, type FeedArticle } from "@/lib/content";
-import type { KitSubscriberInfo } from "@/lib/integrations/kit";
 import { SITE_URL } from "@/lib/siteUrl";
 
 export class ResendNotConfiguredError extends Error {
@@ -43,6 +42,54 @@ export async function sendBookListEmail(to: string, article: Article): Promise<v
 
 /** Resend's own event name for automations — matches whatever trigger is configured on the Reading Room trial automation in Resend's dashboard. */
 export const READING_ROOM_TRIAL_EVENT = "reading_room_trial_started";
+
+export interface ResendContactInfo {
+  email: string;
+  firstName: string | null;
+}
+
+/** Creates the contact in Resend if it doesn't already exist. Duplicate-email errors are expected and ignored — the subsequent segment-add call addresses the contact by email regardless of whether this call created it. */
+async function upsertContact(resend: Resend, email: string, firstName: string): Promise<void> {
+  await resend.contacts.create({ email, firstName });
+}
+
+/**
+ * Adds someone to a Resend contact segment (Resend's replacement for
+ * Audiences — contacts are global, not owned by one audience — see
+ * DECISIONS.md, "Move the free list from Kit to Resend contacts"). Used for
+ * free-list source attribution (`RESEND_NEWSLETTER_SEGMENT_ID` /
+ * `RESEND_SEND_LIST_SEGMENT_ID`).
+ */
+export async function addToSegment(email: string, firstName: string, segmentId: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
+
+  const resend = new Resend(apiKey);
+  await upsertContact(resend, email, firstName);
+  const { error } = await resend.contacts.segments.add({ email, segmentId });
+  if (error) throw new Error(`Resend add-to-segment failed: ${error.message}`);
+}
+
+/** Every contact in a segment (email + first name), paginated. Used by the weekly recap to build its recipient list from Resend's own contacts instead of Kit. */
+export async function listSegmentContacts(segmentId: string): Promise<ResendContactInfo[]> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
+
+  const resend = new Resend(apiKey);
+  const contacts: ResendContactInfo[] = [];
+  let after: string | undefined;
+
+  for (;;) {
+    const { data, error } = await resend.contacts.list({ segmentId, limit: 100, ...(after ? { after } : {}) });
+    if (error) throw new Error(`Resend list-contacts failed: ${error.message}`);
+    if (!data) break;
+    contacts.push(...data.data.map((c) => ({ email: c.email, firstName: c.first_name })));
+    if (!data.has_more || data.data.length === 0) break;
+    after = data.data[data.data.length - 1]!.id;
+  }
+
+  return contacts;
+}
 
 /**
  * Fires a Resend Automations event to start the Reading Room trial sequence
@@ -90,13 +137,13 @@ function articleBlockHtml(a: FeedArticle): string {
  * articles, not a full listing — see DECISIONS.md, "Build the weekly recap
  * ourselves via Resend") to every given recipient, via Resend Batch.
  * Personalized per recipient with their first name (falls back to "there" if
- * Kit has none on file). Chunked into batches of `BATCH_SIZE` with a
+ * none is on file). Chunked into batches of `BATCH_SIZE` with a
  * deterministic idempotency key per chunk, keyed by `weekKey` — Vercel
  * Cron's delivery is best-effort and can invoke the same scheduled run more
  * than once, so a repeat run within the same week must not double-send (see
  * Vercel's own cron-idempotency guidance).
  */
-export async function sendWeeklyRecap(recipients: KitSubscriberInfo[], articles: FeedArticle[], weekKey: string): Promise<void> {
+export async function sendWeeklyRecap(recipients: ResendContactInfo[], articles: FeedArticle[], weekKey: string): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new ResendNotConfiguredError();
   if (recipients.length === 0) return;

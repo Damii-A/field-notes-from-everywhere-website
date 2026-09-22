@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { tagSubscriber, KitNotConfiguredError } from "@/lib/integrations/kit";
-import { sendBookListEmail } from "@/lib/integrations/resend";
+import { addToSegment, sendBookListEmail, ResendNotConfiguredError } from "@/lib/integrations/resend";
 import { getArticleBySlug } from "@/lib/content";
 import type { CategorySlug } from "@/lib/content";
 
@@ -17,12 +16,12 @@ interface SubscribeBody {
 /**
  * Powers both free-list email capture points from pub_article.md §6.4 —
  * the article "send this list to me" popup — and, more generally, any
- * future free-list signup point. Kit gets every subscriber, tagged by
- * source (`KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID`) so the two
- * entry points are distinguishable in Kit's own reporting — Kit's single
- * audience means everyone still receives the weekly recap regardless of
- * which tag they have. Resend sends the one-off list email for "send-list"
- * requests specifically. See ARCHITECTURE.md §9.
+ * future free-list signup point. Resend's own contacts hold the free list,
+ * tagged by segment (`RESEND_NEWSLETTER_SEGMENT_ID` /
+ * `RESEND_SEND_LIST_SEGMENT_ID`) so the two entry points are distinguishable
+ * — Kit is not involved at all (see DECISIONS.md, "Move the free list from
+ * Kit to Resend contacts"). Resend also sends the one-off list email for
+ * "send-list" requests specifically. See ARCHITECTURE.md §9.
  */
 export async function POST(request: Request) {
   let body: SubscribeBody;
@@ -44,11 +43,11 @@ export async function POST(request: Request) {
   }
 
   try {
-    const tagId = source === "send-list" ? process.env.KIT_SEND_LIST_TAG_ID : process.env.KIT_NEWSLETTER_TAG_ID;
-    if (!tagId) throw new KitNotConfiguredError();
-    await tagSubscriber(email, tagId, name);
+    const segmentId = source === "send-list" ? process.env.RESEND_SEND_LIST_SEGMENT_ID : process.env.RESEND_NEWSLETTER_SEGMENT_ID;
+    if (!segmentId) throw new ResendNotConfiguredError();
+    await addToSegment(email, name, segmentId);
   } catch (err) {
-    console.error("[api/subscribe] Kit subscribe failed:", err);
+    console.error("[api/subscribe] Resend subscribe failed:", err);
     return NextResponse.json(
       { error: "Couldn't subscribe you right now. This service isn't fully configured yet — see CURRENT_STATE.md." },
       { status: 502 },
@@ -67,7 +66,7 @@ export async function POST(request: Request) {
       await sendBookListEmail(email, article);
     } catch (err) {
       console.error("[api/subscribe] Resend send failed:", err);
-      // The Kit subscribe above already succeeded — don't report total
+      // The segment subscribe above already succeeded — don't report total
       // failure, since the reader IS on the list now, just tell the truth
       // about the one-off email.
       return NextResponse.json(

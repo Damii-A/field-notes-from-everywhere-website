@@ -1,13 +1,12 @@
 /**
- * Kit (formerly ConvertKit) — list/tag membership only. See ARCHITECTURE.md
- * §9: Kit owns the ongoing newsletter relationship (free Publication list,
- * Reading Room segment), not one-off transactional sends (that's Resend,
- * see resend.ts).
+ * Kit (formerly ConvertKit) — holds only confirmed, converted Reading Room
+ * members. Nothing else touches Kit: the free list lives in Resend's own
+ * contacts instead (see resend.ts, ARCHITECTURE.md §9, and DECISIONS.md,
+ * "Kit holds only confirmed Reading Room members, never trial-only
+ * signups").
  *
  * Uses Kit's v4 REST API (api.kit.com/v4), verified against
- * developers.kit.com on 2026-09-22 against a real Kit account. A form and a
- * tag are different Kit objects with different endpoints — adding someone to
- * the publication signup form is not the same call as tagging them.
+ * developers.kit.com on 2026-09-22 against a real Kit account.
  */
 
 const KIT_API_BASE = "https://api.kit.com/v4";
@@ -42,25 +41,7 @@ async function upsertSubscriber(apiKey: string, email: string, firstName?: strin
 }
 
 /**
- * Adds a subscriber to a specific Kit form (e.g. the publication free-list
- * signup form) — POST /forms/{form_id}/subscribers. The subscriber must
- * already exist in Kit, hence the upsert first.
- */
-export async function addSubscriberToForm(email: string, formId: string, firstName?: string): Promise<void> {
-  const apiKey = requireApiKey();
-  await upsertSubscriber(apiKey, email, firstName);
-  const res = await fetch(`${KIT_API_BASE}/forms/${formId}/subscribers`, {
-    method: "POST",
-    headers: kitHeaders(apiKey),
-    body: JSON.stringify({ email_address: email }),
-  });
-  if (!res.ok) {
-    throw new Error(`Kit add-to-form failed: ${res.status} ${await res.text()}`);
-  }
-}
-
-/**
- * Tags a subscriber (e.g. the Reading Room trial tag) — POST
+ * Tags a subscriber with the Reading Room member tag — POST
  * /tags/{tag_id}/subscribers, addressed by email. The subscriber must
  * already exist in Kit, hence the upsert first.
  */
@@ -77,47 +58,7 @@ export async function tagSubscriber(email: string, tagId: string, firstName?: st
   }
 }
 
-export interface KitSubscriberInfo {
-  email: string;
-  firstName: string | null;
-}
-
-interface KitSubscribersResponse {
-  subscribers: { email_address: string; first_name: string | null }[];
-  pagination: { has_next_page: boolean; end_cursor: string | null };
-}
-
-/**
- * Every active Kit subscriber (email + first name), paginated (GET
- * /subscribers, up to 500/page — see developers.kit.com). Kit remains the
- * free-list source of truth (see ARCHITECTURE.md §9), so the weekly recap
- * cron job reads the recipient list from here rather than duplicating it
- * elsewhere.
- */
-export async function listActiveSubscribers(): Promise<KitSubscriberInfo[]> {
-  const apiKey = requireApiKey();
-  const subscribers: KitSubscriberInfo[] = [];
-  let cursor: string | null = null;
-
-  do {
-    const url = new URL(`${KIT_API_BASE}/subscribers`);
-    url.searchParams.set("status", "active");
-    url.searchParams.set("per_page", "500");
-    if (cursor) url.searchParams.set("after", cursor);
-
-    const res = await fetch(url, { headers: kitHeaders(apiKey) });
-    if (!res.ok) {
-      throw new Error(`Kit list-subscribers failed: ${res.status} ${await res.text()}`);
-    }
-    const data = (await res.json()) as KitSubscribersResponse;
-    subscribers.push(...data.subscribers.map((s) => ({ email: s.email_address, firstName: s.first_name })));
-    cursor = data.pagination.has_next_page ? data.pagination.end_cursor : null;
-  } while (cursor);
-
-  return subscribers;
-}
-
-/** Used by the Paddle webhook to move a customer in/out of the Reading Room segment. */
+/** Used by the Paddle webhook to move a customer in/out of the Reading Room member tag — the only thing that ever writes to Kit. */
 export async function setReadingRoomTag(email: string, active: boolean, firstName?: string): Promise<void> {
   const tagId = process.env.KIT_READING_ROOM_TAG_ID;
   if (!tagId) throw new KitNotConfiguredError();
