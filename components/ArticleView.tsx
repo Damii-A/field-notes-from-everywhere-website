@@ -300,7 +300,7 @@ export function ArticleView({ article }: { article: Article }) {
                 <span className={styles.floatAdHeadline}>Get 30+ book recommendations, delivered to your inbox six days a week.</span>
                 <p className={styles.floatAdFine}>Your first 7 days are on us then it&rsquo;s $5/month after that. Cancel anytime</p>
                 <Link href="/the-reading-room" className={styles.floatAdCta}>
-                  Join for free
+                  Take a look
                 </Link>
               </aside>
             ) : null}
