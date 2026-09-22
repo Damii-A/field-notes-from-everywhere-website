@@ -63,6 +63,14 @@
   margin: 0;
 }
 
+.heroCtaRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 14px;
+}
+
 .heroCta {
   display: inline-flex;
   align-items: center;
@@ -89,6 +97,29 @@
   cursor: not-allowed;
   opacity: 0.6;
   transform: none;
+}
+
+.heroCtaSecondary {
+  display: inline-flex;
+  align-items: center;
+  height: 54px;
+  padding: 0 32px;
+  border: 1px solid var(--paper-050);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--paper-050);
+  font: var(--weight-bold) var(--text-md) / 1 var(--font-display);
+  letter-spacing: var(--tracking-display);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    background var(--dur-fast) var(--ease-soft);
+}
+.heroCtaSecondary:hover {
+  transform: translateY(-2px);
+  background: rgba(250, 247, 242, 0.1);
 }
 
 .section {

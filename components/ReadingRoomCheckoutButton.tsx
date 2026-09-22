@@ -40,7 +40,7 @@ export function ReadingRoomCheckoutButton({ className, children }: { className?:
         {status === "opening" ? "Opening…" : children}
       </button>
       {!configured ? (
-        <p style={{ font: "var(--type-small)", color: "var(--ochre-100)", margin: "8px 0 0" }}>
+        <p style={{ font: "var(--type-small)", color: "var(--status-caution)", margin: "8px 0 0" }}>
           Checkout isn&rsquo;t configured yet — see CURRENT_STATE.md.
         </p>
       ) : null}

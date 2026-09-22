@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BookCover } from "@/components/ds/BookCover";
@@ -49,7 +50,12 @@ export default async function ReadingRoomPage() {
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>The Reading Room</h1>
           <p className={styles.heroByline}>by Field Notes From Everywhere</p>
-          <ReadingRoomTrialForm ctaClassName={styles.heroCta}>Join for free</ReadingRoomTrialForm>
+          <div className={styles.heroCtaRow}>
+            <ReadingRoomTrialForm ctaClassName={styles.heroCta}>Try it free</ReadingRoomTrialForm>
+            <Link href="/the-reading-room/subscribe" className={styles.heroCtaSecondary}>
+              Subscribe
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -100,7 +106,7 @@ export default async function ReadingRoomPage() {
             credit card. If you decide you&rsquo;d like to stay after your trial, membership is $7/month. Cancel
             anytime.
           </p>
-          <ReadingRoomTrialForm ctaClassName={styles.trialCta}>Join The Reading Room</ReadingRoomTrialForm>
+          <ReadingRoomTrialForm ctaClassName={styles.trialCta}>Try it free</ReadingRoomTrialForm>
           <p className={styles.trialNote}>{settings.readingRoomPriceCopy}</p>
         </div>
       </section>

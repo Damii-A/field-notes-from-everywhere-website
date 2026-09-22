@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import styles from "./ReadingRoomTrialForm.module.css";
 
 /**
- * Reading Room's "Join for free" / "Join The Reading Room" CTAs — email
+ * Reading Room's "Try it free" CTAs (hero + trial section) — email
  * capture only, no Paddle checkout (see DECISIONS.md, "Reading Room's free
  * trial is tracked in Kit, not as a Paddle trial"). Clicking the CTA reveals
  * an inline email field; submitting posts to /api/reading-room/start-trial.
