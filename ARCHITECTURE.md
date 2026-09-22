@@ -252,9 +252,10 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
   Automations and RSS-to-email are Creator-plan-only), but it *is* still the intended sender
   for the ongoing Reading Room member catalogue once someone's converted — manual broadcasts
   targeted at the member tag, which don't hit the automation restriction since a person is
-  composing and triggering them directly. `KIT_READING_ROOM_FORM_ID`, a Kit form created
-  earlier in this design's evolution, is no longer called by any code — harmless to leave
-  configured, just unused.
+  composing and triggering them directly. A Kit form created earlier in this design's
+  evolution (before Resend Automations took over the trial) is no longer used or referenced
+  anywhere — removed from env vars 2026-09-22, though the form object itself can stay or be
+  deleted in Kit's own dashboard at the user's discretion.
 
 `/api/subscribe` validates the email and name, adds the contact to the right Resend Segment,
 and (for the "send this list" flow only) sends the transactional book-list email. Starting a
@@ -300,7 +301,6 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `SANITY_API_TOKEN` | server-side write access (Studio auth, revalidation) |
 | `SANITY_WEBHOOK_SECRET` | verifies Sanity → `/api/webhooks/sanity` calls |
 | `KIT_API_KEY` | Kit (ConvertKit) API access — holds only confirmed Reading Room members (see §9) |
-| `KIT_READING_ROOM_FORM_ID` | a Kit form created for the Reading Room trial; **no longer called by app code** since the trial sequence moved to Resend Automations (see §9) — harmless, just unused |
 | `KIT_READING_ROOM_TAG_ID` | confirmed Reading Room member tag — applied only by the Paddle webhook at actual conversion, removed on cancellation |
 | `RESEND_API_KEY` | Resend API access — transactional email, the free-list contacts, the weekly recap, and the Reading Room trial's Automations sequence (see §9) |
 | `RESEND_NEWSLETTER_SEGMENT_ID` / `RESEND_SEND_LIST_SEGMENT_ID` | source-attribution segments for the two free-list entry points |

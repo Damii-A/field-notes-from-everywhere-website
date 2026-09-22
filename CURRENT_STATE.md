@@ -121,8 +121,9 @@ holds the free list; Kit holds only confirmed, converted Reading Room members.**
   member tag, added exclusively by the future Paddle webhook at actual conversion. Nothing
   else touches Kit; `addSubscriberToForm` and `listActiveSubscribers` were deleted from
   `lib/integrations/kit.ts` once their last callers moved to Resend (genuinely dead code, not
-  reserved for later). `KIT_READING_ROOM_FORM_ID` (a form created earlier in this design's
-  evolution) remains unused but harmless.
+  reserved for later). `KIT_READING_ROOM_FORM_ID` was likewise removed from env vars — the
+  Kit form itself (created earlier, before Resend Automations took over the trial) is unused
+  and can be deleted in Kit's dashboard at the user's discretion, purely cosmetic.
 
 **Verified against real accounts, 2026-09-22**: `/api/subscribe` succeeds and the contact is
 confirmed present in the correct Resend segment with the right name (`resend.contacts.list`
