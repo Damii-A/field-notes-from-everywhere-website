@@ -230,6 +230,33 @@ issue 7 — isn't built yet, since it needs a signal Resend can read for "did th
 and nothing writes that anywhere Resend can see (only Kit has it, only once Paddle's webhook
 exists). Add that branch once Paddle is built, not before.
 
+**Bug found and fixed while building this**: a Resend Automation step's `variables` field does
+NOT use `{{handlebars}}`-style string interpolation to reference trigger event data — that
+syntax silently sends the literal text as-is (a real subscriber would have seen "Hi
+{{event.name}}"). The correct form is an object reference: `{"name": {"var": "event.name"}}`.
+Caught by testing against a real inbox before this ever reached a real subscriber, not by
+reading docs correctly the first time — worth remembering if any other automation step ever
+needs dynamic event/contact data.
+
+**Where Paddle fits — decided 2026-09-22, not yet built (needs the Paddle account first)**:
+Paddle stays completely out of the trial (see `DECISIONS.md`, "Reading Room's free trial is
+tracked in Kit, not as a Paddle trial" — trial mechanics moved to Resend since, but this
+principle didn't change). It only enters when someone actually decides to subscribe, via a
+**new standalone page**, `app/the-reading-room/subscribe/page.tsx` — every "subscribe"/"keep it
+going" CTA (the Reading Room landing page, and eventually each trial issue email's conversion
+nudge) points here, rather than triggering Paddle checkout independently from multiple places.
+Deliberately doesn't re-explain what The Reading Room is — someone reaching this page has
+already decided, so it just confirms and opens Paddle's checkout overlay via the existing
+`ReadingRoomCheckoutButton` component (built earlier, previously unused — gracefully shows
+"not configured yet" until real Paddle credentials exist, same pattern as everywhere else).
+`noindex`ed deliberately (a checkout page has no reason to rank in search) and not in
+`sitemap.ts`. **Not yet linked from anywhere** — the landing page still only has its two
+trial-start CTAs (matching the design spec, which doesn't show a skip-trial CTA — adding one
+there would be an undiscussed scope change, not done). The Paddle webhook, once built, should
+also write a matching signal into Resend (e.g. a contact property) when someone converts, so
+the trial automation's post-trial branch above has something to check — one webhook update,
+not a second sync path.
+
 1. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
    configured on Paddle's side; see "Email/subscriber architecture" below for why). Unblocks
    the Paddle webhook itself (still just a stub) and the trial automation's post-trial
