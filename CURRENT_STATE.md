@@ -95,13 +95,14 @@ until something is actually published in the Studio.
   scroll-driven progress rail, send-list popup wired to `/api/subscribe`.
 - The Reading Room landing page (`/the-reading-room`) — drifting book-cover hero, book shelf,
   trial section — CTAs wired to `ReadingRoomTrialForm`, an inline email-capture form that
-  starts a trial via `/api/reading-room/start-trial`. This only fires a Resend event; Kit is
-  never touched (no Paddle involvement either) — see "Email/subscriber integrations" below.
-  `ReadingRoomCheckoutButton` (Paddle.js checkout) exists but is unused for now, reserved for
-  a future "subscribe now" CTA once Paddle is configured.
+  starts a trial via `/api/reading-room/start-trial` (fires a Resend event only; Kit is never
+  touched by trial-start — see "Email/subscriber integrations" below). Hero also has a
+  "Subscribe" button alongside "Try it free", linking to `/the-reading-room/subscribe` — a
+  standalone confirm-and-pay page using `ReadingRoomCheckoutButton` (Paddle.js checkout),
+  fully configured and working (see "Paddle account" under "Known open items" below).
 - API routes: `/api/subscribe` (Kit + Resend), `/api/webhooks/paddle`, `/api/webhooks/sanity`
-  — all functional but gated on env vars that don't exist yet; each returns a clear error
-  rather than silently no-op-ing when unconfigured (see "Known open items" below).
+  — all functional. Sanity and Paddle's webhooks are both configured and verified firing
+  end-to-end against real accounts; Resend's env vars are live in production too.
 - Sanity schema definitions (`sanity/schemaTypes/*`) and embedded Studio config
   (`sanity.config.ts`, `/studio` route) — connected to the real project (see "Sanity
   connection" above); Studio login/editing itself not yet manually exercised end-to-end.
@@ -212,7 +213,8 @@ title/author/blurb per book, Amazon-search-result-style layout) a paying member 
 for 7 days. Sequence, confirmed with the user: **welcome email** (explains what's coming, says
 the first issue arrives in a few minutes) → **issue 1** (~5 minutes later) → **issues 2–7**
 (one per day) → each issue ends with a conversion nudge (varied wording, possibly a
-trial-duration discount once Paddle exists). Built as a 16-step Resend Automation (trigger +
+trial-duration discount — Paddle itself is built now, but discount-code mechanics aren't
+implemented yet). Built as a 16-step Resend Automation (trigger +
 8 send_email steps + 7 delay steps between them), confirmed firing end-to-end against a real
 inbox. **The 7 issue templates currently hold structural placeholders only** — no fake themes
 or book picks were written; that's real editorial work (themes, book selections, blurbs),
@@ -229,9 +231,8 @@ template id `0306e7f0-66de-44bf-a65e-a60e89532431`, issue templates 1–7 respec
 `/templates/{id}` + re-publish — see this session's history for the exact call shape) and
 write the varied per-issue conversion-nudge copy. **Still needs regardless of
 content**: the post-trial branch — a conversion-check (member email vs. continued push) after
-issue 7 — isn't built yet, since it needs a signal Resend can read for "did they convert,"
-and nothing writes that anywhere Resend can see (only Kit has it, only once Paddle's webhook
-exists). Add that branch once Paddle is built, not before.
+issue 7 — isn't built yet (see "Still open" under the Paddle section below for exactly what's
+missing to make it possible now that Paddle exists).
 
 **Bug found and fixed while building this**: a Resend Automation step's `variables` field does
 NOT use `{{handlebars}}`-style string interpolation to reference trigger event data — that
