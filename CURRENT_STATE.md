@@ -129,6 +129,21 @@ holds the free list; Kit holds only confirmed, converted Reading Room members.**
 confirmed present in the correct Resend segment with the right name (`resend.contacts.list`
 checked directly); `/api/reading-room/start-trial` succeeds with no Kit call in the path.
 
+**Verified through an actual browser, 2026-09-22** (not just the API routes — everything
+above this point had only been tested by calling routes directly, not through the real UI a
+visitor would use): drove both the Reading Room trial form and the article "send this list to
+me" popup with Playwright against a live dev server — screenshots confirmed both forms render
+the name+email inputs correctly and show the right success state after a real submission,
+with no console errors. The article popup needed temporary test content (a book + article
+created directly in Sanity, then deleted after — same pattern as the original Sanity
+integration test) since no real content exists yet. Caught and fixed a real, unrelated bug in
+the process: roughly 15 orphaned `npm run dev` processes had silently accumulated across the
+session because stopping a background task doesn't reliably kill the underlying process tree
+on this Windows setup — this caused a genuine Next.js crash (`clientReferenceManifest`
+invariant error) from multiple dev servers racing on the same build cache, which looked at
+first like a real code bug. All orphaned processes killed, `.next` cache cleared, single
+clean instance confirmed. (Saved as a memory for future sessions on this machine.)
+
 **All required env vars are on Vercel** (`KIT_API_KEY`, `KIT_READING_ROOM_TAG_ID`,
 `RESEND_API_KEY`, `RESEND_NEWSLETTER_SEGMENT_ID`, `RESEND_SEND_LIST_SEGMENT_ID`,
 `CRON_SECRET`) — **done by the user 2026-09-22**, including removing the now-dead
@@ -152,6 +167,12 @@ the redeploy succeeded.
 
 Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
 are deliberately last, after the remaining technical/integration work, not next.
+
+**Noted for later (2026-09-22, not yet built)**: a real "join our newsletter" signup form
+somewhere on the site. `/api/subscribe` already accepts `source: "newsletter"` and the
+`RESEND_NEWSLETTER_SEGMENT_ID` segment exists for it, but no actual form/button triggers
+this path today — the only live free-list entry point is the article "send this list to me"
+popup. The `newsletter` source was built speculatively, ahead of a UI that doesn't exist yet.
 
 1. Verify the live production site actually works end-to-end now that all env vars are on
    Vercel (see "Still needed" above) — a real check, not an assumption. Try the trial-start
