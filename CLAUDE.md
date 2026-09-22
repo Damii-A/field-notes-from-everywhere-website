@@ -50,15 +50,23 @@ undocumented divergence between code and docs.
 Before substantial implementation work:
 
 1. Read this file.
-2. Read `CURRENT_STATE.md` — what exists, what's next, what's blocked on the user.
-3. Read the relevant sections of `ARCHITECTURE.md` for the area you're touching.
+2. Read `CURRENT_STATE.md` — what exists, what's next, what's blocked on the user. Useful this
+   early mainly to identify *which area* is relevant when the session hasn't named one yet.
+   **Reading this file does not conclude the protocol.** It's the one document that answers
+   "what should happen next," which makes it tempting to stop here and answer — don't: steps
+   3–6 below still have to happen before recommending anything or treating the protocol as
+   done. This has been a repeat failure in this project — see the `feedback_startup_protocol.md`
+   agent memory.
+3. Read the relevant sections of `ARCHITECTURE.md` for the area identified above (or the area
+   the user explicitly named).
 4. Check `DECISIONS.md` for anything already settled in that area.
 5. If you're touching a specific page/feature, read its governing spec in
    `docs/design-specs/` **and**, if you have design-tool access, the live page in the Claude
    Design project — the specs describe intent, the live project shows the actual current
    built state (see governing-sources ordering above).
 6. Inspect the existing implementation before changing it.
-7. Confirm you understand the actual outcome wanted before starting.
+7. Confirm you understand the actual outcome wanted before starting, now that you've read
+   everything above.
 
 Don't re-read every document in full for a trivial change — read what's relevant to the work.
 
