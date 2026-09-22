@@ -378,6 +378,13 @@ cut from V1. In summary: no Reading Room login/Books/Past Issues, no eight-secti
 category identity → latest article → all articles (+ See more). Confirmed with the user
 2026-09-21.
 
+**Mobile polish, deliberately deferred (2026-09-22)**: the user noted the site doesn't perform
+particularly well on mobile generally, and wants that tackled as a dedicated pass at the end
+of the build, not piecemeal per-feature. Don't go looking for broad mobile issues outside
+whatever a specific change actually touches — verifying a new feature works reasonably on a
+narrow viewport (per this session's normal UI-verification practice) is still expected, but
+a full site-wide mobile audit/fix is out of scope until explicitly picked up later.
+
 ## Remote repository
 
 Connected 2026-09-21: `origin` → `git@github.com:Damii-A/field-notes-from-everywhere-website.git`
