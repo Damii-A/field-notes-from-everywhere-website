@@ -316,33 +316,31 @@ sessions should push completed logical work regularly per `AI_ENGINEERING_OPERAT
 
 ## Deployment
 
-Live on Vercel: `https://field-notes-from-everywhere-website-94ph8iele.vercel.app`. Deploys
-automatically on push to `master`.
+**Production URL**: `https://field-notes-from-everywhere-website.vercel.app` — no hash
+suffix. This is Vercel's stable, project-name-based alias that always points to whatever the
+current production deployment is. Deploys automatically on push to `master`.
 
-**Correction (2026-09-22)**: this file previously recorded the URL as
-`...-o6jkwewmr.vercel.app` and stated that suffix "appears to be permanent" — that was wrong.
-The suffix changed at some point (cause not diagnosed — possibly a Vercel project
-reset/relink, not necessarily tied to the earlier GitHub repo rename), and the old URL is now
-a dead/frozen deployment, not a live alias. **Don't assume this new suffix is permanent
-either** — verify against what the user actually sees before trusting this file's URL, rather
-than re-asserting permanence. This was caught because `/rss`, `/api/reading-room/start-trial`,
-and `/api/cron/weekly-recap` all 404'd and the homepage showed stale content (old CTA copy, no
-hero image) when checked against the old URL — both from a sandboxed Bash `curl` and
-independently via the WebFetch tool (different network path, same stale result), which the
-user then confirmed by pointing out they were looking at a different URL.
+**Important lesson (2026-09-22), so this doesn't get re-litigated**: every URL this file
+recorded before today (`...-o6jkwewmr.vercel.app`, then `...-94ph8iele.vercel.app`) was
+actually a **per-deployment URL** — Vercel gives every individual deployment its own unique,
+hash-suffixed URL that stays frozen to that exact build forever, even after later deployments
+supersede it in production. Those aren't aliases; they don't move. Only the hash-less
+`<project-name>.vercel.app` form is the real, stable production alias. Two prior sessions'
+worth of confusion (stale content, 404s on newer routes, `SITE_URL` fixes that appeared not to
+take effect) traced back to testing against frozen per-deployment URLs instead of this one.
+**Always use the hash-less URL** for verification and for `SITE_URL` going forward.
 
-**Live bug found and still needs the user's action**: the `SITE_URL` env var on Vercel is
-still set to the old dead URL — confirmed via `sitemap.xml` and `/rss`, both emitting
-`o6jkwewmr...` links against the correct current deployment. Since every email this app sends
-(weekly recap, "send this list to me", Reading Room trial confirmation) builds its links from
-`SITE_URL` (`lib/siteUrl.ts`), **any such email sent right now would contain dead links**.
-Needs the user to update `SITE_URL` in Vercel's dashboard to the correct current URL above.
-**Correction**: the user did this 2026-09-22 and `sitemap.xml`/`/rss` still showed the old URL
-several minutes later (past the 5-minute ISR revalidate window, ruling out simple cache
-staleness) — so the earlier assumption that this takes effect without a redeploy was wrong.
-Vercel bakes env vars into a deployment at build time; a dashboard-only edit doesn't reach an
-already-running deployment. A redeploy (dashboard "Redeploy" on the latest deployment, no new
-commit needed) is required. Not yet re-verified after that redeploy.
+`SITE_URL` was corrected to this hash-less URL 2026-09-22 (an earlier fix mistakenly used a
+per-deployment URL — see above — which would have gone stale again on the very next deploy).
+Confirmed live: `sitemap.xml` and `/rss` both emit the correct hash-less domain.
+
+**Still needs checking, not yet done (Sanity access wasn't authorized this session)**:
+Sanity's CORS allowlist and the `/api/webhooks/sanity` webhook target were both registered
+against the old `o6jkwewmr` URL per this file's earlier notes. If they still point there, the
+embedded Studio may fail CORS and on-demand revalidation on publish is silently broken. Update
+both to the hash-less production URL above (and double check the CORS entry situation — the
+allowlist may need it added fresh rather than just corrected, since the old value may still be
+sitting there unused).
 
 - **Env vars**: set directly in Vercel's dashboard (Environments section), not synced from
   `.env.local`. Two things to know: (1) the Vercel Sanity marketplace integration provisions
@@ -360,14 +358,16 @@ commit needed) is required. Not yet re-verified after that redeploy.
   domain's existing personal-inbox MX records.
 - **Deployment Protection**: was on by default (Vercel's own SSO-gate, blocking all public
   access) and has been turned off so the site is actually publicly reachable.
-- **Sanity CORS + webhook**: the production URL above is in Sanity's CORS allowlist, and a
-  webhook is registered (via Sanity's API) pointing at
-  `<production-url>/api/webhooks/sanity`, using the `SANITY_WEBHOOK_SECRET` now set in both
-  places. It currently uses Sanity's default payload (no custom projection — the API rejected
-  a string projection, and a working payload shape wasn't chased further) — this still sends
-  `_type` on every change, which is enough for this app's tag-based revalidation to work, just
-  not fine-grained per-path revalidation. Improving that projection is a small future
-  refinement, not a current gap.
+- **Sanity CORS + webhook**: as of the original setup, the (then-current, now-dead)
+  `o6jkwewmr` production URL was added to Sanity's CORS allowlist, and a webhook was
+  registered pointing at `<that-url>/api/webhooks/sanity`, using the `SANITY_WEBHOOK_SECRET`
+  set in both places. **Needs re-checking** — see "Important lesson" above — against the real
+  hash-less production URL, not re-assumed correct. It currently uses Sanity's default payload
+  (no custom projection — the API rejected a string projection, and a working payload shape
+  wasn't chased further) — this still sends `_type` on every change, which is enough for this
+  app's tag-based revalidation to work, just not fine-grained per-path revalidation. Improving
+  that projection is a small future refinement, not a current gap — but the CORS/webhook
+  target itself is a real gap until re-verified.
 - **Custom production domain**: deliberately not connected yet — Vercel's domain-connection
   flow asks for either a nameserver handover or a root CNAME, both of which are the real DNS
   cutover this project is holding off on until the site is otherwise ready to launch (see
