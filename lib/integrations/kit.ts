@@ -58,16 +58,34 @@ export async function tagSubscriber(email: string, tagId: string, firstName?: st
   }
 }
 
+/** Looks a subscriber up by email (Kit's `id` lookup only takes a numeric id, not an email — this is the documented workaround via List subscribers). Returns null if no subscriber exists with that email. */
+async function findSubscriberIdByEmail(apiKey: string, email: string): Promise<number | null> {
+  const res = await fetch(`${KIT_API_BASE}/subscribers?email_address=${encodeURIComponent(email)}`, {
+    headers: kitHeaders(apiKey),
+  });
+  if (!res.ok) {
+    throw new Error(`Kit find-subscriber failed: ${res.status} ${await res.text()}`);
+  }
+  const body = (await res.json()) as { subscribers?: { id: number }[] };
+  return body.subscribers?.[0]?.id ?? null;
+}
+
 /** Used by the Paddle webhook to move a customer in/out of the Reading Room member tag — the only thing that ever writes to Kit. */
 export async function setReadingRoomTag(email: string, active: boolean, firstName?: string): Promise<void> {
+  const apiKey = requireApiKey();
   const tagId = process.env.KIT_READING_ROOM_TAG_ID;
   if (!tagId) throw new KitNotConfiguredError();
   if (active) {
     await tagSubscriber(email, tagId, firstName);
     return;
   }
-  // Removing a tag by email requires looking the subscriber up first —
-  // left as a TODO until this is exercised against a real Kit account;
-  // the Paddle webhook route surfaces this rather than silently no-op-ing.
-  throw new Error("setReadingRoomTag(active=false) is not implemented yet — see lib/integrations/kit.ts");
+  const subscriberId = await findSubscriberIdByEmail(apiKey, email);
+  if (subscriberId === null) return; // never a member (or already gone) — nothing to untag
+  const res = await fetch(`${KIT_API_BASE}/tags/${tagId}/subscribers/${subscriberId}`, {
+    method: "DELETE",
+    headers: kitHeaders(apiKey),
+  });
+  if (!res.ok && res.status !== 404) {
+    throw new Error(`Kit untag failed: ${res.status} ${await res.text()}`);
+  }
 }
