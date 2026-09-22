@@ -139,19 +139,18 @@ response if Kit fails, since the trial itself already started via Resend).
 `ReadingRoomCheckoutButton` itself is unused for now — kept for when Paddle is set up and a
 "subscribe now" (as opposed to "start trial") CTA is needed.
 
-**Verified**: Kit's `/api/subscribe` path end-to-end against the real account. The Resend
-event trigger is verified against the installed SDK's type definitions (exact method/field
-shapes confirmed after upgrading `resend` 4.8.0 → 6.28.1, which added the `events` API) and a
-clean `npm run build`, but **not yet against a real Resend account** — `RESEND_API_KEY` isn't
-in `.env.local` yet (see "Still needed" below and item 3 under "Immediately next").
+**Verified end-to-end against real accounts, 2026-09-22**: `RESEND_API_KEY` added to
+`.env.local` (a fresh key created directly in Resend's own dashboard, since Vercel masks the
+marketplace-provisioned one once saved and it can't be re-read — a second key is fine,
+they're independent). Ran `npm run dev` and POSTed to `/api/reading-room/start-trial` — got
+back `{"started":true,"membershipTagged":true}`: Resend accepted the trial event and Kit's
+membership tag was applied, both against the real accounts, not mocks.
 
 **Still needed**:
-- Add `RESEND_API_KEY` to `.env.local` (Vercel's marketplace Resend integration already has
-  one provisioned — pull it from Vercel's dashboard rather than creating a second key) and
-  then verify `/api/reading-room/start-trial` end-to-end against the real account, the same
-  way `/api/subscribe` already was.
 - Add all four `KIT_*` env vars to Vercel's environment variables too — **done by the user
   2026-09-22**, confirmed working after a redeploy.
+- Add `RESEND_API_KEY` to Vercel's environment variables if it isn't already there from the
+  marketplace integration (check before adding a duplicate).
 - **In Resend's dashboard** (the user's own account-side task, not code): build the actual
   Reading Room trial automation (7 days of daily catalogue emails + trial sales sequence),
   triggered on the `reading_room_trial_started` event. A simple placeholder/test email first
@@ -167,18 +166,16 @@ in `.env.local` yet (see "Still needed" below and item 3 under "Immediately next
 Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
 are deliberately last, after the remaining technical/integration work, not next.
 
-1. Wire `RESEND_API_KEY` into `.env.local` (pull the value Vercel's marketplace integration
-   already provisioned, rather than creating a second key) and verify the Reading Room
-   trial-start flow end-to-end against the real account.
-2. **In Resend's dashboard**: build the Reading Room trial automation (7 daily catalogue
+1. **In Resend's dashboard**: build the Reading Room trial automation (7 daily catalogue
    emails + sales sequence), triggered on the `reading_room_trial_started` event — account-side
-   setup, not app code (see "Email/subscriber integrations" above).
-3. **In Kit's dashboard**: set up the RSS-to-email automation for the weekly recap, pointed at
+   setup, not app code (see "Email/subscriber integrations" above). App side is fully done and
+   verified.
+2. **In Kit's dashboard**: set up the RSS-to-email automation for the weekly recap, pointed at
    `<production-url>/feed.xml` — also account-side setup, unaffected by the Resend change (see
    "Weekly recap feed" below).
-4. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
+3. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
    configured on Paddle's side; see "Email/subscriber architecture" below for why).
-5. **Last**: author real content in the Studio (which brings the remaining per-article/book
+4. **Last**: author real content in the Studio (which brings the remaining per-article/book
    images with it), and get real legal copy for Terms/Privacy/Disclosures.
 
 ## Weekly recap feed
