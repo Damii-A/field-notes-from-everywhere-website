@@ -272,6 +272,52 @@ this kind of tag-triggered, time-delayed sequence.
 
 ---
 
+## 2026-09-22 — Kit object mapping: forms for the Reading Room trial, tags for everything else
+
+**Decision**: The Reading Room trial signup uses a Kit **form** (`KIT_READING_ROOM_FORM_ID`).
+The general free-list entry points (direct newsletter signup, the article "send this list to
+me" popup) use **tags** (`KIT_NEWSLETTER_TAG_ID`, `KIT_SEND_LIST_TAG_ID`) instead. A separate
+durable tag (`KIT_READING_ROOM_TAG_ID`) tracks "currently has an active Reading Room
+relationship," applied at trial start and by the Paddle webhook on conversion, removed on
+cancellation. This refines, not reverses, the "Email/subscriber architecture" decision
+recorded 2026-09-21 — the base-group/Reading-Room-tag model is unchanged; only which Kit
+object (form vs. tag) implements each entry point changes.
+
+**Context**: While wiring up the real Kit account, the free-list signup was initially built
+against a Kit **form**, on the (incorrect) assumption that a form was the natural equivalent
+of "the free list." The user caught this: Kit has a single audience, not separate lists per
+form — a form and a tag are just two different ways of labeling the same subscriber pool. The
+question is which Kit mechanism to use for which entry point, not which "list" someone joins.
+
+**Reasoning**: Kit forms are themselves a native automation trigger ("subscriber submits this
+form" is a valid trigger condition in Kit's automation builder) — the Reading Room trial is
+the one entry point that actually needs to kick off a multi-day automated sequence (the 7-day
+daily catalogue + sales sequence, per the 2026-09-21 decision), so it's the one that benefits
+from being a form. The general free-list entry points don't need that — they just need
+source attribution for reporting, and tags (which this app's own code adds directly via the
+API, and which the Paddle webhook can also remove, unlike a form subscription) are the
+simpler, more appropriate mechanism there. Kit's own weekly-recap broadcast reaches the whole
+audience regardless of tag, so no tag is functionally required for recap delivery — the
+free-list tags exist purely for attribution, not gating.
+
+**Alternatives considered**: Use tags for everything, including the Reading Room trial —
+rejected because it would forfeit Kit's native form-submission automation trigger, requiring
+either a manual/duplicated automation setup keyed off a tag instead, or app code to
+orchestrate the sequence itself (contradicting the existing decision that Kit runs the
+sequence entirely as its own automation, no app code involved).
+
+**Consequences**: `lib/integrations/kit.ts` already exposed both `addSubscriberToForm` and
+`tagSubscriber` as separate functions (added the same day, see the `groqFetch`-adjacent Kit
+API-verification work below), so this was a call-site and env-var change, not a new
+integration: `/api/subscribe` now tags by source instead of adding to a form.
+`KIT_PUBLICATION_FORM_ID` was renamed `KIT_READING_ROOM_FORM_ID` (same underlying Kit form,
+reused rather than recreated, since nothing depended on the old semantics yet) and two new
+tags (`KIT_NEWSLETTER_TAG_ID`, `KIT_SEND_LIST_TAG_ID`) were created in the real Kit account.
+
+**Status**: confirmed with the user 2026-09-22 before implementing.
+
+---
+
 ## 2026-09-21 — Content reads use a hand-rolled `groqFetch`, not `@sanity/client`'s `.fetch()`
 
 **Decision**: `lib/content/index.ts` fetches all content via `lib/sanity/groqFetch.ts`, a ~50-line

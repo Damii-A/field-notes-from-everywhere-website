@@ -1,6 +1,6 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-21 (Sanity connected, content layer wired to real queries)
+Last updated: 2026-09-22 (Kit account connected, forms/tags API bug fixed and verified live)
 
 ## What exists right now
 
@@ -99,14 +99,64 @@ until something is actually published in the Studio.
   connection" above); Studio login/editing itself not yet manually exercised end-to-end.
 - `sitemap.xml`, `robots.txt`, per-page metadata, 404 page.
 
+## Kit connection (2026-09-22)
+
+Real Kit (formerly ConvertKit) account created and connected. Five env vars now set in
+`.env.local`: `KIT_API_KEY`, `KIT_READING_ROOM_FORM_ID` (a Kit form, dedicated to the Reading
+Room trial signup — see `DECISIONS.md` 2026-09-22 for why a form specifically), and three
+tags — `KIT_READING_ROOM_TAG_ID` (durable "active Reading Room relationship" state),
+`KIT_NEWSLETTER_TAG_ID` and `KIT_SEND_LIST_TAG_ID` (source attribution for the two free-list
+entry points).
+
+**Bug found and fixed while wiring this up**: `lib/integrations/kit.ts` had never been
+exercised against a real account (flagged as a known gap) and, once tested, turned out to
+conflate Kit's **forms** and **tags** APIs — the free-list signup was passing a form ID into a
+function that called the *tags* endpoint, which would have failed or mis-tagged in
+production. Verified the real v4 endpoint shapes against `developers.kit.com` and rewrote
+`lib/integrations/kit.ts`: `addSubscriberToForm(email, formId)` calls `POST
+/forms/{form_id}/subscribers`, `tagSubscriber(email, tagId)` calls `POST
+/tags/{tag_id}/subscribers` by email. Both require the subscriber to already exist in Kit, so
+both call Kit's upsert `POST /subscribers` first. **Verified end-to-end**: ran `npm run dev`
+and POSTed a real request to `/api/subscribe` — got back `{"subscribed":true,...}` from the
+live Kit API, not a mock.
+
+**Kit object mapping corrected same day**: the free-list signup was initially wired to add
+subscribers to a Kit form, on the mistaken assumption a form was the natural equivalent of
+"the free list." The user caught this — Kit has one audience, and forms vs. tags is a choice
+about mechanism (forms trigger Kit's own automations; tags are what this app's code manages
+directly), not about which "list" someone joins. Corrected: `/api/subscribe` now tags by
+source (`KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID`) instead of adding to a form; the
+form that was originally created is now reserved for the Reading Room trial signup instead
+(renamed in Kit's dashboard, same underlying object, env var renamed
+`KIT_PUBLICATION_FORM_ID` → `KIT_READING_ROOM_FORM_ID`). Full reasoning in `DECISIONS.md`
+("Kit object mapping: forms for the Reading Room trial, tags for everything else").
+
+**Still needed**:
+- Add all five `KIT_*` env vars to Vercel's environment variables too (currently only in
+  local `.env.local`) — production won't have Kit working until this is done.
+- Build the Reading Room trial-start flow itself: an email-capture form/CTA on
+  `/the-reading-room` plus a new API route that calls `addSubscriberToForm` with
+  `KIT_READING_ROOM_FORM_ID` (to trigger Kit's daily-catalogue automation) and `tagSubscriber`
+  with `KIT_READING_ROOM_TAG_ID` (to set the durable relationship state directly, rather than
+  depending on a Kit-side automation step to apply it). `ReadingRoomCheckoutButton` currently
+  still goes straight to Paddle checkout — per the "Reading Room's free trial is tracked in
+  Kit, not as a Paddle trial" decision in `DECISIONS.md`, it needs to branch into this
+  email-capture step first.
+- **In Kit's dashboard** (the user's own account-side task, not code): build the actual
+  automation on the Reading Room trial form — the 7 days of daily catalogue emails plus the
+  trial sales sequence — since the app only fires the form-submission/tag calls, not the
+  sequence content itself.
+- `setReadingRoomTag(active=false)` (removing the tag on cancellation) is still an
+  unimplemented TODO in `lib/integrations/kit.ts` — needs a subscriber lookup-by-email step,
+  deferred until the Paddle webhook work makes it testable.
+
 ## Immediately next
 
 Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
 are deliberately last, after the remaining technical/integration work, not next.
 
-1. Set up Kit (account + API key + tag structure — see "Email/subscriber architecture" below,
-   decided 2026-09-21). This now also covers building the trial-start flow (an email-capture
-   form + a new API route that tags the subscriber in Kit), not just list signup.
+1. Build the Reading Room trial-start flow and add Kit's env vars to Vercel (see "Kit
+   connection" above — the account itself is done, this is what's left).
 2. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
    configured on Paddle's side; see "Email/subscriber architecture" below for why).
 3. Wire `RESEND_API_KEY` into local `.env.local` too, for parity with what Vercel's Resend
@@ -179,11 +229,6 @@ Full reasoning in `DECISIONS.md`; summary here for quick reference when building
 
 ## Known open items requiring the user before certain work can proceed
 
-- **Kit account** — API key, and the tag structure decided under "Email/subscriber
-  architecture" above (final tag naming inside Kit is still the user's call). Note:
-  `lib/integrations/kit.ts` is written against Kit's v4 REST API from their public docs but has
-  never been exercised against a real account — verify the exact endpoint/payload shape once
-  one exists.
 - **Paddle account** — API key, webhook secret, and the actual $5/month Price created in
   Paddle's dashboard (a Price ID this app checks out against). No trial needs configuring on
   Paddle's side — see "Email/subscriber architecture" above; the earlier open question about
@@ -252,5 +297,6 @@ per-deployment preview one). Deploys automatically on push to `master`.
   flow asks for either a nameserver handover or a root CNAME, both of which are the real DNS
   cutover this project is holding off on until the site is otherwise ready to launch (see
   `DECISIONS.md`/`CLAUDE.md` on treating that as a deliberate, late step, not routine).
-- **Not yet done**: Kit and Paddle accounts/integration; real content authoring (deliberately
+- **Not yet done**: Kit env vars on Vercel (account/integration itself is done locally — see
+  "Kit connection" above) and Paddle account/integration; real content authoring (deliberately
   sequenced last — see below); legal copy; the domain cutover above.

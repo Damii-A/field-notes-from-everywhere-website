@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { subscribeToKit } from "@/lib/integrations/kit";
+import { tagSubscriber, KitNotConfiguredError } from "@/lib/integrations/kit";
 import { sendBookListEmail } from "@/lib/integrations/resend";
 import { getArticleBySlug } from "@/lib/content";
 import type { CategorySlug } from "@/lib/content";
@@ -16,8 +16,11 @@ interface SubscribeBody {
 /**
  * Powers both free-list email capture points from pub_article.md §6.4 —
  * the article "send this list to me" popup — and, more generally, any
- * future free-list signup point. Kit gets every subscriber (the ongoing
- * list relationship); Resend sends the one-off list email for "send-list"
+ * future free-list signup point. Kit gets every subscriber, tagged by
+ * source (`KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID`) so the two
+ * entry points are distinguishable in Kit's own reporting — Kit's single
+ * audience means everyone still receives the weekly recap regardless of
+ * which tag they have. Resend sends the one-off list email for "send-list"
  * requests specifically. See ARCHITECTURE.md §9.
  */
 export async function POST(request: Request) {
@@ -37,7 +40,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    await subscribeToKit({ email, tagId: process.env.KIT_PUBLICATION_FORM_ID });
+    const tagId = source === "send-list" ? process.env.KIT_SEND_LIST_TAG_ID : process.env.KIT_NEWSLETTER_TAG_ID;
+    if (!tagId) throw new KitNotConfiguredError();
+    await tagSubscriber(email, tagId);
   } catch (err) {
     console.error("[api/subscribe] Kit subscribe failed:", err);
     return NextResponse.json(

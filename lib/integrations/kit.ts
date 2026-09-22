@@ -4,12 +4,10 @@
  * Reading Room segment), not one-off transactional sends (that's Resend,
  * see resend.ts).
  *
- * Uses Kit's v4 REST API (api.kit.com/v4). Not yet exercised against a real
- * account — there is no Kit account configured yet (see CURRENT_STATE.md).
- * Verify the exact endpoint/payload shape against Kit's current API
- * reference before relying on this in production; this is a best-effort
- * implementation from their public docs, not something that's been tested
- * end-to-end.
+ * Uses Kit's v4 REST API (api.kit.com/v4), verified against
+ * developers.kit.com on 2026-09-22 against a real Kit account. A form and a
+ * tag are different Kit objects with different endpoints — adding someone to
+ * the publication signup form is not the same call as tagging them.
  */
 
 const KIT_API_BASE = "https://api.kit.com/v4";
@@ -21,38 +19,61 @@ export class KitNotConfiguredError extends Error {
   }
 }
 
-interface SubscribeOptions {
-  email: string;
-  /** Kit tag ID to apply — distinguishes the free Publication list from the Reading Room segment. */
-  tagId?: string;
-}
-
-export async function subscribeToKit({ email, tagId }: SubscribeOptions): Promise<void> {
+function requireApiKey(): string {
   const apiKey = process.env.KIT_API_KEY;
   if (!apiKey) throw new KitNotConfiguredError();
+  return apiKey;
+}
 
+function kitHeaders(apiKey: string) {
+  return { "Content-Type": "application/json", "X-Kit-Api-Key": apiKey };
+}
+
+/** Creates the subscriber in Kit if they don't already exist (POST /subscribers is an upsert). */
+async function upsertSubscriber(apiKey: string, email: string): Promise<void> {
   const res = await fetch(`${KIT_API_BASE}/subscribers`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Kit-Api-Key": apiKey,
-    },
+    headers: kitHeaders(apiKey),
     body: JSON.stringify({ email_address: email }),
   });
   if (!res.ok) {
-    throw new Error(`Kit subscribe failed: ${res.status} ${await res.text()}`);
+    throw new Error(`Kit create-subscriber failed: ${res.status} ${await res.text()}`);
   }
-  const data = (await res.json()) as { subscriber?: { id: number } };
-  const subscriberId = data.subscriber?.id;
+}
 
-  if (tagId && subscriberId) {
-    const tagRes = await fetch(`${KIT_API_BASE}/tags/${tagId}/subscribers/${subscriberId}`, {
-      method: "POST",
-      headers: { "X-Kit-Api-Key": apiKey },
-    });
-    if (!tagRes.ok) {
-      throw new Error(`Kit tag failed: ${tagRes.status} ${await tagRes.text()}`);
-    }
+/**
+ * Adds a subscriber to a specific Kit form (e.g. the publication free-list
+ * signup form) — POST /forms/{form_id}/subscribers. The subscriber must
+ * already exist in Kit, hence the upsert first.
+ */
+export async function addSubscriberToForm(email: string, formId: string): Promise<void> {
+  const apiKey = requireApiKey();
+  await upsertSubscriber(apiKey, email);
+  const res = await fetch(`${KIT_API_BASE}/forms/${formId}/subscribers`, {
+    method: "POST",
+    headers: kitHeaders(apiKey),
+    body: JSON.stringify({ email_address: email }),
+  });
+  if (!res.ok) {
+    throw new Error(`Kit add-to-form failed: ${res.status} ${await res.text()}`);
+  }
+}
+
+/**
+ * Tags a subscriber (e.g. the Reading Room trial tag) — POST
+ * /tags/{tag_id}/subscribers, addressed by email. The subscriber must
+ * already exist in Kit, hence the upsert first.
+ */
+export async function tagSubscriber(email: string, tagId: string): Promise<void> {
+  const apiKey = requireApiKey();
+  await upsertSubscriber(apiKey, email);
+  const res = await fetch(`${KIT_API_BASE}/tags/${tagId}/subscribers`, {
+    method: "POST",
+    headers: kitHeaders(apiKey),
+    body: JSON.stringify({ email_address: email }),
+  });
+  if (!res.ok) {
+    throw new Error(`Kit tag failed: ${res.status} ${await res.text()}`);
   }
 }
 
@@ -61,11 +82,9 @@ export async function setReadingRoomTag(email: string, active: boolean): Promise
   const tagId = process.env.KIT_READING_ROOM_TAG_ID;
   if (!tagId) throw new KitNotConfiguredError();
   if (active) {
-    await subscribeToKit({ email, tagId });
+    await tagSubscriber(email, tagId);
     return;
   }
-  const apiKey = process.env.KIT_API_KEY;
-  if (!apiKey) throw new KitNotConfiguredError();
   // Removing a tag by email requires looking the subscriber up first —
   // left as a TODO until this is exercised against a real Kit account;
   // the Paddle webhook route surfaces this rather than silently no-op-ing.
