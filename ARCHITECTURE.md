@@ -220,13 +220,17 @@ Automations feature; see `DECISIONS.md`, "Move the Reading Room trial sequence f
 Resend Automations" for the full reasoning):
 
 - **Kit** owns durable list/segment *state* — who's on the free list and why
-  (`KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID`, source-attribution tags), and who
-  currently has an active Reading Room relationship (`KIT_READING_ROOM_TAG_ID`, "membership"
-  in the user's words — added at trial start, updated by the Paddle webhook on
-  conversion/cancellation, see §10). It's the subscriber-list source of truth, but as of
-  2026-09-22 it does not send anything itself — both Kit's Automations and its RSS-to-email
-  turned out to be Creator-plan-only ($33/month), not free-plan features as originally
-  assumed (see `DECISIONS.md`, both the Reading Room and weekly-recap entries).
+  (`KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID`, source-attribution tags), and who is a
+  *confirmed, converted* Reading Room member (`KIT_READING_ROOM_TAG_ID`, "membership" in the
+  user's words). Kit is never touched for a trial-only signup — only the future Paddle webhook
+  adds someone to Kit, at the moment they actually convert (see `DECISIONS.md`, "Kit holds
+  only confirmed Reading Room members, never trial-only signups"). It's the subscriber-list
+  source of truth, but as of 2026-09-22 it does not send anything itself for the free list or
+  the trial — both Kit's Automations and its RSS-to-email turned out to be Creator-plan-only
+  ($33/month), not free-plan features as originally assumed (see `DECISIONS.md`, both the
+  Reading Room and weekly-recap entries). Kit *is* still the intended sender for the ongoing
+  Reading Room member catalogue once someone's converted — manual broadcasts targeted at the
+  member tag, not automation, so the free plan's automation restriction doesn't apply there.
 - **Resend** owns all actual sending: the one-off "send this list to me" email; the Reading
   Room trial's entire 7-day daily-catalogue-and-sales-sequence, via **Resend Automations** (a
   visual, event-triggered sequence builder Resend added in April 2026), triggered with
@@ -258,12 +262,16 @@ Three distinct jobs:
    app's own weekly cron job (see above), not Kit — Kit only supplies the recipient list.
 2. **Reading Room trial + subscription delivery and lifecycle** — starting a trial is an
    email-capture action on this site (see `DECISIONS.md`, "Reading Room's free trial is
-   tracked in Kit, not as a Paddle trial"): the app fires the Resend Automations event (which
-   runs the 7 days of daily catalogue emails and the trial sales sequence — welcome → value
-   reminders → "trial ending" → a branch depending on whether they convert) and tags the
-   subscriber with `KIT_READING_ROOM_TAG_ID` for membership bookkeeping. The app's remaining
-   job is telling Kit when Paddle reports a real lifecycle change (converted to paying,
-   canceled, payment failed) — see §10.
+   tracked in Kit, not as a Paddle trial") that only fires the Resend Automations event —
+   Kit is not involved (see `DECISIONS.md`, "Kit holds only confirmed Reading Room members").
+   That event runs the entire trial-to-conversion journey in Resend: welcome, 7 days of fixed
+   trial catalogue content (the last day(s) mentioning the trial ending), then a
+   conversion-check before each further email so it can exit into a single "you're a member
+   now" email whenever conversion actually happens, or continue a post-trial conversion-focused
+   series if it hasn't. The only thing that can signal conversion is the future Paddle
+   webhook — see §10 — which is also the one and only moment someone is added to Kit, under
+   `KIT_READING_ROOM_TAG_ID`. From that point on, their ongoing membership emails come from
+   Kit directly (manual broadcasts to that tag), not from any code.
 3. **The one-off "send this list to me" email** (`pub_article.md` §6.4) — the reader gets
    the specific book list from the specific article they were reading, immediately, by
    email, and is also added to the free list, tagged `KIT_SEND_LIST_TAG_ID` (disclosed in the
@@ -277,10 +285,9 @@ popup: validates the email, tags the subscriber in Kit by source (`KIT_NEWSLETTE
 `KIT_SEND_LIST_TAG_ID`), and (for the "send this list" flow only) sends the transactional
 email via Resend with that article's book list. Starting a Reading Room trial is a distinct
 endpoint, `/api/reading-room/start-trial`, used by `ReadingRoomTrialForm` (the "Join for
-free" / "Join The Reading Room" CTAs on `/the-reading-room`): it fires the Resend trial event
-(required — this is the trial's actual value to the reader) and then best-effort tags the
-subscriber in Kit for membership tracking (a Kit failure here degrades to a 207 partial
-response rather than failing the whole request, since the trial itself already started).
+free" / "Join The Reading Room" CTAs on `/the-reading-room`): it only fires the Resend trial
+event — Kit is not called at all (see `DECISIONS.md`, "Kit holds only confirmed Reading Room
+members, never trial-only signups").
 
 ## 10. Paddle (billing)
 

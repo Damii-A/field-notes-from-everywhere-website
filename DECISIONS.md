@@ -433,6 +433,40 @@ revisiting if combined volume approaches it.
 
 ---
 
+## 2026-09-22 — Kit holds only confirmed Reading Room members, never trial-only signups
+
+**Decision**: `/api/reading-room/start-trial` no longer touches Kit at all — it only fires the
+Resend trial event. Kit is never involved until the moment someone actually converts to a
+paying subscriber (the future Paddle webhook), at which point it's tagged for the first and
+only time. This supersedes the "added at trial start" framing in the "Move the Reading Room
+trial sequence from Kit to Resend Automations" entry above, from earlier the same day.
+
+**Context**: The earlier same-day decision still had trial-start tagging Kit's
+`KIT_READING_ROOM_TAG_ID` "for membership bookkeeping," on the assumption Kit should track
+the relationship from the moment someone starts trialing. The user pointed out there's no
+reason for this: Resend already runs and knows the entire state of someone's trial (it's the
+system actually sending them anything), so registering them in Kit too is pure duplicate
+bookkeeping for a system that never acts on it during the trial. Kit's actual job — established
+across several corrections this same day — is being the home for genuine, ongoing Reading Room
+*memberships*, not a shadow copy of every trial signup.
+
+**Reasoning**: Removes a redundant integration point with no consumer — nothing reads the
+"trialing" tag for anything, since the Resend automation doesn't need it (it already knows who
+started via its own trigger) and no other system queries Kit for trial status. Keeping Kit
+untouched until real conversion also means Kit's own subscriber count and dashboard stay an
+honest reflection of actual paying members, not a mix of trial noise and confirmed members.
+
+**Consequences**: `/api/reading-room/start-trial` (`app/api/reading-room/start-trial/route.ts`)
+now only calls `triggerReadingRoomTrialEvent`; the Kit tagging call and its 207
+partial-failure branch were removed entirely. `KIT_READING_ROOM_TAG_ID` remains a real env var,
+but its only future caller is the not-yet-built Paddle webhook, at actual conversion.
+Verified against the real Resend account: the route still returns `{"started":true}`
+correctly with no Kit call in the path.
+
+**Status**: confirmed with the user 2026-09-22 before implementing.
+
+---
+
 ## 2026-09-22 — Collect a name at every email signup point; redesign the weekly recap format
 
 **Decision**: `/api/subscribe` and `/api/reading-room/start-trial` now require a `name` field

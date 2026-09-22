@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { tagSubscriber, KitNotConfiguredError } from "@/lib/integrations/kit";
 import { triggerReadingRoomTrialEvent } from "@/lib/integrations/resend";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -12,10 +11,13 @@ interface StartTrialBody {
 /**
  * Starts a Reading Room trial — email-capture only, no Paddle involved (see
  * DECISIONS.md, "Reading Room's free trial is tracked in Kit, not as a
- * Paddle trial"). Resend Automations owns the actual sequence (7 days of
- * daily catalogue emails + the trial sales sequence — see DECISIONS.md,
- * "Move the Reading Room trial sequence from Kit to Resend Automations");
- * Kit only tracks membership via the durable relationship tag.
+ * Paddle trial"). Resend owns the entire trial-to-conversion journey
+ * (welcome, 7 days of trial content, conversion push — see DECISIONS.md,
+ * "Move the Reading Room trial sequence from Kit to Resend Automations").
+ * Kit is never touched here: it holds only confirmed, converted Reading
+ * Room members, added exclusively by the Paddle webhook at the moment of
+ * actual conversion (see DECISIONS.md, "Kit holds only confirmed Reading
+ * Room members, never trial-only signups").
  */
 export async function POST(request: Request) {
   let body: StartTrialBody;
@@ -43,20 +45,5 @@ export async function POST(request: Request) {
     );
   }
 
-  try {
-    const tagId = process.env.KIT_READING_ROOM_TAG_ID;
-    if (!tagId) throw new KitNotConfiguredError();
-    await tagSubscriber(email, tagId, name);
-  } catch (err) {
-    console.error("[api/reading-room/start-trial] Kit membership tag failed:", err);
-    // The trial sequence already started via Resend — don't report total
-    // failure, since the reader IS trialing now, just tell the truth about
-    // the membership-tracking tag.
-    return NextResponse.json(
-      { started: true, membershipTagged: false, warning: "Trial started, but membership tracking wasn't recorded." },
-      { status: 207 },
-    );
-  }
-
-  return NextResponse.json({ started: true, membershipTagged: true });
+  return NextResponse.json({ started: true });
 }

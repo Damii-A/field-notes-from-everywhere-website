@@ -90,10 +90,10 @@ until something is actually published in the Studio.
   scroll-driven progress rail, send-list popup wired to `/api/subscribe`.
 - The Reading Room landing page (`/the-reading-room`) — drifting book-cover hero, book shelf,
   trial section — CTAs wired to `ReadingRoomTrialForm`, an inline email-capture form that
-  starts a trial via `/api/reading-room/start-trial` (Resend Automations sends the actual
-  sequence; Kit only tracks membership — no Paddle involved — see "Email/subscriber
-  integrations" below). `ReadingRoomCheckoutButton` (Paddle.js checkout) exists but is unused
-  for now, reserved for a future "subscribe now" CTA once Paddle is configured.
+  starts a trial via `/api/reading-room/start-trial`. This only fires a Resend event; Kit is
+  never touched (no Paddle involvement either) — see "Email/subscriber integrations" below.
+  `ReadingRoomCheckoutButton` (Paddle.js checkout) exists but is unused for now, reserved for
+  a future "subscribe now" CTA once Paddle is configured.
 - API routes: `/api/subscribe` (Kit + Resend), `/api/webhooks/paddle`, `/api/webhooks/sanity`
   — all functional but gated on env vars that don't exist yet; each returns a clear error
   rather than silently no-op-ing when unconfigured (see "Known open items" below).
@@ -104,47 +104,34 @@ until something is actually published in the Studio.
 
 ## Email/subscriber integrations: Kit + Resend (2026-09-22)
 
-Real Kit (formerly ConvertKit) account created and connected — `KIT_API_KEY`, plus tags
-`KIT_READING_ROOM_TAG_ID` (durable "active Reading Room relationship"/membership state),
-`KIT_NEWSLETTER_TAG_ID` and `KIT_SEND_LIST_TAG_ID` (source attribution for the two free-list
-entry points) all set in `.env.local`. `lib/integrations/kit.ts` had never been exercised
-against a real account before this; testing it surfaced a real bug (it conflated Kit's
-**forms** and **tags** APIs) and, separately, a real product-fit problem (Kit's automations —
-needed to run the Reading Room trial's daily emails — are a **paid** feature, Kit Creator at
-$33/month). Both are now resolved:
+**Current, accurate picture** (see `DECISIONS.md` for the several corrections that got here —
+this section describes only the end state, not the history):
 
-- **The forms/tags bug**: verified the real v4 endpoint shapes against `developers.kit.com`
-  and rewrote `lib/integrations/kit.ts` — `addSubscriberToForm` and `tagSubscriber` now call
-  the correct, distinct endpoints. Verified against the real account (`{"subscribed":true}`
-  from a real `/api/subscribe` POST).
-- **The paid-automations problem**: rather than pay for Kit Creator, the Reading Room trial's
-  entire email sequence moved to **Resend Automations** (Resend's own free-tier automation
-  feature, shipped April 2026) — see `DECISIONS.md`, "Move the Reading Room trial sequence
-  from Kit to Resend Automations," for the full reasoning and the API-shape verification done
-  against the installed SDK's own types (not just docs, after the Kit bug showed doc-only
-  verification isn't enough). Kit's role narrowed to tracking membership state only
-  (`KIT_READING_ROOM_TAG_ID`); the `KIT_READING_ROOM_FORM_ID` Kit form created earlier the
-  same day for this purpose is no longer called by app code as a result (harmless to leave
-  configured in Kit, just unused).
+- **Kit** holds the free-list tags (`KIT_NEWSLETTER_TAG_ID`, `KIT_SEND_LIST_TAG_ID` — applied
+  by `/api/subscribe`) and, separately, confirmed Reading Room members
+  (`KIT_READING_ROOM_TAG_ID`) — added **only** by the future Paddle webhook, at actual
+  conversion. Kit is not touched at all by trial-start. Real account connected
+  (`KIT_API_KEY` in `.env.local`); `lib/integrations/kit.ts` calls the real v4 API, verified
+  against `developers.kit.com` and the real account. Kit sends nothing itself in this build —
+  its Automations and RSS-to-email are both Creator-plan-only ($33/month) — except that it
+  *is* still the intended sender for the ongoing Reading Room member catalogue later (manual
+  broadcasts to the member tag, not automation, so the free-plan restriction doesn't apply).
+  `KIT_READING_ROOM_FORM_ID` (a Kit form created earlier, before this design settled) is no
+  longer called by any code — harmless to leave configured in Kit, just unused.
+- **Resend** sends everything: the one-off "send this list to me" email, the weekly recap
+  (Vercel Cron), and the entire Reading Room trial-to-conversion journey via **Resend
+  Automations** — triggered by `/api/reading-room/start-trial` firing a
+  `reading_room_trial_started` event (`triggerReadingRoomTrialEvent`), with no Kit call
+  alongside it.
+- **Still using Kit as the recipient-list source** for both `/api/subscribe`'s tags and the
+  weekly recap's audience — moving that to Resend's own contacts is agreed but not yet built
+  (see "Immediately next" below).
 
-**Reading Room trial-start flow**: both "Join for free" / "Join The Reading Room" CTAs on
-`/the-reading-room` were found to lead nowhere (still wired to the old Paddle-checkout button,
-which stays disabled since Paddle isn't configured) — that wiring was always wrong per the
-"Reading Room's free trial is tracked in Kit, not as a Paddle trial" decision, just never
-actually replaced. Now fixed: both use `ReadingRoomTrialForm` (click reveals an inline email
-field), POSTing to `/api/reading-room/start-trial`, which fires the Resend trial event
-(`triggerReadingRoomTrialEvent`, required — this is the trial's actual value) and then
-best-effort tags the subscriber in Kit for membership bookkeeping (degrades to a 207 partial
-response if Kit fails, since the trial itself already started via Resend).
-`ReadingRoomCheckoutButton` itself is unused for now — kept for when Paddle is set up and a
-"subscribe now" (as opposed to "start trial") CTA is needed.
-
-**Verified end-to-end against real accounts, 2026-09-22**: `RESEND_API_KEY` added to
-`.env.local` (a fresh key created directly in Resend's own dashboard, since Vercel masks the
-marketplace-provisioned one once saved and it can't be re-read — a second key is fine,
-they're independent). Ran `npm run dev` and POSTed to `/api/reading-room/start-trial` — got
-back `{"started":true,"membershipTagged":true}`: Resend accepted the trial event and Kit's
-membership tag was applied, both against the real accounts, not mocks.
+**Verified against real accounts, 2026-09-22**: `/api/subscribe` and
+`/api/reading-room/start-trial` both succeed against the real Kit/Resend accounts (the latter
+confirmed to no longer call Kit at all — `{"started":true}` with no membership-tag field).
+`RESEND_API_KEY` is in `.env.local` (a key created directly in Resend's dashboard, independent
+of the one Vercel's marketplace integration provisioned for production).
 
 **Still needed**:
 - Add all four `KIT_*` env vars to Vercel's environment variables too — **done by the user
@@ -154,9 +141,11 @@ membership tag was applied, both against the real accounts, not mocks.
   duplicate; `CRON_SECRET` must be the **same value** as `.env.local`'s, since Vercel sends
   it back verbatim to authenticate the cron job — see "Weekly recap" below).
 - **In Resend's dashboard** (the user's own account-side task, not code): build the actual
-  Reading Room trial automation (7 days of daily catalogue emails + trial sales sequence),
-  triggered on the `reading_room_trial_started` event. A simple placeholder/test email first
-  is a reasonable way to confirm the trigger wiring works before writing the real sequence.
+  Reading Room trial automation (welcome, 7 days of trial content, then a conversion-check
+  before each further email so it can exit into a single "you're a member" email whenever
+  conversion happens, or continue a post-trial conversion series if it hasn't), triggered on
+  the `reading_room_trial_started` event. A simple placeholder/test email first is a
+  reasonable way to confirm the trigger wiring works before writing the real content.
 - `setReadingRoomTag(active=false)` (removing the membership tag on cancellation) is still an
   unimplemented TODO in `lib/integrations/kit.ts` — needs a subscriber lookup-by-email step,
   deferred until the Paddle webhook work makes it testable.
@@ -229,14 +218,14 @@ Two real issues surfaced and fixed while building this, worth knowing about for 
 
 Full reasoning in `DECISIONS.md`; summary here for quick reference:
 
-- **One base group**: everyone who opts in any way (direct signup, "send this list to me," or
-  starting a Reading Room trial) is a Kit subscriber, tagged by source, and receives the
-  weekly recap of that week's Publication articles — including current Reading Room
-  subscribers, since it's different content from Reading Room's own daily catalogues.
+- **The free list**: direct signup or "send this list to me" makes someone a Kit subscriber,
+  tagged by source, receiving the weekly recap of that week's Publication articles. Starting a
+  Reading Room trial does **not** — Kit is untouched by trial-start (see "Email/subscriber
+  integrations" above); a trial-only signup is a Resend-only relationship until they convert.
 - **Reading Room trial is email-only, not a Paddle trial**: starting a trial just captures an
-  email. **Resend Automations** (not Kit — see "Email/subscriber integrations" above) runs the
-  7 days of daily catalogue emails and the trial sales sequence; Kit only tags the person for
-  membership tracking. Paddle is not involved until the person actually chooses to subscribe.
+  email and fires a Resend event. **Resend** runs the entire trial-to-conversion journey
+  (welcome, 7 days of catalogue content, a conversion push) with no Kit involvement at all.
+  Paddle is not involved until the person actually chooses to subscribe either.
 - **Paddle enters only at real conversion**: a real Paddle checkout for the $5/month Price,
   with no trial object configured on Paddle's side. Its webhook then tells Kit whenever
   someone converts, cancels, or has a failed payment — updating their membership tag
