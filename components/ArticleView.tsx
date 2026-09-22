@@ -263,7 +263,7 @@ export function ArticleView({ article }: { article: Article }) {
               </span>
               <span className={styles.rrBannerHeadline}>Get 30+ book recommendations, delivered to your inbox six days a week.</span>
               <span className={styles.rrBannerFine} style={{ color: style.rrBannerFineColor }}>
-                7 days free, no credit card. $5/month after that.
+                7 days free, no credit card. $7/month after that.
               </span>
             </div>
             <Link href="/the-reading-room" className={styles.rrBannerCta} style={{ background: style.rrBannerCtaBg, color: style.rrBannerCtaColor }}>
@@ -298,7 +298,7 @@ export function ArticleView({ article }: { article: Article }) {
                   The Reading Room
                 </span>
                 <span className={styles.floatAdHeadline}>Get 30+ book recommendations, delivered to your inbox six days a week.</span>
-                <p className={styles.floatAdFine}>Your first 7 days are on us then it&rsquo;s $5/month after that. Cancel anytime</p>
+                <p className={styles.floatAdFine}>Your first 7 days are on us then it&rsquo;s $7/month after that. Cancel anytime</p>
                 <Link href="/the-reading-room" className={styles.floatAdCta}>
                   Take a look
                 </Link>

@@ -14,7 +14,7 @@ built in the Claude Design project, is:
 - a **public marketing/editorial website**: homepage, three Publication category hubs, an
   article template shared by all three categories, an About page with a linkable methodology
   section, Contact, and three legal pages;
-- a **Reading Room landing page** that sells a $5/month subscription with a 7-day free trial;
+- a **Reading Room landing page** that sells a $7/month subscription with a 7-day free trial;
 - **two email-capture points** inside Publication articles that join a free mailing list;
 - **no logged-in product** — the full subscriber experience (passwordless login, a Books
   catalogue, a Past Issues archive) is specified in `docs/design-specs/rr_subscriber.md` but
@@ -56,7 +56,7 @@ system; it does not redefine the product.
    ┌─────────────────┐  ┌───────────────────┐  ┌──────────────────┐
    │  Sanity (CMS)    │  │  Kit               │  │  Paddle Billing  │
    │  content +       │  │  (email)           │  │  (subscriptions) │
-   │  taxonomy        │  │  free list, RR     │  │  $5/mo, no trial │
+   │  taxonomy        │  │  free list, RR     │  │  $7/mo, no trial │
    │                  │  │  trial tracking +  │  │  object — entered│
    │                  │  │  delivery, sales   │  │  only at actual  │
    │                  │  │  sequences         │  │  sign-up         │
@@ -270,7 +270,7 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 
 - **Paddle Billing** (current product), overlay checkout via Paddle.js, triggered from
   wherever a trialing (or trial-skipping) reader chooses to actually subscribe — configured
-  against a single Price: $5/month, no trial configured on the Paddle side, since the free
+  against a single Price: $7/month, no trial configured on the Paddle side, since the free
   period already happened (if at all) entirely inside Kit before Paddle was ever involved.
 - `/api/webhooks/paddle` verifies Paddle's webhook signature and handles subscription
   lifecycle events (activated, past-due, canceled) by calling the Kit API to tag/untag the
@@ -309,7 +309,7 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `PADDLE_WEBHOOK_SECRET` | verifies Paddle → `/api/webhooks/paddle` calls |
 | `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` | Paddle.js client-side checkout (not a secret — Paddle's client SDK is designed to ship this to the browser) |
 | `NEXT_PUBLIC_PADDLE_ENVIRONMENT` | `sandbox` or `production` |
-| `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID` | the $5/mo + 7-day-trial Price to check out against (Price IDs aren't secret either — Paddle.js needs this client-side) |
+| `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID` | the $7/mo + 7-day-trial Price to check out against (Price IDs aren't secret either — Paddle.js needs this client-side) |
 | `NEXT_PUBLIC_SITE_URL` | canonical URL for metadata/OG/sitemap |
 
 None of these exist yet. See `CURRENT_STATE.md` for what's actually needed from the user

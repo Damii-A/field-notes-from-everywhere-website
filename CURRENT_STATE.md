@@ -2,8 +2,10 @@
 
 Last updated: 2026-09-22 (a cluster of production-only bugs found and fixed: `SITE_URL`,
 Sanity Studio's client-side project ID, Sanity CORS/webhook, and a broken production
-`RESEND_API_KEY` — see "Immediately next" and "Deployment". Also: the Reading Room trial
-automation is blocked on a real product question, not ready to finish building yet)
+`RESEND_API_KEY` — see "Immediately next" and "Deployment". The Reading Room trial automation
+is now structurally complete and firing correctly (content still pending, deliberately). A
+standalone `/the-reading-room/subscribe` page exists for where Paddle checkout will plug in.
+Reading Room price changed to $7/month, was $5/month.)
 
 ## What exists right now
 
@@ -257,7 +259,7 @@ also write a matching signal into Resend (e.g. a contact property) when someone 
 the trial automation's post-trial branch above has something to check — one webhook update,
 not a second sync path.
 
-1. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
+1. Set up Paddle (account + API key + webhook secret + the actual $7/month Price — no trial
    configured on Paddle's side; see "Email/subscriber architecture" below for why). Unblocks
    the Paddle webhook itself (still just a stub) and the trial automation's post-trial
    conversion-check branch above.
@@ -327,7 +329,7 @@ Full reasoning in `DECISIONS.md`; summary here for quick reference:
   email and fires a Resend event. **Resend** runs the entire trial-to-conversion journey
   (welcome, 7 days of catalogue content, a conversion push) with no Kit involvement at all.
   Paddle is not involved until the person actually chooses to subscribe either.
-- **Paddle enters only at real conversion**: a real Paddle checkout for the $5/month Price,
+- **Paddle enters only at real conversion**: a real Paddle checkout for the $7/month Price,
   with no trial object configured on Paddle's side. Its webhook then tells Kit whenever
   someone converts, cancels, or has a failed payment — updating their membership tag
   accordingly.
@@ -352,7 +354,7 @@ Full reasoning in `DECISIONS.md`; summary here for quick reference:
 
 ## Known open items requiring the user before certain work can proceed
 
-- **Paddle account** — API key, webhook secret, and the actual $5/month Price created in
+- **Paddle account** — API key, webhook secret, and the actual $7/month Price created in
   Paddle's dashboard (a Price ID this app checks out against). No trial needs configuring on
   Paddle's side — see "Email/subscriber architecture" above; the earlier open question about
   whether Paddle supports a genuinely card-free trial is now moot, since Paddle isn't used

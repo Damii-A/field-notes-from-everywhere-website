@@ -393,7 +393,7 @@ export default async function HomePage() {
             </h3>
             <p style={{ font: "var(--type-body)", color: "var(--ink-500)", margin: 0, maxWidth: "54ch" }}>
               You&rsquo;ll get full access to The Reading Room completely free for 7 days, no credit card required.
-              And if you decide to stick around, it&rsquo;s just $5/month after that. Cancel anytime.
+              And if you decide to stick around, it&rsquo;s just $7/month after that. Cancel anytime.
             </p>
             <Link
               href="/the-reading-room"

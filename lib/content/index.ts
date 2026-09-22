@@ -208,7 +208,7 @@ export async function getLegalPage(slug: LegalPage["slug"]): Promise<LegalPage> 
 const SITE_SETTINGS_FALLBACK: SiteSettings = {
   contactEmail: "hello@fieldnotesfromeverywhere.com",
   socialLinks: {},
-  readingRoomPriceCopy: "7 days free, no credit card. $5/month after that.",
+  readingRoomPriceCopy: "7 days free, no credit card. $7/month after that.",
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {

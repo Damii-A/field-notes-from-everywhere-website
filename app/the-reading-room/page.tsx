@@ -97,7 +97,7 @@ export default async function ReadingRoomPage() {
           <h2 className={styles.trialHeading}>Sound interesting? Well, it gets even better!</h2>
           <p className={styles.trialBody}>
             You can try The Reading Room for 7 days completely free of charge. We won&rsquo;t even ask for your
-            credit card. If you decide you&rsquo;d like to stay after your trial, membership is $5/month. Cancel
+            credit card. If you decide you&rsquo;d like to stay after your trial, membership is $7/month. Cancel
             anytime.
           </p>
           <ReadingRoomTrialForm ctaClassName={styles.trialCta}>Join The Reading Room</ReadingRoomTrialForm>

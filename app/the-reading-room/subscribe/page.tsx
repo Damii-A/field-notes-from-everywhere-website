@@ -7,7 +7,7 @@ import styles from "./Subscribe.module.css";
 
 export const metadata: Metadata = {
   title: "Subscribe — The Reading Room",
-  description: "Confirm your Reading Room subscription — $5/month, cancel anytime.",
+  description: "Confirm your Reading Room subscription — $7/month, cancel anytime.",
   robots: { index: false, follow: true },
 };
 
@@ -31,7 +31,7 @@ export default async function ReadingRoomSubscribePage() {
             You&rsquo;re one step away from full access to every Reading Room catalogue, every day.
           </p>
           <ReadingRoomCheckoutButton className={styles.cta}>Subscribe now</ReadingRoomCheckoutButton>
-          <p className={styles.priceNote}>$5/month. Cancel anytime.</p>
+          <p className={styles.priceNote}>$7/month. Cancel anytime.</p>
           <Link href="/the-reading-room" className={styles.back}>
             Not ready yet? Back to The Reading Room
           </Link>

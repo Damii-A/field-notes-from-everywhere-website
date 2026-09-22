@@ -19,7 +19,7 @@ export default defineType({
     defineField({
       name: "readingRoomPriceCopy",
       title: "Reading Room price copy",
-      description: 'e.g. "7 days free, no credit card. $5/month after that."',
+      description: 'e.g. "7 days free, no credit card. $7/month after that."',
       type: "string",
     }),
   ],

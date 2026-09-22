@@ -595,3 +595,28 @@ for `@sanity/client.fetch()` without re-verifying the bug is actually gone.
 version if one is adopted later (for the Studio's own dependency), to see if this was fixed
 upstream — but don't switch the app's read path back without first repeating the same isolation
 test (raw `fetch()` vs `client.fetch()` in the same request) that caught this.
+
+---
+
+## 2026-09-22 — Reading Room price changed from $5/month to $7/month
+
+**Decision**: The Reading Room subscription price is $7/month (still a 7-day free trial, still
+no card required to start it). Every prior reference to $5/month across the codebase, docs,
+and UI copy has been updated to $7/month.
+
+**Context**: User-directed pricing change, made while discussing where Paddle fits into the
+trial/checkout flow, before the actual Paddle Price object exists — no live subscribers or
+Paddle configuration affected by this change.
+
+**Consequences**: Updated `app/page.tsx`, `app/the-reading-room/page.tsx`,
+`app/the-reading-room/subscribe/page.tsx`, `components/ArticleView.tsx`,
+`lib/content/index.ts` (`readingRoomPriceCopy` fallback), `lib/content/types.ts` and
+`sanity/schemaTypes/siteSettings.ts` (comments/field descriptions), plus `CLAUDE.md`,
+`ARCHITECTURE.md`, and `CURRENT_STATE.md`. Deliberately did **not** edit
+`docs/design-specs/rr_landing.md`/`homepage.md` — those are verbatim mirrors of the original
+client spec (still $5/month there), not live app content; this decision is the record of the
+intentional divergence, per `CLAUDE.md`'s governing-sources rules on how a real change of
+product direction gets recorded. When Paddle's actual Price object is created, it must be
+created at $7/month to match.
+
+**Status**: user-directed, implemented same session.

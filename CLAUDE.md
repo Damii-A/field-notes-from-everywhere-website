@@ -7,7 +7,7 @@ first, then follow the Session Startup Protocol below before making substantial 
 
 Field Notes From Everywhere (FNFE) is a book-recommendation editorial website: a free
 Publication (three editorial columns of curated reading lists, backed by reader-recommendation
-research) and The Reading Room, a paid ($5/month, 7-day free trial) daily newsletter product.
+research) and The Reading Room, a paid ($7/month, 7-day free trial) daily newsletter product.
 V1 is the public marketing/editorial site plus Reading Room trial signup — see
 `ARCHITECTURE.md` for exactly what that does and doesn't include.
 
