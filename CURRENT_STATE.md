@@ -330,13 +330,11 @@ worth of confusion (stale content, 404s on newer routes, `SITE_URL` fixes that a
 take effect) traced back to testing against frozen per-deployment URLs instead of this one.
 **Always use the hash-less URL** for verification and for `SITE_URL` going forward.
 
-**`SITE_URL` still needs correcting to this hash-less URL** — as of 2026-09-22 it's set to
-`...-94ph8iele.vercel.app` (a per-deployment URL from an earlier fix attempt — see above —
-which would go stale again on the next deploy exactly like the original bug). A previous
-version of this note claimed this was "confirmed live" before that was actually verified —
-it wasn't; `sitemap.xml`/`/rss` were re-checked directly and still show the wrong URL. Don't
-trust a "done"/"confirmed" claim here without a fresh direct check of `sitemap.xml` or `/rss`
-right before writing it down.
+**`SITE_URL` is now correctly set to this hash-less URL** — fixed and redeployed 2026-09-22,
+verified live via a fresh direct check of both `sitemap.xml` and `/rss` (both emit
+`https://field-notes-from-everywhere-website.vercel.app`, no hash), cross-checked via two
+independent fetch paths. This was previously claimed "confirmed" before it actually was (see
+git history on this file) — that's corrected now with an actual verified check.
 
 **Still needs checking, not yet done (Sanity access wasn't authorized this session)**:
 Sanity's CORS allowlist and the `/api/webhooks/sanity` webhook target were both registered
