@@ -257,8 +257,10 @@ Three distinct jobs:
 `/api/subscribe` handles the free-list signup point and the article "send this list to me"
 popup: validates the email, tags the subscriber in Kit by source (`KIT_NEWSLETTER_TAG_ID` or
 `KIT_SEND_LIST_TAG_ID`), and (for the "send this list" flow only) sends the transactional
-email via Resend with that article's book list. Starting a Reading Room trial is a distinct,
-not-yet-built endpoint (see `CURRENT_STATE.md`) that adds to the Reading Room form instead.
+email via Resend with that article's book list. Starting a Reading Room trial is a distinct
+endpoint, `/api/reading-room/start-trial`, used by `ReadingRoomTrialForm` (the "Join for
+free" / "Join The Reading Room" CTAs on `/the-reading-room`): it adds the subscriber to the
+Reading Room form and applies the durable relationship tag, with no Paddle involvement.
 
 ## 10. Paddle (billing)
 

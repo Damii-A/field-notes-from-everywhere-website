@@ -1,6 +1,7 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-22 (Kit account connected, forms/tags API bug fixed and verified live)
+Last updated: 2026-09-22 (Kit connected; Reading Room trial-start flow built, replacing the
+dead Paddle-checkout CTAs)
 
 ## What exists right now
 
@@ -88,9 +89,10 @@ until something is actually published in the Studio.
   me" callouts, Reading Room banner + floating rail ad, floating share/copy-link control,
   scroll-driven progress rail, send-list popup wired to `/api/subscribe`.
 - The Reading Room landing page (`/the-reading-room`) — drifting book-cover hero, book shelf,
-  trial section — CTAs wired to `ReadingRoomCheckoutButton`, which opens Paddle.js checkout
-  when configured and otherwise shows an honest "not configured yet" state rather than a fake
-  success.
+  trial section — CTAs wired to `ReadingRoomTrialForm`, an inline email-capture form that
+  starts a trial via `/api/reading-room/start-trial` (Kit only, no Paddle — see "Kit
+  connection" below). `ReadingRoomCheckoutButton` (Paddle.js checkout) exists but is unused
+  for now, reserved for a future "subscribe now" CTA once Paddle is configured.
 - API routes: `/api/subscribe` (Kit + Resend), `/api/webhooks/paddle`, `/api/webhooks/sanity`
   — all functional but gated on env vars that don't exist yet; each returns a clear error
   rather than silently no-op-ing when unconfigured (see "Known open items" below).
@@ -131,17 +133,25 @@ form that was originally created is now reserved for the Reading Room trial sign
 `KIT_PUBLICATION_FORM_ID` → `KIT_READING_ROOM_FORM_ID`). Full reasoning in `DECISIONS.md`
 ("Kit object mapping: forms for the Reading Room trial, tags for everything else").
 
+**Reading Room trial-start flow — built 2026-09-22**: the user noticed the "Join for free" /
+"Join The Reading Room" CTAs on the live site didn't lead anywhere — they were still wired to
+`ReadingRoomCheckoutButton`, which only opens Paddle checkout, and Paddle isn't configured
+yet (so the button just rendered disabled with a small "not configured" note). That wiring
+was always wrong per the "Reading Room's free trial is tracked in Kit, not as a Paddle trial"
+decision below — it was flagged as pending work, not actually a Paddle-configuration problem.
+Fixed properly instead of just noting the gap again: both CTAs now use the new
+`ReadingRoomTrialForm` component (click reveals an inline email field), which POSTs to the
+new `/api/reading-room/start-trial` route — adds the subscriber to the Reading Room Kit form
+(`KIT_READING_ROOM_FORM_ID`, triggers Kit's daily-catalogue automation) and applies the
+durable relationship tag (`KIT_READING_ROOM_TAG_ID`) directly, no Paddle involved. **Verified
+end-to-end** against the real Kit account (`npm run dev`, POSTed to the new route, got back
+`{"started":true}`), and confirmed both CTAs render correctly on the page.
+`ReadingRoomCheckoutButton` itself is unused for now — kept for when Paddle is set up and a
+"subscribe now" (as opposed to "start trial") CTA is needed.
+
 **Still needed**:
 - Add all five `KIT_*` env vars to Vercel's environment variables too (currently only in
   local `.env.local`) — production won't have Kit working until this is done.
-- Build the Reading Room trial-start flow itself: an email-capture form/CTA on
-  `/the-reading-room` plus a new API route that calls `addSubscriberToForm` with
-  `KIT_READING_ROOM_FORM_ID` (to trigger Kit's daily-catalogue automation) and `tagSubscriber`
-  with `KIT_READING_ROOM_TAG_ID` (to set the durable relationship state directly, rather than
-  depending on a Kit-side automation step to apply it). `ReadingRoomCheckoutButton` currently
-  still goes straight to Paddle checkout — per the "Reading Room's free trial is tracked in
-  Kit, not as a Paddle trial" decision in `DECISIONS.md`, it needs to branch into this
-  email-capture step first.
 - **In Kit's dashboard** (the user's own account-side task, not code): build the actual
   automation on the Reading Room trial form — the 7 days of daily catalogue emails plus the
   trial sales sequence — since the app only fires the form-submission/tag calls, not the
@@ -155,16 +165,15 @@ form that was originally created is now reserved for the Reading Room trial sign
 Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
 are deliberately last, after the remaining technical/integration work, not next.
 
-1. Build the Reading Room trial-start flow and add Kit's env vars to Vercel (see "Kit
-   connection" above — the account itself is done, this is what's left).
+1. **In Kit's dashboard**: build the actual trial automation (7 daily catalogue emails +
+   sales sequence) on the Reading Room form, and the RSS-to-email automation for the weekly
+   recap pointed at `<production-url>/feed.xml`. Both are account-side setup, not app code —
+   the app's side of both is done (see "Kit connection" above and "Weekly recap feed" below).
 2. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
    configured on Paddle's side; see "Email/subscriber architecture" below for why).
 3. Wire `RESEND_API_KEY` into local `.env.local` too, for parity with what Vercel's Resend
    integration already provisioned there (not required for the live site, just for local dev).
-4. **In Kit's dashboard**: set up the RSS-to-email automation for the weekly recap, pointed at
-   `<production-url>/feed.xml` (built 2026-09-21 — see below). Nothing left to build for this
-   on the app side.
-5. **Last**: author real content in the Studio (which brings the remaining per-article/book
+4. **Last**: author real content in the Studio (which brings the remaining per-article/book
    images with it), and get real legal copy for Terms/Privacy/Disclosures.
 
 ## Weekly recap feed

@@ -1,0 +1,26 @@
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.input {
+  height: 54px;
+  padding: 0 22px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--paper-050);
+  color: var(--ink-900);
+  font: var(--type-body);
+  min-width: 240px;
+}
+.input:focus-visible {
+  outline: 2px solid var(--ochre-500);
+  outline-offset: 2px;
+}
+
+.message {
+  font: var(--type-small);
+  margin: 8px 0 0;
+}

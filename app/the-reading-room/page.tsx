@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BookCover } from "@/components/ds/BookCover";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
-import { ReadingRoomCheckoutButton } from "@/components/ReadingRoomCheckoutButton";
+import { ReadingRoomTrialForm } from "@/components/ReadingRoomTrialForm";
 import { getSiteSettings } from "@/lib/content";
 import styles from "./ReadingRoom.module.css";
 
@@ -49,7 +49,7 @@ export default async function ReadingRoomPage() {
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>The Reading Room</h1>
           <p className={styles.heroByline}>by Field Notes From Everywhere</p>
-          <ReadingRoomCheckoutButton className={styles.heroCta}>Join for free</ReadingRoomCheckoutButton>
+          <ReadingRoomTrialForm ctaClassName={styles.heroCta}>Join for free</ReadingRoomTrialForm>
         </div>
       </section>
 
@@ -100,7 +100,7 @@ export default async function ReadingRoomPage() {
             credit card. If you decide you&rsquo;d like to stay after your trial, membership is $5/month. Cancel
             anytime.
           </p>
-          <ReadingRoomCheckoutButton className={styles.trialCta}>Join The Reading Room</ReadingRoomCheckoutButton>
+          <ReadingRoomTrialForm ctaClassName={styles.trialCta}>Join The Reading Room</ReadingRoomTrialForm>
           <p className={styles.trialNote}>{settings.readingRoomPriceCopy}</p>
         </div>
       </section>
