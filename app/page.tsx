@@ -411,7 +411,7 @@ export default async function HomePage() {
                 boxShadow: "var(--shadow-pill-primary)",
               }}
             >
-              Try The Reading Room for free
+              Take a look
             </Link>
           </div>
         </div>
