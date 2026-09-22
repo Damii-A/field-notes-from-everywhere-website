@@ -77,6 +77,40 @@ export async function tagSubscriber(email: string, tagId: string): Promise<void>
   }
 }
 
+interface KitSubscribersResponse {
+  subscribers: { email_address: string }[];
+  pagination: { has_next_page: boolean; end_cursor: string | null };
+}
+
+/**
+ * Every active Kit subscriber's email address, paginated (GET /subscribers,
+ * up to 500/page — see developers.kit.com). Kit remains the free-list
+ * source of truth (see ARCHITECTURE.md §9), so the weekly recap cron job
+ * reads the recipient list from here rather than duplicating it elsewhere.
+ */
+export async function listActiveSubscriberEmails(): Promise<string[]> {
+  const apiKey = requireApiKey();
+  const emails: string[] = [];
+  let cursor: string | null = null;
+
+  do {
+    const url = new URL(`${KIT_API_BASE}/subscribers`);
+    url.searchParams.set("status", "active");
+    url.searchParams.set("per_page", "500");
+    if (cursor) url.searchParams.set("after", cursor);
+
+    const res = await fetch(url, { headers: kitHeaders(apiKey) });
+    if (!res.ok) {
+      throw new Error(`Kit list-subscribers failed: ${res.status} ${await res.text()}`);
+    }
+    const data = (await res.json()) as KitSubscribersResponse;
+    emails.push(...data.subscribers.map((s) => s.email_address));
+    cursor = data.pagination.has_next_page ? data.pagination.end_cursor : null;
+  } while (cursor);
+
+  return emails;
+}
+
 /** Used by the Paddle webhook to move a customer in/out of the Reading Room segment. */
 export async function setReadingRoomTag(email: string, active: boolean): Promise<void> {
   const tagId = process.env.KIT_READING_ROOM_TAG_ID;

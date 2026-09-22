@@ -223,15 +223,24 @@ Resend Automations" for the full reasoning):
   (`KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID`, source-attribution tags), and who
   currently has an active Reading Room relationship (`KIT_READING_ROOM_TAG_ID`, "membership"
   in the user's words — added at trial start, updated by the Paddle webhook on
-  conversion/cancellation, see §10). It also runs the one multi-step send it has a native,
-  no-code fit for: the weekly recap, via RSS-to-email reading this app's own `/rss` feed.
-- **Resend** owns all actual multi-step/transactional *sending*: the one-off "send this list
-  to me" email, and — as of 2026-09-22 — the Reading Room trial's entire 7-day
-  daily-catalogue-and-sales-sequence, via **Resend Automations** (a visual, event-triggered
-  sequence builder Resend added in April 2026). This app triggers it with
+  conversion/cancellation, see §10). It's the subscriber-list source of truth, but as of
+  2026-09-22 it does not send anything itself — both Kit's Automations and its RSS-to-email
+  turned out to be Creator-plan-only ($33/month), not free-plan features as originally
+  assumed (see `DECISIONS.md`, both the Reading Room and weekly-recap entries).
+- **Resend** owns all actual sending: the one-off "send this list to me" email; the Reading
+  Room trial's entire 7-day daily-catalogue-and-sales-sequence, via **Resend Automations** (a
+  visual, event-triggered sequence builder Resend added in April 2026), triggered with
   `resend.events.send({ event: "reading_room_trial_started", email })`
-  (`lib/integrations/resend.ts`, `triggerReadingRoomTrialEvent`); the sequence's actual
-  content/timing is configured in Resend's dashboard, not in this app.
+  (`lib/integrations/resend.ts`, `triggerReadingRoomTrialEvent`; the sequence's actual
+  content/timing is configured in Resend's dashboard, not in this app); and the weekly
+  Publication recap, via a **Vercel Cron job** (`vercel.json`, `GET
+  /api/cron/weekly-recap`, weekly on Sundays) that reads the last 7 days of articles
+  (`getFeedArticles`, the same function `/rss` uses), pulls the recipient list from Kit
+  (`listActiveSubscriberEmails`), and sends via Resend's Batch API (`sendWeeklyRecap`) —
+  built ourselves specifically because Kit's RSS-to-email isn't available on its free plan
+  (see `DECISIONS.md`, "Build the weekly recap ourselves via Resend"). The cron route is
+  secured by `CRON_SECRET`, an internal shared secret (Vercel's documented cron-auth
+  pattern), not tied to any third-party account.
 
 Kit still has a single audience, and forms vs. tags within it is a choice about mechanism,
 not about which "list" someone joins (see `DECISIONS.md`, "Kit object mapping" — this predates
@@ -244,10 +253,9 @@ Three distinct jobs:
 1. **Free-list membership and the weekly recap** — everyone who opts in any way (direct
    signup, requesting a "send this list to me" email, or starting a Reading Room trial) is a
    Kit subscriber, tagged by source. The weekly recap of that week's Publication articles goes
-   to Kit's whole audience, including current Reading Room subscribers — it's different content
-   from Reading Room's own daily catalogues, not a duplicate; since Kit has one audience, no
-   tag-based filtering is needed for this broadcast to reach everyone. Configured/sent entirely
-   in Kit; this app never renders or sends it.
+   to every active Kit subscriber, including current Reading Room subscribers — it's different
+   content from Reading Room's own daily catalogues, not a duplicate. Composed and sent by this
+   app's own weekly cron job (see above), not Kit — Kit only supplies the recipient list.
 2. **Reading Room trial + subscription delivery and lifecycle** — starting a trial is an
    email-capture action on this site (see `DECISIONS.md`, "Reading Room's free trial is
    tracked in Kit, not as a Paddle trial"): the app fires the Resend Automations event (which
@@ -315,7 +323,8 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `KIT_READING_ROOM_FORM_ID` | a Kit form created for the Reading Room trial; **no longer called by app code** since the trial sequence moved to Resend Automations (see §9) — harmless, just unused |
 | `KIT_READING_ROOM_TAG_ID` | durable "active Reading Room relationship" (membership) tag (trial start, Paddle conversion/cancellation) |
 | `KIT_NEWSLETTER_TAG_ID` / `KIT_SEND_LIST_TAG_ID` | source-attribution tags for the two free-list entry points |
-| `RESEND_API_KEY` | Resend API access — transactional email and, as of 2026-09-22, the Reading Room trial's Automations sequence (see §9) |
+| `RESEND_API_KEY` | Resend API access — transactional email, the Reading Room trial's Automations sequence, and the weekly recap (see §9) |
+| `CRON_SECRET` | internal shared secret verifying Vercel Cron → `/api/cron/weekly-recap` calls — generated locally, not a third-party credential |
 | `PADDLE_API_KEY` | server-side Paddle API access |
 | `PADDLE_WEBHOOK_SECRET` | verifies Paddle → `/api/webhooks/paddle` calls |
 | `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` | Paddle.js client-side checkout (not a secret — Paddle's client SDK is designed to ship this to the browser) |

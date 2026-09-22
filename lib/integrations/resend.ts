@@ -7,7 +7,8 @@
  * except the weekly recap broadcast.
  */
 import { Resend } from "resend";
-import type { Article } from "@/lib/content";
+import { articlePath, CATEGORIES, type Article, type FeedArticle } from "@/lib/content";
+import { SITE_URL } from "@/lib/siteUrl";
 
 export class ResendNotConfiguredError extends Error {
   constructor() {
@@ -55,6 +56,43 @@ export async function triggerReadingRoomTrialEvent(email: string): Promise<void>
   const resend = new Resend(apiKey);
   const { error } = await resend.events.send({ event: READING_ROOM_TRIAL_EVENT, email });
   if (error) throw new Error(`Resend event send failed: ${error.message}`);
+}
+
+const BATCH_SIZE = 100; // Resend's own limit per batch call
+
+/**
+ * Sends the weekly Publication recap to every given recipient, via Resend
+ * Batch (see DECISIONS.md, "Build the weekly recap ourselves via Resend" —
+ * Kit's RSS-to-email is Creator-plan-only, so this replaces it). Recipients
+ * come from Kit (`listActiveSubscriberEmails`, still the free-list source of
+ * truth); this function only composes and sends. Chunked into batches of
+ * `BATCH_SIZE` with a deterministic idempotency key per chunk, keyed by
+ * `weekKey` (e.g. an ISO week string) — Vercel Cron's delivery is
+ * best-effort and can invoke the same scheduled run more than once, so a
+ * repeat run within the same week must not double-send (see
+ * DECISIONS.md/Vercel's own cron-idempotency guidance).
+ */
+export async function sendWeeklyRecap(recipients: string[], articles: FeedArticle[], weekKey: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
+  if (recipients.length === 0) return;
+
+  const resend = new Resend(apiKey);
+  const subject = `This week on Field Notes From Everywhere: ${articles.length} new list${articles.length === 1 ? "" : "s"}`;
+  const itemsHtml = articles
+    .map((a) => {
+      const url = `${SITE_URL}${articlePath(a)}`;
+      return `<li><strong>${escapeHtml(CATEGORIES[a.category].name)}:</strong> <a href="${escapeHtml(url)}">${escapeHtml(a.title)}</a><br/>${escapeHtml(a.methodologySentence)}</li>`;
+    })
+    .join("");
+  const html = `<p>Here's what's new on Field Notes From Everywhere this week:</p><ul>${itemsHtml}</ul><p>— Field Notes From Everywhere</p>`;
+
+  for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
+    const chunk = recipients.slice(i, i + BATCH_SIZE);
+    const payload = chunk.map((to) => ({ from: FROM_ADDRESS, to, subject, html }));
+    const { error } = await resend.batch.send(payload, { idempotencyKey: `weekly-recap-${weekKey}-${i / BATCH_SIZE}` });
+    if (error) throw new Error(`Resend weekly-recap batch send failed: ${error.message}`);
+  }
 }
 
 function escapeHtml(s: string): string {

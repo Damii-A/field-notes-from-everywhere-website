@@ -1,7 +1,7 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-22 (Kit connected; Reading Room trial-start flow built; trial sequence
-moved to Resend Automations after finding Kit's automations are a paid feature)
+Last updated: 2026-09-22 (Kit connected; Reading Room trial + weekly recap both moved off
+Kit's paid Automations/RSS-to-email onto Resend Automations + a self-built Vercel Cron job)
 
 ## What exists right now
 
@@ -149,14 +149,14 @@ membership tag was applied, both against the real accounts, not mocks.
 **Still needed**:
 - Add all four `KIT_*` env vars to Vercel's environment variables too — **done by the user
   2026-09-22**, confirmed working after a redeploy.
-- Add `RESEND_API_KEY` to Vercel's environment variables if it isn't already there from the
-  marketplace integration (check before adding a duplicate).
+- Add `RESEND_API_KEY` and `CRON_SECRET` to Vercel's environment variables (check whether
+  `RESEND_API_KEY` is already there from the marketplace integration before adding a
+  duplicate; `CRON_SECRET` must be the **same value** as `.env.local`'s, since Vercel sends
+  it back verbatim to authenticate the cron job — see "Weekly recap" below).
 - **In Resend's dashboard** (the user's own account-side task, not code): build the actual
   Reading Room trial automation (7 days of daily catalogue emails + trial sales sequence),
   triggered on the `reading_room_trial_started` event. A simple placeholder/test email first
   is a reasonable way to confirm the trigger wiring works before writing the real sequence.
-- **In Kit's dashboard**: still need the RSS-to-email automation for the weekly recap (see
-  "Weekly recap feed" below) — unaffected by any of the above, still Kit's job.
 - `setReadingRoomTag(active=false)` (removing the membership tag on cancellation) is still an
   unimplemented TODO in `lib/integrations/kit.ts` — needs a subscriber lookup-by-email step,
   deferred until the Paddle webhook work makes it testable.
@@ -166,28 +166,36 @@ membership tag was applied, both against the real accounts, not mocks.
 Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
 are deliberately last, after the remaining technical/integration work, not next.
 
-1. **In Resend's dashboard**: build the Reading Room trial automation (7 daily catalogue
+1. Add `RESEND_API_KEY` and `CRON_SECRET` to Vercel's environment variables (see "Still
+   needed" above) — the last step before the weekly recap cron job actually works in
+   production; it's already fully built and verified locally.
+2. **In Resend's dashboard**: build the Reading Room trial automation (7 daily catalogue
    emails + sales sequence), triggered on the `reading_room_trial_started` event — account-side
    setup, not app code (see "Email/subscriber integrations" above). App side is fully done and
    verified.
-2. **In Kit's dashboard**: set up the RSS-to-email automation for the weekly recap, pointed at
-   `<production-url>/feed.xml` — also account-side setup, unaffected by the Resend change (see
-   "Weekly recap feed" below).
 3. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
    configured on Paddle's side; see "Email/subscriber architecture" below for why).
 4. **Last**: author real content in the Studio (which brings the remaining per-article/book
    images with it), and get real legal copy for Terms/Privacy/Disclosures.
 
-## Weekly recap feed
+## Weekly recap
 
 `app/rss/route.ts` publishes a standard RSS feed of the 30 most recent Publication articles
 across all three categories (title, link, publish date, category, and the article's
-methodology sentence as the description) — built specifically so Kit's RSS-to-email automation
-can compose the weekly recap automatically, with no manual writing required each week (the user
-chose this over a manually-written recap, 2026-09-21). Point Kit's automation at
-`<production-url>/feed.xml` — a `next.config.mjs` rewrite maps that public URL to the actual
-route. Verified live in production (2026-09-21): correct domain in all links, valid RSS,
-gracefully empty (no `<item>` entries) while the dataset has no articles yet.
+methodology sentence as the description). Originally built so Kit's RSS-to-email automation
+could compose the weekly recap automatically — but Kit's RSS-to-email turned out to be a
+Creator-plan-only feature too (see `DECISIONS.md`, "Build the weekly recap ourselves via
+Resend," 2026-09-22), so the feed's actual consumer is now this app's own weekly cron job
+instead: `GET /api/cron/weekly-recap` (`vercel.json`, Sundays), which reads the last 7 days
+of articles via the same content-layer function the feed uses (`getFeedArticles`), pulls
+recipients from Kit (`listActiveSubscriberEmails`), and sends via Resend's Batch API
+(`sendWeeklyRecap`). The `/rss`/`/feed.xml` endpoint itself still exists and still works —
+useful as a plain RSS feed regardless — it's just no longer wired into an external
+automation. **Verified 2026-09-22**: the cron route correctly rejects requests without the
+right `CRON_SECRET` (401), and correctly found zero articles in the last 7 days against the
+real (still-empty) Sanity dataset — a safe, real test of the full path without emailing
+anyone, since there's nothing to send yet. Verified live in production (2026-09-21, before
+the Kit-to-Resend switch): correct domain in all links, valid RSS, gracefully empty.
 
 Two real issues surfaced and fixed while building this, worth knowing about for future work:
 
@@ -224,8 +232,9 @@ Full reasoning in `DECISIONS.md`; summary here for quick reference:
   accordingly.
 - **Paddle's own transactional emails** (receipts, failed-payment notices) go straight to the
   subscriber; this app, Kit, and Resend are never involved in those.
-- **The weekly recap** is composed automatically by Kit's RSS-to-email reading this app's own
-  `/feed.xml` — see "Weekly recap feed" above. Nothing left to build on the app side.
+- **The weekly recap** is composed and sent automatically by this app's own Vercel Cron job
+  (not Kit's RSS-to-email, which turned out to be Creator-plan-only too) — see "Weekly recap"
+  above. Nothing left to build on the app side; just the Vercel env vars.
 
 ## Assets needed
 

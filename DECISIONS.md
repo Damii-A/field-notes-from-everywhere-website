@@ -375,6 +375,64 @@ question was asked separately and declined — recap stays on Kit).
 
 ---
 
+## 2026-09-22 — Build the weekly recap ourselves via Resend, not Kit's RSS-to-email
+
+**Decision**: The weekly Publication recap is sent by a Vercel Cron job (`vercel.json`,
+`GET /api/cron/weekly-recap`, weekly on Sundays) that reads the last 7 days of articles
+(`getFeedArticles`, the same content-layer function `/rss` uses), pulls the recipient list
+from Kit (`listActiveSubscriberEmails` — Kit remains the free-list source of truth), and
+sends via Resend's Batch API (`sendWeeklyRecap`). This replaces the plan (recorded
+2026-09-21) to use Kit's own RSS-to-email automation.
+
+**Context**: Checking Kit's actual plan restrictions while investigating the Reading Room
+trial-automation cost (see the entry above) found that RSS-to-email is **also** a
+Creator-plan-only feature ($33/month) — the free plan only has manual broadcasts, which
+would mean composing and sending the recap by hand every week, defeating the reason the
+`/rss` feed was built in the first place (automatic composition, no manual writing). This
+was a real gap in the 2026-09-21 architecture: it assumed Kit's RSS-to-email was available
+on the free plan without actually checking, the same unverified-assumption pattern that
+caused the forms/tags bug and the Automations surprise earlier the same day.
+
+**Alternatives considered**: Pay for Kit Creator ($33/mo) — would also restore the option of
+moving the Reading Room trial sequence back to Kit, but is a real recurring cost for a
+capability that can be built directly. Send the recap manually each week — zero cost, zero
+engineering, but not automatic, and the user had already specifically chosen automatic
+composition over manual writing (2026-09-21). Both were offered to the user; they chose to
+build it.
+
+**Reasoning**: Consistent with the same-day pattern of preferring an already-approved
+vendor's free capability over paying a second vendor for the same job (see the Resend
+Automations decision above) — Resend's Batch API and the existing `/rss` content-layer
+function already cover everything needed; the only new piece is the trigger (Vercel Cron)
+and the recipient list (Kit's `/subscribers` endpoint, verified against `developers.kit.com`
+the same way other Kit endpoints were verified today).
+
+**Consequences**: New `GET /api/cron/weekly-recap` route, secured by a `CRON_SECRET` shared
+secret (generated locally, not tied to any external account — Vercel's documented cron-auth
+pattern: the same value set in Vercel's env vars is sent back as `Authorization: Bearer
+<value>`). `lib/integrations/kit.ts` gained `listActiveSubscriberEmails` (paginated GET
+`/v4/subscribers?status=active`); `lib/integrations/resend.ts` gained `sendWeeklyRecap`,
+chunking into Resend Batch calls of 100 with a deterministic idempotency key per chunk
+(`weekly-recap-<date>-<chunk-index>`) — Vercel Cron's delivery is best-effort and can invoke
+the same scheduled run more than once, so a duplicate invocation within the same day must
+not double-send; verified this is how Resend's idempotency key mechanism is meant to be used
+via the installed SDK's types. Verified end-to-end locally: the route correctly rejects a
+missing/wrong `Authorization` header (401), and correctly found zero articles published in
+the last 7 days against the real (currently empty) Sanity dataset — a safe, honest test of
+the full auth + content-filtering path without actually emailing anyone, since there's
+nothing to send yet.
+
+**Future implications**: Kit's free plan sending isn't a factor here since Resend does the
+sending, but Resend's own free-tier cap (100 emails/day, 3,000/month) applies across
+*everything* Resend sends — the "send this list to me" transactional emails, the Reading
+Room trial sequence, and now the weekly recap all share that same daily allowance. Worth
+revisiting if combined volume approaches it.
+
+**Status**: confirmed with the user 2026-09-22 (offered alongside "pay for Kit Creator" and
+"send manually"; user chose to build it).
+
+---
+
 ## 2026-09-21 — Content reads use a hand-rolled `groqFetch`, not `@sanity/client`'s `.fetch()`
 
 **Decision**: `lib/content/index.ts` fetches all content via `lib/sanity/groqFetch.ts`, a ~50-line
