@@ -1,7 +1,7 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-22 (Kit connected; Reading Room trial + weekly recap both moved off
-Kit's paid Automations/RSS-to-email onto Resend Automations + a self-built Vercel Cron job)
+Last updated: 2026-09-22 (Email/subscriber architecture settled: Resend sends everything and
+holds the free list, Kit holds only confirmed Reading Room members; all env vars on Vercel)
 
 ## What exists right now
 
@@ -129,15 +129,15 @@ holds the free list; Kit holds only confirmed, converted Reading Room members.**
 confirmed present in the correct Resend segment with the right name (`resend.contacts.list`
 checked directly); `/api/reading-room/start-trial` succeeds with no Kit call in the path.
 
+**All required env vars are on Vercel** (`KIT_API_KEY`, `KIT_READING_ROOM_TAG_ID`,
+`RESEND_API_KEY`, `RESEND_NEWSLETTER_SEGMENT_ID`, `RESEND_SEND_LIST_SEGMENT_ID`,
+`CRON_SECRET`) — **done by the user 2026-09-22**, including removing the now-dead
+`KIT_NEWSLETTER_TAG_ID`/`KIT_SEND_LIST_TAG_ID`. Not yet independently re-verified against the
+live production URL in this session (everything above was verified locally against the real
+accounts) — worth a real end-to-end check on the live site next session, not just trusting
+the redeploy succeeded.
+
 **Still needed**:
-- Add `KIT_API_KEY` and `KIT_READING_ROOM_TAG_ID` to Vercel's environment variables (the two
-  now-removed `KIT_NEWSLETTER_TAG_ID`/`KIT_SEND_LIST_TAG_ID` don't need adding — **the rest
-  done by the user 2026-09-22**, confirmed working after a redeploy).
-- Add `RESEND_API_KEY`, `RESEND_NEWSLETTER_SEGMENT_ID`, `RESEND_SEND_LIST_SEGMENT_ID`, and
-  `CRON_SECRET` to Vercel's environment variables (check whether `RESEND_API_KEY` is already
-  there from the marketplace integration before adding a duplicate; `CRON_SECRET` must be the
-  **same value** as `.env.local`'s, since Vercel sends it back verbatim to authenticate the
-  cron job — see "Weekly recap" below).
 - **In Resend's dashboard** (the user's own account-side task, not code): build the actual
   Reading Room trial automation (welcome, 7 days of trial content, then a conversion-check
   before each further email so it can exit into a single "you're a member" email whenever
@@ -153,15 +153,18 @@ checked directly); `/api/reading-room/start-trial` succeeds with no Kit call in 
 Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
 are deliberately last, after the remaining technical/integration work, not next.
 
-1. Add `RESEND_API_KEY` and `CRON_SECRET` to Vercel's environment variables (see "Still
-   needed" above) — the last step before the weekly recap cron job actually works in
-   production; it's already fully built and verified locally.
-2. **In Resend's dashboard**: build the Reading Room trial automation (7 daily catalogue
-   emails + sales sequence), triggered on the `reading_room_trial_started` event — account-side
-   setup, not app code (see "Email/subscriber integrations" above). App side is fully done and
-   verified.
+1. Verify the live production site actually works end-to-end now that all env vars are on
+   Vercel (see "Still needed" above) — a real check, not an assumption. Try the trial-start
+   form and the send-list popup on the real URL, and manually trigger the cron route once
+   against production to confirm it isn't just working locally.
+2. **In Resend's dashboard**: build the Reading Room trial automation (welcome, 7 days of
+   trial content, a conversion-check before each further email, then either a single
+   "you're a member" email or a post-trial conversion series), triggered on the
+   `reading_room_trial_started` event — account-side setup, not app code (see
+   "Email/subscriber integrations" above). App side is fully done and verified.
 3. Set up Paddle (account + API key + webhook secret + the actual $5/month Price — no trial
-   configured on Paddle's side; see "Email/subscriber architecture" below for why).
+   configured on Paddle's side; see "Email/subscriber architecture" below for why). This also
+   unblocks actually building the Paddle webhook itself, still just a stub today.
 4. **Last**: author real content in the Studio (which brings the remaining per-article/book
    images with it), and get real legal copy for Terms/Privacy/Disclosures.
 
