@@ -49,6 +49,22 @@ export default defineType({
     }),
     defineField({ name: "introText", title: "Intro text", type: "array", of: [{ type: "block" }] }),
     defineField({
+      name: "ranking",
+      title: "Ranking",
+      description:
+        "Which theme ranking this article's books come from. Set this and \"How many books\", then use \"Fill books from ranking\" (in the menu next to the Publish button) to fill the book list automatically.",
+      type: "reference",
+      to: [{ type: "ranking" }],
+    }),
+    defineField({
+      name: "rankingCount",
+      title: "How many books",
+      description:
+        "The Shortlist: how many of the ranking's top books to include (10 = ranks 1-10). What to Read When / Book Club Book Picks: how many books to add ALONGSIDE the ranking's top 5 (7 = 12 books total), skipping books already used by this theme's other articles.",
+      type: "number",
+      validation: (r) => r.integer().min(1),
+    }),
+    defineField({
       name: "bookEntries",
       title: "Book entries",
       description:

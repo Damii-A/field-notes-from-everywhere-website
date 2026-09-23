@@ -6,7 +6,10 @@ Sanity, all with covers and blurbs, 94 published tags, verified by direct query 
 **Also added same evening**: article scheduling (future `publishedAt` = hidden until then)
 and a `ranking` document type holding reader-recommendation rankings per theme — the
 "Thriller" ranking (49 books, the import file's row order) is saved. See `DECISIONS.md`.
-Future book batches: `npm run import-books -- <file.csv> --ranking "Theme name"`. Note the 3
+Future book batches: `npm run import-books -- <file.csv> --ranking "Theme name"`. Articles
+can now fill their book list from a ranking with the Studio's "Fill books from ranking" button
+(logic verified live; the button's UI itself awaits the user's first click — see
+`DECISIONS.md`). Note the 3
 existing `article` documents are empty drafts (no title/date yet).
 **Immediately next**: the user reviews the data-quality flags below and, if they fix anything,
 re-imports the same file (safe — books are matched by title+author, and casing-only fixes

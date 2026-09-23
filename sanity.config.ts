@@ -9,6 +9,7 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemaTypes";
 import { structure } from "./sanity/structure";
+import { FillFromRankingAction } from "./sanity/actions/FillFromRankingAction";
 
 const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
@@ -32,5 +33,7 @@ export default defineConfig({
     // duplicated from outside the pinned entry in the sidebar.
     newDocumentOptions: (prev, { creationContext }) =>
       creationContext.type === "global" ? prev.filter((item) => item.templateId !== "siteSettings") : prev,
+    // "Fill books from ranking" on articles — DECISIONS.md, 2026-09-23.
+    actions: (prev, { schemaType }) => (schemaType === "article" ? [...prev, FillFromRankingAction] : prev),
   },
 });

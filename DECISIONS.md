@@ -1088,3 +1088,42 @@ directly (not via a re-import) so the capitalization fixes made directly in Sani
 same day weren't reverted by the unedited source CSV.
 
 **Status**: user-directed, implemented same session.
+
+---
+
+## 2026-09-23 — "Fill books from ranking": one-click book lists per column
+
+**Decision**: Articles gained `ranking` (reference) and `rankingCount` fields, and a Studio
+document action, "Fill books from ranking", that fills `bookEntries` by the user's per-theme
+rule (one article per column per theme):
+
+- **The Shortlist**: the ranking's top N books, in rank order.
+- **What to Read When**: the top 5 + N more not in that theme's Shortlist article.
+- **Book Club Book Picks**: the top 5 + N more not in that theme's Shortlist or What to Read
+  When article.
+
+"More books" continue down the ranking; the two unranked columns are shuffled so the top 5
+don't read as a ranking (pub_article.md §10.2–10.3). Exclusions are found by looking up the
+sibling articles (drafts or published) that reference the same ranking, so the Shortlist
+should be created first; the action warns if a sibling column's article is missing. Rules live
+in a pure function (`sanity/lib/pickBooksFromRanking.ts`), the Studio wiring in
+`sanity/actions/FillFromRankingAction.tsx`.
+
+**Context**: User asked to automate adding books to articles one by one. The three-column
+rule is theirs; "continue down the ranking", "shuffle", and "Shortlist first" were my
+recommendations, accepted by the user.
+
+**Alternatives considered**: Compute an article's books live at render time from the ranking
+— rejected: per-entry blurb/tag overrides need real entries to attach to, and a published
+article silently changing when a ranking is reordered isn't desirable. A script run on
+request (like the book importer) — rejected in favor of a Studio button the user can use
+without asking me.
+
+**Consequences**: The fill is a one-time snapshot into the draft; clicking again replaces the
+list (with a confirmation, since per-entry overrides are lost). Verified against the real
+Thriller ranking with three temporary draft articles (Shortlist 10, WTRW +7, Book Club +8):
+ranks 1-10 in order; top 5 + ranks 11-17 shuffled; top 5 + ranks 18-25 shuffled; no overlap
+or duplicates; temporaries deleted. The Studio button itself wasn't clicked this session
+(Studio login is the user's own OAuth) — the user's first use is its UI check.
+
+**Status**: user-approved 2026-09-23.

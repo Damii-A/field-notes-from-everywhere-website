@@ -173,7 +173,11 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   `slug`; `books[]`: ordered, unique references to `book`). Rank is array position, same
   derived-from-order rule as `article.bookEntries`. A book can appear in many rankings at
   different positions. This is the site's research data, stored independently of any article;
-  no page reads it yet (added 2026-09-23 — see `DECISIONS.md`).
+  no page reads it yet (added 2026-09-23 — see `DECISIONS.md`). Articles reference one via
+  `article.ranking` + `article.rankingCount`, and the Studio's "Fill books from ranking"
+  document action (`sanity/actions/FillFromRankingAction.tsx`, rules in
+  `sanity/lib/pickBooksFromRanking.ts`) fills `bookEntries` from it — a one-time fill into
+  ordinary editable entries, not a live link.
 - **`legalPage`** — `title`, `slug` (terms / privacy-and-cookies / disclosures), `body`
   (rich text). Matches `utility_pages.md` §2.1 exactly ("CMS-managed body content").
 - **`siteSettings`** singleton — the contact email, social links (Pinterest/Reddit URLs,
