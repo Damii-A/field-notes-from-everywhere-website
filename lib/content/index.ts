@@ -31,6 +31,12 @@ interface RawImage {
   alt?: string;
 }
 
+interface RawTag {
+  label: string;
+  slug: string;
+  group?: TagRef["group"];
+}
+
 interface RawArticleSummary {
   slug: string;
   category: CategorySlug;
@@ -38,12 +44,8 @@ interface RawArticleSummary {
   bookCount: number;
   publishedAt: string;
   heroImage: RawImage | null;
-}
-
-interface RawTag {
-  label: string;
-  slug: string;
-  group?: TagRef["group"];
+  /** pub_hub.md §5–12 "Browse Our Collections" groupings this article belongs to — not consumed by any page yet (those hub sections are still V1 backlog), but captured now so authored articles don't need revisiting later. See DECISIONS.md. */
+  collectionTags: RawTag[] | null;
 }
 
 interface RawBookEntry {
@@ -74,6 +76,7 @@ function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
     title: raw.title,
     meta: formatMeta(raw.bookCount, raw.publishedAt),
     heroImage: raw.heroImage ? { url: raw.heroImage.url, alt: raw.heroImage.alt ?? raw.title } : undefined,
+    collectionTags: raw.collectionTags?.map((t) => ({ label: t.label, slug: t.slug, group: t.group })),
   };
 }
 
@@ -119,7 +122,8 @@ const SUMMARY_PROJECTION = `{
   title,
   "bookCount": count(bookEntries),
   publishedAt,
-  heroImage{ "url": asset->url, alt }
+  heroImage{ "url": asset->url, alt },
+  "collectionTags": collectionTags[]->{ "label": name, "slug": slug.current, group }
 }`;
 
 const FULL_ARTICLE_PROJECTION = `{
@@ -129,6 +133,7 @@ const FULL_ARTICLE_PROJECTION = `{
   "bookCount": count(bookEntries),
   publishedAt,
   heroImage{ "url": asset->url, alt },
+  "collectionTags": collectionTags[]->{ "label": name, "slug": slug.current, group },
   author,
   methodologySentence,
   introText,

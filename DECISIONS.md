@@ -798,3 +798,53 @@ build`/`typecheck` clean, including the `/studio` route itself compiling.
 
 **Status**: confirmed with the user 2026-09-23 (articles-by-category over any tag-based
 grouping) before implementing.
+
+---
+
+## 2026-09-23 — Articles need their own taxonomy-group associations (`collectionTags`)
+
+**Decision**: Added `collectionTags` to the `article` schema — an array of references to
+`tag` documents, representing which of the 8 "Browse Our Collections" groupings
+(genre/character/relationship/trope/mood/theme/setting/experience — `pub_hub.md` §5–12) the
+whole article belongs to (it can belong to several at once). Threaded through the content
+layer too: `ArticleSummary`/`Article` (`lib/content/types.ts`) and both GROQ projections
+(`lib/content/index.ts`), so the data is retrievable, not just capturable — nothing renders it
+yet.
+
+**Context**: This corrects a misunderstanding in the same-day "Studio: articles grouped by
+category, not tags" entry above. That entry's own reasoning ("the grouping will happen
+eventually on the hub pages anyway") was the user's, but I applied it to the wrong layer —
+Studio sidebar navigation, which the user hadn't actually been talking about. Re-reading
+`pub_hub.md` §5–12 directly, at the user's explicit direction, showed each collection section
+is *"a fixed-size selection of relevant articles associated with [Genre/Mood/Trope/etc.]"* —
+articles need a direct association with these groupings. Before this, the schema had no way
+to express that at all: tags only existed on `book` (canonical descriptors) and as a
+per-article-row display override (`bookEntries[].tags`) — neither says anything about what
+the *article as a whole* is about.
+
+**Alternatives considered**: Derive an article's groupings implicitly from the union of tags
+across its books — rejected; a single article can easily span books with a wide, noisy mix of
+tags across every group, with no reliable signal for which groupings the article itself
+should surface under. Wait until the hub-browsing feature is actually built to add this field
+— rejected: every article authored in the meantime would need to be revisited and re-tagged
+retroactively, for a cost of essentially nothing (one more reference-array field) paid now
+instead.
+
+**Reasoning**: The user's practical point stands even though it wasn't about Studio
+navigation: since real authoring starts now and the hub-browsing feature is only "eventually"
+built, capturing the association at write time is far cheaper than a retroactive backfill
+later. Matches Operating Manual §7 (architecture should enable change without requiring
+unnecessary rewrites) — this is genuinely cheap now and expensive to skip.
+
+**Consequences**: `sanity/schemaTypes/article.ts` gained `collectionTags`.
+`RawArticleSummary`/`ArticleSummary` gained the same field, mapped through
+`toArticleSummary`; both `SUMMARY_PROJECTION` and `FULL_ARTICLE_PROJECTION` select it (so
+`whatToReadNext` summaries carry it too, since that query reuses `SUMMARY_PROJECTION`).
+Deliberately **not** built: any hub-page UI that reads or filters by it, or the
+engagement-based "strongest-performing articles" selection logic `pub_hub.md` §5–12 also
+describes for choosing which articles surface within a grouping once enough data exists —
+both remain documented V1 backlog (`ARCHITECTURE.md` §15, `DECISIONS.md` "V1 scope excludes
+the logged-in Reading Room product" and the "not modeled in V1" note in `ARCHITECTURE.md`
+§6). `npm run build`/`typecheck` clean.
+
+**Status**: user-directed correction, implemented same session.

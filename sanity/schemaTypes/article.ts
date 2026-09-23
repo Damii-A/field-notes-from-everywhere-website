@@ -21,6 +21,14 @@ export default defineType({
       options: { list: ["the-shortlist", "what-to-read-when", "book-club-book-picks"] },
       validation: (r) => r.required(),
     }),
+    defineField({
+      name: "collectionTags",
+      title: "Collections (genre, mood, trope, etc.)",
+      description:
+        "pub_hub.md §5–12 — which of the 8 \"Browse Our Collections\" groupings this WHOLE ARTICLE belongs to (an article can belong to several, e.g. both a Genre and a Mood). This isn't built into the hub pages yet, but tag it now so nothing needs revisiting once it is. Separate from the tags on individual books within this article.",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "tag" }] }],
+    }),
     defineField({ name: "author", title: "Author", type: "string", initialValue: "The FNFE Team" }),
     defineField({ name: "publishedAt", title: "Published at", type: "datetime", validation: (r) => r.required() }),
     defineField({ name: "heroImage", title: "Hero image", type: "image", options: { hotspot: true }, fields: [{ name: "alt", type: "string", title: "Alt text" }] }),

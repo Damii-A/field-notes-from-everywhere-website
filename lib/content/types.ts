@@ -58,6 +58,8 @@ export interface ArticleSummary {
   title: string;
   meta: string; // e.g. "18 books · Sep 4, 2026" as shown on hub cards
   heroImage?: { url: string; alt: string };
+  /** Which of the 8 "Browse Our Collections" groupings (genre/mood/trope/etc. — pub_hub.md §5–12) this article belongs to. Not rendered by any page yet — those hub sections are still V1 backlog — captured at authoring time so nothing needs revisiting once they're built. */
+  collectionTags?: TagRef[];
 }
 
 export interface Article extends ArticleSummary {

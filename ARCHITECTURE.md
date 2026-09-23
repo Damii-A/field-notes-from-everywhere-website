@@ -148,13 +148,17 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   once" — `rr_subscriber.md` §3.3). Not used for anything in V1's built pages yet, but cheap
   to model now since Publication articles already reference books, and modeling it as its
   own document avoids re-typing title/author/cover across articles later.
-- **`article`** — `title`, `slug`, `category` (enum), `author`, `publishedAt`, `heroImage`,
+- **`article`** — `title`, `slug`, `category` (enum), `collectionTags[]` (references to `tag`
+  — which of the 8 "Browse Our Collections" groupings this whole article belongs to, added
+  2026-09-23; not yet read by any page, see below), `author`, `publishedAt`, `heroImage`,
   `methodologySentence` (the one sentence in the "How we made this list" box), `introText`
   (rich text), `bookEntries[]` (array of `{ book: reference, blurb: text (override of the
   book's canonical blurb — the built article's blurbs are clearly written for that specific
-  list, not generic), tags[]: reference[] (optional per-entry override), rank: number
-  (Shortlist only, ignored by frontend for the other two categories) }`), `whatToReadNext[]`
-  (references to up to 3 other `article` documents, editorially chosen per spec §6.5).
+  list, not generic), tags[]: reference[] (optional per-entry override, controls which of the
+  book's tags display for THIS article) }` — rank for Shortlist articles is not a stored
+  field; it's derived from each entry's position in this array, see `DECISIONS.md`),
+  `whatToReadNext[]` (references to up to 3 other `article` documents, editorially chosen per
+  spec §6.5).
 - **`legalPage`** — `title`, `slug` (terms / privacy-and-cookies / disclosures), `body`
   (rich text). Matches `utility_pages.md` §2.1 exactly ("CMS-managed body content").
 - **`siteSettings`** singleton — the contact email, social links (Pinterest/Reddit URLs,
@@ -165,8 +169,11 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
 Not modeled in V1 (documented backlog, matches the cuts in
 `DESIGN_PROJECT_BUILD_NOTES.md`): `readingRoomIssue` (Past Issues / individual issue pages),
 subscriber accounts, and the "recommendation count"/engagement-ranking data model implied by
-`pub_hub.md`'s "strongest-performing articles" language for the eight collection sections —
-none of that exists until those sections are built.
+`pub_hub.md`'s "strongest-performing articles" language for choosing *which* articles surface
+within each of the eight collection sections. The association itself — which groupings an
+article belongs to — *is* modeled (`article.collectionTags`, above), captured at authoring
+time specifically so it doesn't need backfilling once those sections are built; only the
+hub-page UI and the engagement-based selection-within-a-grouping logic remain unbuilt.
 
 The homepage's "Explore our columns" showcases and the hub's "Latest Article" section pull
 the N most recent published articles per category by query (`publishedAt desc`), matching

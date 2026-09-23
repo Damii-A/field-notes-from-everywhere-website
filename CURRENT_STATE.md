@@ -91,6 +91,14 @@ import/spreadsheet. Two things were fixed/added before real authoring starts:
   `DECISIONS.md`, "Studio: articles grouped by category, not tags; Site Settings pinned
   singleton." **Not yet visually verified live** — Studio login is account-tied OAuth, so this
   needs the user's own eyes the first time they open `/studio` after this deploys.
+- **Article-level collection tags (`collectionTags`)**: articles can now be tagged with which
+  of the 8 "Browse Our Collections" groupings (genre/mood/trope/etc. — `pub_hub.md` §5–12)
+  they belong to — a real schema gap found while checking the spec at the user's direction
+  (the schema previously had no way to say what an *article as a whole* is about, only what
+  individual books within it are). Threaded through `ArticleSummary`/`Article` and both GROQ
+  projections so the data is captured now, before real authoring starts, even though no hub
+  page reads it yet — see `DECISIONS.md`, "Articles need their own taxonomy-group
+  associations."
 - **Per-article tag display**: a book's tag pills shown within an article already come from
   `bookEntries[].tags` if you fill it in (a deliberate subset/override of that book's own
   canonical tags — e.g. show only "dark fantasy" for a book tagged dark fantasy, brutal, AND
