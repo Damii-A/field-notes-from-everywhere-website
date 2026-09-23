@@ -146,11 +146,13 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   archive/catalogue (still out of V1 scope) is expected to have its own independent book/tag
   model, not reuse this one.
 - **`theme`** — Publication-only, article-level taxonomy (`name`, `slug`, `group`: required
-  enum — genre / character / relationship / trope / mood / theme / setting / experience, the
-  eight groupings from `pub_hub.md` §5–12). Added 2026-09-23 specifically so `article.themes[]`
-  (below) has something to reference — a small, curated vocabulary for hub-page grouping and a
-  possible future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary
-  even though a theme and a tag may share a name.
+  enum — Genre / Tone / Mood / Trope / Character Archetype / Relationship / Setting / World
+  Elements / Opening Style, the user's own 9-group list, replacing `pub_hub.md` §5–12's
+  original 8 named sections — see `DECISIONS.md`, "Theme groups replaced with the user's own
+  9-group taxonomy"). Added 2026-09-23 specifically so `article.themes[]` (below) has
+  something to reference — a small, curated vocabulary for hub-page grouping and a possible
+  future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary even
+  though a theme and a tag may share a name.
 - **`book`** — canonical book record: `title`, `author`, `coverImage`, `canonicalBlurb`,
   `tags[]` (→ `tag`). Not used for anything in V1's built pages yet, but cheap to model now
   since Publication articles already reference books, and modeling it as its own document

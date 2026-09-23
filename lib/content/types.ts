@@ -28,17 +28,19 @@ export interface TagRef {
   slug: string;
 }
 
+/** The user's own 9-group taxonomy (2026-09-23) — replaces pub_hub.md §5–12's original 8 named sections, see DECISIONS.md. */
 export type CollectionGroup =
   | "genre"
-  | "character"
-  | "relationship"
-  | "trope"
+  | "tone"
   | "mood"
-  | "theme"
+  | "trope"
+  | "character-archetype"
+  | "relationship"
   | "setting"
-  | "experience";
+  | "world-elements"
+  | "opening-style";
 
-/** An article-level theme — the 8 "Browse Our Collections" groupings from pub_hub.md §5–12. Deliberately a separate vocabulary from TagRef — see sanity/schemaTypes/theme.ts and DECISIONS.md, 2026-09-23. */
+/** An article-level theme — one of the "Browse Our Collections" groupings (CollectionGroup). Deliberately a separate vocabulary from TagRef — see sanity/schemaTypes/theme.ts and DECISIONS.md, 2026-09-23. */
 export interface ThemeRef {
   label: string;
   slug: string;

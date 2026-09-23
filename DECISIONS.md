@@ -891,3 +891,37 @@ model the Reading Room catalogue eventually needs (Operating Manual §7).
 section. `npm run build`/`typecheck` clean; dataset still empty, so no migration needed.
 
 **Status**: user-directed refinement, implemented same session.
+
+---
+
+## 2026-09-23 — Theme groups replaced with the user's own 9-group taxonomy
+
+**Decision**: `theme.group` (and the corresponding `CollectionGroup` TS type) no longer uses
+`pub_hub.md` §5–12's original 8 named sections (Genre / Character / Relationship / Trope /
+Mood / Theme / Setting / Experience). It now uses the user's own 9 groups: **Genre, Tone,
+Mood, Trope, Character Archetype, Relationship, Setting, World Elements, Opening Style.**
+
+**Context**: User-directed change, given directly as a plain list after the tag/theme split
+above. This is a genuine divergence from `pub_hub.md`, one of the governing spec documents —
+per `CLAUDE.md`'s source-of-truth rules, an intentional change of product direction gets
+recorded here rather than left as undocumented drift between the code and the mirrored spec.
+`docs/design-specs/pub_hub.md` itself is **not** edited (same precedent as the $5→$7 price
+change entry above — it stays a verbatim mirror of the original client spec); this entry is
+the record of the intentional departure.
+
+**Reasoning**: Not evaluated for a "better" taxonomy — this is the user's own editorial
+judgment about how their catalogue should actually be organized, which is exactly the kind of
+call that belongs to them, not something for me to second-guess. Worth noting only as a
+side-effect: this also resolves an awkward naming collision from the previous entry, where
+"Theme" was both the new document type's name and one of the original 8 group *values* — the
+new list drops "Theme" as a group value entirely.
+
+**Consequences**: `sanity/schemaTypes/theme.ts`'s `group` field options and
+`lib/content/types.ts`'s `CollectionGroup` type both updated to the 9 new values (multi-word
+groups use hyphenated values with human-readable titles in the Studio, e.g.
+`character-archetype` / "Character Archetype"). `ARCHITECTURE.md` §6's `theme` bullet, which
+had enumerated the original 8 values directly in prose, updated to the new 9 and pointed at
+this entry rather than re-describing the list a second place. Dataset was still empty, so no
+data migration needed. `npm run build`/`typecheck` clean.
+
+**Status**: user-directed, implemented same session.
