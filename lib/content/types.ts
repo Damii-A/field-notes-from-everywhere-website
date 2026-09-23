@@ -22,19 +22,27 @@ export interface CategoryDef {
   };
 }
 
+/** A book-level descriptor tag (e.g. "dark fantasy", "brutal") — see sanity/schemaTypes/tag.ts. */
 export interface TagRef {
   label: string;
   slug: string;
-  /** The 8 groupings from pub_hub.md / rr_subscriber.md. */
-  group?:
-    | "genre"
-    | "character"
-    | "relationship"
-    | "trope"
-    | "mood"
-    | "theme"
-    | "setting"
-    | "experience";
+}
+
+export type CollectionGroup =
+  | "genre"
+  | "character"
+  | "relationship"
+  | "trope"
+  | "mood"
+  | "theme"
+  | "setting"
+  | "experience";
+
+/** An article-level theme — the 8 "Browse Our Collections" groupings from pub_hub.md §5–12. Deliberately a separate vocabulary from TagRef — see sanity/schemaTypes/theme.ts and DECISIONS.md, 2026-09-23. */
+export interface ThemeRef {
+  label: string;
+  slug: string;
+  group: CollectionGroup;
 }
 
 export interface BookEntry {
@@ -58,8 +66,8 @@ export interface ArticleSummary {
   title: string;
   meta: string; // e.g. "18 books · Sep 4, 2026" as shown on hub cards
   heroImage?: { url: string; alt: string };
-  /** Which of the 8 "Browse Our Collections" groupings (genre/mood/trope/etc. — pub_hub.md §5–12) this article belongs to. Not rendered by any page yet — those hub sections are still V1 backlog — captured at authoring time so nothing needs revisiting once they're built. */
-  collectionTags?: TagRef[];
+  /** Which of the 8 "Browse Our Collections" groupings this article belongs to (pub_hub.md §5–12). Not rendered by any page yet — those hub sections are still V1 backlog — captured at authoring time so nothing needs revisiting once they're built. */
+  themes?: ThemeRef[];
 }
 
 export interface Article extends ArticleSummary {

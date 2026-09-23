@@ -22,12 +22,12 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({
-      name: "collectionTags",
-      title: "Collections (genre, mood, trope, etc.)",
+      name: "themes",
+      title: "Themes (genre, mood, trope, etc.)",
       description:
-        "pub_hub.md §5–12 — which of the 8 \"Browse Our Collections\" groupings this WHOLE ARTICLE belongs to (an article can belong to several, e.g. both a Genre and a Mood). This isn't built into the hub pages yet, but tag it now so nothing needs revisiting once it is. Separate from the tags on individual books within this article.",
+        "pub_hub.md §5–12 — which of the 8 \"Browse Our Collections\" groupings this WHOLE ARTICLE belongs to (an article can belong to several, e.g. both a Genre and a Mood theme). Picks from Themes, NOT Tags — a separate, smaller vocabulary for hub navigation, distinct from the descriptive tags on individual books. This isn't built into the hub pages yet, but set it now so nothing needs revisiting once it is.",
       type: "array",
-      of: [{ type: "reference", to: [{ type: "tag" }] }],
+      of: [{ type: "reference", to: [{ type: "theme" }] }],
     }),
     defineField({ name: "author", title: "Author", type: "string", initialValue: "The FNFE Team" }),
     defineField({ name: "publishedAt", title: "Published at", type: "datetime", validation: (r) => r.required() }),

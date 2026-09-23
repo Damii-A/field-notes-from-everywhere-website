@@ -2,14 +2,15 @@ import type { StructureResolver } from "sanity/structure";
 
 /**
  * Custom Studio sidebar — replaces the default flat, alphabetical
- * per-type list. Two deliberate choices here (2026-09-23, see DECISIONS.md):
+ * per-type list. Deliberate choices here (2026-09-23, see DECISIONS.md):
  *
- * 1. Articles are grouped by category, not Tags — the eventual hub-page
- *    "grouped by category" browsing (pub_hub.md) is a frontend concern that
- *    doesn't need mirroring in the Studio's own organization; grouping the
- *    thing the author actually works with most (articles, one at a time,
- *    per column) is what actually reduces friction while authoring.
- * 2. Site settings is pinned as a true singleton (fixed document id, no
+ * 1. Articles are grouped by category in the sidebar (own concern from
+ *    Studio-navigation friction, separate from the article-level `theme`
+ *    field below — that's about hub-page grouping, not Studio navigation).
+ * 2. Themes gets its own top-level section alongside Books/Tags — it's a
+ *    distinct, curated vocabulary (hub-navigation groupings) from Tags
+ *    (book descriptors), so it's browsed/managed separately too.
+ * 3. Site settings is pinned as a true singleton (fixed document id, no
  *    "create new" for it) — it's meant to be exactly one document; the
  *    default structure would otherwise present it as a list you could
  *    accidentally create duplicates of.
@@ -43,6 +44,7 @@ export const structure: StructureResolver = (S) =>
               ),
             ),
         ),
+      S.documentTypeListItem("theme").title("Themes"),
       S.documentTypeListItem("book").title("Books"),
       S.documentTypeListItem("tag").title("Tags"),
       S.divider(),

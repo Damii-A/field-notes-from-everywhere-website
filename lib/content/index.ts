@@ -9,10 +9,10 @@
 import { groqFetch } from "@/lib/sanity/groqFetch";
 import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
 import { CATEGORIES } from "./categories";
-import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, TagRef } from "./types";
+import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, ThemeRef } from "./types";
 
 export { CATEGORIES, CATEGORY_LIST } from "./categories";
-export type { Article, ArticleSummary, BookEntry, CategoryDef, CategorySlug, LegalPage, TagRef } from "./types";
+export type { Article, ArticleSummary, BookEntry, CategoryDef, CategorySlug, LegalPage, TagRef, ThemeRef } from "./types";
 
 export const HUB_INITIAL_COUNT = 9;
 export const HUB_PAGE_INCREMENT = 6;
@@ -34,7 +34,12 @@ interface RawImage {
 interface RawTag {
   label: string;
   slug: string;
-  group?: TagRef["group"];
+}
+
+interface RawTheme {
+  label: string;
+  slug: string;
+  group: ThemeRef["group"];
 }
 
 interface RawArticleSummary {
@@ -45,7 +50,7 @@ interface RawArticleSummary {
   publishedAt: string;
   heroImage: RawImage | null;
   /** pub_hub.md §5–12 "Browse Our Collections" groupings this article belongs to — not consumed by any page yet (those hub sections are still V1 backlog), but captured now so authored articles don't need revisiting later. See DECISIONS.md. */
-  collectionTags: RawTag[] | null;
+  themes: RawTheme[] | null;
 }
 
 interface RawBookEntry {
@@ -76,7 +81,7 @@ function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
     title: raw.title,
     meta: formatMeta(raw.bookCount, raw.publishedAt),
     heroImage: raw.heroImage ? { url: raw.heroImage.url, alt: raw.heroImage.alt ?? raw.title } : undefined,
-    collectionTags: raw.collectionTags?.map((t) => ({ label: t.label, slug: t.slug, group: t.group })),
+    themes: raw.themes?.map((t) => ({ label: t.label, slug: t.slug, group: t.group })),
   };
 }
 
@@ -96,7 +101,7 @@ function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | n
     title: raw.refBook.title,
     author: raw.refBook.author,
     blurb: raw.blurb || raw.refBook.canonicalBlurb || "",
-    tags: tags?.map((t) => ({ label: t.label, slug: t.slug, group: t.group })),
+    tags: tags?.map((t) => ({ label: t.label, slug: t.slug })),
     coverImage: raw.refBook.coverImage ? { url: raw.refBook.coverImage.url, alt: raw.refBook.title } : undefined,
   };
 }
@@ -123,7 +128,7 @@ const SUMMARY_PROJECTION = `{
   "bookCount": count(bookEntries),
   publishedAt,
   heroImage{ "url": asset->url, alt },
-  "collectionTags": collectionTags[]->{ "label": name, "slug": slug.current, group }
+  "themes": themes[]->{ "label": name, "slug": slug.current, group }
 }`;
 
 const FULL_ARTICLE_PROJECTION = `{
@@ -133,19 +138,19 @@ const FULL_ARTICLE_PROJECTION = `{
   "bookCount": count(bookEntries),
   publishedAt,
   heroImage{ "url": asset->url, alt },
-  "collectionTags": collectionTags[]->{ "label": name, "slug": slug.current, group },
+  "themes": themes[]->{ "label": name, "slug": slug.current, group },
   author,
   methodologySentence,
   introText,
   bookEntries[]{
     blurb,
-    "tagOverrides": tags[]->{ "label": name, "slug": slug.current, group },
+    "tagOverrides": tags[]->{ "label": name, "slug": slug.current },
     "refBook": book->{
       title,
       author,
       canonicalBlurb,
       "coverImage": coverImage{ "url": asset->url },
-      "tags": tags[]->{ "label": name, "slug": slug.current, group }
+      "tags": tags[]->{ "label": name, "slug": slug.current }
     }
   },
   "whatToReadNext": whatToReadNext[]->${SUMMARY_PROJECTION}

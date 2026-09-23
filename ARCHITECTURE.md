@@ -137,19 +137,27 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   Modeled as a frontend-level enum/constant, not a Sanity document — its visual identity
   (colour, motion, typography) is explicitly frontend-controlled per spec, and there will
   never be a 4th without an engineering change anyway.
-- **`tag`** — one taxonomy document type shared by Publication articles and (later) Reading
-  Room issues. Fields: `name`, `slug`, `group` (enum: genre / character / relationship /
-  trope / mood / theme / setting / experience — the eight groupings named in both
-  `pub_hub.md` and `rr_subscriber.md`). This is the single taxonomy system the spec describes
-  as reused across the whole product.
+- **`tag`** — Publication-only, book-level descriptor vocabulary (`name`, `slug`) — e.g. "dark
+  fantasy," "brutal." Used by `book.tags[]` and, per article, `bookEntries[].tags[]` (an
+  optional override of which of a book's tags display for that specific article). Deliberately
+  **not** the mechanism for hub-page grouping — see `theme` below. Originally modeled with a
+  `group` field and described as shared with a future Reading Room taxonomy; both were removed
+  2026-09-23 (see `DECISIONS.md`) — nothing ever read a book tag's group, and the Reading Room
+  archive/catalogue (still out of V1 scope) is expected to have its own independent book/tag
+  model, not reuse this one.
+- **`theme`** — Publication-only, article-level taxonomy (`name`, `slug`, `group`: required
+  enum — genre / character / relationship / trope / mood / theme / setting / experience, the
+  eight groupings from `pub_hub.md` §5–12). Added 2026-09-23 specifically so `article.themes[]`
+  (below) has something to reference — a small, curated vocabulary for hub-page grouping and a
+  possible future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary
+  even though a theme and a tag may share a name.
 - **`book`** — canonical book record: `title`, `author`, `coverImage`, `canonicalBlurb`,
-  `tags[]` (→ `tag`). This is what the future Reading Room Books catalogue would dedupe
-  against ("each unique book that has appeared in at least one published issue appears
-  once" — `rr_subscriber.md` §3.3). Not used for anything in V1's built pages yet, but cheap
-  to model now since Publication articles already reference books, and modeling it as its
-  own document avoids re-typing title/author/cover across articles later.
-- **`article`** — `title`, `slug`, `category` (enum), `collectionTags[]` (references to `tag`
-  — which of the 8 "Browse Our Collections" groupings this whole article belongs to, added
+  `tags[]` (→ `tag`). Not used for anything in V1's built pages yet, but cheap to model now
+  since Publication articles already reference books, and modeling it as its own document
+  avoids re-typing title/author/cover across articles later. (Not expected to be reused by a
+  future Reading Room Books catalogue — see `tag`, above.)
+- **`article`** — `title`, `slug`, `category` (enum), `themes[]` (references to `theme` —
+  which of the 8 "Browse Our Collections" groupings this whole article belongs to, added
   2026-09-23; not yet read by any page, see below), `author`, `publishedAt`, `heroImage`,
   `methodologySentence` (the one sentence in the "How we made this list" box), `introText`
   (rich text), `bookEntries[]` (array of `{ book: reference, blurb: text (override of the
@@ -171,7 +179,7 @@ Not modeled in V1 (documented backlog, matches the cuts in
 subscriber accounts, and the "recommendation count"/engagement-ranking data model implied by
 `pub_hub.md`'s "strongest-performing articles" language for choosing *which* articles surface
 within each of the eight collection sections. The association itself — which groupings an
-article belongs to — *is* modeled (`article.collectionTags`, above), captured at authoring
+article belongs to — *is* modeled (`article.themes`, above), captured at authoring
 time specifically so it doesn't need backfilling once those sections are built; only the
 hub-page UI and the engagement-based selection-within-a-grouping logic remain unbuilt.
 

@@ -848,3 +848,46 @@ the logged-in Reading Room product" and the "not modeled in V1" note in `ARCHITE
 §6). `npm run build`/`typecheck` clean.
 
 **Status**: user-directed correction, implemented same session.
+
+---
+
+## 2026-09-23 — Split `tag` (book descriptors) and `theme` (article/hub taxonomy) into separate types
+
+**Decision**: `collectionTags` (above) is renamed `themes` and now references a new, separate
+`theme` document type (`sanity/schemaTypes/theme.ts`), not `tag`. `tag` goes back to a plain
+book-descriptor vocabulary — `name`/`slug` only, `group` removed from it entirely. `theme`
+carries `name`/`slug`/`group` (group now **required**, since a theme's entire purpose is
+classifying into one of the 8 groupings). Both are added to the Studio sidebar as separate
+top-level sections (`sanity/structure.ts`).
+
+**Context**: After the `collectionTags` entry above, the user noticed the field's reference
+picker was drawing from the same `tag` list used for book tagging, and clarified the intent:
+book tags and article-level hub groupings should be two separate, differently-curated
+vocabularies, not one shared pool — even where a tag and a theme happen to share a name (e.g.
+both called "Dark Fantasy"), they're deliberately not the same record. Checking actual usage
+confirmed `tag.group` had no real purpose left once `theme` existed — nothing in the app ever
+rendered a book tag's group (`ArticleView.tsx` only reads a tag's label), so leaving it on
+`tag` would have meant two overlapping, confusing "group" concepts on two different types.
+Separately, the user flagged that the future Reading Room archive/catalogue (still out of V1
+scope) will have its own, independent book/tag model and should not be assumed to reuse
+anything built here — both `tag.ts` and `theme.ts`'s doc comments now say so explicitly,
+correcting an earlier premature comment on `tag.ts` that had called it "shared... with (later)
+Reading Room issues."
+
+**Reasoning**: Book tags are expected to be a large, granular, ad-hoc-growing vocabulary
+(whatever nuances describe a given book); themes are a small, deliberately curated vocabulary
+meant for hub navigation and a future glossary. Mixing them in one reference list would make
+the theme picker cluttered with irrelevant book-level granularity, and would make it unclear
+whether picking a "tag" for an article was describing the article or filing it into hub
+navigation. Two distinct types make both jobs unambiguous, and both stay simple document
+types with no cross-dependency, so nothing here creates lock-in against whatever separate
+model the Reading Room catalogue eventually needs (Operating Manual §7).
+
+**Consequences**: New `sanity/schemaTypes/theme.ts`; `tag.ts` lost `group`.
+`article.themes` (renamed from `collectionTags`) references `theme`, not `tag`.
+`lib/content/types.ts` gained `ThemeRef`/`CollectionGroup`, split from a now-simpler `TagRef`
+(no `group`). `lib/content/index.ts`'s `RawTag`/`RawTheme`, both GROQ projections, and
+`toArticleSummary`/`toBookEntry` updated accordingly. `sanity/structure.ts` gained a "Themes"
+section. `npm run build`/`typecheck` clean; dataset still empty, so no migration needed.
+
+**Status**: user-directed refinement, implemented same session.
