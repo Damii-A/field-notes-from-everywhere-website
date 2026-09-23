@@ -8,6 +8,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemaTypes";
+import { structure } from "./sanity/structure";
 
 const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
@@ -23,6 +24,13 @@ export default defineConfig({
   projectId,
   dataset,
   basePath: "/studio",
-  plugins: [structureTool(), visionTool()],
+  plugins: [structureTool({ structure }), visionTool()],
   schema: { types: schemaTypes },
+  document: {
+    // Site settings is a singleton (see sanity/structure.ts) — keep it out
+    // of the global "+ New document" menu so it can't be accidentally
+    // duplicated from outside the pinned entry in the sidebar.
+    newDocumentOptions: (prev, { creationContext }) =>
+      creationContext.type === "global" ? prev.filter((item) => item.templateId !== "siteSettings") : prev,
+  },
 });

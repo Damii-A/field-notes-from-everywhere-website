@@ -8,6 +8,7 @@
  */
 import { groqFetch } from "@/lib/sanity/groqFetch";
 import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
+import { CATEGORIES } from "./categories";
 import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, TagRef } from "./types";
 
 export { CATEGORIES, CATEGORY_LIST } from "./categories";
@@ -46,7 +47,6 @@ interface RawTag {
 }
 
 interface RawBookEntry {
-  rank?: number;
   blurb?: string;
   tagOverrides: RawTag[] | null;
   refBook: {
@@ -77,11 +77,19 @@ function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
   };
 }
 
-function toBookEntry(raw: RawBookEntry): BookEntry | null {
+/**
+ * `rank` is never stored in Sanity — it's the book's position within the
+ * article's `bookEntries` array (the order the author drags entries into),
+ * only surfaced for categories that actually display ranks (The Shortlist).
+ * A hand-entered rank number used to exist and could silently drift out of
+ * sync with the actual displayed order if an author reordered the array
+ * without also updating it — see DECISIONS.md.
+ */
+function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | null {
   if (!raw.refBook) return null; // dangling reference — skip rather than crash on bad CMS data
   const tags = raw.tagOverrides && raw.tagOverrides.length > 0 ? raw.tagOverrides : raw.refBook.tags ?? undefined;
   return {
-    rank: raw.rank,
+    rank,
     title: raw.refBook.title,
     author: raw.refBook.author,
     blurb: raw.blurb || raw.refBook.canonicalBlurb || "",
@@ -91,13 +99,16 @@ function toBookEntry(raw: RawBookEntry): BookEntry | null {
 }
 
 function toArticle(raw: RawArticle): Article {
+  const isRanked = CATEGORIES[raw.category].ranked;
   return {
     ...toArticleSummary(raw),
     author: raw.author,
     publishedAt: raw.publishedAt,
     methodologySentence: raw.methodologySentence,
     introParagraphs: portableTextToParagraphs(raw.introText),
-    books: (raw.bookEntries ?? []).map(toBookEntry).filter((b): b is BookEntry => b !== null),
+    books: (raw.bookEntries ?? [])
+      .map((entry, i) => toBookEntry(entry, isRanked ? i + 1 : undefined))
+      .filter((b): b is BookEntry => b !== null),
     whatToReadNext: (raw.whatToReadNext ?? []).map(toArticleSummary),
   };
 }
@@ -122,7 +133,6 @@ const FULL_ARTICLE_PROJECTION = `{
   methodologySentence,
   introText,
   bookEntries[]{
-    rank,
     blurb,
     "tagOverrides": tags[]->{ "label": name, "slug": slug.current, group },
     "refBook": book->{

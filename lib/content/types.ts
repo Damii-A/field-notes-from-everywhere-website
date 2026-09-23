@@ -38,7 +38,7 @@ export interface TagRef {
 }
 
 export interface BookEntry {
-  rank?: number; // present only for ranked (Shortlist) entries
+  rank?: number; // derived from array position for ranked (Shortlist) categories — never authored directly, see lib/content/index.ts
   title: string;
   author: string;
   /** Article-specific blurb — pub_article.md §5 ("Blurb"), overrides any canonical book blurb. */

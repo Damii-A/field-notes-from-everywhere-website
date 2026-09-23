@@ -717,3 +717,84 @@ succeeded, no console errors) — see `CURRENT_STATE.md`.
 
 **Status**: confirmed with the user 2026-09-23 (footer, over homepage-only or skipping)
 before implementing.
+
+---
+
+## 2026-09-23 — Book rank is derived from array order, never a hand-entered field
+
+**Decision**: Removed the `rank` field from the `article` schema's `bookEntries` object
+(`sanity/schemaTypes/article.ts`). A Shortlist book's displayed rank number is now always
+`(its position in the bookEntries array) + 1`, computed in `lib/content/index.ts`'s
+`toArticle`/`toBookEntry` for every consumer, not read from a stored Sanity field.
+
+**Context**: While reviewing the schema ahead of real content authoring, found that the
+on-page article view (`ArticleView.tsx`) already displayed rank numbers from array position
+(`{i + 1}`), but the one-off "send this list to me" email (`sendBookListEmail`,
+`lib/integrations/resend.ts`) numbered books using the separate stored `rank` field instead.
+Those two could silently drift apart: an author dragging book entries into a new order in the
+Studio (Sanity arrays support drag-reordering natively) had no reason to also update each
+entry's hand-typed rank number, so the on-page order and the emailed order could show
+different numbers for the same list. User flagged this as a real authoring risk before
+starting to enter real Shortlist content.
+
+**Alternatives considered**: Keep the field but add Studio-side guidance/validation to remind
+authors to update it — rejected as treating a symptom; a field that can silently go stale is
+worth removing entirely when the "correct" value is always mechanically derivable from
+something else that already has to be kept accurate (the array order itself, which directly
+controls the visible book order either way).
+
+**Reasoning**: Removing the redundant field removes an entire class of data-entry error
+rather than mitigating it — the display order and the rank number can no longer disagree,
+because there's only one thing to keep correct (the order you arrange the books in).
+Consistent with Operating Manual §5 (prefer simplicity) and §26 ("avoid unnecessary
+duplication" in data modeling).
+
+**Consequences**: Schema field removed; `RawBookEntry`/`toBookEntry`/`toArticle` in
+`lib/content/index.ts` updated to compute rank from array index, only for categories where
+`CATEGORIES[category].ranked` is true (What to Read When / Book Club Book Picks entries get
+`rank: undefined`, matching prior behavior — their emailed lists stay unnumbered).
+`sendBookListEmail` needed no change; it already just reads whatever `rank` it's given.
+Dataset was empty at the time (no migration needed for existing documents). `npm run build`/
+`typecheck` clean.
+
+**Status**: user-directed, implemented same session.
+
+---
+
+## 2026-09-23 — Studio: articles grouped by category, not tags; Site Settings pinned singleton
+
+**Decision**: Added a custom Studio sidebar (`sanity/structure.ts`, wired into
+`sanity.config.ts` via `structureTool({ structure })`), replacing the default flat
+alphabetical per-type list. Articles are grouped into three filtered lists, one per category
+(The Shortlist / What to Read When / Book Club Book Picks). Books and Tags stay flat,
+top-level lists. Site Settings is pinned as a true singleton — a fixed document id
+(`S.document().schemaType("siteSettings").documentId("siteSettings")`), and also removed from
+the global "+ New document" menu (`document.newDocumentOptions` in `sanity.config.ts`) so it
+can't be accidentally duplicated.
+
+**Context**: Discussed with the user how to make direct-in-Studio authoring (their chosen
+workflow — see the "figuring out the best way to author content" conversation, 2026-09-23)
+less error-prone before real content authoring starts. The user specifically asked to group
+by article/category rather than by tag, reasoning that tag-based grouping will exist on the
+hub pages eventually anyway (`pub_hub.md`'s "Browse our Collections" sections, still V1
+backlog per `DESIGN_PROJECT_BUILD_NOTES.md`) — mirroring it in the Studio would duplicate a
+frontend concern rather than reduce authoring friction. Grouping what the author actually
+works with (one article at a time, within one of the three columns) is what actually helps.
+
+**Reasoning**: Matches Operating Manual §17 ("follow established project patterns... prefer
+focused changes") and keeps the Studio's organization aligned with the authoring workflow
+(one column at a time) rather than the taxonomy model, which belongs to hub-page browsing, a
+separate, not-yet-built frontend feature. The Site Settings singleton lockdown prevents a
+real, easy-to-hit mistake (accidentally creating a second Site Settings document, after which
+`getSiteSettings()`'s `[0]` query would nondeterministically pick one).
+
+**Consequences**: New `sanity/structure.ts`. `sanity.config.ts` gained the `structure` import
+and a `document.newDocumentOptions` filter. No schema/data changes — this is purely a Studio
+UI/navigation change, safe regardless of what's already in the (currently empty) dataset.
+Not independently visually verified this session — Sanity Studio's own login is an
+account-tied OAuth flow, not something a headless session can authenticate into, so the user
+should confirm the new sidebar looks right the first time they open `/studio`. `npm run
+build`/`typecheck` clean, including the `/studio` route itself compiling.
+
+**Status**: confirmed with the user 2026-09-23 (articles-by-category over any tag-based
+grouping) before implementing.

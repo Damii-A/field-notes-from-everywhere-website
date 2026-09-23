@@ -1,11 +1,17 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-23 (Re-verified the Kit/Resend production env vars live against the
-real production URL — `RESEND_NEWSLETTER_SEGMENT_ID`/`RESEND_SEND_LIST_SEGMENT_ID` confirmed
-working via direct Resend API checks, `CRON_SECRET` still unverified — see "Email/subscriber
-integrations" below. Also wired the Paddle webhook to signal Resend on conversion via a new
-`reading_room_member` contact property, closing the gap noted in the previous update — see
-`DECISIONS.md`. Previous update, 2026-09-22: Paddle fully set up and verified end-to-end —
+Last updated: 2026-09-23 (Started the content-authoring workflow conversation: fixed a real
+authoring foot-gun — book rank is now always derived from array order rather than a
+hand-typed field that could drift out of sync — and added a custom Sanity Studio sidebar
+(articles grouped by category, Site Settings pinned as a true singleton). See "Sanity
+connection"/"Content layer" below and `DECISIONS.md`. Earlier the same day: re-verified the
+Kit/Resend production env vars live against the real production URL —
+`RESEND_NEWSLETTER_SEGMENT_ID`/`RESEND_SEND_LIST_SEGMENT_ID` confirmed working via direct
+Resend API checks, `CRON_SECRET` still unverified — see "Email/subscriber integrations"
+below. Also wired the Paddle webhook to signal Resend on conversion via a new
+`reading_room_member` contact property, closing the gap noted in the previous update, and
+added a footer newsletter signup form — see `DECISIONS.md`. Previous update, 2026-09-22:
+Paddle fully set up and verified end-to-end —
 real sandbox test purchase → webhook → Kit tag confirmed working, after finding and fixing a
 real bug along the way. Also that session: a cluster of earlier production-only bugs
 (`SITE_URL`, Sanity Studio's client-side project ID, Sanity CORS/webhook, a broken production
@@ -71,6 +77,27 @@ text blocks). Intro paragraphs are flattened to plain strings (one block → one
 matching the design's plain-paragraph treatment — see `lib/content/portableText.ts`); legal
 page bodies are rendered as real HTML via `@portabletext/to-html` (matches the rich structure
 legal copy needs — headings, lists, links).
+
+**Content-authoring workflow (started 2026-09-23)**: the user will author real content
+directly in the Studio (`/studio`), article by article, as they go — not via a bulk
+import/spreadsheet. Two things were fixed/added before real authoring starts:
+- **Book rank is no longer a field you fill in.** It's derived from the order you arrange a
+  Shortlist article's book entries in (drag to reorder) — see `DECISIONS.md`, "Book rank is
+  derived from array order." Previously a separate hand-typed number existed that could
+  silently disagree with the actual displayed order.
+- **Custom Studio sidebar** (`sanity/structure.ts`): Articles are grouped into three lists by
+  category (matching the three Publication columns) rather than the default flat alphabetical
+  list; Site Settings is pinned as a true singleton (can't be accidentally duplicated). See
+  `DECISIONS.md`, "Studio: articles grouped by category, not tags; Site Settings pinned
+  singleton." **Not yet visually verified live** — Studio login is account-tied OAuth, so this
+  needs the user's own eyes the first time they open `/studio` after this deploys.
+- **Per-article tag display**: a book's tag pills shown within an article already come from
+  `bookEntries[].tags` if you fill it in (a deliberate subset/override of that book's own
+  canonical tags — e.g. show only "dark fantasy" for a book tagged dark fantasy, brutal, AND
+  emotionally devastating on its own record, if that's the only one relevant to this
+  particular list) — falls back to the book's full tag list if left empty. This mechanism
+  already existed in the code; the field's Studio description was clarified so it's obvious
+  what it does without reading code.
 
 **Still using mock/placeholder behavior**: none — the "one hand-authored lead article, every
 other hub card resolves to a synthesized placeholder" mechanism from the mock-data era is gone
