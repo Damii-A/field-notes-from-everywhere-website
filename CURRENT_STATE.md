@@ -1,23 +1,38 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-23 (Started the content-authoring workflow conversation: fixed a real
-authoring foot-gun — book rank is now always derived from array order rather than a
-hand-typed field that could drift out of sync — and added a custom Sanity Studio sidebar
-(articles grouped by category, Site Settings pinned as a true singleton). See "Sanity
-connection"/"Content layer" below and `DECISIONS.md`. Earlier the same day: re-verified the
-Kit/Resend production env vars live against the real production URL —
-`RESEND_NEWSLETTER_SEGMENT_ID`/`RESEND_SEND_LIST_SEGMENT_ID` confirmed working via direct
-Resend API checks, `CRON_SECRET` still unverified — see "Email/subscriber integrations"
-below. Also wired the Paddle webhook to signal Resend on conversion via a new
-`reading_room_member` contact property, closing the gap noted in the previous update, and
-added a footer newsletter signup form — see `DECISIONS.md`. Previous update, 2026-09-22:
-Paddle fully set up and verified end-to-end —
-real sandbox test purchase → webhook → Kit tag confirmed working, after finding and fixing a
-real bug along the way. Also that session: a cluster of earlier production-only bugs
-(`SITE_URL`, Sanity Studio's client-side project ID, Sanity CORS/webhook, a broken production
-`RESEND_API_KEY`), the Reading Room trial automation structure, the `/the-reading-room/subscribe`
-page, and the Reading Room price change to $7/month. Only content authoring and legal copy
-remain — see "Immediately next".)
+Last updated: 2026-09-23 (session paused here at the user's request — repository is clean,
+everything below is accurate and pushed). **Immediately next**: the user will hand off their
+first real batch of books as a CSV — run it with `npm run import-books -- <path>`, per
+"Content-authoring workflow" below. No other action is pending; this is a clean stopping
+point, not a blocker.
+
+This session's work, most recent first: built and hardened the bulk book-import script
+(`scripts/import-books.mjs`) — CSV → Sanity, handles both cover-image URLs and local cover
+image files (a CSV can't hold an embedded spreadsheet image, so local files were added after
+the user clarified their actual workflow), verified three times against the real dataset with
+cleanup each time. Along the way, found the Sanity dataset already has real content (3
+articles, 1 theme, 3 draft tags — the user's own work in the Studio, not touched by any
+script). Replaced the theme taxonomy with the user's own 9-group list. Split book tags and
+article-level themes into two separate Sanity document types (`tag` vs `theme`) after the
+first version conflated them. Added `article.themes` so articles can be classified into the
+future "Browse Our Collections" hub groupings, a real schema gap found by reading `pub_hub.md`
+directly. Fixed book rank to derive from array order instead of a hand-typed field that could
+drift out of sync. Added a custom Sanity Studio sidebar (articles grouped by category, Site
+Settings pinned as a true singleton). Full reasoning for all of the above is in `DECISIONS.md`
+(all dated 2026-09-23).
+
+Earlier the same day: re-verified the Kit/Resend production env vars live against the real
+production URL (`RESEND_NEWSLETTER_SEGMENT_ID`/`RESEND_SEND_LIST_SEGMENT_ID` confirmed
+working, `CRON_SECRET` still unverified — see "Email/subscriber integrations" below), wired
+the Paddle webhook to signal Resend on conversion via a new `reading_room_member` contact
+property, and added a footer newsletter signup form.
+
+Previous session, 2026-09-22: Paddle fully set up and verified end-to-end — real sandbox test
+purchase → webhook → Kit tag confirmed working, after finding and fixing a real bug along the
+way. Also that session: a cluster of earlier production-only bugs (`SITE_URL`, Sanity Studio's
+client-side project ID, Sanity CORS/webhook, a broken production `RESEND_API_KEY`), the
+Reading Room trial automation structure, the `/the-reading-room/subscribe` page, and the
+Reading Room price change to $7/month.
 
 ## What exists right now
 
@@ -33,12 +48,14 @@ book references and tags, then deleted).
 
 - **Project**: `7ci7c80z`, dataset `production` — real, live, created 2026-09-21. Values are in
   `.env.local` (`NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`,
-  `SANITY_API_TOKEN`). **Real authoring has actually started** (found 2026-09-23, while
-  verifying the bulk book-import script below): three unpublished draft `tag` documents
-  exist (Thriller, Dark Fantasy, Dark Romance) — the user's own real work directly in the
-  Studio, not test data. No `book`/`article` documents exist yet as of this writing. Every
-  page that depends on content still handles the empty/partial case gracefully (see "Empty
-  content state" below) rather than crashing.
+  `SANITY_API_TOKEN`). **Real authoring has actually started.** As of 2026-09-23 (end of
+  session): 3 `article` documents, 1 `theme`, and 3 unpublished draft `tag` documents
+  (Thriller, Dark Fantasy, Dark Romance) exist — all the user's own real work directly in the
+  Studio; none of it created or touched by any script this session (the bulk book-import
+  script's own test runs, all deleted afterward, are the only writes this session made to
+  `book`/`tag`/image-asset types — see "Content-authoring workflow" below). No `book`
+  documents exist yet. Every page that depends on content still handles the empty/partial
+  case gracefully (see "Empty content state" below) rather than crashing.
 - **CORS**: `http://localhost:3000` and `http://localhost:3001` are allowed (added via the
   Sanity management API 2026-09-21, since neither was there by default and the embedded Studio
   needs it to work from the browser). **Still needed**: add the production/preview domain to
@@ -283,8 +300,15 @@ closed (401), it doesn't silently misfire.
 
 ## Immediately next
 
-Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
-are deliberately last, after the remaining technical/integration work, not next.
+**Content authoring has now genuinely started (2026-09-23)** — the sequencing preference
+below (2026-09-21: content/legal copy deliberately last) held exactly as intended: the
+remaining technical/integration work (Paddle, the Resend/Kit conversion signal, the footer
+newsletter form) was finished first, and content authoring began only once that was done, not
+before. **The literal next action**: the user will hand off their first batch of real books
+as a CSV; run `npm run import-books -- <path-to-their-file>` (see "Content-authoring
+workflow" above for the exact format, and `DECISIONS.md` for why it's built the way it is).
+Real legal copy (Terms/Privacy/Disclosures) is still not written — still last, alongside the
+rest of the editorial content.
 
 **Resolved 2026-09-23**: added a real "join the list" newsletter signup form to the site
 footer (`components/FooterNewsletterForm.tsx`), submitting to `/api/subscribe` with
@@ -369,9 +393,11 @@ need to be built in Resend's dashboard — this only made the signal available, 
 `ARCHITECTURE.md` §9's existing framing that automation content/timing is dashboard
 configuration, not app code.
 
-1. **Last**: author real content — Sanity articles/books/tags/Site Settings, the 7 Reading
-   Room issue templates in Resend (see above), and real legal copy for
-   Terms/Privacy/Disclosures. Everything else in this document is done.
+1. **In progress**: author real content — Sanity articles/books/tags/Site Settings, the 7
+   Reading Room issue templates in Resend (see above), and real legal copy for
+   Terms/Privacy/Disclosures. Everything else in this document is done. Started 2026-09-23
+   (see "Content-authoring workflow" above); first concrete action pending is the user's
+   first book-import CSV.
 
 ## Weekly recap
 
