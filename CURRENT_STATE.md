@@ -82,7 +82,8 @@ until something is actually published in the Studio.
 - Design-system components actually used by the built pages: `Button`, `Icon`, `BookCover`
   (`components/ds/`). The chat/cart/discover `ui_kits` components in the design bundle were
   confirmed unused by every page read and were not ported — see `ARCHITECTURE.md` §4.
-- `Header` / `Footer`, shared across every page.
+- `Header` / `Footer`, shared across every page. Footer includes a newsletter signup form
+  (added 2026-09-23, not part of the original design — see "Immediately next" below).
 - Home (`/`) — hero, the reader-request Stratosphere (ported faithfully as a client
   component, including the lane-packing/rejustify algorithm — see `components/Stratosphere.tsx`),
   the three category showcase rails, Reading Room intro section.
@@ -204,11 +205,15 @@ closed (401), it doesn't silently misfire.
 Per the user's explicit sequencing preference (2026-09-21): content authoring and legal copy
 are deliberately last, after the remaining technical/integration work, not next.
 
-**Noted for later (2026-09-22, not yet built)**: a real "join our newsletter" signup form
-somewhere on the site. `/api/subscribe` already accepts `source: "newsletter"` and the
-`RESEND_NEWSLETTER_SEGMENT_ID` segment exists for it, but no actual form/button triggers
-this path today — the only live free-list entry point is the article "send this list to me"
-popup. The `newsletter` source was built speculatively, ahead of a UI that doesn't exist yet.
+**Resolved 2026-09-23**: added a real "join the list" newsletter signup form to the site
+footer (`components/FooterNewsletterForm.tsx`), submitting to `/api/subscribe` with
+`source: "newsletter"`. This wasn't shown anywhere in the design (the only free-list entry
+point the design specifies is the article "send this list to me" popup, `pub_article.md`
+§6.4) — footer placement was confirmed with the user before building, since inventing a new
+entry point isn't something to place unprompted per `CLAUDE.md`. Verified with a real
+Playwright run against a live dev server: desktop and mobile both render correctly, a real
+submission (the user's own email) succeeded end-to-end with the success message showing and
+no console errors, and the Resend segment received it (same segment already verified above).
 
 **Resolved 2026-09-22** (all verified live against production, not just locally): `SITE_URL`
 pointed at a dead per-deployment URL — fixed, now uses the stable hash-less production domain

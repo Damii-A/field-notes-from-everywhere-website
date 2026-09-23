@@ -679,3 +679,41 @@ configuration, not app code. The post-trial email series itself is also still un
 routine, reversible implementation choice consistent with prior same-day-category decisions
 above (Segments/Automations both created directly via API without asking the user to click
 through Resend's dashboard first).
+
+---
+
+## 2026-09-23 — Newsletter signup added to the site footer (not shown in the design)
+
+**Decision**: Added a "Join the list" free-newsletter signup form (`FooterNewsletterForm`)
+to the site footer, submitting to the existing `/api/subscribe` with `source: "newsletter"`.
+
+**Context**: `/api/subscribe` already accepted `source: "newsletter"` and
+`RESEND_NEWSLETTER_SEGMENT_ID` already existed (built 2026-09-22), but nothing in the built
+UI ever triggered that path — the only free-list entry point the design actually specifies
+anywhere is the article "send this list to me" popup (`pub_article.md` §6.4). Checked the
+full design-spec set and `DESIGN_PROJECT_BUILD_NOTES.md` before building anything: no footer
+or homepage newsletter CTA is described or built there. Per `CLAUDE.md` ("don't invent new
+user-facing features... where the design doesn't show it" / escalate when a change "implies a
+user-facing behavior the design doesn't show and where more than one plausible behavior
+exists"), this was surfaced to the user rather than placed unprompted.
+
+**Alternatives considered**: Homepage-only section (more visible but reachable from one page
+only); skip entirely and leave the `newsletter` source unused until a real design need
+arises. The user chose the footer.
+
+**Reasoning**: The footer is the standard, low-friction placement for a site-wide newsletter
+signup on an editorial site, visible from every page without competing with any page's
+primary CTA — and it's genuinely new UI, so the placement decision belonged to the user, not
+to me.
+
+**Consequences**: New `components/FooterNewsletterForm.tsx` (client component, mirrors the
+existing `ReadingRoomTrialForm`/article-popup pattern: name + email, POST to `/api/subscribe`,
+inline success/error state) and `FooterNewsletterForm.module.css`, styled against the same
+design tokens already used elsewhere in the footer (`--surface-card`/`--shadow-flat` for
+inputs, matching the existing social-icon buttons, since this is new UI with no `.dc.html`
+source to port verbatim). `Footer.tsx` gained a fourth column, "Join the list." Verified with
+a real Playwright run against a live dev server (desktop + mobile, a real submission
+succeeded, no console errors) — see `CURRENT_STATE.md`.
+
+**Status**: confirmed with the user 2026-09-23 (footer, over homepage-only or skipping)
+before implementing.

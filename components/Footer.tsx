@@ -2,6 +2,7 @@ import Link from "next/link";
 import styles from "./Footer.module.css";
 import { Icon } from "./ds/Icon";
 import { CATEGORY_LIST } from "@/lib/content";
+import { FooterNewsletterForm } from "./FooterNewsletterForm";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -36,6 +37,10 @@ export function Footer() {
               {link.label}
             </Link>
           ))}
+        </div>
+        <div className={styles.column}>
+          <span className={styles.columnLabel}>Join the list</span>
+          <FooterNewsletterForm />
         </div>
         <div className={styles.socials}>
           {/* href="#" until real social URLs are supplied — see CURRENT_STATE.md */}
