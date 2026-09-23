@@ -984,3 +984,19 @@ later (e.g. once the user has cover image URLs sourced for many books at once), 
 script rather than building a separate one, since the matching/dedup logic would be the same.
 
 **Status**: user-directed, implemented same session.
+
+**Update, same session**: the user pointed out cover images were missed. Added a `cover`
+column (direct image URL) — the script downloads it and uploads it to Sanity's own asset
+store (`POST /assets/images/{dataset}`), then references the resulting asset id on the
+book's `coverImage` field. A failed download/upload for one row (bad URL, non-image content)
+is caught and reported as a warning rather than failing that book or the whole import — the
+book still gets created/updated without a cover, since a book with placeholder art
+(`ImagePlaceholder`, per `CURRENT_STATE.md`) is a normal, already-handled state on this site.
+Also: a blank `cover` cell on a re-run preserves an existing book's current cover (queried
+before building mutations) rather than clearing it via `createOrReplace` — otherwise
+re-running the same file to add new rows would silently wipe covers set at some point after
+the original import. Re-verified end-to-end with real image URLs (picsum.photos test images,
+since real cover art wasn't needed to prove the mechanism): both test books got real,
+correctly-sized uploaded cover assets with working CDN URLs; cleaned up afterward (2 books, 6
+tags, and the 2 uploaded image assets deleted directly via the API), confirmed via a
+follow-up query that the user's 3 real draft tags were untouched both times this was tested.

@@ -125,19 +125,25 @@ things were fixed/added/built before real authoring starts:
   since books are simple, structured records, the user will hand off batches as a
   spreadsheet/CSV rather than creating each one by hand in the Studio (articles still get
   authored directly in the Studio, one at a time — see above). Columns: `title`, `author`,
-  `blurb`, `tags` (semicolon-separated). Matches existing books by title+author so it's safe
-  to re-run with an updated file; matches/creates tags by name. **Cover images are not
-  handled** — add those individually afterward. **Real bug found and fixed while first
-  testing this against the live dataset**: the user had already started adding real tags
-  directly in the Studio (three unpublished drafts — Thriller, Dark Fantasy, Dark Romance,
-  found live) before this script existed. The script's first version matched an existing tag
-  by name regardless of draft/published status, so it wired a real book to a `drafts.*` tag
-  id — not valid Sanity practice. Fixed by excluding drafts from the tag-matching query (only
-  matches/reuses published tags now). Verified against the real dataset: ran with two
-  template rows, confirmed both books and all 5 new tags landed correctly, confirmed the
-  existing "Dark Fantasy" draft was correctly recognized and NOT duplicated, then deleted all
-  of the script's own test output afterward (leaving the user's 3 real draft tags untouched).
-  See `DECISIONS.md`.
+  `blurb`, `tags` (semicolon-separated), `cover` (a direct image URL — downloaded and
+  uploaded to Sanity's asset store automatically). Matches existing books by title+author so
+  it's safe to re-run with an updated file; matches/creates tags by name; a blank `cover` cell
+  on a re-run preserves whatever cover the book already has rather than clearing it. **Note**:
+  re-running does fully replace each matched book's document from its CSV row, so a manual
+  edit made in the Studio to an already-imported book (e.g. adding an extra tag by hand) would
+  be overwritten if that same row is re-imported later — treat the CSV as the source of truth
+  for whatever it manages. **Real bug found and fixed while first testing this against the
+  live dataset**: the user had already started adding real tags directly in the Studio (three
+  unpublished drafts — Thriller, Dark Fantasy, Dark Romance, found live) before this script
+  existed. The script's first version matched an existing tag by name regardless of
+  draft/published status, so it wired a real book to a `drafts.*` tag id — not valid Sanity
+  practice. Fixed by excluding drafts from the tag-matching query (only matches/reuses
+  published tags now). Verified twice against the real dataset (once before cover-image
+  support was added, once after): ran with template rows each time, confirmed books/tags/
+  cover images all landed correctly with real uploaded asset URLs, confirmed the existing
+  "Dark Fantasy" draft was correctly recognized and never duplicated, then deleted all of the
+  script's own test output afterward (books, tags, and uploaded image assets) — leaving the
+  user's 3 real draft tags untouched both times. See `DECISIONS.md`.
 
 **Still using mock/placeholder behavior**: none — the "one hand-authored lead article, every
 other hub card resolves to a synthesized placeholder" mechanism from the mock-data era is gone
