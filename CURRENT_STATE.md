@@ -11,8 +11,9 @@ don't change a book's id). Then continue content authoring (articles in the Stud
 low-resolution (under 300px wide — Dark Places, Kill For Me Kill For You, Nightwatching,
 Orphan X, Shutter Island, The Fourth Monkey, The Girl with the Dragon Tattoo, The Likeness,
 What Lies Between Us); "The Girl with the Dragon Tattoo" is tagged Dark Fantasy (likely a
-slip); several titles/authors have inconsistent capitalization ("Pretty girls", "Riley sager",
-"J.D Barker", "S A Cosby", etc.); a few near-duplicate tags exist (Plot Twist / Plot Twist
+slip); ~~inconsistent title/author capitalization~~ — **fixed directly in Sanity 2026-09-23**
+(11 books patched; the source CSV in Downloads still has the old casing, so re-importing it
+unedited would revert them); a few near-duplicate tags exist (Plot Twist / Plot Twist
 Ending, FBI Profiler / FBI Profiler MC, Toxic couple / Toxic Marriage, Global / International
 Manhunt, Journalist MC / Female Journalist MC).
 
