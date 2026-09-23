@@ -28,6 +28,11 @@
  * if that book's row is re-imported. Leaving the `cover` cell blank on a
  * later re-run does NOT clear an existing cover.
  *
+ * Ranking (optional): add `--ranking "Thriller"` to also save the CSV's row
+ * order as that theme's reader-recommendation ranking (row 1 = #1), stored as
+ * a `ranking` document. Re-running with the same name replaces that ranking's
+ * order with the file's — so reorder in the file, or in the Studio, not both.
+ *
  * Books are matched by title+author (not row order). Tags are matched by
  * name (case-insensitive, published tags only — see the comment on
  * existingTags below) against what already exists in Sanity; anything new
@@ -49,9 +54,16 @@ if (!PROJECT_ID || !TOKEN) {
   process.exit(1);
 }
 
-const csvPath = process.argv[2];
+const args = process.argv.slice(2);
+const rankingFlag = args.indexOf("--ranking");
+const rankingName = rankingFlag >= 0 ? args[rankingFlag + 1]?.trim() : undefined;
+if (rankingFlag >= 0 && !rankingName) {
+  console.error('--ranking needs a name, e.g. --ranking "Thriller"');
+  process.exit(1);
+}
+const csvPath = args.find((a, i) => !a.startsWith("--") && (rankingFlag < 0 || i !== rankingFlag + 1));
 if (!csvPath) {
-  console.error("Usage: node --env-file=.env.local scripts/import-books.mjs <path-to-books.csv>");
+  console.error('Usage: node --env-file=.env.local scripts/import-books.mjs <path-to-books.csv> [--ranking "Theme name"]');
   process.exit(1);
 }
 
@@ -253,16 +265,32 @@ for (const row of validRows) {
   });
 }
 
+// Row order = rank. Duplicate rows for the same book keep their first (highest) position.
+const rankingMutations = [];
+if (rankingName) {
+  const rankedIds = [...new Set(bookMutations.map((m) => m.createOrReplace._id))];
+  rankingMutations.push({
+    createOrReplace: {
+      _id: `ranking-${slugify(rankingName)}`,
+      _type: "ranking",
+      name: rankingName,
+      slug: { _type: "slug", current: slugify(rankingName) },
+      books: rankedIds.map((id) => ({ _type: "reference", _key: id, _ref: id })),
+    },
+  });
+}
+
 if (tagMutations.length + bookMutations.length === 0) {
   console.log("Nothing to import.");
   process.exit(0);
 }
 
-await sanityMutate([...tagMutations, ...bookMutations]);
+await sanityMutate([...tagMutations, ...bookMutations, ...rankingMutations]);
 
 console.log(`\nCreated ${tagMutations.length - publishedDrafts.length * 2} new tag(s).`);
 if (publishedDrafts.length > 0) console.log(`Published ${publishedDrafts.length} existing draft tag(s): ${publishedDrafts.join(", ")}.`);
 console.log(`Created/updated ${bookMutations.length} book(s).`);
+if (rankingName) console.log(`Saved ranking "${rankingName}" (${rankingMutations[0].createOrReplace.books.length} books, in file order).`);
 if (skipped.length > 0) {
   console.log("\nSkipped rows:");
   skipped.forEach((s) => console.log(`  - ${s}`));

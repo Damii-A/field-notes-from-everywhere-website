@@ -3,6 +3,11 @@
 Last updated: 2026-09-23 (late). **First real book batch imported**: 49 thriller books
 (`~/Downloads/Thriller themed books Uploaded version to Sanity - Books.csv`) are live in
 Sanity, all with covers and blurbs, 94 published tags, verified by direct query afterward.
+**Also added same evening**: article scheduling (future `publishedAt` = hidden until then)
+and a `ranking` document type holding reader-recommendation rankings per theme — the
+"Thriller" ranking (49 books, the import file's row order) is saved. See `DECISIONS.md`.
+Future book batches: `npm run import-books -- <file.csv> --ranking "Theme name"`. Note the 3
+existing `article` documents are empty drafts (no title/date yet).
 **Immediately next**: the user reviews the data-quality flags below and, if they fix anything,
 re-imports the same file (safe — books are matched by title+author, and casing-only fixes
 don't change a book's id). Then continue content authoring (articles in the Studio).

@@ -169,6 +169,11 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   field; it's derived from each entry's position in this array, see `DECISIONS.md`),
   `whatToReadNext[]` (references to up to 3 other `article` documents, editorially chosen per
   spec §6.5).
+- **`ranking`** — a reader-recommendation ranking for one theme (`name`, e.g. "Thriller";
+  `slug`; `books[]`: ordered, unique references to `book`). Rank is array position, same
+  derived-from-order rule as `article.bookEntries`. A book can appear in many rankings at
+  different positions. This is the site's research data, stored independently of any article;
+  no page reads it yet (added 2026-09-23 — see `DECISIONS.md`).
 - **`legalPage`** — `title`, `slug` (terms / privacy-and-cookies / disclosures), `body`
   (rich text). Matches `utility_pages.md` §2.1 exactly ("CMS-managed body content").
 - **`siteSettings`** singleton — the contact email, social links (Pinterest/Reddit URLs,
@@ -188,7 +193,9 @@ hub-page UI and the engagement-based selection-within-a-grouping logic remain un
 The homepage's "Explore our columns" showcases and the hub's "Latest Article" section pull
 the N most recent published articles per category by query (`publishedAt desc`), matching
 `pub_hub.md`'s "automatically determined by publication date rather than manually curated."
-No manual curation field needed for those. The homepage reader-request text bank
+No manual curation field needed for those. **Scheduling**: every article query also requires
+`publishedAt <= now()`, so an article published in the Studio with a future date stays hidden
+until then (go-live within the 300s revalidate window — see `DECISIONS.md`, 2026-09-23). The homepage reader-request text bank
 (`REQUESTS` array in the built `Home.dc.html`) stays as a code-level constant, not a CMS
 field — it's copy that changes rarely, isn't tied to any content publishing workflow, and
 adding a CMS array field buys nothing here (Operating Manual §5, prefer simplicity).

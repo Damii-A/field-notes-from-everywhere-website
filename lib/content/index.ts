@@ -121,6 +121,15 @@ function toArticle(raw: RawArticle): Article {
   };
 }
 
+/**
+ * Scheduling: an article is only visible once its `publishedAt` time has
+ * passed, so an author can publish in the Studio with a future date and it
+ * goes live on its own (DECISIONS.md, 2026-09-23). Every article query below
+ * includes this. Go-live lag is bounded by the 300s revalidate window — the
+ * Sanity publish webhook fires at publish time, not at the scheduled time.
+ */
+const RELEASED = `publishedAt <= now()`;
+
 const SUMMARY_PROJECTION = `{
   "slug": slug.current,
   category,
@@ -153,12 +162,12 @@ const FULL_ARTICLE_PROJECTION = `{
       "tags": tags[]->{ "label": name, "slug": slug.current }
     }
   },
-  "whatToReadNext": whatToReadNext[]->${SUMMARY_PROJECTION}
+  "whatToReadNext": whatToReadNext[@->publishedAt <= now()]->${SUMMARY_PROJECTION}
 }`;
 
 export async function getLatestArticle(category: CategorySlug): Promise<Article | null> {
   const raw = await groqFetch<RawArticle | null>(
-    `*[_type == "article" && category == $category] | order(publishedAt desc)[0]${FULL_ARTICLE_PROJECTION}`,
+    `*[_type == "article" && category == $category && ${RELEASED}] | order(publishedAt desc)[0]${FULL_ARTICLE_PROJECTION}`,
     { category },
     { tags: ["article", "book", "tag"], revalidate: 300 },
   );
@@ -180,7 +189,7 @@ export interface HubPage {
 
 export async function getHubArticles(category: CategorySlug): Promise<HubPage> {
   const raws = await groqFetch<RawArticleSummary[]>(
-    `*[_type == "article" && category == $category] | order(publishedAt desc)${SUMMARY_PROJECTION}`,
+    `*[_type == "article" && category == $category && ${RELEASED}] | order(publishedAt desc)${SUMMARY_PROJECTION}`,
     { category },
     { tags: ["article"], revalidate: 300 },
   );
@@ -193,7 +202,7 @@ export async function getHubArticles(category: CategorySlug): Promise<HubPage> {
 
 export async function getArticleBySlug(category: CategorySlug, slug: string): Promise<Article | null> {
   const raw = await groqFetch<RawArticle | null>(
-    `*[_type == "article" && category == $category && slug.current == $slug][0]${FULL_ARTICLE_PROJECTION}`,
+    `*[_type == "article" && category == $category && slug.current == $slug && ${RELEASED}][0]${FULL_ARTICLE_PROJECTION}`,
     { category, slug },
     { tags: ["article", "book", "tag"], revalidate: 300 },
   );
@@ -250,7 +259,7 @@ export interface HomeShowcase {
 
 async function latestSummaries(category: CategorySlug, count: number): Promise<ArticleSummary[]> {
   const raws = await groqFetch<RawArticleSummary[]>(
-    `*[_type == "article" && category == $category] | order(publishedAt desc)[0...$count]${SUMMARY_PROJECTION}`,
+    `*[_type == "article" && category == $category && ${RELEASED}] | order(publishedAt desc)[0...$count]${SUMMARY_PROJECTION}`,
     { category, count },
     { tags: ["article"], revalidate: 300 },
   );
@@ -299,7 +308,7 @@ interface RawFeedArticle {
 /** Most recent articles across every category, newest first — feeds app/rss/route.ts and the weekly recap cron job. */
 export async function getFeedArticles(limit: number): Promise<FeedArticle[]> {
   const raws = await groqFetch<RawFeedArticle[]>(
-    `*[_type == "article"] | order(publishedAt desc)[0...$limit]{
+    `*[_type == "article" && ${RELEASED}] | order(publishedAt desc)[0...$limit]{
       "slug": slug.current, category, title, publishedAt, methodologySentence,
       "books": bookEntries[0...3].book->{ title, "coverImage": coverImage{ "url": asset->url } }
     }`,

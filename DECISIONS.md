@@ -1032,3 +1032,59 @@ references are deduped by id (a tag in both columns would otherwise produce a du
 server started refusing (502) after ~25 rapid downloads on the first 49-book run, then dropped
 connections on a few more. All 49 books were then confirmed in Sanity with covers, blurbs and
 valid tag references.
+
+---
+
+## 2026-09-23 — Article scheduling via `publishedAt`, not Sanity's scheduling feature
+
+**Decision**: An article is visible on the site only once its `publishedAt` time has passed.
+Every article query in `lib/content/index.ts` includes `publishedAt <= now()` (hubs, article
+pages, homepage rails, RSS, weekly recap, sitemap via the hub query, and `whatToReadNext`
+references). The author publishes in the Studio with a future date; the article appears on
+its own.
+
+**Context**: User asked whether articles can be scheduled. Previously `publishedAt` only drove
+display date and ordering; a future-dated published article appeared immediately.
+
+**Alternatives considered**: Sanity's own scheduled-publishing / content-releases feature —
+may require a paid plan (not verified), and would duplicate what `publishedAt`, a field
+already required on every article, can express. Not pursued.
+
+**Consequences**: Go-live lag is up to ~5 minutes after the scheduled time (the 300s
+revalidate window — the Sanity webhook fires at publish time, not at the scheduled time). A
+scheduled article's direct URL 404s until it's live. Verified with two temporary live
+articles (past/future-dated): the hub query returned only the past one; both deleted.
+
+**Status**: user-approved 2026-09-23 (option offered alongside Sanity's own feature).
+
+---
+
+## 2026-09-23 — Reader-recommendation rankings stored as their own `ranking` documents
+
+**Decision**: New `ranking` document type (`sanity/schemaTypes/ranking.ts`): a name (the
+theme the books were ranked for, e.g. "Thriller") plus an ordered, unique list of book
+references — rank = position. The importer gained `--ranking "Name"`, saving the CSV's row
+order as that ranking. The first one, "Thriller" (49 books), was created from the user's
+first import file's row order.
+
+**Context**: The user pointed out the first import had lost their ranking: the spreadsheet was
+the top-ranked thrillers in order, and reader-recommendation ranking is the site's core
+premise. Rank is per theme, not per book: the same book can rank differently for "Thriller"
+and for, say, "Small Town Mystery".
+
+**Alternatives considered**: A rank number on `book` — can't express per-theme ranks. A list of
+`{theme, rank}` pairs on each book — a ranking would be scattered across dozens of documents,
+and reordering one would mean hand-editing many numbers that could drift (the same failure
+mode that removed `bookEntries[].rank`, see "Book rank is derived from array order"). Reusing
+an article's `bookEntries` as the ranking — conflates research data with one published list
+drawn from it. Referencing the `theme` type — not done yet: themes are the article-level hub
+taxonomy with a required group, and a ranking's subject may not map 1:1 onto one; easy to
+add as an optional reference later if wanted.
+
+**Consequences**: Rankings live in their own Studio sidebar section, drag-to-reorder. Nothing
+on the site reads them yet. Re-importing with `--ranking` replaces that ranking's order with
+the file's — reorder in one place (file or Studio), not both. The Thriller ranking was written
+directly (not via a re-import) so the capitalization fixes made directly in Sanity earlier the
+same day weren't reverted by the unedited source CSV.
+
+**Status**: user-directed, implemented same session.

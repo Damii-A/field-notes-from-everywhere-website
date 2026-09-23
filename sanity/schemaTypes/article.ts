@@ -30,7 +30,14 @@ export default defineType({
       of: [{ type: "reference", to: [{ type: "theme" }] }],
     }),
     defineField({ name: "author", title: "Author", type: "string", initialValue: "The FNFE Team" }),
-    defineField({ name: "publishedAt", title: "Published at", type: "datetime", validation: (r) => r.required() }),
+    defineField({
+      name: "publishedAt",
+      title: "Published at",
+      description:
+        "When this article goes live. Set a future date/time to schedule it: you can hit Publish now, and it stays hidden from the site until this moment, then appears on its own (within about 5 minutes).",
+      type: "datetime",
+      validation: (r) => r.required(),
+    }),
     defineField({ name: "heroImage", title: "Hero image", type: "image", options: { hotspot: true }, fields: [{ name: "alt", type: "string", title: "Alt text" }] }),
     defineField({
       name: "methodologySentence",
