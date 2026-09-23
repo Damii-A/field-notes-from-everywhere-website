@@ -1,10 +1,20 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-23 (session paused here at the user's request — repository is clean,
-everything below is accurate and pushed). **Immediately next**: the user will hand off their
-first real batch of books as a CSV — run it with `npm run import-books -- <path>`, per
-"Content-authoring workflow" below. No other action is pending; this is a clean stopping
-point, not a blocker.
+Last updated: 2026-09-23 (late). **First real book batch imported**: 49 thriller books
+(`~/Downloads/Thriller themed books Uploaded version to Sanity - Books.csv`) are live in
+Sanity, all with covers and blurbs, 94 published tags, verified by direct query afterward.
+**Immediately next**: the user reviews the data-quality flags below and, if they fix anything,
+re-imports the same file (safe — books are matched by title+author, and casing-only fixes
+don't change a book's id). Then continue content authoring (articles in the Studio).
+
+**Data-quality flags from the first batch (user's call, not fixed silently)**: 9 covers are
+low-resolution (under 300px wide — Dark Places, Kill For Me Kill For You, Nightwatching,
+Orphan X, Shutter Island, The Fourth Monkey, The Girl with the Dragon Tattoo, The Likeness,
+What Lies Between Us); "The Girl with the Dragon Tattoo" is tagged Dark Fantasy (likely a
+slip); several titles/authors have inconsistent capitalization ("Pretty girls", "Riley sager",
+"J.D Barker", "S A Cosby", etc.); a few near-duplicate tags exist (Plot Twist / Plot Twist
+Ending, FBI Profiler / FBI Profiler MC, Toxic couple / Toxic Marriage, Global / International
+Manhunt, Journalist MC / Female Journalist MC).
 
 This session's work, most recent first: built and hardened the bulk book-import script
 (`scripts/import-books.mjs`) — CSV → Sanity, handles both cover-image URLs and local cover
@@ -48,13 +58,11 @@ book references and tags, then deleted).
 
 - **Project**: `7ci7c80z`, dataset `production` — real, live, created 2026-09-21. Values are in
   `.env.local` (`NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`,
-  `SANITY_API_TOKEN`). **Real authoring has actually started.** As of 2026-09-23 (end of
-  session): 3 `article` documents, 1 `theme`, and 3 unpublished draft `tag` documents
-  (Thriller, Dark Fantasy, Dark Romance) exist — all the user's own real work directly in the
-  Studio; none of it created or touched by any script this session (the bulk book-import
-  script's own test runs, all deleted afterward, are the only writes this session made to
-  `book`/`tag`/image-asset types — see "Content-authoring workflow" below). No `book`
-  documents exist yet. Every page that depends on content still handles the empty/partial
+  `SANITY_API_TOKEN`). **Real authoring has actually started.** As of 2026-09-23 (late): 3
+  `article` documents and 1 draft `theme` (the user's own Studio work), plus 49 real `book`
+  documents and 94 published `tag` documents from the first CSV import. The user's 3 former
+  draft tags (Thriller, Dark Fantasy, Dark Romance) were published by that import under their
+  original ids rather than duplicated — see `DECISIONS.md`, bulk book import, third update. Every page that depends on content still handles the empty/partial
   case gracefully (see "Empty content state" below) rather than crashing.
 - **CORS**: `http://localhost:3000` and `http://localhost:3001` are allowed (added via the
   Sanity management API 2026-09-21, since neither was there by default and the embedded Studio
@@ -304,9 +312,10 @@ closed (401), it doesn't silently misfire.
 below (2026-09-21: content/legal copy deliberately last) held exactly as intended: the
 remaining technical/integration work (Paddle, the Resend/Kit conversion signal, the footer
 newsletter form) was finished first, and content authoring began only once that was done, not
-before. **The literal next action**: the user will hand off their first batch of real books
-as a CSV; run `npm run import-books -- <path-to-their-file>` (see "Content-authoring
-workflow" above for the exact format, and `DECISIONS.md` for why it's built the way it is).
+before. The first real book batch (49 thrillers) is imported — see the top of this file for
+the data-quality flags awaiting the user's review. Further batches: `npm run import-books --
+<path-to-their-file>` (the user's own spreadsheet export format works as-is — see
+`DECISIONS.md`, bulk book import, third update).
 Real legal copy (Terms/Privacy/Disclosures) is still not written — still last, alongside the
 rest of the editorial content.
 
@@ -396,8 +405,7 @@ configuration, not app code.
 1. **In progress**: author real content — Sanity articles/books/tags/Site Settings, the 7
    Reading Room issue templates in Resend (see above), and real legal copy for
    Terms/Privacy/Disclosures. Everything else in this document is done. Started 2026-09-23
-   (see "Content-authoring workflow" above); first concrete action pending is the user's
-   first book-import CSV.
+   (see "Content-authoring workflow" above); first 49 books imported 2026-09-23.
 
 ## Weekly recap
 

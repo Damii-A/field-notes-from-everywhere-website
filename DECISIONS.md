@@ -1019,3 +1019,16 @@ resulting book), a missing file path failed gracefully with the expected warning
 still imported; all test-created books/tags/image assets deleted afterward, confirmed clean
 via a follow-up query. `scripts/books-template.csv` updated to reference `covers/*.jpg`
 filenames (the recommended path) instead of URLs.
+
+**Third update, 2026-09-23 (late) — first real import**: the user's actual spreadsheet uses
+`Cover URL` / `Primary tags` / `Secondary tags` headers with comma-separated tags, so the
+script now accepts those as aliases (primary + secondary merged into `tags`) and splits tags
+on either `;` or `,` — the user's own format works as exported, no conversion step. A tag name
+that exists only as an unpublished Studio draft is now **published** (same id, name + slug
+only) instead of left behind while a duplicate published tag is created — the user's 3 draft
+tags were their own real tags, never meant to be separate from the imported ones. Book tag
+references are deduped by id (a tag in both columns would otherwise produce a duplicate array
+`_key`). Cover downloads retry with backoff on 429/5xx and network errors: Open Library's cover
+server started refusing (502) after ~25 rapid downloads on the first 49-book run, then dropped
+connections on a few more. All 49 books were then confirmed in Sanity with covers, blurbs and
+valid tag references.

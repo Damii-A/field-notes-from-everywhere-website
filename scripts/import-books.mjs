@@ -101,9 +101,27 @@ async function uploadImageBytes(bytes, contentType) {
   return document._id;
 }
 
+/**
+ * Fetches with retry + backoff on 429/5xx. Open Library's cover server starts
+ * refusing (502) after ~25 rapid downloads — found on the first real 49-book
+ * import, where every cover after that point failed.
+ */
+async function fetchWithRetry(url, attempts = 5) {
+  for (let i = 1; ; i++) {
+    let res;
+    try {
+      res = await fetch(url);
+    } catch (err) {
+      if (i === attempts) throw err; // network-level failure (reset/timeout) — retried like a 5xx
+    }
+    if (res && (res.ok || i === attempts || !(res.status === 429 || res.status >= 500))) return res;
+    await new Promise((r) => setTimeout(r, 2000 * 2 ** (i - 1)));
+  }
+}
+
 /** Downloads an image from a URL, then uploads it. */
 async function uploadImageFromUrl(url) {
-  const imgRes = await fetch(url);
+  const imgRes = await fetchWithRetry(url);
   if (!imgRes.ok) throw new Error(`could not download image (${imgRes.status})`);
   const contentType = (imgRes.headers.get("content-type") || "").split(";")[0] || guessImageContentType(url);
   if (!contentType || !contentType.startsWith("image/")) throw new Error(`URL doesn't look like an image (content-type: ${contentType || "unknown"})`);
@@ -131,10 +149,20 @@ async function uploadCover(coverValue, csvDir) {
 
 const csvDir = dirname(resolve(csvPath));
 const raw = readFileSync(csvPath, "utf-8");
-const rows = parse(raw, { columns: (header) => header.map((h) => h.trim().toLowerCase()), skip_empty_lines: true, trim: true });
+// The user's own book spreadsheets use "Cover URL" / "Primary tags" /
+// "Secondary tags" headers, so those are accepted as aliases for `cover` and
+// `tags` (primary + secondary merged) rather than requiring a rename first.
+const rows = parse(raw, { columns: (header) => header.map((h) => h.trim().toLowerCase()), skip_empty_lines: true, trim: true }).map(
+  (row) => ({
+    ...row,
+    cover: row.cover ?? row["cover url"],
+    tags: row.tags ?? [row["primary tags"], row["secondary tags"]].filter(Boolean).join(";"),
+  }),
+);
 
 const skipped = [];
 const warnings = [];
+const publishedDrafts = [];
 const validRows = rows.filter((row, i) => {
   if (!row.title || !row.author) {
     skipped.push(`Row ${i + 2}: missing title or author — skipped`);
@@ -153,10 +181,27 @@ console.log(`Read ${rows.length} row(s), ${validRows.length} valid, ${skipped.le
 const existingTags = await sanityQuery(`*[_type == "tag" && !(_id in path("drafts.**"))]{ _id, name }`);
 const tagIdByName = new Map(existingTags.map((t) => [t.name.trim().toLowerCase(), t._id]));
 
+// A tag that exists only as an unpublished Studio draft gets published (same
+// document id, name + slug only) rather than duplicated by a fresh tag of the
+// same name — the draft is the author's own tag, just never published.
+const draftTags = await sanityQuery(`*[_type == "tag" && _id in path("drafts.**")]{ _id, name, slug }`);
+const draftTagByName = new Map(draftTags.map((t) => [t.name.trim().toLowerCase(), t]));
+
 const tagMutations = [];
 function resolveTagId(name) {
   const key = name.trim().toLowerCase();
   if (tagIdByName.has(key)) return tagIdByName.get(key);
+  const draft = draftTagByName.get(key);
+  if (draft) {
+    const id = draft._id.replace(/^drafts\./, "");
+    tagIdByName.set(key, id);
+    tagMutations.push(
+      { createOrReplace: { _id: id, _type: "tag", name: draft.name.trim(), slug: draft.slug ?? { _type: "slug", current: slugify(draft.name) } } },
+      { delete: { id: draft._id } },
+    );
+    publishedDrafts.push(draft.name.trim());
+    return id;
+  }
   const id = `tag-${slugify(name)}`;
   tagIdByName.set(key, id);
   tagMutations.push({
@@ -172,10 +217,13 @@ const existingCoverById = new Map(existingBooks.filter((b) => b.coverImage).map(
 const bookMutations = [];
 for (const row of validRows) {
   const tagNames = (row.tags || "")
-    .split(";")
+    .split(/[;,]/)
     .map((t) => t.trim())
     .filter(Boolean);
-  const tagRefs = tagNames.map((name) => ({ _type: "reference", _key: slugify(name), _ref: resolveTagId(name) }));
+  // Deduped by resolved id — the same tag listed twice (e.g. in both primary
+  // and secondary columns) would otherwise produce a duplicate array _key.
+  const tagIds = [...new Set(tagNames.map(resolveTagId))];
+  const tagRefs = tagIds.map((id) => ({ _type: "reference", _key: id.replace(/[^a-zA-Z0-9-]/g, "-"), _ref: id }));
 
   const id = `book-${slugify(row.title)}-${slugify(row.author)}`;
 
@@ -212,7 +260,8 @@ if (tagMutations.length + bookMutations.length === 0) {
 
 await sanityMutate([...tagMutations, ...bookMutations]);
 
-console.log(`\nCreated ${tagMutations.length} new tag(s).`);
+console.log(`\nCreated ${tagMutations.length - publishedDrafts.length * 2} new tag(s).`);
+if (publishedDrafts.length > 0) console.log(`Published ${publishedDrafts.length} existing draft tag(s): ${publishedDrafts.join(", ")}.`);
 console.log(`Created/updated ${bookMutations.length} book(s).`);
 if (skipped.length > 0) {
   console.log("\nSkipped rows:");
