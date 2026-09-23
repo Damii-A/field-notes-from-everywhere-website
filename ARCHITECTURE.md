@@ -238,6 +238,15 @@ the Claude Design authoring/preview environment, not a production runtime:
   affected route. This means an editor publishing an article goes live within seconds without
   a full site rebuild, and the site isn't hammering Sanity on every request either.
 - Image pipeline: Sanity's asset CDN + `@sanity/image-url`, rendered through `next/image`.
+- **Published content only**: `groqFetch` always requests the `published` perspective
+  explicitly — an authenticated query's default at this API version also returns drafts.
+- **Studio preview** (2026-09-24): Sanity's Presentation tool ("Preview" in the Studio) shows
+  the real site with unpublished and scheduled content. It turns on Next.js draft mode via
+  `/api/draft-mode/enable`, which only accepts a short-lived secret the Studio writes for a
+  logged-in editor (`lib/sanity/previewSecret.ts`). In draft mode `groqFetch` reads the
+  `drafts` perspective uncached and lets future-dated articles through; `VisualEditing` refreshes
+  the page as edits save; a "Preview · exit preview" bar shows if the page is opened outside
+  the Studio. Normal visitors are unaffected, and pages stay statically cached.
 
 ## 9. Kit and Resend (email)
 

@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity";
+import { PreviewBanner } from "@/components/PreviewBanner";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,10 +16,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Studio preview only (see lib/sanity/previewSecret.ts): VisualEditing
+  // refreshes the page inside the Studio's Presentation pane as edits save.
+  const preview = (await draftMode()).isEnabled;
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        {preview && (
+          <>
+            <VisualEditing />
+            <PreviewBanner />
+          </>
+        )}
+      </body>
     </html>
   );
 }

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { Button } from "./ds/Button";
 import { ImagePlaceholder } from "./ImagePlaceholder";
 import styles from "./CategoryHub.module.css";
-import { CATEGORIES, HUB_INITIAL_COUNT, HUB_PAGE_INCREMENT } from "@/lib/content";
+import { CATEGORIES } from "@/lib/content/categories"; // not "@/lib/content": that pulls server-only fetching into this client component
+import { HUB_INITIAL_COUNT, HUB_PAGE_INCREMENT } from "@/lib/content/hubPaging";
 import type { HubPage } from "@/lib/content";
 import type { CategorySlug } from "@/lib/content";
 

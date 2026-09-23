@@ -11,6 +11,12 @@ can now fill their book list from a ranking with the Studio's "Fill books from r
 (logic verified live; the button's UI itself awaits the user's first click — see
 `DECISIONS.md`). Note the 3
 existing `article` documents are empty drafts (no title/date yet).
+**2026-09-24**: fixed a real bug where the live site included unpublished drafts (see
+`DECISIONS.md`), and added Studio preview ("Preview" tab — real site with unpublished/scheduled
+content, Studio-login only; server side verified end-to-end, the Studio tab itself awaits the
+user's first use). The user's first real article ("15 Thriller Books Readers Swear By…",
+Shortlist, scheduled 2026-09-25) is a draft awaiting "Fill books from ranking", its methodology
+sentence, and publish.
 **Immediately next**: the user reviews the data-quality flags below and, if they fix anything,
 re-imports the same file (safe — books are matched by title+author, and casing-only fixes
 don't change a book's id). Then continue content authoring (articles in the Studio).

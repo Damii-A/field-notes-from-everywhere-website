@@ -14,8 +14,7 @@ import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteS
 export { CATEGORIES, CATEGORY_LIST } from "./categories";
 export type { Article, ArticleSummary, BookEntry, CategoryDef, CategorySlug, LegalPage, TagRef, ThemeRef } from "./types";
 
-export const HUB_INITIAL_COUNT = 9;
-export const HUB_PAGE_INCREMENT = 6;
+export { HUB_INITIAL_COUNT, HUB_PAGE_INCREMENT } from "./hubPaging";
 
 function formatMeta(bookCount: number, publishedAt: string): string {
   const date = new Date(publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -128,7 +127,7 @@ function toArticle(raw: RawArticle): Article {
  * includes this. Go-live lag is bounded by the 300s revalidate window — the
  * Sanity publish webhook fires at publish time, not at the scheduled time.
  */
-const RELEASED = `publishedAt <= now()`;
+const RELEASED = `(publishedAt <= now() || $includeScheduled)`; // $includeScheduled: set by groqFetch, true only in Studio preview
 
 const SUMMARY_PROJECTION = `{
   "slug": slug.current,
@@ -162,7 +161,7 @@ const FULL_ARTICLE_PROJECTION = `{
       "tags": tags[]->{ "label": name, "slug": slug.current }
     }
   },
-  "whatToReadNext": whatToReadNext[@->publishedAt <= now()]->${SUMMARY_PROJECTION}
+  "whatToReadNext": whatToReadNext[@->publishedAt <= now() || $includeScheduled]->${SUMMARY_PROJECTION}
 }`;
 
 export async function getLatestArticle(category: CategorySlug): Promise<Article | null> {

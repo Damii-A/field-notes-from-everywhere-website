@@ -6,6 +6,7 @@
  */
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
+import { defineDocuments, defineLocations, presentationTool } from "sanity/presentation";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemaTypes";
 import { structure } from "./sanity/structure";
@@ -25,7 +26,32 @@ export default defineConfig({
   projectId,
   dataset,
   basePath: "/studio",
-  plugins: [structureTool({ structure }), visionTool()],
+  plugins: [
+    structureTool({ structure }),
+    // "Preview" — the real site, showing unpublished/scheduled content,
+    // inside the Studio (DECISIONS.md, 2026-09-24). Preview is switched on
+    // via app/api/draft-mode/enable, which only accepts a secret the Studio
+    // itself creates for a logged-in editor.
+    presentationTool({
+      title: "Preview",
+      previewUrl: { previewMode: { enable: "/api/draft-mode/enable", disable: "/api/draft-mode/disable" } },
+      resolve: {
+        mainDocuments: defineDocuments([
+          { route: "/:category/:slug", filter: `_type == "article" && category == $category && slug.current == $slug` },
+        ]),
+        locations: {
+          article: defineLocations({
+            select: { title: "title", slug: "slug.current", category: "category" },
+            resolve: (doc) =>
+              doc?.slug && doc?.category
+                ? { locations: [{ title: doc.title || "Untitled article", href: `/${doc.category}/${doc.slug}` }] }
+                : null,
+          }),
+        },
+      },
+    }),
+    visionTool(),
+  ],
   schema: {
     types: schemaTypes,
     // Lets each category's article list in the sidebar create articles with

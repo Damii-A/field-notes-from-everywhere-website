@@ -1127,3 +1127,62 @@ or duplicates; temporaries deleted. The Studio button itself wasn't clicked this
 (Studio login is the user's own OAuth) — the user's first use is its UI check.
 
 **Status**: user-approved 2026-09-23.
+
+---
+
+## 2026-09-24 — Site queries must request the `published` perspective explicitly (bug fix)
+
+**Decision**: `groqFetch` sends `perspective=published` on every normal query.
+
+**Context**: Found while planning Studio preview. At API version `2025-01-01`, an authenticated
+query's default perspective is `raw`, which returns `drafts.*` documents alongside published
+ones, and `groqFetch` always sends the token. Confirmed live: the hub query returned the user's
+unpublished Shortlist draft. It was only hidden because its `publishedAt` was in the future. On
+that date it would have gone live without ever being published, and any draft edit to a
+published article would have appeared as a duplicate.
+
+**Consequences**: Verified live: the same query returns nothing with `published`, and the draft
+under `drafts`. Shipped on its own before the preview work (commit `a8ee79b`).
+
+---
+
+## 2026-09-24 — Studio preview via Presentation tool + draft mode, secret check reimplemented
+
+**Decision**: Sanity's Presentation tool (titled "Preview" in the Studio) shows the real site,
+including unpublished and scheduled content, only to people logged into the Studio. The handshake
+is the standard one: the Studio writes a short-lived `sanity.previewUrlSecret` document with the
+editor's own session, and `/api/draft-mode/enable` checks it and turns on Next.js draft mode. In
+draft mode `groqFetch` reads the `drafts` perspective uncached and passes `$includeScheduled` so
+the scheduling filter lets future-dated articles through. `/api/draft-mode/disable` exits.
+`PreviewBanner` shows an "exit preview" bar if a preview-mode page is opened outside the Studio,
+since the cookie covers the whole site in that browser.
+
+**Context**: The user asked how to preview a scheduled article before it goes live. Surfaced
+before building since it concerns who can see unpublished content; the user approved.
+
+**Alternatives considered**: A preview link protected by our own shared secret env var. It
+works, but it's a password to create, store on Vercel and never leak, and anyone holding the
+link can view. The Studio-issued secret ties access to Studio login instead. Using
+`@sanity/preview-url-secret` / `defineEnableDraftMode` directly was rejected: the package
+requires `@sanity/client` v7 (the project is on v6, npm refused), and it validates through
+`@sanity/client`'s `fetch`, the path this app avoids (see the `groqFetch` decision). So
+`lib/sanity/previewSecret.ts` mirrors the package's `validatePreviewUrl` (same query, 1-hour
+TTL, parameter names) over a plain fetch. Only the per-session secret is accepted; the
+package's optional "share preview access" link mode is not supported.
+
+**Consequences**: Client components (`ArticleView`, `CategoryHub`) now import `CATEGORIES`
+and hub paging constants from `lib/content/categories.ts` / `lib/content/hubPaging.ts`
+instead of `lib/content`, because `groqFetch` now imports `next/headers`, which can't be
+bundled for the browser. Pages remain statically cached for visitors. Verified end-to-end
+against a local production build and the real dataset:
+- a visitor gets 404 for the draft article, and the hub doesn't list it;
+- a fake secret gets 401;
+- a Studio-format secret (created via API to stand in for the Studio) enables preview: the
+  draft article renders and the hub lists it;
+- an off-site redirect target is reduced to a same-site path;
+- exiting preview restores the 404.
+
+The test secret was deleted afterwards. The Studio's Preview tab itself wasn't opened (Studio
+login is the user's own OAuth), so the user's first use is its UI check.
+
+**Status**: user-approved 2026-09-24.

@@ -18,6 +18,8 @@
 // auto-provisions on deploy (SANITY_STUDIO_*/SANITY_API_*, which don't match
 // ours) — read whichever is actually present rather than requiring the user
 // to manually duplicate values across both.
+import { draftMode } from "next/headers";
+
 const PROJECT_ID =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_STUDIO_PROJECT_ID || process.env.SANITY_API_PROJECT_ID;
 const DATASET =
@@ -35,29 +37,46 @@ interface GroqFetchOptions {
   revalidate: number;
 }
 
+/** True only inside a request that has Next.js draft mode on (Studio preview — app/api/draft-mode/enable). */
+async function isPreview(): Promise<boolean> {
+  try {
+    return (await draftMode()).isEnabled;
+  } catch {
+    return false; // outside a request scope (e.g. build-time work) — never preview
+  }
+}
+
+/**
+ * Normal requests read published content only, cached. Studio preview
+ * (draft mode) reads the "drafts" perspective — unpublished edits layered
+ * over published documents — uncached, and sets `$includeScheduled` so
+ * lib/content's go-live filter lets future-dated articles through.
+ */
 export async function groqFetch<T>(query: string, params: Record<string, unknown>, options: GroqFetchOptions): Promise<T> {
+  const preview = await isPreview();
+  const perspective = preview ? "drafts" : "published";
+  params = { ...params, includeScheduled: preview };
   const base = `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}`;
   // Always explicit: at this API version, an authenticated query's default
   // ("raw") perspective includes unpublished drafts (`drafts.*` ids) alongside
   // published documents — found 2026-09-24 when an unpublished, future-dated
   // draft article was being returned by the live hub query and would have
   // gone live at its scheduled time without ever being published.
-  const searchParams = new URLSearchParams({ query, perspective: "published" });
+  const searchParams = new URLSearchParams({ query, perspective });
   for (const [key, value] of Object.entries(params)) {
     searchParams.set(`$${key}`, JSON.stringify(value));
   }
   const getUrl = `${base}?${searchParams.toString()}`;
 
   const headers: Record<string, string> = TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {};
-  const fetchOptions: RequestInit & { next: GroqFetchOptions } = {
-    headers,
-    next: { tags: options.tags, revalidate: options.revalidate },
-  };
+  const fetchOptions: RequestInit & { next?: GroqFetchOptions } = preview
+    ? { headers, cache: "no-store" }
+    : { headers, next: { tags: options.tags, revalidate: options.revalidate } };
 
   const res =
     getUrl.length <= MAX_GET_URL_LENGTH
       ? await fetch(getUrl, fetchOptions)
-      : await fetch(`${base}?perspective=published`, {
+      : await fetch(`${base}?perspective=${perspective}`, {
           ...fetchOptions,
           method: "POST",
           headers: { ...headers, "Content-Type": "application/json" },

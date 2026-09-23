@@ -7,7 +7,7 @@ import { BookCover } from "./ds/BookCover";
 import { ImagePlaceholder } from "./ImagePlaceholder";
 import styles from "./ArticleView.module.css";
 import type { Article, CategorySlug } from "@/lib/content";
-import { CATEGORIES } from "@/lib/content";
+import { CATEGORIES } from "@/lib/content/categories"; // not "@/lib/content": that pulls server-only fetching into this client component
 
 const CATEGORY_LABEL: Record<CategorySlug, string> = {
   "the-shortlist": "The Shortlist",
