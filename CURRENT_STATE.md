@@ -125,8 +125,12 @@ things were fixed/added/built before real authoring starts:
   since books are simple, structured records, the user will hand off batches as a
   spreadsheet/CSV rather than creating each one by hand in the Studio (articles still get
   authored directly in the Studio, one at a time — see above). Columns: `title`, `author`,
-  `blurb`, `tags` (semicolon-separated), `cover` (a direct image URL — downloaded and
-  uploaded to Sanity's asset store automatically). Matches existing books by title+author so
+  `blurb`, `tags` (semicolon-separated), `cover` (either a local image file path, resolved
+  relative to wherever the CSV itself lives, or a direct image URL — either way it's uploaded
+  to Sanity's asset store automatically; a CSV can't hold an actual embedded spreadsheet
+  image, so images pasted directly into spreadsheet cells need to be exported as real files
+  into a folder first, per the user's chosen workflow — see `DECISIONS.md`). Matches existing
+  books by title+author so
   it's safe to re-run with an updated file; matches/creates tags by name; a blank `cover` cell
   on a re-run preserves whatever cover the book already has rather than clearing it. **Note**:
   re-running does fully replace each matched book's document from its CSV row, so a manual
@@ -143,7 +147,11 @@ things were fixed/added/built before real authoring starts:
   cover images all landed correctly with real uploaded asset URLs, confirmed the existing
   "Dark Fantasy" draft was correctly recognized and never duplicated, then deleted all of the
   script's own test output afterward (books, tags, and uploaded image assets) — leaving the
-  user's 3 real draft tags untouched both times. See `DECISIONS.md`.
+  user's 3 real draft tags untouched both times. **Local-file cover support added same
+  session**, after the user clarified they'd planned to paste actual images into spreadsheet
+  cells rather than use URLs — verified against the real dataset a third time (a valid local
+  file uploads correctly; a missing/bad file path fails just that book's cover with a warning,
+  same graceful-degradation behavior as a bad URL), cleaned up afterward. See `DECISIONS.md`.
 
 **Still using mock/placeholder behavior**: none — the "one hand-authored lead article, every
 other hub card resolves to a synthesized placeholder" mechanism from the mock-data era is gone

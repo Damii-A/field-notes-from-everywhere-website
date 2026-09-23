@@ -11,15 +11,22 @@
  *   author  (required)
  *   blurb   (optional — becomes the book's canonicalBlurb)
  *   tags    (optional — semicolon-separated tag names, e.g. "dark fantasy; brutal")
- *   cover   (optional — a direct image URL; downloaded and uploaded to Sanity)
+ *   cover   (optional — EITHER a local image filename/path OR a direct image
+ *            URL; either way it's uploaded to Sanity. A CSV can't hold an
+ *            actual embedded image, so if your spreadsheet has images pasted
+ *            directly into cells, export those as real image files into a
+ *            folder instead and put each book's filename here — see
+ *            DECISIONS.md, 2026-09-23. A local path is resolved relative to
+ *            wherever the CSV file itself is, so keep the CSV and its cover
+ *            images together in one folder and it'll just work regardless of
+ *            where that folder lives.)
  *
  * Safe to re-run with an updated file for NEW books, or to update a book's
  * text fields/cover — but re-running fully replaces each matched book's
  * document from the CSV row, so any manual edits made in the Studio to a
  * book in the meantime (e.g. adding more tags by hand) will be overwritten
  * if that book's row is re-imported. Leaving the `cover` cell blank on a
- * later re-run does NOT clear an existing cover — see PRESERVE_EXISTING_COVER
- * below.
+ * later re-run does NOT clear an existing cover.
  *
  * Books are matched by title+author (not row order). Tags are matched by
  * name (case-insensitive, published tags only — see the comment on
@@ -27,6 +34,7 @@
  * is created automatically.
  */
 import { readFileSync } from "node:fs";
+import { dirname, resolve, isAbsolute } from "node:path";
 import { parse } from "csv-parse/sync";
 
 const PROJECT_ID =
@@ -80,14 +88,8 @@ function guessImageContentType(url) {
   return { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif" }[ext] || null;
 }
 
-/** Downloads an image from a URL and uploads it to Sanity's asset store, returning the new asset's _id. */
-async function uploadImageFromUrl(url) {
-  const imgRes = await fetch(url);
-  if (!imgRes.ok) throw new Error(`could not download image (${imgRes.status})`);
-  const contentType = (imgRes.headers.get("content-type") || "").split(";")[0] || guessImageContentType(url);
-  if (!contentType || !contentType.startsWith("image/")) throw new Error(`URL doesn't look like an image (content-type: ${contentType || "unknown"})`);
-  const bytes = Buffer.from(await imgRes.arrayBuffer());
-
+/** Uploads raw image bytes to Sanity's asset store, returning the new asset's _id. */
+async function uploadImageBytes(bytes, contentType) {
   const uploadUrl = `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/assets/images/${DATASET}`;
   const uploadRes = await fetch(uploadUrl, {
     method: "POST",
@@ -99,6 +101,35 @@ async function uploadImageFromUrl(url) {
   return document._id;
 }
 
+/** Downloads an image from a URL, then uploads it. */
+async function uploadImageFromUrl(url) {
+  const imgRes = await fetch(url);
+  if (!imgRes.ok) throw new Error(`could not download image (${imgRes.status})`);
+  const contentType = (imgRes.headers.get("content-type") || "").split(";")[0] || guessImageContentType(url);
+  if (!contentType || !contentType.startsWith("image/")) throw new Error(`URL doesn't look like an image (content-type: ${contentType || "unknown"})`);
+  return uploadImageBytes(Buffer.from(await imgRes.arrayBuffer()), contentType);
+}
+
+/** Reads a local image file, then uploads it. `path` is resolved relative to the CSV's own directory unless it's already absolute. */
+async function uploadImageFromFile(path, csvDir) {
+  const fullPath = isAbsolute(path) ? path : resolve(csvDir, path);
+  const contentType = guessImageContentType(fullPath);
+  if (!contentType) throw new Error(`unrecognized image file extension: ${fullPath}`);
+  let bytes;
+  try {
+    bytes = readFileSync(fullPath);
+  } catch {
+    throw new Error(`file not found: ${fullPath}`);
+  }
+  return uploadImageBytes(bytes, contentType);
+}
+
+/** A `cover` cell is a URL if it starts with http(s):// — everything else is treated as a local file path. */
+async function uploadCover(coverValue, csvDir) {
+  return /^https?:\/\//i.test(coverValue) ? uploadImageFromUrl(coverValue) : uploadImageFromFile(coverValue, csvDir);
+}
+
+const csvDir = dirname(resolve(csvPath));
 const raw = readFileSync(csvPath, "utf-8");
 const rows = parse(raw, { columns: (header) => header.map((h) => h.trim().toLowerCase()), skip_empty_lines: true, trim: true });
 
@@ -151,7 +182,7 @@ for (const row of validRows) {
   let coverImage;
   if (row.cover && row.cover.trim()) {
     try {
-      const assetId = await uploadImageFromUrl(row.cover.trim());
+      const assetId = await uploadCover(row.cover.trim(), csvDir);
       coverImage = { _type: "image", asset: { _type: "reference", _ref: assetId } };
       console.log(`  uploaded cover for "${row.title}"`);
     } catch (err) {

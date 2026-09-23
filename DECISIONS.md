@@ -1000,3 +1000,22 @@ since real cover art wasn't needed to prove the mechanism): both test books got 
 correctly-sized uploaded cover assets with working CDN URLs; cleaned up afterward (2 books, 6
 tags, and the 2 uploaded image assets deleted directly via the API), confirmed via a
 follow-up query that the user's 3 real draft tags were untouched both times this was tested.
+
+**Second update, same session — local image files, not just URLs**: the user clarified they'd
+actually planned to paste images directly into spreadsheet cells (Google Sheets/Excel both
+support this), not look up a hosted URL per book. CSV can't hold an embedded image at all —
+plain text format, no binary payload — so that specific workflow can't survive a CSV export
+no matter what the script does. Presented three real options (keep URLs; export embedded
+images to files and reference by filename; or build something that extracts images directly
+from a saved `.xlsx`, which is possible since `.xlsx` is a zip of XML + media files, but
+Excel-specific and more fragile). User chose exporting to files. `cover` now accepts either
+form: a value starting with `http(s)://` is downloaded as before; anything else is treated as
+a local file path, resolved relative to the CSV's own directory (not the current working
+directory) so a self-contained folder (CSV + a `covers/` subfolder) works regardless of where
+the user saves it. A missing/unreadable local file degrades the same way a bad URL already
+did — a warning, book still imports without a cover. Verified against the real dataset a
+third time: a valid local file uploaded correctly (confirmed via a working CDN URL on the
+resulting book), a missing file path failed gracefully with the expected warning and the book
+still imported; all test-created books/tags/image assets deleted afterward, confirmed clean
+via a follow-up query. `scripts/books-template.csv` updated to reference `covers/*.jpg`
+filenames (the recommended path) instead of URLs.
