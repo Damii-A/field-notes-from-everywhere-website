@@ -37,7 +37,12 @@ interface GroqFetchOptions {
 
 export async function groqFetch<T>(query: string, params: Record<string, unknown>, options: GroqFetchOptions): Promise<T> {
   const base = `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/query/${DATASET}`;
-  const searchParams = new URLSearchParams({ query });
+  // Always explicit: at this API version, an authenticated query's default
+  // ("raw") perspective includes unpublished drafts (`drafts.*` ids) alongside
+  // published documents — found 2026-09-24 when an unpublished, future-dated
+  // draft article was being returned by the live hub query and would have
+  // gone live at its scheduled time without ever being published.
+  const searchParams = new URLSearchParams({ query, perspective: "published" });
   for (const [key, value] of Object.entries(params)) {
     searchParams.set(`$${key}`, JSON.stringify(value));
   }
@@ -52,7 +57,7 @@ export async function groqFetch<T>(query: string, params: Record<string, unknown
   const res =
     getUrl.length <= MAX_GET_URL_LENGTH
       ? await fetch(getUrl, fetchOptions)
-      : await fetch(base, {
+      : await fetch(`${base}?perspective=published`, {
           ...fetchOptions,
           method: "POST",
           headers: { ...headers, "Content-Type": "application/json" },
