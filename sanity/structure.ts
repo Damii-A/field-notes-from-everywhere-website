@@ -39,7 +39,8 @@ export const structure: StructureResolver = (S) =>
                       .title(cat.title)
                       .filter("_type == \"article\" && category == $category")
                       .params({ category: cat.slug })
-                      .defaultOrdering([{ field: "publishedAt", direction: "desc" }]),
+                      .defaultOrdering([{ field: "publishedAt", direction: "desc" }])
+                      .initialValueTemplates([S.initialValueTemplateItem("article-by-category", { category: cat.slug })]),
                   ),
               ),
             ),

@@ -26,13 +26,29 @@ export default defineConfig({
   dataset,
   basePath: "/studio",
   plugins: [structureTool({ structure }), visionTool()],
-  schema: { types: schemaTypes },
+  schema: {
+    types: schemaTypes,
+    // Lets each category's article list in the sidebar create articles with
+    // that category already set (sanity/structure.ts) — without it a new
+    // article there starts with no category, so it doesn't even appear in
+    // the list it was created from.
+    templates: (prev) => [
+      ...prev,
+      {
+        id: "article-by-category",
+        title: "Article in category",
+        schemaType: "article",
+        parameters: [{ name: "category", type: "string" }],
+        value: ({ category }: { category: string }) => ({ category }),
+      },
+    ],
+  },
   document: {
     // Site settings is a singleton (see sanity/structure.ts) — keep it out
     // of the global "+ New document" menu so it can't be accidentally
     // duplicated from outside the pinned entry in the sidebar.
     newDocumentOptions: (prev, { creationContext }) =>
-      creationContext.type === "global" ? prev.filter((item) => item.templateId !== "siteSettings") : prev,
+      creationContext.type === "global" ? prev.filter((item) => item.templateId !== "siteSettings" && item.templateId !== "article-by-category") : prev,
     // "Fill books from ranking" on articles — DECISIONS.md, 2026-09-23.
     actions: (prev, { schemaType }) => (schemaType === "article" ? [...prev, FillFromRankingAction] : prev),
   },
