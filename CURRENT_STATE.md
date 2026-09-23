@@ -33,8 +33,11 @@ book references and tags, then deleted).
 
 - **Project**: `7ci7c80z`, dataset `production` — real, live, created 2026-09-21. Values are in
   `.env.local` (`NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`,
-  `SANITY_API_TOKEN`). The dataset is currently **empty of real content** (nothing authored in
-  the Studio yet) — every page that depends on content handles this gracefully (see "Empty
+  `SANITY_API_TOKEN`). **Real authoring has actually started** (found 2026-09-23, while
+  verifying the bulk book-import script below): three unpublished draft `tag` documents
+  exist (Thriller, Dark Fantasy, Dark Romance) — the user's own real work directly in the
+  Studio, not test data. No `book`/`article` documents exist yet as of this writing. Every
+  page that depends on content still handles the empty/partial case gracefully (see "Empty
   content state" below) rather than crashing.
 - **CORS**: `http://localhost:3000` and `http://localhost:3001` are allowed (added via the
   Sanity management API 2026-09-21, since neither was there by default and the embedded Studio
@@ -78,9 +81,10 @@ matching the design's plain-paragraph treatment — see `lib/content/portableTex
 page bodies are rendered as real HTML via `@portabletext/to-html` (matches the rich structure
 legal copy needs — headings, lists, links).
 
-**Content-authoring workflow (started 2026-09-23)**: the user will author real content
+**Content-authoring workflow (started 2026-09-23)**: the user will author real *articles*
 directly in the Studio (`/studio`), article by article, as they go — not via a bulk
-import/spreadsheet. Two things were fixed/added before real authoring starts:
+import/spreadsheet. **Books are the exception** — see the bulk-import script below. Several
+things were fixed/added/built before real authoring starts:
 - **Book rank is no longer a field you fill in.** It's derived from the order you arrange a
   Shortlist article's book entries in (drag to reorder) — see `DECISIONS.md`, "Book rank is
   derived from array order." Previously a separate hand-typed number existed that could
@@ -112,6 +116,28 @@ import/spreadsheet. Two things were fixed/added before real authoring starts:
   particular list) — falls back to the book's full tag list if left empty. This mechanism
   already existed in the code; the field's Studio description was clarified so it's obvious
   what it does without reading code.
+- **Theme groups**: replaced with the user's own 9-group taxonomy — Genre, Tone, Mood, Trope,
+  Character Archetype, Relationship, Setting, World Elements, Opening Style — instead of
+  `pub_hub.md`'s original 8 named sections. A deliberate, documented divergence from that
+  governing spec; see `DECISIONS.md`, "Theme groups replaced with the user's own 9-group
+  taxonomy."
+- **Bulk book-import script** (`scripts/import-books.mjs`, `npm run import-books -- <file.csv>`):
+  since books are simple, structured records, the user will hand off batches as a
+  spreadsheet/CSV rather than creating each one by hand in the Studio (articles still get
+  authored directly in the Studio, one at a time — see above). Columns: `title`, `author`,
+  `blurb`, `tags` (semicolon-separated). Matches existing books by title+author so it's safe
+  to re-run with an updated file; matches/creates tags by name. **Cover images are not
+  handled** — add those individually afterward. **Real bug found and fixed while first
+  testing this against the live dataset**: the user had already started adding real tags
+  directly in the Studio (three unpublished drafts — Thriller, Dark Fantasy, Dark Romance,
+  found live) before this script existed. The script's first version matched an existing tag
+  by name regardless of draft/published status, so it wired a real book to a `drafts.*` tag
+  id — not valid Sanity practice. Fixed by excluding drafts from the tag-matching query (only
+  matches/reuses published tags now). Verified against the real dataset: ran with two
+  template rows, confirmed both books and all 5 new tags landed correctly, confirmed the
+  existing "Dark Fantasy" draft was correctly recognized and NOT duplicated, then deleted all
+  of the script's own test output afterward (leaving the user's 3 real draft tags untouched).
+  See `DECISIONS.md`.
 
 **Still using mock/placeholder behavior**: none — the "one hand-authored lead article, every
 other hub card resolves to a synthesized placeholder" mechanism from the mock-data era is gone

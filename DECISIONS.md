@@ -925,3 +925,62 @@ this entry rather than re-describing the list a second place. Dataset was still 
 data migration needed. `npm run build`/`typecheck` clean.
 
 **Status**: user-directed, implemented same session.
+
+---
+
+## 2026-09-23 — Bulk book import via a CSV script, not one-at-a-time in the Studio
+
+**Decision**: Added `scripts/import-books.mjs` (run via `npm run import-books -- <file.csv>`)
+— reads a CSV (`title`, `author`, `blurb`, `tags` columns) and creates/updates `book`
+documents in Sanity directly via its HTTP API, matching/creating referenced `tag` documents
+by name along the way. Articles are still authored directly in the Studio, one at a time (the
+user's chosen workflow, confirmed earlier this session) — this is specifically for books,
+since they're simple, structured, high-volume records well suited to a spreadsheet, unlike an
+article's actual editorial writing.
+
+**Context**: User asked directly whether bulk upload was possible, not wanting to create
+every book one at a time in the Studio UI. Confirmed the input format (spreadsheet/CSV) before
+building.
+
+**Alternatives considered**: A community Sanity CSV-import Studio plugin — not evaluated in
+depth; adds a third-party dependency into the Studio's own runtime for something a ~120-line
+script already covers directly against Sanity's own API, which this project already has a
+write token for (Operating Manual §35). Sanity's CLI dataset-import tool (NDJSON) — would
+still need a script to convert CSV to NDJSON first, so no simpler than writing directly
+against the mutate API.
+
+**Reasoning**: Matches this project's established pattern of scripting directly against a
+vendor's API with the token already in `.env.local` rather than adding a UI plugin/dependency
+(same approach used for Resend Segments/contact properties, Sanity CORS/webhook setup).
+Idempotent by design (`book-<slug(title)>-<slug(author)>` as a deterministic `_id`, tags
+matched case-insensitively by name) so re-running with an updated spreadsheet is safe.
+`csv-parse` added as a devDependency (not shipped in the production app bundle) rather than
+hand-rolling CSV parsing — quoted fields with embedded commas are a realistic case for book
+blurbs, and that's a known footgun for naive parsers.
+
+**Real bug found and fixed while first testing this against the live dataset**: the dataset
+turned out not to be empty — the user had already started adding real tags directly in the
+Studio (Thriller, Dark Fantasy, Dark Romance; all still unpublished drafts) before this
+script was tested. The script's tag-matching query (`*[_type == "tag"]`) matched the existing
+"Dark Fantasy" draft by name and wired a newly created (published) test book to reference
+that `drafts.*` id — not valid Sanity practice; a published document shouldn't hold a hard
+reference to a draft-only id. Fixed by excluding drafts from the tag-lookup query
+(`!(_id in path("drafts.**"))`), so the script only ever matches/reuses published tags and
+creates a fresh (published) one if only a draft with that name exists. Verified the fix and
+the script's overall correctness against the real dataset: ran with two template rows,
+confirmed via a direct query that both books and all 5 newly-referenced tags were created
+correctly with the right fields, confirmed the existing "Dark Fantasy" draft was recognized
+and not duplicated, then deleted every document the test run created (2 books, 5 tags) via
+the API, leaving the user's 3 real draft tags untouched — confirmed via a follow-up query.
+
+**Consequences**: New `scripts/import-books.mjs`, `scripts/books-template.csv` (example/
+reference format), `csv-parse` devDependency, `import-books` npm script.
+`CURRENT_STATE.md`'s "dataset is empty" claim was also corrected — it no longer is, as of
+this discovery.
+
+**Future implications**: This script doesn't handle cover images — deliberately, since image
+sourcing is a separate concern from bulk text import. If a bulk image-upload need comes up
+later (e.g. once the user has cover image URLs sourced for many books at once), extend this
+script rather than building a separate one, since the matching/dedup logic would be the same.
+
+**Status**: user-directed, implemented same session.
