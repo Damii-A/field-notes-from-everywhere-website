@@ -42,6 +42,12 @@ export const structure: StructureResolver = (S) =>
                       .defaultOrdering([{ field: "publishedAt", direction: "desc" }])
                       .initialValueTemplates([S.initialValueTemplateItem("article-by-category", { category: cat.slug })]),
                   ),
+              ).concat(
+                // Safety net: an article with no category appears in none of
+                // the lists above, so it would otherwise be unfindable here.
+                S.listItem()
+                  .title("No category (set one to file it)")
+                  .child(S.documentList().title("No category").filter('_type == "article" && !defined(category)')),
               ),
             ),
         ),
