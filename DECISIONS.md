@@ -620,3 +620,62 @@ product direction gets recorded. When Paddle's actual Price object is created, i
 created at $7/month to match.
 
 **Status**: user-directed, implemented same session.
+
+---
+
+## 2026-09-23 — Paddle webhook signals Resend via a contact property, not a second event
+
+**Decision**: `app/api/webhooks/paddle/route.ts` now calls `setReadingRoomMemberProperty`
+(`lib/integrations/resend.ts`) alongside the existing `setReadingRoomTag` (Kit) call, on the
+same four subscription events. It sets a Resend contact property, `reading_room_member`
+(type `number`, fallback `0`, created directly via `resend.contactProperties.create()` against
+the real account — same pattern as the free-list Segments), to `1` on
+`SubscriptionTrialing`/`SubscriptionActivated` and `0` on `SubscriptionCanceled`/`SubscriptionPastDue`.
+This is the conversion signal the Reading Room trial automation's post-trial branch needs —
+see `CURRENT_STATE.md`, "Still open" under the Paddle section, and `ARCHITECTURE.md` §9's
+"conversion-check before each further email."
+
+**Context**: Until now, nothing ever told Resend when someone actually converted — the Paddle
+webhook only updated Kit. The trial automation (built 2026-09-22, still placeholder content)
+needs to branch on conversion status before each post-trial email, and Resend's own
+Automations feature (confirmed via the installed SDK's type definitions,
+`node_modules/resend/dist/index.d.mts`) supports two mechanisms for this: a `wait_for_event`
+step (branches once on `event_received` vs `timeout`) or a `condition` step reading a contact
+property/field (rechecked as many times as needed). Since the automation needs a check
+*before each further email*, not a single one-time branch, a persistent, re-checkable contact
+property fits better than a second one-shot event.
+
+**Alternatives considered**: Fire a second Resend event (e.g. `reading_room_converted`) and
+use `wait_for_event` — rejected because a `wait_for_event` step only catches the event within
+its own waiting window; it doesn't naturally support being rechecked before several
+subsequent emails days apart, and an event that fired before a later wait step started would
+be missed. A contact property survives indefinitely and can be read by a `condition` step at
+any point, which is what "before each further email" actually needs. Add a new database —
+never considered seriously; would contradict "No application database for V1" for a problem
+Resend's own contact-properties feature already solves.
+
+**Reasoning**: Uses a capability of an already-approved vendor (Resend) that exactly fits the
+described need, with no new vendor, no new infrastructure, and no persistent state added to
+this app itself (Operating Manual §5, §35). Mirrors the existing Kit tag's semantics 1:1 so
+the two systems can't drift out of sync about who's a converted member.
+
+**Consequences**: `lib/integrations/resend.ts` gained `setReadingRoomMemberProperty(email,
+active, firstName?)` — upserts the Resend contact first (someone can reach Paddle checkout
+without ever starting a trial via the landing page's "Subscribe" CTA, so they may not already
+be a Resend contact), then updates the property. Verified directly against the real Resend
+account (create + PATCH `/contacts/{email}` + GET, matching the exact request/response shape
+the SDK's types describe) — not yet exercised through an actual Paddle webhook delivery in
+this session (would require either a fresh sandbox purchase or replaying a specific past
+event id, neither available without a new real-world sandbox transaction); `npm run build` and
+`npm run typecheck` both clean.
+
+**Still needed**: the automation's actual `condition` step(s) reading this property still need
+to be built in Resend's dashboard — this decision only makes the signal available, per
+`ARCHITECTURE.md` §9's existing framing that automation content/timing is dashboard
+configuration, not app code. The post-trial email series itself is also still unbuilt (see
+`CURRENT_STATE.md`).
+
+**Status**: implemented this session; not escalated for separate confirmation since it's a
+routine, reversible implementation choice consistent with prior same-day-category decisions
+above (Segments/Automations both created directly via API without asking the user to click
+through Resend's dashboard first).

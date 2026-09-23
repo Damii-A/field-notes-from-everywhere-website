@@ -1,9 +1,14 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-22 (Paddle is now fully set up and verified end-to-end — real sandbox
-test purchase → webhook → Kit tag confirmed working, after finding and fixing a real bug
-along the way. Also this session: a cluster of earlier production-only bugs (`SITE_URL`,
-Sanity Studio's client-side project ID, Sanity CORS/webhook, a broken production
+Last updated: 2026-09-23 (Re-verified the Kit/Resend production env vars live against the
+real production URL — `RESEND_NEWSLETTER_SEGMENT_ID`/`RESEND_SEND_LIST_SEGMENT_ID` confirmed
+working via direct Resend API checks, `CRON_SECRET` still unverified — see "Email/subscriber
+integrations" below. Also wired the Paddle webhook to signal Resend on conversion via a new
+`reading_room_member` contact property, closing the gap noted in the previous update — see
+`DECISIONS.md`. Previous update, 2026-09-22: Paddle fully set up and verified end-to-end —
+real sandbox test purchase → webhook → Kit tag confirmed working, after finding and fixing a
+real bug along the way. Also that session: a cluster of earlier production-only bugs
+(`SITE_URL`, Sanity Studio's client-side project ID, Sanity CORS/webhook, a broken production
 `RESEND_API_KEY`), the Reading Room trial automation structure, the `/the-reading-room/subscribe`
 page, and the Reading Room price change to $7/month. Only content authoring and legal copy
 remain — see "Immediately next".)
@@ -167,10 +172,21 @@ clean instance confirmed. (Saved as a memory for future sessions on this machine
 **All required env vars are on Vercel** (`KIT_API_KEY`, `KIT_READING_ROOM_TAG_ID`,
 `RESEND_API_KEY`, `RESEND_NEWSLETTER_SEGMENT_ID`, `RESEND_SEND_LIST_SEGMENT_ID`,
 `CRON_SECRET`) — **done by the user 2026-09-22**, including removing the now-dead
-`KIT_NEWSLETTER_TAG_ID`/`KIT_SEND_LIST_TAG_ID`. Not yet independently re-verified against the
-live production URL in this session (everything above was verified locally against the real
-accounts) — worth a real end-to-end check on the live site next session, not just trusting
-the redeploy succeeded.
+`KIT_NEWSLETTER_TAG_ID`/`KIT_SEND_LIST_TAG_ID`.
+
+**Re-verified live against production, 2026-09-23**: `POST /api/subscribe` against the real
+production URL with `source:"newsletter"` and again with `source:"send-list"` (the latter hits
+its 400 for a missing `articleSlug`, but the segment-add happens first regardless — see the
+route's code order) both returned success, and a direct Resend API check
+(`GET /segments/{id}/contacts`) confirmed the test contact actually landed in both
+`RESEND_NEWSLETTER_SEGMENT_ID` and `RESEND_SEND_LIST_SEGMENT_ID` — so both those production
+env vars are confirmed working, not just present. `KIT_API_KEY`/`KIT_READING_ROOM_TAG_ID` were
+already independently verified via the real Paddle sandbox purchase → webhook → Kit tag test
+(see "Paddle" below), so nothing further was needed there. **`CRON_SECRET` was not
+re-verified** — the harness's own auto-mode classifier blocked a direct call to the production
+cron endpoint as a "real-world transaction" (it sends real email if there's anything to send);
+worth a quick explicit-permission check next time, low urgency since a wrong secret just fails
+closed (401), it doesn't silently misfire.
 
 **Still needed**:
 - **In Resend's dashboard** (the user's own account-side task, not code): build the actual
@@ -255,10 +271,17 @@ link here too once they have real content. See "Paddle account" under "Known ope
 below for the full account-side build (webhook, Price, tokens) and the real bug that was
 found and fixed along the way.
 
-**Still open**: the Paddle webhook doesn't yet write a matching signal into Resend when
-someone converts, so the trial automation's post-trial conversion-check branch (above) still
-has nothing to check. Worth wiring as a small addition to the now-working webhook — one
-update, not a second sync path — but not done yet.
+**Resolved 2026-09-23**: the Paddle webhook now also writes a matching signal into Resend on
+every conversion/cancellation event — a Resend contact property (`reading_room_member`,
+0/1), set alongside the existing Kit tag call. See `DECISIONS.md`, "Paddle webhook signals
+Resend via a contact property, not a second event," for why a persistent property was chosen
+over a second one-shot event. Verified directly against the real Resend account (create +
+update + read-back, matching the exact shape the code sends); not yet exercised through an
+actual Paddle webhook delivery this session. **Still open**: the automation's actual
+`condition` step(s) reading this property, and the post-trial email series itself, both still
+need to be built in Resend's dashboard — this only made the signal available, per
+`ARCHITECTURE.md` §9's existing framing that automation content/timing is dashboard
+configuration, not app code.
 
 1. **Last**: author real content — Sanity articles/books/tags/Site Settings, the 7 Reading
    Room issue templates in Resend (see above), and real legal copy for

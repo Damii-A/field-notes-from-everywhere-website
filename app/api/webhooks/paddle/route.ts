@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Paddle, EventName, Environment } from "@paddle/paddle-node-sdk";
 import { setReadingRoomTag } from "@/lib/integrations/kit";
+import { setReadingRoomMemberProperty } from "@/lib/integrations/resend";
 
 /**
  * Paddle → this app. Syncs subscription lifecycle into Kit's Reading Room
@@ -13,6 +14,11 @@ import { setReadingRoomTag } from "@/lib/integrations/kit";
  * the subscriber; `canceled`/`past_due` untag them (no separate dunning
  * handling in V1 — a past-due subscriber simply drops out of the member tag
  * until/unless Paddle recovers the payment and fires `activated` again).
+ *
+ * Also updates the same status as a Resend contact property
+ * (`reading_room_member`) — this is the conversion signal the Reading Room
+ * trial automation's post-trial branch reads (see ARCHITECTURE.md §9); until
+ * this was added, nothing ever told Resend that a conversion had happened.
  */
 export async function POST(request: Request) {
   const apiKey = process.env.PADDLE_API_KEY;
@@ -53,12 +59,14 @@ export async function POST(request: Request) {
     case EventName.SubscriptionActivated: {
       const customer = await paddle.customers.get(event.data.customerId);
       await setReadingRoomTag(customer.email, true, customer.name ?? undefined);
+      await setReadingRoomMemberProperty(customer.email, true, customer.name ?? undefined);
       break;
     }
     case EventName.SubscriptionCanceled:
     case EventName.SubscriptionPastDue: {
       const customer = await paddle.customers.get(event.data.customerId);
       await setReadingRoomTag(customer.email, false);
+      await setReadingRoomMemberProperty(customer.email, false);
       break;
     }
     default:

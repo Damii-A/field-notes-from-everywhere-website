@@ -92,6 +92,39 @@ export async function listSegmentContacts(segmentId: string): Promise<ResendCont
 }
 
 /**
+ * Resend contact property (number, 0/1 — Resend contact properties only
+ * support string/number, no boolean) mirroring Kit's `KIT_READING_ROOM_TAG_ID`
+ * tag: 1 while someone has a confirmed, active Reading Room relationship
+ * (trialing-and-converted or paying), 0 otherwise. Set by the Paddle webhook
+ * alongside the Kit tag (see `app/api/webhooks/paddle/route.ts`) — this is
+ * the conversion signal the trial automation's post-trial branch reads via a
+ * `condition` step in Resend's own automation builder (checked before each
+ * further email, per ARCHITECTURE.md §9), since nothing previously told
+ * Resend when someone actually converted. The property itself
+ * (`reading_room_member`, type `number`, fallback `0`) was created directly
+ * via `resend.contactProperties.create()` against the real account, the same
+ * pattern as the free-list Segments — see DECISIONS.md.
+ */
+const READING_ROOM_MEMBER_PROPERTY = "reading_room_member";
+
+export async function setReadingRoomMemberProperty(email: string, active: boolean, firstName?: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
+
+  const resend = new Resend(apiKey);
+  // Someone can reach Paddle checkout without ever having started a trial
+  // (the landing page's "Subscribe" CTA skips straight to the checkout page),
+  // so they may not already be a Resend contact — upsert first, same
+  // duplicate-tolerant pattern as `upsertContact`/`addToSegment` above.
+  await resend.contacts.create({ email, firstName: firstName || undefined });
+  const { error } = await resend.contacts.update({
+    email,
+    properties: { [READING_ROOM_MEMBER_PROPERTY]: active ? 1 : 0 },
+  });
+  if (error) throw new Error(`Resend contact-property update failed: ${error.message}`);
+}
+
+/**
  * Fires a Resend Automations event to start the Reading Room trial sequence
  * (welcome, 7 days of trial catalogue content, then a conversion push). The
  * automation itself — content and timing — is configured in Resend's
