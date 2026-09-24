@@ -213,13 +213,20 @@ export function ArticleView({ article }: { article: Article }) {
                         {i + 1}
                       </span>
                     ) : null}
-                    <BookCover title={book.title} author={book.author} spine={book.spine} width={ranked ? 104 : 112} ratio={1.5} />
+                    <BookCover
+                      title={book.title}
+                      author={book.author}
+                      spine={book.spine}
+                      src={book.coverImage?.url}
+                      alt={book.coverImage ? `Cover of ${book.title} by ${book.author}` : undefined}
+                      width={ranked ? 104 : 112}
+                      ratio={1.5}
+                    />
                     <div className={styles.bookBody}>
                       <span className={styles.bookTitle} style={{ color: style.titleColor }}>
                         {book.title}
                       </span>
                       <span className={styles.bookAuthor}>{book.author}</span>
-                      <p className={styles.bookBlurb}>{book.blurb}</p>
                       {book.tags && book.tags.length > 0 ? (
                         <div className={styles.tagRow}>
                           {book.tags.map((t) => (
@@ -229,6 +236,7 @@ export function ArticleView({ article }: { article: Article }) {
                           ))}
                         </div>
                       ) : null}
+                      <p className={styles.bookBlurb}>{book.blurb}</p>
                     </div>
                   </div>
                   {showCallout ? (
@@ -278,7 +286,7 @@ export function ArticleView({ article }: { article: Article }) {
                 {article.whatToReadNext.map((next) => (
                   <Link key={next.slug} href={`/${next.category}/${next.slug}`} className={styles.wtrnCard}>
                     <div className={styles.wtrnImage}>
-                      <ImagePlaceholder label="Article image" />
+                      <ImagePlaceholder label="Article image" src={next.heroImage?.url} alt={next.heroImage?.alt} />
                     </div>
                     <span className={styles.wtrnTitle}>{next.title}</span>
                     <span className={styles.wtrnChip}>{CATEGORY_LABEL[next.category]}</span>

@@ -15,6 +15,19 @@ export default defineType({
     defineField({ name: "title", title: "Title", type: "string", validation: (r) => r.required() }),
     defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "title" }, validation: (r) => r.required() }),
     defineField({
+      name: "metaDescription",
+      title: "Meta description",
+      description:
+        "The summary shown under the title in Google results and link previews, and on the hub page when this is the newest article. Aim for 120-160 characters.",
+      type: "text",
+      rows: 3,
+      validation: (r) => [
+        r.required(),
+        r.min(70).warning("Short for a search result: aim for 120-160 characters."),
+        r.max(160).warning("Google usually cuts off descriptions past about 160 characters."),
+      ],
+    }),
+    defineField({
       name: "category",
       title: "Category",
       type: "string",

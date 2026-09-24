@@ -158,7 +158,9 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   since Publication articles already reference books, and modeling it as its own document
   avoids re-typing title/author/cover across articles later. (Not expected to be reused by a
   future Reading Room Books catalogue — see `tag`, above.)
-- **`article`** — `title`, `slug`, `category` (enum), `themes[]` (references to `theme` —
+- **`article`** — `title`, `slug`, `metaDescription` (search/link-preview summary, also the
+  hub lead card, RSS and recap summary; falls back to `methodologySentence` when empty),
+  `category` (enum), `themes[]` (references to `theme` —
   which of the 8 "Browse Our Collections" groupings this whole article belongs to, added
   2026-09-23; not yet read by any page, see below), `author`, `publishedAt`, `heroImage`,
   `methodologySentence` (the one sentence in the "How we made this list" box), `introText`

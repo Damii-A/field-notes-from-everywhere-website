@@ -80,7 +80,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
                 {hub.latest.title}
               </h2>
               <p className={styles.leadMeta} style={{ color: colors.leadMeta }}>
-                {hub.latest.methodologySentence}
+                {hub.latest.description}
               </p>
               <span className={styles.leadMeta} style={{ color: colors.leadMeta }}>
                 By {hub.latest.author} · {new Date(hub.latest.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} ·{" "}

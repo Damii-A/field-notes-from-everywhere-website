@@ -1186,3 +1186,35 @@ The test secret was deleted afterwards. The Studio's Preview tab itself wasn't o
 login is the user's own OAuth), so the user's first use is its UI check.
 
 **Status**: user-approved 2026-09-24.
+
+---
+
+## 2026-09-24 — Article meta description field; book tags moved above the blurb; covers fixed
+
+**Decision**: Articles gained a required `metaDescription` field (Studio warns outside roughly
+70-160 characters). It's the page's `<meta name="description">` and Open Graph description,
+the summary on the hub's "Newest in…" lead card, the RSS item description and the weekly
+recap's per-article summary. Each falls back to the methodology sentence when it's empty, so
+nothing breaks for articles authored before the field existed. Separately, each book entry's
+tag pills now sit directly under the book's author, above the blurb.
+
+**Context**: User-directed. There was no description field, so search results, link previews
+and the hub lead card all reused the methodology sentence. The design's hub lead card
+(`The Shortlist.dc.html`) shows a summary sentence there that is distinct from the methodology
+box's text, so a dedicated field matches the design better, not just SEO. The "All articles"
+grid cards were left as they are (title + book count/date): the design shows no summary there.
+The recap previously used the methodology sentence as its summary (2026-09-22 format
+decision); the user asked for the description to be the article preview "wherever necessary",
+which includes the recap.
+
+**Tag placement** departs from `pub_article.md` §5 ("quiet tag/chip treatments beneath the
+blurb") and the built design, at the user's direction (confirmed: each book's tags, not the
+article's category pill). `pub_article.md` is not edited (verbatim mirror); this entry is the
+record.
+
+**Bug fixed alongside**: book covers never showed in articles. `ArticleView` passed title and
+author to `BookCover` but never the uploaded cover image, so every book showed the design's
+coloured stand-in. "What to read next" cards had the same gap for article hero images.
+Verified in a local production build, in preview mode against the user's real Shortlist draft:
+15/15 covers load, tags render under the author, the hub lead card shows the description, no
+console errors.

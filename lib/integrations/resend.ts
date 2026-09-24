@@ -160,7 +160,7 @@ function articleBlockHtml(a: FeedArticle): string {
   return `
     <tr><td style="padding:20px 0 0;">
       <a href="${escapeHtml(url)}" style="font-size:18px;font-weight:700;color:#1a1a1a;text-decoration:none;">${escapeHtml(a.title)}</a>
-      <p style="margin:6px 0 12px;font-size:15px;line-height:1.5;color:#3a352c;">${escapeHtml(a.methodologySentence)}</p>
+      <p style="margin:6px 0 12px;font-size:15px;line-height:1.5;color:#3a352c;">${escapeHtml(a.description)}</p>
       ${coversHtml ? `<table role="presentation" cellpadding="0" cellspacing="0"><tr>${coversHtml}</tr></table>` : ""}
     </td></tr>`;
 }

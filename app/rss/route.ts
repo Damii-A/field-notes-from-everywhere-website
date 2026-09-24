@@ -39,7 +39,7 @@ export async function GET() {
       <guid isPermaLink="true">${escapeXml(url)}</guid>
       <pubDate>${new Date(article.publishedAt).toUTCString()}</pubDate>
       <category>${escapeXml(category)}</category>
-      <description>${escapeXml(article.methodologySentence)}</description>
+      <description>${escapeXml(article.description)}</description>
     </item>`;
     })
     .join("");

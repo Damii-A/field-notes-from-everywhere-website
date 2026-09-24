@@ -47,6 +47,8 @@ interface RawArticleSummary {
   title: string;
   bookCount: number;
   publishedAt: string;
+  metaDescription?: string;
+  methodologySentence?: string;
   heroImage: RawImage | null;
   /** pub_hub.md §5–12 "Browse Our Collections" groupings this article belongs to — not consumed by any page yet (those hub sections are still V1 backlog), but captured now so authored articles don't need revisiting later. See DECISIONS.md. */
   themes: RawTheme[] | null;
@@ -66,7 +68,6 @@ interface RawBookEntry {
 
 interface RawArticle extends RawArticleSummary {
   author: string;
-  methodologySentence: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   introText: any[] | undefined;
   bookEntries: RawBookEntry[] | null;
@@ -79,6 +80,7 @@ function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
     category: raw.category,
     title: raw.title,
     meta: formatMeta(raw.bookCount, raw.publishedAt),
+    description: raw.metaDescription || raw.methodologySentence || "",
     heroImage: raw.heroImage ? { url: raw.heroImage.url, alt: raw.heroImage.alt ?? raw.title } : undefined,
     themes: raw.themes?.map((t) => ({ label: t.label, slug: t.slug, group: t.group })),
   };
@@ -111,7 +113,7 @@ function toArticle(raw: RawArticle): Article {
     ...toArticleSummary(raw),
     author: raw.author,
     publishedAt: raw.publishedAt,
-    methodologySentence: raw.methodologySentence,
+    methodologySentence: raw.methodologySentence ?? "",
     introParagraphs: portableTextToParagraphs(raw.introText),
     books: (raw.bookEntries ?? [])
       .map((entry, i) => toBookEntry(entry, isRanked ? i + 1 : undefined))
@@ -135,6 +137,8 @@ const SUMMARY_PROJECTION = `{
   title,
   "bookCount": count(bookEntries),
   publishedAt,
+  metaDescription,
+  methodologySentence,
   heroImage{ "url": asset->url, alt },
   "themes": themes[]->{ "label": name, "slug": slug.current, group }
 }`;
@@ -145,10 +149,11 @@ const FULL_ARTICLE_PROJECTION = `{
   title,
   "bookCount": count(bookEntries),
   publishedAt,
+  metaDescription,
+  methodologySentence,
   heroImage{ "url": asset->url, alt },
   "themes": themes[]->{ "label": name, "slug": slug.current, group },
   author,
-  methodologySentence,
   introText,
   bookEntries[]{
     blurb,
@@ -291,6 +296,8 @@ export interface FeedArticle {
   title: string;
   publishedAt: string;
   methodologySentence: string;
+  /** Meta description, falling back to the methodology sentence — the article's summary in RSS and the weekly recap. */
+  description: string;
   /** First 3 books in the article's list — used by the weekly recap email's cover-row treatment. */
   books: FeedArticleBook[];
 }
@@ -301,6 +308,7 @@ interface RawFeedArticle {
   title: string;
   publishedAt: string;
   methodologySentence: string;
+  metaDescription?: string;
   books: { title: string; coverImage: RawImage | null }[];
 }
 
@@ -308,7 +316,7 @@ interface RawFeedArticle {
 export async function getFeedArticles(limit: number): Promise<FeedArticle[]> {
   const raws = await groqFetch<RawFeedArticle[]>(
     `*[_type == "article" && ${RELEASED}] | order(publishedAt desc)[0...$limit]{
-      "slug": slug.current, category, title, publishedAt, methodologySentence,
+      "slug": slug.current, category, title, publishedAt, methodologySentence, metaDescription,
       "books": bookEntries[0...3].book->{ title, "coverImage": coverImage{ "url": asset->url } }
     }`,
     { limit },
@@ -316,6 +324,7 @@ export async function getFeedArticles(limit: number): Promise<FeedArticle[]> {
   );
   return raws.map((r) => ({
     ...r,
+    description: r.metaDescription || r.methodologySentence,
     books: r.books.map((b) => ({ title: b.title, coverImage: b.coverImage ? { url: b.coverImage.url, alt: b.title } : undefined })),
   }));
 }
@@ -337,10 +346,10 @@ export function articleMetadata(article: Article | null) {
   if (!article) return { title: "Article not found" };
   return {
     title: article.title,
-    description: article.methodologySentence,
+    description: article.description,
     openGraph: {
       title: article.title,
-      description: article.methodologySentence,
+      description: article.description,
       images: article.heroImage ? [{ url: article.heroImage.url, alt: article.heroImage.alt }] : undefined,
     },
   };
