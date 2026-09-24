@@ -1377,3 +1377,34 @@ leaves large empty bands on the 4:5 homepage cards), and uncropped article banne
 first articles go live 2026-09-25 and What to Read When / Book Club Book Picks are social-first.
 Audited every page at 390px: no page scrolled sideways before or after. Verified after:
 phone screenshots of home and all three articles, and the desktop article unchanged.
+
+**Second round, same day — after reading the user's three mobile guides** (Michael Bell "How to
+build mobile responsive sites in 2026", Network Solutions "mobile-friendly website checklist",
+Capi Product "10-point UX audit checklist"):
+- **Fonts self-hosted via `next/font`** (`app/fonts.ts`) instead of the design's render-blocking
+  Google Fonts `@import` (`styles/tokens/fonts.css`, now commented out with the original kept for
+  reference). Same families, weights and styles; the `--font-*` tokens point at the next/font
+  variables in `app/globals.css`. Lighthouse (mobile, local production build vs the live site
+  before): performance 79-93 → 91-97, layout shift ~0.1 → ~0. Verified the same faces render and
+  no requests go to Google Fonts.
+- **Forms**: `autocomplete` (given-name / email) on every signup field, and `aria-label`s where
+  fields only had placeholders (article popup, Reading Room trial form).
+- **Header**: also unpinned on short (sideways) screens; divider hidden below 1000px wide, where
+  the pill otherwise wraps and leaves it dangling (measured: one row down to ~740px wide);
+  ~40px-tall tap areas on phones.
+- **Hub**: "All articles" is an `h2` (was `h3` after the page's `h1`, a heading-order failure).
+- **Tested in WebKit** (Safari's engine), iPhone portrait and landscape, on public pages: no
+  sideways scroll or console errors. Article pages couldn't be previewed in WebKit locally because
+  Safari rejects the secure preview cookie over plain-http localhost; not an issue in the real
+  (https) Studio.
+
+**Surfaced to the user, not changed** (design decisions): colour contrast (the header's inactive
+links, grey body text and some category accents measure 3.2-4.4:1 against the 4.5:1 guideline);
+a collapsible menu on phones (all three guides recommend one; the design has none); the send-list
+popup as a full-screen overlay on phones (the guides advise against intrusive pop-ups). The
+remaining "best practices" miss is the missing favicon (404), awaiting the user's icon.
+
+**Footer signup box** (user-directed, same day): the "Join the list" label, fields, button and small
+print sit in one card (`--surface-card`, `--radius-xl`, 24px padding) with a single 14px gap
+between every element; fields use the article popup's inset style so they read against the card.
+Measured: 14px between all elements, 24px inner padding, desktop and phone.

@@ -1,8 +1,13 @@
-.form {
+.box {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-width: 280px;
+  gap: 14px;
+  width: 100%;
+  max-width: 320px;
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-flat);
 }
 
 .input {
@@ -10,8 +15,8 @@
   padding: 0 16px;
   border: none;
   border-radius: var(--radius-pill);
-  background: var(--surface-card);
-  box-shadow: var(--shadow-flat);
+  background: var(--surface-sunken);
+  box-shadow: var(--shadow-inset-well);
   color: var(--ink-900);
   font: var(--type-body);
   width: 100%;
@@ -42,12 +47,10 @@
 .message {
   font: var(--type-small);
   margin: 0;
-  max-width: 280px;
 }
 
 .fine {
   font: var(--type-small);
   color: var(--ink-700);
   margin: 0;
-  max-width: 280px;
 }

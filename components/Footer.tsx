@@ -39,8 +39,7 @@ export function Footer() {
           ))}
         </div>
         <div className={styles.column}>
-          <span className={styles.columnLabel}>Join the list</span>
-          <FooterNewsletterForm />
+          <FooterNewsletterForm labelClassName={styles.columnLabel} />
         </div>
         <div className={styles.socials}>
           {/* href="#" until real social URLs are supplied — see CURRENT_STATE.md */}

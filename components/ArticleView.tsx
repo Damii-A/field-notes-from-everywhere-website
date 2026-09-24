@@ -498,6 +498,8 @@ function SendListPopup({
                 type="text"
                 required
                 placeholder="First name"
+                autoComplete="given-name"
+                aria-label="First name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className={styles.popupInput}
@@ -506,6 +508,8 @@ function SendListPopup({
                 type="email"
                 required
                 placeholder="Email address"
+                autoComplete="email"
+                aria-label="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={styles.popupInput}

@@ -1,5 +1,15 @@
 @import "../styles/tokens.css";
 
+/* The design's font tokens (styles/tokens/typography.css) name the families
+   directly; point them at the self-hosted next/font families instead (app/fonts.ts),
+   keeping the design's fallback stacks. */
+:root {
+  --font-display: var(--nf-display), "Nunito", system-ui, sans-serif;
+  --font-hand: var(--nf-hand), var(--nf-display), cursive;
+  --font-body: var(--nf-body), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--nf-mono), ui-monospace, monospace;
+}
+
 /*
   Reset block copied verbatim (as CSS, not inline styles) from the reset every
   page in the design carries in its own <style> tag — see

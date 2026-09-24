@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity";
 import { PreviewBanner } from "@/components/PreviewBanner";
+import { fontVariables } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // refreshes the page inside the Studio's Presentation pane as edits save.
   const preview = (await draftMode()).isEnabled;
   return (
-    <html lang="en">
+    <html lang="en" className={fontVariables}>
       <body>
         {children}
         {preview && (

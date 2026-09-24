@@ -9,7 +9,7 @@ import styles from "./FooterNewsletterForm.module.css";
  * to me" popup, so this is the site's first standalone entry point for
  * `source: "newsletter"` on /api/subscribe (see DECISIONS.md).
  */
-export function FooterNewsletterForm() {
+export function FooterNewsletterForm({ labelClassName }: { labelClassName?: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -30,16 +30,28 @@ export function FooterNewsletterForm() {
     }
   }
 
+  const label = <span className={labelClassName}>Join the list</span>;
+
   if (status === "success") {
-    return <p className={styles.message} style={{ color: "var(--status-positive)" }}>You&rsquo;re on the list — welcome!</p>;
+    return (
+      <div className={styles.box}>
+        {label}
+        <p className={styles.message} style={{ color: "var(--status-positive)" }}>
+          You&rsquo;re on the list — welcome!
+        </p>
+      </div>
+    );
   }
 
+  // One box, one gap: every element inside is spaced by .box's `gap`.
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form onSubmit={handleSubmit} className={styles.box}>
+      {label}
       <input
         type="text"
         required
         placeholder="First name"
+        autoComplete="given-name"
         aria-label="First name"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -49,6 +61,7 @@ export function FooterNewsletterForm() {
         type="email"
         required
         placeholder="Email address"
+        autoComplete="email"
         aria-label="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}

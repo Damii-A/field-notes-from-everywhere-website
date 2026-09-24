@@ -62,6 +62,8 @@ export function ReadingRoomTrialForm({
         required
         autoFocus
         placeholder="First name"
+        autoComplete="given-name"
+        aria-label="First name"
         value={name}
         onChange={(e) => setName(e.target.value)}
         className={styles.input}
@@ -70,6 +72,8 @@ export function ReadingRoomTrialForm({
         type="email"
         required
         placeholder="Email address"
+        autoComplete="email"
+        aria-label="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className={styles.input}

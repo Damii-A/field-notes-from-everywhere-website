@@ -94,7 +94,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
 
       <section className={styles.allSection}>
         <div className={styles.allInner}>
-          <h3 className={styles.allHeading}>All articles</h3>
+          <h2 className={styles.allHeading}>All articles</h2>
           {visible.length > 0 ? (
             <>
               <div className={styles.allGrid}>
