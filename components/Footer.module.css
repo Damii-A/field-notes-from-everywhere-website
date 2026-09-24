@@ -1,5 +1,6 @@
 .footer {
   background: var(--oat-200);
+  border-top: 1px solid var(--border-hairline); /* same line as above the copyright row */
   padding: clamp(36px, 4.5vw, 56px) var(--gutter-screen) 28px;
 }
 
