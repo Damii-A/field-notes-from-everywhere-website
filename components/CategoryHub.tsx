@@ -71,7 +71,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
             }}
           >
             <div className={styles.leadImage}>
-              <ImagePlaceholder label="Lead article image" src={hub.latest.heroImage?.url} alt={hub.latest.heroImage?.alt} />
+              <ImagePlaceholder label="Lead article image" src={hub.latest.heroImage?.url} position={hub.latest.heroImage?.position} alt={hub.latest.heroImage?.alt} />
             </div>
             <div className={styles.leadBody} style={{ background: colors.leadBg }}>
               <span className={styles.leadLabel} style={{ color: colors.leadLabel }}>
@@ -101,7 +101,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
                 {visible.map((a) => (
                   <Link key={a.slug} href={`/${category}/${a.slug}`} className={styles.card}>
                     <div className={styles.cardImage}>
-                      <ImagePlaceholder label="Article image" src={a.heroImage?.url} alt={a.heroImage?.alt} />
+                      <ImagePlaceholder label="Article image" src={a.heroImage?.url} position={a.heroImage?.position} alt={a.heroImage?.alt} />
                     </div>
                     <span className={styles.cardTitle}>{a.title}</span>
                     <span className={styles.cardMeta}>{a.meta}</span>

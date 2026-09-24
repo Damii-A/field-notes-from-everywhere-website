@@ -7,6 +7,8 @@ export interface ImagePlaceholderProps {
   label: string;
   src?: string;
   alt?: string;
+  /** CSS object-position for the image (e.g. from a Sanity hotspot). */
+  position?: string;
   style?: React.CSSProperties;
   fill?: boolean;
 }
@@ -18,7 +20,7 @@ export interface ImagePlaceholderProps {
  * image yet, it renders a neutral placeholder box labelled with what belongs
  * there, so every page stays visually complete before Sanity is populated.
  */
-export function ImagePlaceholder({ label, src, alt, style, fill = true }: ImagePlaceholderProps) {
+export function ImagePlaceholder({ label, src, alt, position, style, fill = true }: ImagePlaceholderProps) {
   if (src) {
     return (
       <Image
@@ -26,7 +28,7 @@ export function ImagePlaceholder({ label, src, alt, style, fill = true }: ImageP
         alt={alt || label}
         fill={fill}
         sizes="(max-width: 768px) 100vw, 50vw"
-        style={{ objectFit: "cover", ...style }}
+        style={{ objectFit: "cover", objectPosition: position, ...style }}
       />
     );
   }

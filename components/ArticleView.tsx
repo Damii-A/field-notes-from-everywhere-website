@@ -192,7 +192,7 @@ export function ArticleView({ article }: { article: Article }) {
           </div>
 
           <div className={styles.hero} style={{ borderRadius: style.heroRadius }}>
-            <ImagePlaceholder label={article.heroImage?.alt ?? "Article image"} src={article.heroImage?.url} />
+            <ImagePlaceholder label={article.heroImage?.alt ?? "Article image"} src={article.heroImage?.url} position={article.heroImage?.position} />
           </div>
 
           <div className={styles.intro}>
@@ -299,7 +299,7 @@ export function ArticleView({ article }: { article: Article }) {
                 {article.whatToReadNext.map((next) => (
                   <Link key={next.slug} href={`/${next.category}/${next.slug}`} className={styles.wtrnCard}>
                     <div className={styles.wtrnImage}>
-                      <ImagePlaceholder label="Article image" src={next.heroImage?.url} alt={next.heroImage?.alt} />
+                      <ImagePlaceholder label="Article image" src={next.heroImage?.url} position={next.heroImage?.position} alt={next.heroImage?.alt} />
                     </div>
                     <span className={styles.wtrnTitle}>{next.title}</span>
                     <span className={styles.wtrnChip}>{CATEGORY_LABEL[next.category]}</span>

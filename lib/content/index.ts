@@ -31,6 +31,43 @@ interface RawImage {
   alt?: string;
 }
 
+/** A Studio image with its editor-set crop and hotspot (fractions of the full image) — hero images only. */
+interface RawHeroImage extends RawImage {
+  hotspot?: { x: number; y: number } | null;
+  crop?: { top: number; bottom: number; left: number; right: number } | null;
+  dimensions?: { width: number; height: number } | null;
+}
+
+const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
+
+/**
+ * Honours the Studio's crop and hotspot. The crop is applied by Sanity's
+ * image service (`rect`); the hotspot becomes a CSS object-position, so each
+ * placement's own crop (12:5 article hero, 4:5 homepage rail, 3:2 cards…)
+ * keeps the focal point in view instead of always cropping from the centre.
+ */
+function toHeroImage(raw: RawHeroImage | null, fallbackAlt: string): ArticleSummary["heroImage"] {
+  if (!raw?.url) return undefined;
+  let url = raw.url;
+  let x = raw.hotspot?.x ?? 0.5;
+  let y = raw.hotspot?.y ?? 0.5;
+  const c = raw.crop;
+  const d = raw.dimensions;
+  const cropped = !!(c && d && (c.top || c.bottom || c.left || c.right));
+  if (cropped && c && d) {
+    const w = 1 - c.left - c.right;
+    const h = 1 - c.top - c.bottom;
+    url += `?rect=${Math.round(c.left * d.width)},${Math.round(c.top * d.height)},${Math.round(w * d.width)},${Math.round(h * d.height)}`;
+    x = (x - c.left) / w;
+    y = (y - c.top) / h;
+  }
+  return {
+    url,
+    alt: raw.alt ?? fallbackAlt,
+    position: raw.hotspot || cropped ? `${(clamp01(x) * 100).toFixed(1)}% ${(clamp01(y) * 100).toFixed(1)}%` : undefined,
+  };
+}
+
 interface RawTag {
   label: string;
   slug: string;
@@ -50,7 +87,7 @@ interface RawArticleSummary {
   publishedAt: string;
   metaDescription?: string;
   methodologySentence?: string;
-  heroImage: RawImage | null;
+  heroImage: RawHeroImage | null;
   /** pub_hub.md §5–12 "Browse Our Collections" groupings this article belongs to — not consumed by any page yet (those hub sections are still V1 backlog), but captured now so authored articles don't need revisiting later. See DECISIONS.md. */
   themes: RawTheme[] | null;
 }
@@ -82,7 +119,7 @@ function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
     title: raw.title,
     meta: formatMeta(raw.bookCount, raw.publishedAt),
     description: raw.metaDescription || raw.methodologySentence || "",
-    heroImage: raw.heroImage ? { url: raw.heroImage.url, alt: raw.heroImage.alt ?? raw.title } : undefined,
+    heroImage: toHeroImage(raw.heroImage, raw.title),
     themes: raw.themes?.map((t) => ({ label: t.label, slug: t.slug, group: t.group })),
   };
 }
@@ -140,7 +177,7 @@ const SUMMARY_PROJECTION = `{
   publishedAt,
   metaDescription,
   methodologySentence,
-  heroImage{ "url": asset->url, alt },
+  heroImage{ "url": asset->url, alt, hotspot, crop, "dimensions": asset->metadata.dimensions },
   "themes": themes[]->{ "label": name, "slug": slug.current, group }
 }`;
 
@@ -152,7 +189,7 @@ const FULL_ARTICLE_PROJECTION = `{
   publishedAt,
   metaDescription,
   methodologySentence,
-  heroImage{ "url": asset->url, alt },
+  heroImage{ "url": asset->url, alt, hotspot, crop, "dimensions": asset->metadata.dimensions },
   "themes": themes[]->{ "label": name, "slug": slug.current, group },
   author,
   introText[]{

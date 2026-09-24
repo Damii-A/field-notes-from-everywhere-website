@@ -69,7 +69,8 @@ export interface ArticleSummary {
   meta: string; // e.g. "18 books · Sep 4, 2026" as shown on hub cards
   /** The article's meta description (search results, link previews, hub lead card). Falls back to the methodology sentence when not written yet. */
   description: string;
-  heroImage?: { url: string; alt: string };
+  /** `position` is a CSS object-position from the Studio hotspot, so every crop of the image keeps its focal point in view. */
+  heroImage?: { url: string; alt: string; position?: string };
   /** Which of the 8 "Browse Our Collections" groupings this article belongs to (pub_hub.md §5–12). Not rendered by any page yet — those hub sections are still V1 backlog — captured at authoring time so nothing needs revisiting once they're built. */
   themes?: ThemeRef[];
 }

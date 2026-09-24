@@ -145,7 +145,7 @@ export default async function HomePage() {
             {showcase.when.map((a) => (
               <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
                 <div className={styles.railCardImage}>
-                  <ImagePlaceholder label="Article image" src={a.heroImage?.url} alt={a.heroImage?.alt} />
+                  <ImagePlaceholder label="Article image" src={a.heroImage?.url} position={a.heroImage?.position} alt={a.heroImage?.alt} />
                 </div>
                 <span className={styles.railCardTitle}>{a.title}</span>
               </Link>
@@ -178,7 +178,7 @@ export default async function HomePage() {
             {showcase.shortlist.map((a) => (
               <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
                 <div className={styles.railCardImage}>
-                  <ImagePlaceholder label="Article image" src={a.heroImage?.url} alt={a.heroImage?.alt} />
+                  <ImagePlaceholder label="Article image" src={a.heroImage?.url} position={a.heroImage?.position} alt={a.heroImage?.alt} />
                 </div>
                 <span className={styles.railCardTitle}>{a.title}</span>
               </Link>
@@ -221,7 +221,7 @@ export default async function HomePage() {
                   }}
                 >
                   <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-raised)" }}>
-                    <ImagePlaceholder label="Article image" src={a.heroImage?.url} alt={a.heroImage?.alt} />
+                    <ImagePlaceholder label="Article image" src={a.heroImage?.url} position={a.heroImage?.position} alt={a.heroImage?.alt} />
                   </div>
                   <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
                     {a.title}
@@ -242,7 +242,7 @@ export default async function HomePage() {
                   }}
                 >
                   <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
-                    <ImagePlaceholder label="Article image" src={b.heroImage?.url} alt={b.heroImage?.alt} />
+                    <ImagePlaceholder label="Article image" src={b.heroImage?.url} position={b.heroImage?.position} alt={b.heroImage?.alt} />
                   </div>
                   <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
                     {b.title}

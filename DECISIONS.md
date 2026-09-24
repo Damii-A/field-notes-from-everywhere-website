@@ -1316,3 +1316,28 @@ just did for the first Shortlist article) and can link to an unpublished article
 Verified with a temporary future-dated article (deleted afterwards): the visitor-perspective query
 returns `null` for a link to an unpublished article and the URL for a web link; in preview the
 page renders both as working links with no console errors.
+
+---
+
+## 2026-09-24 — Hero images: 2400 × 1600 design size; Studio crop and hotspot honoured
+
+**Decision**: Article hero images are designed at 2400 × 1600 (3:2), subject centred. The site
+now applies the Studio's crop (Sanity image `rect` parameter) and hotspot (CSS
+`object-position`) everywhere a hero image appears. The size guidance is in the Studio field
+description.
+
+**Context**: User asked for the featured-image design size. One image is cropped to five shapes:
+12:5 article hero, ~16:9 hub lead, 3:2 hub cards / What to read next, 4:5 homepage Shortlist and
+What to Read When rails, 1:1 homepage Book Club pairs, plus ~1.91:1 link previews. The region
+all of them keep on a 2400 × 1600 image is the centre 1280 × 1000. The Studio already offered
+a hotspot (`options.hotspot`), but pages used the raw asset URL and always cropped from the
+centre; the user approved making it work.
+
+**Alternatives considered**: A `next/image` loader generating per-size Sanity crops
+(`fit=crop` + focal point). More exact framing, but it replaces the image pipeline for every
+image and moves optimisation from Vercel to Sanity; `object-position` keeps the focal point in
+view with a small, contained change. Revisit if exact centring on the focal point is ever needed.
+
+**Consequences**: Verified with a temporary future-dated article (crop + hotspot on a borrowed
+asset, deleted afterwards): the article hero requested the expected `rect`, and the article, hub
+lead and homepage images all used the expected 25%/25% position; no console errors.

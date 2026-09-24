@@ -150,6 +150,8 @@ export default defineType({
     defineField({
       name: "heroImage",
       title: "Hero image",
+      description:
+        "Design at 2400 × 1600 px. The site crops it to several shapes (very wide on the article, tall on the homepage, square for Book Club), so keep the subject in the middle and away from the edges. If it isn't centred, click the crop icon on the image and drag the focus circle onto it.",
       type: "image",
       options: { hotspot: true },
       fields: [{ name: "alt", type: "string", title: "Alt text", description: "Describe what's in the image, for search engines and screen readers." }],
