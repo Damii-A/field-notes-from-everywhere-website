@@ -1437,3 +1437,8 @@ the supported-browser floor to 2023-era browsers (Safari 16.4+), which would dro
 that can't update — a poor trade for 11 KB on a social-first site. Lighthouse after (local
 build): accessibility 100 on About, The Shortlist and Contact; 95-96 on Home and The Reading Room
 (only the two left-as-designed items above).
+**Measured live after deploy (Lighthouse mobile, production URL)**: performance 91-96 (was
+79-93 before the mobile rounds), accessibility 95-100, layout shift 0 on every page (was ~0.1).
+Largest-contentful-paint 2.6-3.0s — improved but still above the 2.5s target under Lighthouse's
+simulated slow-4G throttling; not claimed as met. Remaining levers (inlining critical CSS,
+smaller hero image) are diminishing returns, noted in CURRENT_STATE.md.

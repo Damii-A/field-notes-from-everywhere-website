@@ -565,7 +565,15 @@ cut from V1. In summary: no Reading Room login/Books/Past Issues, no eight-secti
 category identity → latest article → all articles (+ See more). Confirmed with the user
 2026-09-21.
 
-**Phone layout pass — first round done 2026-09-24** (see `DECISIONS.md`): book entries, header,
+**Phone/mobile pass — three rounds done 2026-09-24** (see `DECISIONS.md`): stacked book
+entries, phone menu button, bottom-sheet send-list popup, self-hosted fonts, contrast shades,
+tap areas, form autofill/errors, bundled icons; tested in Chromium, WebKit (Safari) and Firefox,
+portrait and landscape. Live Lighthouse (mobile): performance 91-96, accessibility 95-100, layout
+shift 0. **Still open**: largest-contentful-paint 2.6-3.0s vs the 2.5s target; the favicon (404,
+needs the user's icon); a check on the user's own phone and a tablet; the ~11 KB legacy-JS audit
+deliberately skipped (would drop older iPhones).
+
+(Earlier note, superseded:) **Phone layout pass — first round done 2026-09-24** (see `DECISIONS.md`): book entries, header,
 homepage intro text and the send-list popup fixed at phone width; every page audited at 390px.
 Not yet looked at: tablet widths in detail, the Reading Room book shelf's placeholder covers (a
 content gap, not layout), and hub "All articles" showing an empty heading when a column has only
