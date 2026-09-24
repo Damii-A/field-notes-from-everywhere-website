@@ -3,15 +3,10 @@
 Last updated: 2026-09-24 (end of session). Full reasoning for everything below is in
 `DECISIONS.md` (all 2026-09-24 entries); this is the short version.
 
-**Immediately next (start of next session)** — the user asked for this first:
-**Troubleshoot why the Book Club Book Picks row doesn't show on the homepage preview.**
-Likely cause, *verify before fixing*: `getHomeShowcase` (`lib/content/index.ts`) groups the 6
-newest Book Club articles into pairs (`for (i = 0; i + 1 < clubItems.length; i += 2)`), and
-`app/page.tsx` only renders the row when `showcase.clubPairs.length > 0`. With exactly one Book
-Club article (the only one that exists), no pair forms, so the whole row is hidden. The design
-presents Book Club as pairs (`pub_hub.md`, "articles presented in pairs"), so how a lone/odd
-article should display is a design decision to put to the user (e.g. show it singly, or hide
-until two exist) — ask via a question box.
+**Done 2026-09-24 (later session)**: the homepage Book Club Book Picks row was hidden because it
+only showed complete pairs and just one Book Club article exists. By the user's choice, an odd
+article now appears on its own (no connecting line) until a partner is published. Verified in
+preview on desktop and phone. See DECISIONS.md.
 
 **Content status (checked in Sanity at session end)**: all three Thriller articles (Shortlist 15
 books, What to Read When 22, Book Club 17) are filled but still **unpublished drafts**, scheduled

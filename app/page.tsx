@@ -234,27 +234,32 @@ export default async function HomePage() {
                     {a.title}
                   </span>
                 </Link>
-                <span
-                  aria-hidden="true"
-                  style={{ width: "clamp(18px,3vw,40px)", height: 1, background: "var(--border-strong)", flex: "0 0 auto", alignSelf: "center", marginTop: -40 }}
-                />
-                <Link
-                  href={`/${b.category}/${b.slug}`}
-                  style={{
-                    width: 200,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 14,
-                    transform: `rotate(1.4deg) translateY(${i === 0 ? 34 : 34}px)`,
-                  }}
-                >
-                  <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
-                    <ImagePlaceholder label="Article image" src={b.heroImage?.url} position={b.heroImage?.position} alt={b.heroImage?.alt} />
-                  </div>
-                  <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
-                    {b.title}
-                  </span>
-                </Link>
+                {/* An odd one out (no partner yet) sits alone, without the connecting line. */}
+                {b ? (
+                  <>
+                    <span
+                      aria-hidden="true"
+                      style={{ width: "clamp(18px,3vw,40px)", height: 1, background: "var(--border-strong)", flex: "0 0 auto", alignSelf: "center", marginTop: -40 }}
+                    />
+                    <Link
+                      href={`/${b.category}/${b.slug}`}
+                      style={{
+                        width: 200,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 14,
+                        transform: `rotate(1.4deg) translateY(${i === 0 ? 34 : 34}px)`,
+                      }}
+                    >
+                      <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
+                        <ImagePlaceholder label="Article image" src={b.heroImage?.url} position={b.heroImage?.position} alt={b.heroImage?.alt} />
+                      </div>
+                      <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
+                        {b.title}
+                      </span>
+                    </Link>
+                  </>
+                ) : null}
               </div>
             ))}
           </div>

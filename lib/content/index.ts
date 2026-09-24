@@ -306,7 +306,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 export interface HomeShowcase {
   when: ArticleSummary[];
   shortlist: ArticleSummary[];
-  clubPairs: [ArticleSummary, ArticleSummary][];
+  /** Book Club articles in pairs; an odd one out sits alone (second slot undefined). */
+  clubPairs: [ArticleSummary, ArticleSummary | undefined][];
 }
 
 async function latestSummaries(category: CategorySlug, count: number): Promise<ArticleSummary[]> {
@@ -325,9 +326,9 @@ export async function getHomeShowcase(): Promise<HomeShowcase> {
     latestSummaries("book-club-book-picks", 6),
   ]);
 
-  const clubPairs: [ArticleSummary, ArticleSummary][] = [];
-  for (let i = 0; i + 1 < clubItems.length; i += 2) {
-    clubPairs.push([clubItems[i]!, clubItems[i + 1]!]);
+  const clubPairs: [ArticleSummary, ArticleSummary | undefined][] = [];
+  for (let i = 0; i < clubItems.length; i += 2) {
+    clubPairs.push([clubItems[i]!, clubItems[i + 1]]);
   }
 
   return { when, shortlist, clubPairs };

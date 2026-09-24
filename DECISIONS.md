@@ -1471,3 +1471,18 @@ full-screen dark menu; an attached lighter drawer.
   a freely usable single file (both licensed, and both block automated download), so the user
   chose the official marks instead. The social links themselves are still `href="#"` until real
   profile URLs are supplied (CURRENT_STATE.md).
+
+---
+
+## 2026-09-24 — Homepage Book Club row: an odd article shows on its own
+
+**Decision**: `getHomeShowcase` keeps a leftover Book Club article as a pair with an empty second
+slot, and the homepage draws it as a single tilted card without the connecting hairline. With
+one Book Club article the row now appears; later articles fill out pairs as designed.
+
+**Context**: The design shows the Book Club row only as pairs, so with an odd count (at launch,
+exactly one article) the whole row was hidden, unlike the other two rows, which show one article
+at a time. The design doesn't say what a lone article should do. The user chose to show it alone.
+
+**Alternatives considered**: Hide the row until two Book Club articles exist (the previous
+behaviour). Rejected: the row would be missing at launch.
