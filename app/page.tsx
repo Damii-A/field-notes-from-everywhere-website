@@ -59,13 +59,13 @@ export default async function HomePage() {
           Your next favorite book is just a few clicks away.
         </h2>
         <div
+          className={styles.introWell}
           style={{
             display: "flex",
             flexDirection: "column",
             gap: 20,
             maxWidth: "76ch",
             width: "100%",
-            textAlign: "justify",
             background: "var(--surface-well)",
             borderRadius: "var(--radius-2xl)",
             boxShadow: "var(--shadow-card)",

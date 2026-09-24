@@ -78,3 +78,18 @@
   box-shadow: var(--shadow-card);
   color: var(--text-inverse);
 }
+
+/* Phones: the nav wraps onto extra rows, so the header scrolls away instead
+   of staying pinned (it would cover about a fifth of the screen), and the
+   divider — meant to separate the pill on one row — is dropped. */
+@media (max-width: 700px) {
+  .header {
+    position: static;
+  }
+  .nav {
+    gap: 6px 18px;
+  }
+  .divider {
+    display: none;
+  }
+}

@@ -558,3 +558,74 @@
     transition: none;
   }
 }
+
+/* Phones: with the cover beside the text, blurbs were squeezed into a column
+   a few words wide. Keep rank + cover + title/author/tags on top, and let the
+   blurb run the full width underneath. `display: contents` lifts bookBody's
+   children into the grid without changing the markup desktop uses. */
+@media (max-width: 600px) {
+  .bookRow {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "cover title"
+      "cover author"
+      "cover tags"
+      "blurb blurb";
+    grid-template-rows: auto auto 1fr auto;
+    column-gap: 16px;
+    row-gap: 8px;
+  }
+  .bookRowRanked {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-areas:
+      "rank cover title"
+      "rank cover author"
+      "rank cover tags"
+      "blurb blurb blurb";
+  }
+  .bookRank {
+    grid-area: rank;
+    min-width: 0;
+  }
+  .bookRow > :not(.bookRank):not(.bookBody) {
+    grid-area: cover;
+  }
+  .bookBody {
+    display: contents;
+  }
+  .bookTitle {
+    grid-area: title;
+  }
+  .bookAuthor {
+    grid-area: author;
+  }
+  .tagRow {
+    grid-area: tags;
+    align-self: start;
+    margin-top: 0;
+  }
+  .bookBlurb {
+    grid-area: blurb;
+    margin-top: 12px;
+  }
+
+  /* Send-list popup: stack the fields so neither is cut off. */
+  .popupForm {
+    flex-direction: column;
+  }
+  .popupInput {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  /* Bigger tap targets. */
+  .calloutButton {
+    padding: 10px 4px;
+  }
+}
+
+.popupClose {
+  margin: -10px -10px 0 0;
+  padding: 12px;
+}

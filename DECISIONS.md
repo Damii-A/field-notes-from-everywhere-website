@@ -1355,3 +1355,25 @@ main subject in the middle third. Studio field description updated.
 design), designed at the article banner's 12:5 so the full image shows there, with sides trimmed
 elsewhere. Considered and declined: never cropping anywhere (letterboxing every placement, which
 leaves large empty bands on the 4:5 homepage cards), and uncropped article banner + hub lead only.
+
+---
+
+## 2026-09-24 — Phone layout pass (first round)
+
+**Decision**: Phone-width (≤600-700px) adaptations where the design only specifies desktop:
+- **Book entries**: rank + cover + title/author/tags on top, blurb full width underneath (CSS
+  grid with `display: contents` on the body, so desktop markup and layout are untouched).
+  Previously the blurb sat beside the cover in a ~190px column; the Shortlist article is ~35%
+  shorter on a phone as a result.
+- **Header**: stays in normal flow (not sticky) at ≤700px, and the divider is hidden. The design's
+  header wraps to ~180px on a phone; pinned, it would cover a fifth of the screen. A menu
+  button was not added: new navigation UI the design doesn't show.
+- **Homepage intro well**: left-aligned instead of justified at ≤600px (justified text opened
+  wide word gaps at that width).
+- **Send-list popup**: fields and button stacked at ≤600px (the email field was cut off); larger
+  close button and callout-link tap areas.
+
+**Context**: The user's end-of-build mobile pass (deferred 2026-09-22), prioritised because the
+first articles go live 2026-09-25 and What to Read When / Book Club Book Picks are social-first.
+Audited every page at 390px: no page scrolled sideways before or after. Verified after:
+phone screenshots of home and all three articles, and the desktop article unchanged.

@@ -221,7 +221,7 @@ export function ArticleView({ article }: { article: Article }) {
               const showCallout = (i + 1) % 5 === 0 && i !== article.books.length - 1;
               return (
                 <div key={`${book.title}-${i}`}>
-                  <div className={styles.bookRow}>
+                  <div className={ranked ? `${styles.bookRow} ${styles.bookRowRanked}` : styles.bookRow}>
                     {ranked ? (
                       <span className={styles.bookRank} style={{ color: style.titleColor }}>
                         {i + 1}

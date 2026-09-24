@@ -565,7 +565,13 @@ cut from V1. In summary: no Reading Room login/Books/Past Issues, no eight-secti
 category identity → latest article → all articles (+ See more). Confirmed with the user
 2026-09-21.
 
-**Mobile polish, deliberately deferred (2026-09-22)**: the user noted the site doesn't perform
+**Phone layout pass — first round done 2026-09-24** (see `DECISIONS.md`): book entries, header,
+homepage intro text and the send-list popup fixed at phone width; every page audited at 390px.
+Not yet looked at: tablet widths in detail, the Reading Room book shelf's placeholder covers (a
+content gap, not layout), and hub "All articles" showing an empty heading when a column has only
+its lead article.
+
+~~**Mobile polish, deliberately deferred (2026-09-22)**~~: the user noted the site doesn't perform
 particularly well on mobile generally, and wants that tackled as a dedicated pass at the end
 of the build, not piecemeal per-feature. Don't go looking for broad mobile issues outside
 whatever a specific change actually touches — verifying a new feature works reasonably on a

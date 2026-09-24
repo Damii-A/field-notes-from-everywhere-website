@@ -114,3 +114,15 @@
     transition: none;
   }
 }
+
+/* Homepage intro copy: justified as designed, but left-aligned on phones,
+   where justification opens wide gaps between words. */
+.introWell {
+  text-align: justify;
+}
+
+@media (max-width: 600px) {
+  .introWell {
+    text-align: left;
+  }
+}
