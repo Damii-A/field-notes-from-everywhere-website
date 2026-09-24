@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CategoryHub } from "@/components/CategoryHub";
-import { getHubArticles } from "@/lib/content";
+import { CATEGORIES, getHubArticles } from "@/lib/content";
 
-export const metadata: Metadata = { title: "What to Read When" };
+export const metadata: Metadata = { title: "What to Read When", description: CATEGORIES["what-to-read-when"].description };
 
 export default async function WhatToReadWhenHub() {
   const hub = await getHubArticles("what-to-read-when");

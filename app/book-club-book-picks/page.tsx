@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CategoryHub } from "@/components/CategoryHub";
-import { getHubArticles } from "@/lib/content";
+import { CATEGORIES, getHubArticles } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Book Club Book Picks" };
+export const metadata: Metadata = { title: "Book Club Book Picks", description: CATEGORIES["book-club-book-picks"].description };
 
 export default async function BookClubBookPicksHub() {
   const hub = await getHubArticles("book-club-book-picks");
