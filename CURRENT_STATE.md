@@ -3,6 +3,11 @@
 Last updated: 2026-09-24 (end of session). Full reasoning for everything below is in
 `DECISIONS.md` (all 2026-09-24 entries); this is the short version.
 
+**Immediately next (start of next session)**: no code task is queued. First check in Sanity
+whether the user has published the three Thriller articles (see Content status below; they're
+due to go live 2026-09-25 evening). If they're live, confirm all three homepage rows and hubs
+show them on the production site. Otherwise continue with the open items further down this file.
+
 **Done 2026-09-24 (later session)**: the homepage Book Club Book Picks row was hidden because it
 only showed complete pairs and just one Book Club article exists. By the user's choice, an odd
 article now appears on its own (no connecting line) until a partner is published. Verified in
