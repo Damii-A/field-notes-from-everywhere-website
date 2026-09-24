@@ -79,7 +79,8 @@
   color: var(--text-inverse);
 }
 
-.menuButton {
+.menuButton,
+.backdrop {
   display: none;
 }
 
@@ -87,7 +88,7 @@
    staying pinned over a large share of the screen. */
 @media (max-height: 500px) {
   .header {
-    position: static;
+    position: relative; /* not pinned, but still the anchor for the phone menu card */
   }
 }
 
@@ -123,15 +124,32 @@
     color: var(--ink-800);
     cursor: pointer;
   }
+  /* The open menu is a floating card over the page — not the bar growing
+     downwards (user's choice, DECISIONS.md 2026-09-24). */
   .nav {
     display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 12px;
+    right: 12px;
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
-    padding: 0 var(--gutter-screen) 18px;
+    padding: 8px 20px 20px;
+    background: var(--surface-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-float);
+    animation: menu-in var(--dur-fast) var(--ease-out);
   }
   .navOpen {
     display: flex;
+  }
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 59; /* under the header (60), over the page */
+    background: rgba(48, 43, 36, 0.28);
   }
   .navLink {
     padding: 14px 2px;
@@ -141,5 +159,22 @@
     height: 44px;
     margin-top: 10px;
     font-size: var(--text-base);
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    animation: none;
   }
 }

@@ -33,6 +33,7 @@ export function Header({ active }: HeaderProps) {
   }, [open]);
 
   return (
+    <>
     <header className={styles.header}>
       <div className={styles.brandRow}>
         <Link href="/" className={styles.brand}>
@@ -69,5 +70,8 @@ export function Header({ active }: HeaderProps) {
         </Link>
       </nav>
     </header>
+    {/* Phones only (hidden by CSS elsewhere): dims the page under the open menu card; tapping it closes the menu. */}
+    {open ? <div className={styles.backdrop} onClick={() => setOpen(false)} aria-hidden="true" /> : null}
+    </>
   );
 }

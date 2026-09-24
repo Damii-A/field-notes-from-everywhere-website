@@ -1442,3 +1442,9 @@ build): accessibility 100 on About, The Shortlist and Contact; 95-96 on Home and
 Largest-contentful-paint 2.6-3.0s — improved but still above the 2.5s target under Lighthouse's
 simulated slow-4G throttling; not claimed as met. Remaining levers (inlining critical CSS,
 smaller hero image) are diminishing returns, noted in CURRENT_STATE.md.
+
+**Phone menu styling** (user's choice from three options, same day): the open menu is a floating
+card (`--surface-card`, `--radius-xl`, `--shadow-float`) 8px below the header, over a light
+backdrop that closes it when tapped; the header bar itself isn't dimmed. Chosen so the menu
+doesn't read as the bar extending downwards in the same colour. Alternatives offered: a
+full-screen dark menu; an attached lighter drawer.
