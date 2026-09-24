@@ -103,6 +103,7 @@ export function ArticleView({ article }: { article: Article }) {
   const [inList, setInList] = useState(false);
   const [narrow, setNarrow] = useState(false);
   const [roomForShare, setRoomForShare] = useState(false);
+  const [articleOnScreen, setArticleOnScreen] = useState(true);
   const [copied, setCopied] = useState(false);
   const [popup, setPopup] = useState(false);
   const [, setPopupDone] = useState(false);
@@ -122,6 +123,10 @@ export function ArticleView({ article }: { article: Article }) {
         setInList(nowInList);
         setIndex(nowIndex);
       }
+      // The copy-link control is fixed at 44vh; hide it once the article's
+      // last book scrolls above it, so it doesn't ride along past the
+      // article into "What to read next" and the footer.
+      if (list) setArticleOnScreen(list.getBoundingClientRect().bottom > vh * 0.44 + 120);
       const doc = document.documentElement;
       const scrolled = (window.scrollY + vh) / doc.scrollHeight;
       if (window.scrollY > vh * 0.9 && scrolled > 0.5) {
@@ -161,7 +166,7 @@ export function ArticleView({ article }: { article: Article }) {
   const showRail = !narrow;
   const showProgress = inList && !narrow;
   const showFloatAd = !inList && !narrow;
-  const showShare = roomForShare;
+  const showShare = roomForShare && articleOnScreen;
 
   return (
     <div style={{ background: style.pageBg }}>

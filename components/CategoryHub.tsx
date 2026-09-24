@@ -59,7 +59,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
       </section>
 
       {hub.latest ? (
-        <section style={{ padding: category === "the-shortlist" ? 0 : "clamp(28px,3.6vw,52px) var(--gutter-screen) 0" }}>
+        <section style={{ padding: category === "the-shortlist" ? "clamp(28px,3.6vw,52px) 0 0" : "clamp(28px,3.6vw,52px) var(--gutter-screen) 0" }}>
           <Link
             href={`/${category}/${hub.latest.slug}`}
             className={styles.leadCard}

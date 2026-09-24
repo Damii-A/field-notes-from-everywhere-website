@@ -6,7 +6,7 @@
   max-width: 320px;
   padding: 24px;
   border-radius: var(--radius-xl);
-  background: var(--surface-card);
+  background: var(--paper-050); /* ivory, a softer stand-in for white on the oat footer */
   box-shadow: var(--shadow-flat);
 }
 

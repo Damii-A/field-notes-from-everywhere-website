@@ -1448,3 +1448,17 @@ card (`--surface-card`, `--radius-xl`, `--shadow-float`) 8px below the header, o
 backdrop that closes it when tapped; the header bar itself isn't dimmed. Chosen so the menu
 doesn't read as the bar extending downwards in the same colour. Alternatives offered: a
 full-screen dark menu; an attached lighter drawer.
+
+---
+
+## 2026-09-24 — User-directed visual tweaks (departures from the built design)
+
+- **Shortlist hub**: the "Newest" lead now has the same top gap below the category band as the
+  other two hubs (52px at desktop); it stays full-bleed and square-cornered as designed.
+- **Article copy-link control**: hidden once the book list's end scrolls above it (it previously
+  stayed fixed over "What to read next" and the footer). Verified: shown through the list, hidden
+  after it.
+- **Footer signup box**: `--paper-050` (the design's ivory) instead of the near-white card surface.
+- **Homepage column rows**: article titles centred under their images; each column's name +
+  description sits in a rounded box tinted one step lighter than its section's ground
+  (`color-mix` of the section colour with `--paper-050`, via a per-section `--box-bg`).

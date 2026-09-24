@@ -73,12 +73,20 @@
   max-width: var(--max-content);
   margin: 0 auto;
   padding: 0 var(--gutter-screen);
+}
+
+/* Column name + description in a box one step lighter than the section's
+   own ground (set per section via --box-bg), so it reads as a panel on it. */
+.showcaseBox {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: 20px;
   text-align: left;
+  padding: clamp(20px, 2.6vw, 32px) clamp(20px, 3vw, 40px);
+  border-radius: var(--radius-2xl);
+  background: color-mix(in srgb, var(--box-bg) 55%, var(--paper-050));
 }
 
 .railCard {
@@ -107,6 +115,7 @@
   letter-spacing: var(--tracking-tight);
   color: var(--text-soft);
   text-wrap: pretty;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {

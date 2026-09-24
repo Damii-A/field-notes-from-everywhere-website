@@ -123,24 +123,26 @@ export default async function HomePage() {
       {/* What to Read When rail */}
       {showcase.when.length > 0 ? (
         <section style={{ background: "var(--oat-200)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
-          <div className={styles.showcaseHeader} style={{ flexDirection: "row-reverse" }}>
-            <Link
-              href="/what-to-read-when"
-              style={{
-                display: "block",
-                font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
-                letterSpacing: "var(--tracking-tight)",
-                color: "var(--clay-700)",
-                margin: 0,
-                maxWidth: "24ch",
-                textAlign: "right",
-              }}
-            >
-              What to Read When
-            </Link>
-            <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "38ch" }}>
-              For the moments when you know exactly how you want a book to make you feel, and nothing else will do.
-            </p>
+          <div className={styles.showcaseHeader}>
+            <div className={styles.showcaseBox} style={{ ["--box-bg" as string]: "var(--oat-200)", flexDirection: "row-reverse" }}>
+              <Link
+                href="/what-to-read-when"
+                style={{
+                  display: "block",
+                  font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
+                  letterSpacing: "var(--tracking-tight)",
+                  color: "var(--clay-700)",
+                  margin: 0,
+                  maxWidth: "24ch",
+                  textAlign: "right",
+                }}
+              >
+                What to Read When
+              </Link>
+              <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "38ch" }}>
+                For the moments when you know exactly how you want a book to make you feel, and nothing else will do.
+              </p>
+            </div>
           </div>
           <div className={styles.rail} style={{ gap: "clamp(28px,4vw,64px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
             {showcase.when.map((a) => (
@@ -159,21 +161,23 @@ export default async function HomePage() {
       {showcase.shortlist.length > 0 ? (
         <section style={{ background: "var(--sage-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
           <div className={styles.showcaseHeader}>
-            <Link
-              href="/the-shortlist"
-              style={{
-                display: "block",
-                font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
-                letterSpacing: "var(--tracking-tight)",
-                color: "var(--sage-700)",
-              }}
-            >
-              The Shortlist
-            </Link>
-            <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "56ch" }}>
-              The books that rose to the top of the reader recommendations we analysed. One researched interest, the
-              titles readers kept putting forward.
-            </p>
+            <div className={styles.showcaseBox} style={{ ["--box-bg" as string]: "var(--sage-100)" }}>
+              <Link
+                href="/the-shortlist"
+                style={{
+                  display: "block",
+                  font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
+                  letterSpacing: "var(--tracking-tight)",
+                  color: "var(--sage-700)",
+                }}
+              >
+                The Shortlist
+              </Link>
+              <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "56ch" }}>
+                The books that rose to the top of the reader recommendations we analysed. One researched interest, the
+                titles readers kept putting forward.
+              </p>
+            </div>
           </div>
           <div className={styles.rail} style={{ gap: "clamp(20px,2.4vw,32px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
             {showcase.shortlist.map((a) => (
@@ -192,21 +196,23 @@ export default async function HomePage() {
       {showcase.clubPairs.length > 0 ? (
         <section style={{ background: "var(--paper-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
           <div className={styles.showcaseHeader}>
-            <Link
-              href="/book-club-book-picks"
-              style={{
-                display: "block",
-                font: "var(--weight-bold) clamp(26px,3vw,38px)/1.04 var(--font-display)",
-                letterSpacing: "var(--tracking-tight)",
-                color: "var(--slate-600)",
-                maxWidth: "24ch",
-              }}
-            >
-              Book Club Book Picks
-            </Link>
-            <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "42ch" }}>
-              Books chosen for the group read: the ones worth bringing to a room full of opinions.
-            </p>
+            <div className={styles.showcaseBox} style={{ ["--box-bg" as string]: "var(--paper-100)" }}>
+              <Link
+                href="/book-club-book-picks"
+                style={{
+                  display: "block",
+                  font: "var(--weight-bold) clamp(26px,3vw,38px)/1.04 var(--font-display)",
+                  letterSpacing: "var(--tracking-tight)",
+                  color: "var(--slate-600)",
+                  maxWidth: "24ch",
+                }}
+              >
+                Book Club Book Picks
+              </Link>
+              <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "42ch" }}>
+                Books chosen for the group read: the ones worth bringing to a room full of opinions.
+              </p>
+            </div>
           </div>
           <div className={styles.rail} style={{ gap: "clamp(36px,5vw,80px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px", alignItems: "center" }}>
             {showcase.clubPairs.map(([a, b], i) => (
