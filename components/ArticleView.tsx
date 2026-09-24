@@ -8,6 +8,7 @@ import { ImagePlaceholder } from "./ImagePlaceholder";
 import styles from "./ArticleView.module.css";
 import type { Article, CategorySlug } from "@/lib/content";
 import { formatArticleDate } from "@/lib/content/dates";
+import { splitParagraphs } from "@/lib/content/paragraphs";
 import { CATEGORIES } from "@/lib/content/categories"; // not "@/lib/content": that pulls server-only fetching into this client component
 
 const CATEGORY_LABEL: Record<CategorySlug, string> = {
@@ -249,7 +250,11 @@ export function ArticleView({ article }: { article: Article }) {
                           ))}
                         </div>
                       ) : null}
-                      <p className={styles.bookBlurb}>{book.blurb}</p>
+                      <div className={styles.bookBlurb}>
+                        {splitParagraphs(book.blurb).map((p, k) => (
+                          <p key={k}>{p}</p>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   {showCallout ? (

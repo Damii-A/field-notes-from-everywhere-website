@@ -9,6 +9,7 @@
 import { Resend } from "resend";
 import { articlePath, type Article, type FeedArticle } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
+import { splitParagraphs } from "@/lib/content/paragraphs";
 
 export class ResendNotConfiguredError extends Error {
   constructor() {
@@ -27,7 +28,9 @@ export async function sendBookListEmail(to: string, article: Article): Promise<v
   const bookListHtml = article.books
     .map(
       (b) =>
-        `<li><strong>${escapeHtml(b.rank ? `${b.rank}. ${b.title}` : b.title)}</strong> — ${escapeHtml(b.author)}<br/>${escapeHtml(b.blurb)}</li>`,
+        `<li><strong>${escapeHtml(b.rank ? `${b.rank}. ${b.title}` : b.title)}</strong> — ${escapeHtml(b.author)}<br/>${splitParagraphs(b.blurb)
+          .map((p) => escapeHtml(p).replace(/\n/g, "<br/>"))
+          .join("<br/><br/>")}</li>`,
     )
     .join("");
 
