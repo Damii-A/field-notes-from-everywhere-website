@@ -169,8 +169,37 @@ export default defineType({
     defineField({
       name: "introText",
       title: "Intro text",
+      description:
+        "Select text and use the link buttons to link it: \"Link to article\" picks another FNFE article (keeps working if its URL changes; shows as plain text until that article is live), \"Web link\" is any other address. Linking to related articles helps SEO.",
       type: "array",
-      of: [{ type: "block" }],
+      of: [
+        {
+          type: "block",
+          marks: {
+            annotations: [
+              {
+                name: "internalLink",
+                title: "Link to article",
+                type: "object",
+                fields: [{ name: "reference", title: "Article", type: "reference", to: [{ type: "article" }], validation: (r) => r.required() }],
+              },
+              {
+                name: "link",
+                title: "Web link",
+                type: "object",
+                fields: [
+                  {
+                    name: "href",
+                    title: "URL",
+                    type: "url",
+                    validation: (r) => r.required().uri({ scheme: ["http", "https", "mailto"] }),
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       validation: (r) => keywordCheck<any[]>(r, "intro", (v) => portableTextPlain(v)),
     }),

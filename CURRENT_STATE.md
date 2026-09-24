@@ -26,10 +26,8 @@ can be deleted). The site's timezone is US Eastern: article dates display in Eas
 the Studio's "Published at" field is entered in Eastern time (see `DECISIONS.md`).
 Shortlist articles now get SEO warnings in the Studio against a "Focus keyword" field, revised
 against the user's chosen Backlinko guides (see `DECISIONS.md`). Book titles in articles are now
-real `<h2>` headings. The Thriller Shortlist draft's current slug
-(`15-thriller-book-recommendations-from-2-181-real-readers`) gets warnings for length and numbers;
-the user's call. **Open question for the user**: allow links inside article intros (for internal
-linking)? They're currently flattened to plain text by design.
+real `<h2>` headings. Article intros now support links ("Link to article" / "Web link" in the Studio), added for
+internal linking (see `DECISIONS.md`).
 **Immediately next**: the user reviews the data-quality flags below and, if they fix anything,
 re-imports the same file (safe — books are matched by title+author, and casing-only fixes
 don't change a book's id). Then continue content authoring (articles in the Studio).

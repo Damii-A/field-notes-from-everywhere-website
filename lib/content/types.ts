@@ -74,11 +74,17 @@ export interface ArticleSummary {
   themes?: ThemeRef[];
 }
 
+export interface IntroSegment {
+  text: string;
+  href?: string;
+}
+
 export interface Article extends ArticleSummary {
   author: string;
   publishedAt: string; // ISO date
   methodologySentence: string;
-  introParagraphs: string[];
+  /** Each paragraph is a run of text segments; a segment with `href` is a link (internal "/..." or external). */
+  introParagraphs: IntroSegment[][];
   books: BookEntry[];
   whatToReadNext: ArticleSummary[];
 }

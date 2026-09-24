@@ -88,7 +88,8 @@
   margin: 0;
 }
 
-.methodologyText a {
+.methodologyText a,
+.introP a {
   color: var(--text-link);
   text-decoration: underline;
   text-underline-offset: 3px;

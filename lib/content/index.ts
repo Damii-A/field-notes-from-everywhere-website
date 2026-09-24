@@ -13,7 +13,7 @@ import { formatArticleDate } from "./dates";
 import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, ThemeRef } from "./types";
 
 export { CATEGORIES, CATEGORY_LIST } from "./categories";
-export type { Article, ArticleSummary, BookEntry, CategoryDef, CategorySlug, LegalPage, TagRef, ThemeRef } from "./types";
+export type { Article, ArticleSummary, BookEntry, IntroSegment, CategoryDef, CategorySlug, LegalPage, TagRef, ThemeRef } from "./types";
 
 export { HUB_INITIAL_COUNT, HUB_PAGE_INCREMENT } from "./hubPaging";
 
@@ -155,7 +155,17 @@ const FULL_ARTICLE_PROJECTION = `{
   heroImage{ "url": asset->url, alt },
   "themes": themes[]->{ "label": name, "slug": slug.current, group },
   author,
-  introText,
+  introText[]{
+    ...,
+    markDefs[]{
+      ...,
+      _type == "internalLink" => {
+        "href": select(
+          reference->publishedAt <= now() || $includeScheduled => "/" + reference->category + "/" + reference->slug.current
+        )
+      }
+    }
+  },
   bookEntries[]{
     blurb,
     "tagOverrides": tags[]->{ "label": name, "slug": slug.current },

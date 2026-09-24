@@ -1291,3 +1291,28 @@ keyword-bearing subheading beyond the H1 would need new UI the design doesn't sh
 Off-page and strategy advice (backlinks, brand mentions, original research, topical depth, page
 speed, mobile) isn't something Studio checks can enforce; mobile polish is already a
 scheduled end-of-build pass.
+
+---
+
+## 2026-09-24 — Article intros support links (internal and external)
+
+**Decision**: `article.introText` now has two link types: "Link to article" (a reference to
+another article, resolved to `/<category>/<slug>` in GROQ) and "Web link" (http/https/mailto).
+The article page renders them as real links, in the methodology link's style; web links open in
+a new tab. An article link whose target isn't live for the viewer (unpublished or scheduled)
+resolves to `null` and renders as plain text, never a dead link. Bold/italic are still flattened,
+per the design's plain intro paragraphs.
+
+**Context**: User-approved, following the Backlinko reading above: the guides recommend 5-10
+internal links from each post with descriptive anchor text, and intros were the only free-text
+place to put them. This reverses the 2026-09-21 choice (recorded in `lib/content/portableText.ts`)
+to flatten intro links to plain text.
+
+**Alternatives considered**: A plain URL link only (the default Sanity annotation). Rejected for
+internal links: typing `/the-shortlist/...` by hand breaks silently when a slug changes (as it
+just did for the first Shortlist article) and can link to an unpublished article.
+
+**Consequences**: `introParagraphs` is now `IntroSegment[][]` (text segments, optional `href`).
+Verified with a temporary future-dated article (deleted afterwards): the visitor-perspective query
+returns `null` for a link to an unpublished article and the URL for a web link; in preview the
+page renders both as working links with no console errors.

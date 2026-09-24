@@ -196,9 +196,21 @@ export function ArticleView({ article }: { article: Article }) {
           </div>
 
           <div className={styles.intro}>
-            {article.introParagraphs.map((p, i) => (
+            {article.introParagraphs.map((segments, i) => (
               <p key={i} className={styles.introP}>
-                {p}
+                {segments.map((s, j) =>
+                  !s.href ? (
+                    s.text
+                  ) : s.href.startsWith("/") ? (
+                    <Link key={j} href={s.href}>
+                      {s.text}
+                    </Link>
+                  ) : (
+                    <a key={j} href={s.href} target="_blank" rel="noopener noreferrer">
+                      {s.text}
+                    </a>
+                  ),
+                )}
               </p>
             ))}
           </div>
