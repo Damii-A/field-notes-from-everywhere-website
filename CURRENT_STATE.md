@@ -1,36 +1,48 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-23 (late). **First real book batch imported**: 49 thriller books
-(`~/Downloads/Thriller themed books Uploaded version to Sanity - Books.csv`) are live in
-Sanity, all with covers and blurbs, 94 published tags, verified by direct query afterward.
-**Also added same evening**: article scheduling (future `publishedAt` = hidden until then)
-and a `ranking` document type holding reader-recommendation rankings per theme — the
-"Thriller" ranking (49 books, the import file's row order) is saved. See `DECISIONS.md`.
-Future book batches: `npm run import-books -- <file.csv> --ranking "Theme name"`. Articles
-can now fill their book list from a ranking with the Studio's "Fill books from ranking" button
-(logic verified live; the button's UI itself awaits the user's first click — see
-`DECISIONS.md`). Note the 3
-existing `article` documents are empty drafts (no title/date yet).
-**2026-09-24**: fixed a real bug where the live site included unpublished drafts (see
-`DECISIONS.md`), and added Studio preview ("Preview" tab — real site with unpublished/scheduled
-content, Studio-login only; server side verified end-to-end, the Studio tab itself awaits the
-user's first use). The user's first real article ("15 Thriller Books Readers Swear By…",
-Shortlist, scheduled 2026-09-25) is a draft awaiting "Fill books from ranking", its methodology
-sentence, and publish.
-**2026-09-24 (later)**: all three Thriller articles (Shortlist 15, What to Read When 22, Book
-Club 17 books) are filled and have methodology sentences, but are still **unpublished drafts**,
-scheduled 7:07-7:25 pm US Eastern on 2026-09-25 (stored as 23:07-23:25 UTC). They need a meta description (new, required field) and Publish before then. Also added
-the article meta description field, moved book tags under the author, and fixed book covers never
-showing in articles (see `DECISIONS.md`). 3 empty untitled article drafts still exist (harmless,
-can be deleted). The site's timezone is US Eastern: article dates display in Eastern time and
-the Studio's "Published at" field is entered in Eastern time (see `DECISIONS.md`).
-Shortlist articles now get SEO warnings in the Studio against a "Focus keyword" field, revised
-against the user's chosen Backlinko guides (see `DECISIONS.md`). Book titles in articles are now
-real `<h2>` headings. Article intros now support links ("Link to article" / "Web link" in the Studio), added for
-internal linking (see `DECISIONS.md`).
-**Immediately next**: the user reviews the data-quality flags below and, if they fix anything,
-re-imports the same file (safe — books are matched by title+author, and casing-only fixes
-don't change a book's id). Then continue content authoring (articles in the Studio).
+Last updated: 2026-09-24 (end of session). Full reasoning for everything below is in
+`DECISIONS.md` (all 2026-09-24 entries); this is the short version.
+
+**Immediately next (start of next session)** — the user asked for this first:
+**Troubleshoot why the Book Club Book Picks row doesn't show on the homepage preview.**
+Likely cause, *verify before fixing*: `getHomeShowcase` (`lib/content/index.ts`) groups the 6
+newest Book Club articles into pairs (`for (i = 0; i + 1 < clubItems.length; i += 2)`), and
+`app/page.tsx` only renders the row when `showcase.clubPairs.length > 0`. With exactly one Book
+Club article (the only one that exists), no pair forms, so the whole row is hidden. The design
+presents Book Club as pairs (`pub_hub.md`, "articles presented in pairs"), so how a lone/odd
+article should display is a design decision to put to the user (e.g. show it singly, or hide
+until two exist) — ask via a question box.
+
+**Content status (checked in Sanity at session end)**: all three Thriller articles (Shortlist 15
+books, What to Read When 22, Book Club 17) are filled but still **unpublished drafts**, scheduled
+7:07-7:25 pm US Eastern on 2026-09-25. Each needs its new required **meta description**, then
+Publish. The Shortlist one also needs its Focus keyword ("thriller book recommendations") for the
+SEO warnings. 3 empty untitled article drafts exist (harmless, deletable).
+
+**Built this session (2026-09-24)**, all verified in a browser and pushed:
+- Fixes: live site showed unpublished drafts (perspective bug); book covers never rendered in
+  articles; blurb paragraph breaks were collapsed; copy-link control rode past the article.
+- Studio: preview tab (unpublished/scheduled content), meta description field, Shortlist SEO
+  checks (focus keyword; revised against the user's Backlinko guides), links in article intros
+  ("Link to article" / "Web link"), hero image crop + hotspot honoured, design-size guidance.
+- Site timezone is US Eastern (article dates + Studio scheduling). Hero images: design at
+  2400 x 1000 (the article banner's shape); only sides are ever trimmed elsewhere.
+- Book titles are `<h2>`s; book tags sit under the author.
+- Mobile pass (three rounds, after the user's three mobile guides): stacked book entries on
+  phones, phone menu button opening a content-width floating card with dividers, bottom-sheet
+  send-list popup on phones, self-hosted fonts (next/font), contrast text shades
+  (`--text-soft` etc. in `app/globals.css`), tap areas, tap feedback, form autofill + specific
+  errors, bundled icons (incl. official Pinterest/Reddit marks). Live Lighthouse (mobile):
+  performance 91-96, accessibility 95-100, layout shift 0.
+- Visual tweaks: new hub column descriptions (also their search descriptions), boxed footer
+  signup (ivory), footer top border, homepage column-name boxes + centred titles, equal hub
+  lead spacing on The Shortlist.
+
+**Open, after the Book Club fix** (raise one at a time): largest-contentful-paint 2.6-3.0s vs the
+2.5s target; favicon/browser-tab icon (needs the user's icon file); social profile URLs (footer
+icons are still `href="#"`); the user testing on their own phone/tablet; then the remaining
+outstanding list further down (Reading Room post-trial automation, CRON_SECRET check, legal copy,
+Paddle live switch, domain cutover + Search Console).
 
 **Data-quality flags from the first batch (user's call, not fixed silently)**: 9 covers are
 low-resolution (under 300px wide — Dark Places, Kill For Me Kill For You, Nightwatching,
