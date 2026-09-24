@@ -243,7 +243,7 @@ the Claude Design authoring/preview environment, not a production runtime:
 - Image pipeline: Sanity's asset CDN, rendered through `next/image`. Article hero images honour
   the Studio crop (applied as Sanity's `rect` URL parameter) and hotspot (a CSS `object-position`),
   via `toHeroImage` in `lib/content/index.ts` — the same image is shown at 12:5, ~16:9, 3:2, 4:5
-  and 1:1 across the site. Design size: 2400 × 1600, subject centred (see `DECISIONS.md`).
+  and 1:1 across the site. Design size: 2400 × 1000 (the article banner's 12:5), subject in the middle third (see `DECISIONS.md`).
 - **Published content only**: `groqFetch` always requests the `published` perspective
   explicitly — an authenticated query's default at this API version also returns drafts.
 - **Studio preview** (2026-09-24): Sanity's Presentation tool ("Preview" in the Studio) shows

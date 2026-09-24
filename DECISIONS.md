@@ -1341,3 +1341,12 @@ view with a small, contained change. Revisit if exact centring on the focal poin
 **Consequences**: Verified with a temporary future-dated article (crop + hotspot on a borrowed
 asset, deleted afterwards): the article hero requested the expected `rect`, and the article, hub
 lead and homepage images all used the expected 25%/25% position; no console errors.
+
+**Corrected same day — design size is 2400 × 1000, not 2400 × 1600.** The user's first real
+hero image (2400 × 1600, scene along the bottom edge) lost its top and bottom on the article
+page: the article banner is a fixed 12:5 (720 × 300 on desktop, measured), so any 3:2 image
+loses about a fifth top and bottom there. Measured the other placements (hub lead 590 × 350 at
+1280 and 1920 wide, 390 × 200 on mobile; cards 3:2; homepage 4:5 and 1:1; link previews ~1.91:1):
+none is wider than 12:5, so an image designed at the banner's shape shows in full on the article
+and only ever loses its sides elsewhere. The rule for designers becomes one sentence: 2400 × 1000,
+main subject in the middle third. Studio field description updated.
