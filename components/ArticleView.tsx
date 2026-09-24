@@ -224,9 +224,9 @@ export function ArticleView({ article }: { article: Article }) {
                       ratio={1.5}
                     />
                     <div className={styles.bookBody}>
-                      <span className={styles.bookTitle} style={{ color: style.titleColor }}>
+                      <h2 className={styles.bookTitle} style={{ color: style.titleColor }}>
                         {book.title}
-                      </span>
+                      </h2>
                       <span className={styles.bookAuthor}>{book.author}</span>
                       {book.tags && book.tags.length > 0 ? (
                         <div className={styles.tagRow}>

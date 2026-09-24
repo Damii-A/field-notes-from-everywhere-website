@@ -1,7 +1,8 @@
 import { defineField, defineType, type RuleDef, type ValidationContext } from "sanity";
-import { TITLE_MAX_CHARS, firstParagraphText, keywordWarning, suggestedFocusKeyword } from "../lib/seoChecks";
+import { TITLE_MAX_CHARS, keywordWarning, portableTextPlain, slugShapeWarnings, suggestedFocusKeyword } from "../lib/seoChecks";
 
 interface SeoDoc {
+  _id?: string;
   category?: string;
   focusKeyword?: string;
   ranking?: { _ref: string };
@@ -15,6 +16,21 @@ function keywordCheck<T, R extends RuleDef<R, any> = any>(r: R, where: string, t
       const doc = context.document as SeoDoc | undefined;
       if (doc?.category !== "the-shortlist" || !doc.focusKeyword?.trim()) return true;
       return keywordWarning(where, doc.focusKeyword.trim(), toText(value as T | undefined)) ?? true;
+    })
+    .warning();
+}
+
+/** Shortlist-only SEO warning with its own logic; `check` returns a message, or null when fine. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function shortlistWarning<T, R extends RuleDef<R, any> = any>(
+  r: R,
+  check: (value: T | undefined, doc: SeoDoc, context: ValidationContext) => string | null | Promise<string | null>,
+): R {
+  return r
+    .custom(async (value: unknown, context: ValidationContext) => {
+      const doc = context.document as SeoDoc | undefined;
+      if (doc?.category !== "the-shortlist") return true;
+      return (await check(value as T | undefined, doc, context)) ?? true;
     })
     .warning();
 }
@@ -52,27 +68,42 @@ export default defineType({
       title: "Slug",
       type: "slug",
       options: { source: "title" },
-      validation: (r) => [r.required(), keywordCheck<{ current?: string }>(r, "slug", (v) => v?.current)],
+      validation: (r) => [
+        r.required(),
+        keywordCheck<{ current?: string }>(r, "slug", (v) => v?.current),
+        shortlistWarning<{ current?: string }>(r, (v) => slugShapeWarnings(v?.current).join(" ") || null),
+      ],
     }),
     defineField({
       name: "metaDescription",
       title: "Meta description",
       description:
-        "The summary shown under the title in Google results and link previews, and on the hub page when this is the newest article. Aim for 120-160 characters.",
+        "The summary shown under the title in Google results and link previews, and on the hub page when this is the newest article. It doesn't affect ranking, but it decides whether searchers click, so write it to make them want to. Aim for 120-160 characters, unique to this article.",
       type: "text",
       rows: 3,
       validation: (r) => [
         r.required(),
         r.min(70).warning("Short for a search result: aim for 120-160 characters."),
         r.max(160).warning("Google usually cuts off descriptions past about 160 characters."),
-        keywordCheck<string>(r, "meta description", (v) => v),
+        shortlistWarning<string>(r, async (v, doc, context) => {
+          if (!v?.trim()) return null;
+          const id = (doc._id ?? "").replace(/^drafts\./, "");
+          const clash = await context
+            .getClient({ apiVersion: "2025-01-01" })
+            .fetch<string | null>(`*[_type == "article" && metaDescription == $v && !(_id in [$id, $draftId])][0].title`, {
+              v,
+              id,
+              draftId: `drafts.${id}`,
+            });
+          return clash ? `SEO: "${clash}" has the same meta description. Each article's should be unique.` : null;
+        }),
       ],
     }),
     defineField({
       name: "focusKeyword",
       title: "Focus keyword (SEO)",
       description:
-        "The search term this article targets, usually the theme + \"book recommendations\" (e.g. \"thriller book recommendations\"). The title, slug, meta description and first intro paragraph get a warning if they don't mention it. \"Fill books from ranking\" fills this in if it's empty.",
+        "The search term this article targets, usually the theme + \"book recommendations\" (e.g. \"thriller book recommendations\"). The title, slug and intro get a warning if they don't mention it. \"Fill books from ranking\" fills this in if it's empty.",
       type: "string",
       hidden: ({ document }) => document?.category !== "the-shortlist",
       validation: (r) =>
@@ -116,7 +147,17 @@ export default defineType({
       options: { displayTimeZone: "America/New_York", allowTimeZoneSwitch: false }, // keep in sync with SITE_TIME_ZONE, lib/content/dates.ts
       validation: (r) => r.required(),
     }),
-    defineField({ name: "heroImage", title: "Hero image", type: "image", options: { hotspot: true }, fields: [{ name: "alt", type: "string", title: "Alt text" }] }),
+    defineField({
+      name: "heroImage",
+      title: "Hero image",
+      type: "image",
+      options: { hotspot: true },
+      fields: [{ name: "alt", type: "string", title: "Alt text", description: "Describe what's in the image, for search engines and screen readers." }],
+      validation: (r) =>
+        shortlistWarning<{ asset?: unknown; alt?: string }>(r, (v) =>
+          v?.asset && !v.alt?.trim() ? "SEO: add alt text describing the image." : null,
+        ),
+    }),
     defineField({
       name: "methodologySentence",
       title: "Methodology sentence",
@@ -131,7 +172,7 @@ export default defineType({
       type: "array",
       of: [{ type: "block" }],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      validation: (r) => keywordCheck<any[]>(r, "first paragraph of the intro", (v) => firstParagraphText(v)),
+      validation: (r) => keywordCheck<any[]>(r, "intro", (v) => portableTextPlain(v)),
     }),
     defineField({
       name: "ranking",
@@ -181,7 +222,12 @@ export default defineType({
       description: "pub_article.md §6.5 — editorially chosen, up to 3.",
       type: "array",
       of: [{ type: "reference", to: [{ type: "article" }] }],
-      validation: (r) => r.max(3),
+      validation: (r) => [
+        r.max(3),
+        shortlistWarning<unknown[]>(r, (v) =>
+          v && v.length > 0 ? null : "SEO: link at least one related article. Internal links help Google and readers find more of your lists.",
+        ),
+      ],
     }),
   ],
   preview: { select: { title: "title", subtitle: "category" } },

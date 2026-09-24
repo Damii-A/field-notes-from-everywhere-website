@@ -1266,3 +1266,28 @@ never stop an article going out.
 check but is 73 characters (warned); slug lacks "recommendations" (warned); intro passes; meta
 description not yet written. The warnings themselves in the Studio UI weren't seen this session
 (Studio login is the user's own), so the user's first look is that check.
+
+**Revised same day against the user's chosen SEO sources** — Backlinko, "Blog SEO: The Complete
+Guide" (backlinko.com/hub/content/blog-seo) and "How to Rank Higher on Google in 2026"
+(backlinko.com/rank-high-on-google), read in full at the user's request so the checks optimize
+for the right things. Changes:
+- **Meta description no longer checked for the keyword.** The guide is explicit: Google doesn't
+  use descriptions for ranking; they exist to earn clicks. Replaced with a uniqueness check (warn
+  if another article has the same description) and field guidance to write for click-through.
+- **Slug**: added warnings for more than 5 words ("short URLs" correlate with rankings) and for
+  numbers ("evergreen URLs": a book count or year goes stale if the list changes).
+- **Intro**: keyword checked across the whole intro, not just the first paragraph (the guide says
+  "intro"). Its "and conclusion" advice has no field to check: articles have no conclusion.
+- **Internal links**: warning when a Shortlist article has no "What to read next" articles.
+- **Hero image alt text**: warning when an image has no alt text.
+- **Book titles are now `<h2>` headings** (previously `<span>`), styling unchanged. The guides
+  tie list-style featured snippets and AI Overview passage matching to subheadings; a ranked list
+  whose items aren't headings can't be read as a list by either.
+
+**Not done, needs a decision** (see `CURRENT_STATE.md`): links inside intro text are flattened to
+plain text by `portableTextToParagraphs` (a deliberate 2026-09-21 match to the design's plain
+intro paragraphs), so authors can't add the in-body internal links the guides recommend. A
+keyword-bearing subheading beyond the H1 would need new UI the design doesn't show.
+Off-page and strategy advice (backlinks, brand mentions, original research, topical depth, page
+speed, mobile) isn't something Studio checks can enforce; mobile polish is already a
+scheduled end-of-build pass.

@@ -145,6 +145,7 @@
 }
 
 .bookTitle {
+  margin: 0;
   font: var(--weight-bold) clamp(18px, 2vw, 25px) / 1.18 var(--font-display);
   letter-spacing: var(--tracking-tight);
   text-wrap: pretty;
