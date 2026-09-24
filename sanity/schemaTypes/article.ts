@@ -47,8 +47,9 @@ export default defineType({
       name: "publishedAt",
       title: "Published at",
       description:
-        "When this article goes live. Set a future date/time to schedule it: you can hit Publish now, and it stays hidden from the site until this moment, then appears on its own (within about 5 minutes).",
+        "When this article goes live, in US Eastern time (the site's timezone). Set a future date/time to schedule it: you can hit Publish now, and it stays hidden from the site until this moment, then appears on its own (within about 5 minutes).",
       type: "datetime",
+      options: { displayTimeZone: "America/New_York", allowTimeZoneSwitch: false }, // keep in sync with SITE_TIME_ZONE, lib/content/dates.ts
       validation: (r) => r.required(),
     }),
     defineField({ name: "heroImage", title: "Hero image", type: "image", options: { hotspot: true }, fields: [{ name: "alt", type: "string", title: "Alt text" }] }),

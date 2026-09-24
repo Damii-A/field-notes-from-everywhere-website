@@ -7,6 +7,7 @@ import { BookCover } from "./ds/BookCover";
 import { ImagePlaceholder } from "./ImagePlaceholder";
 import styles from "./ArticleView.module.css";
 import type { Article, CategorySlug } from "@/lib/content";
+import { formatArticleDate } from "@/lib/content/dates";
 import { CATEGORIES } from "@/lib/content/categories"; // not "@/lib/content": that pulls server-only fetching into this client component
 
 const CATEGORY_LABEL: Record<CategorySlug, string> = {
@@ -179,7 +180,7 @@ export function ArticleView({ article }: { article: Article }) {
             <span className={styles.byline}>By {article.author}</span>
             <span className={styles.bylineDot} />
             <span className={styles.bylineDate}>
-              {new Date(article.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+              {formatArticleDate(article.publishedAt)}
             </span>
           </div>
 

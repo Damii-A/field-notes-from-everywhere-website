@@ -1218,3 +1218,22 @@ coloured stand-in. "What to read next" cards had the same gap for article hero i
 Verified in a local production build, in preview mode against the user's real Shortlist draft:
 15/15 covers load, tags render under the author, the hub lead card shows the description, no
 console errors.
+
+---
+
+## 2026-09-24 — Site timezone is US Eastern
+
+**Decision**: Article dates on the site (article byline, hub lead card, hub card meta) are
+formatted in `America/New_York` (EST/EDT) via `lib/content/dates.ts`, and the Studio's
+"Published at" field displays and takes input in the same zone (`displayTimeZone`, switching
+disabled). Scheduling itself is unchanged: `publishedAt` is stored as an absolute instant.
+
+**Context**: User-directed ("use EST"). Dates were formatted in whatever timezone rendered the
+page: UTC on Vercel, the user's own UTC+1 in the Studio. An article the user scheduled for just
+after midnight their time would have shown the previous day's date on the site. Formatting in
+a fixed zone also stops server and browser rendering from disagreeing near midnight.
+`America/New_York` rather than a fixed UTC-5 offset, so daylight saving is handled.
+
+**Consequences**: The user's first three articles, entered as ~00:07-00:25 on Sept 26 UTC+1,
+are 7:07-7:25 pm Eastern on Sept 25 and display as September 25. RSS `pubDate` stays UTC (the
+RSS format expects an absolute timestamp).

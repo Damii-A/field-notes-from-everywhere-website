@@ -6,6 +6,7 @@ import { Button } from "./ds/Button";
 import { ImagePlaceholder } from "./ImagePlaceholder";
 import styles from "./CategoryHub.module.css";
 import { CATEGORIES } from "@/lib/content/categories"; // not "@/lib/content": that pulls server-only fetching into this client component
+import { formatArticleDate } from "@/lib/content/dates";
 import { HUB_INITIAL_COUNT, HUB_PAGE_INCREMENT } from "@/lib/content/hubPaging";
 import type { HubPage } from "@/lib/content";
 import type { CategorySlug } from "@/lib/content";
@@ -83,7 +84,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
                 {hub.latest.description}
               </p>
               <span className={styles.leadMeta} style={{ color: colors.leadMeta }}>
-                By {hub.latest.author} · {new Date(hub.latest.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} ·{" "}
+                By {hub.latest.author} · {formatArticleDate(hub.latest.publishedAt)} ·{" "}
                 {hub.latest.books.length} books
               </span>
             </div>

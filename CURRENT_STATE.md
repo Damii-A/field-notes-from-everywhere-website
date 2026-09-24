@@ -19,12 +19,11 @@ Shortlist, scheduled 2026-09-25) is a draft awaiting "Fill books from ranking", 
 sentence, and publish.
 **2026-09-24 (later)**: all three Thriller articles (Shortlist 15, What to Read When 22, Book
 Club 17 books) are filled and have methodology sentences, but are still **unpublished drafts**,
-scheduled 00:07-00:25 on 2026-09-26 in the user's timezone (UTC+1; stored as 23:07-23:25 UTC on
-the 25th). They need a meta description (new, required field) and Publish before then. Also added
+scheduled 7:07-7:25 pm US Eastern on 2026-09-25 (stored as 23:07-23:25 UTC). They need a meta description (new, required field) and Publish before then. Also added
 the article meta description field, moved book tags under the author, and fixed book covers never
 showing in articles (see `DECISIONS.md`). 3 empty untitled article drafts still exist (harmless,
-can be deleted). Known quirk, not fixed: article dates are formatted in the server's timezone
-(UTC on Vercel), so an article scheduled just after midnight UTC+1 shows the previous day's date.
+can be deleted). The site's timezone is US Eastern: article dates display in Eastern time and
+the Studio's "Published at" field is entered in Eastern time (see `DECISIONS.md`).
 **Immediately next**: the user reviews the data-quality flags below and, if they fix anything,
 re-imports the same file (safe — books are matched by title+author, and casing-only fixes
 don't change a book's id). Then continue content authoring (articles in the Studio).

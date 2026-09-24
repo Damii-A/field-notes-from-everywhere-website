@@ -9,6 +9,7 @@
 import { groqFetch } from "@/lib/sanity/groqFetch";
 import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
 import { CATEGORIES } from "./categories";
+import { formatArticleDate } from "./dates";
 import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, ThemeRef } from "./types";
 
 export { CATEGORIES, CATEGORY_LIST } from "./categories";
@@ -17,7 +18,7 @@ export type { Article, ArticleSummary, BookEntry, CategoryDef, CategorySlug, Leg
 export { HUB_INITIAL_COUNT, HUB_PAGE_INCREMENT } from "./hubPaging";
 
 function formatMeta(bookCount: number, publishedAt: string): string {
-  const date = new Date(publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const date = formatArticleDate(publishedAt, "short");
   return `${bookCount} book${bookCount === 1 ? "" : "s"} · ${date}`;
 }
 
