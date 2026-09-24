@@ -36,7 +36,7 @@
 .navLink {
   font: var(--weight-bold) var(--text-sm) / 1 var(--font-display);
   letter-spacing: var(--tracking-display);
-  color: var(--text-muted);
+  color: var(--text-soft); /* design: --text-muted (ink-500), 4.1:1 on oat-200 — see --text-soft in app/globals.css */
   padding: 6px 2px;
   border-bottom: 2px solid transparent;
 }
@@ -79,23 +79,15 @@
   color: var(--text-inverse);
 }
 
-/* Phones: the nav wraps onto extra rows, so the header scrolls away instead
-   of staying pinned (it would cover about a fifth of the screen), and the
-   divider — meant to separate the pill on one row — is dropped. */
-/* Sideways phones (short screens) get the same treatment for the header. */
-@media (max-width: 700px), (max-height: 500px) {
+.menuButton {
+  display: none;
+}
+
+/* Short screens (sideways phones): the header scrolls away rather than
+   staying pinned over a large share of the screen. */
+@media (max-height: 500px) {
   .header {
     position: static;
-  }
-  .nav {
-    gap: 0 18px;
-  }
-  /* Taller tap areas (about 40px) without changing how the links look. */
-  .navLink {
-    padding: 12px 2px;
-  }
-  .divider {
-    display: none;
   }
 }
 
@@ -104,5 +96,50 @@
 @media (max-width: 1000px) {
   .divider {
     display: none;
+  }
+}
+
+/* Phones: wordmark + menu button in one compact row (so the header can stay
+   pinned); the nav opens as a list beneath it. */
+@media (max-width: 700px) {
+  .brandRow {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px var(--gutter-screen);
+  }
+  .brand {
+    text-align: left;
+  }
+  .menuButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--ink-800);
+    cursor: pointer;
+  }
+  .nav {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0 var(--gutter-screen) 18px;
+  }
+  .navOpen {
+    display: flex;
+  }
+  .navLink {
+    padding: 14px 2px;
+    font-size: var(--text-base);
+  }
+  .readingRoomPill {
+    height: 44px;
+    margin-top: 10px;
+    font-size: var(--text-base);
   }
 }

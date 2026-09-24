@@ -1,5 +1,6 @@
 "use client";
 
+import { GENERIC_FORM_ERROR, formErrorMessage } from "@/lib/formError";
 import { useState, type FormEvent } from "react";
 import styles from "./FooterNewsletterForm.module.css";
 
@@ -11,6 +12,7 @@ import styles from "./FooterNewsletterForm.module.css";
  */
 export function FooterNewsletterForm({ labelClassName }: { labelClassName?: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState(GENERIC_FORM_ERROR);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
@@ -23,9 +25,14 @@ export function FooterNewsletterForm({ labelClassName }: { labelClassName?: stri
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, source: "newsletter" }),
       });
-      if (!res.ok) throw new Error("request failed");
+      if (!res.ok) {
+        setErrorMessage(await formErrorMessage(res));
+        setStatus("error");
+        return;
+      }
       setStatus("success");
     } catch {
+      setErrorMessage(GENERIC_FORM_ERROR);
       setStatus("error");
     }
   }
@@ -72,7 +79,7 @@ export function FooterNewsletterForm({ labelClassName }: { labelClassName?: stri
       </button>
       {status === "error" ? (
         <p className={styles.message} style={{ color: "var(--status-critical)" }}>
-          Something went wrong — please try again.
+          {errorMessage}
         </p>
       ) : null}
       <p className={styles.fine}>New reading lists from the Publication, roughly weekly. Unsubscribe any time.</p>

@@ -32,7 +32,7 @@ export default async function ReadingRoomSubscribePage() {
           </p>
           <p className={styles.priceNote}>$7/month. Cancel anytime.</p>
           <ReadingRoomCheckoutButton className={styles.cta}>Subscribe now</ReadingRoomCheckoutButton>
-          <Link href="/the-reading-room" className={styles.back}>
+          <Link href="/the-reading-room" className={`${styles.back} tap-area`}>
             Not ready yet? Back to The Reading Room
           </Link>
         </div>

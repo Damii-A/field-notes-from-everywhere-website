@@ -10,6 +10,17 @@
   --font-mono: var(--nf-mono), ui-monospace, monospace;
 }
 
+/* Text-only shades for spots where the design's colours fall short of the
+   4.5:1 readability guideline on their tinted backgrounds — each is the
+   design colour darkened just enough to pass (user-approved, DECISIONS.md
+   2026-09-24). The palette itself is unchanged; use these for small text only. */
+:root {
+  --text-soft: #645a4d; /* ink-500 x0.87: 5.1:1 on oat-200, 4.6:1 on clay-200 */
+  --clay-text: #7c5234; /* clay-700 x0.87: 5.1:1 on oat-200, 4.6:1 on clay-200 */
+  --sage-text: #59664b; /* sage-700 x0.88: 5.0:1 on sage-100 */
+  --sky-text: #2e6272; /* sky-700 x0.79: 4.7:1 on sky-200 */
+}
+
 /*
   Reset block copied verbatim (as CSS, not inline styles) from the reset every
   page in the design carries in its own <style> tag — see
@@ -56,4 +67,21 @@ a:hover {
 img {
   max-width: 100%;
   display: block;
+}
+
+/* Touch screens: links and buttons visibly respond when tapped (mobile-guide
+   review, DECISIONS.md 2026-09-24). Opacity only, so no motion. */
+@media (hover: none) {
+  a:active,
+  button:active {
+    opacity: 0.7;
+  }
+}
+
+/* Bigger tap area for a small standalone text link without moving anything:
+   the padding grows the hit area, the negative margin cancels its effect on layout. */
+.tap-area {
+  display: inline-block;
+  padding-block: 12px;
+  margin-block: -12px;
 }

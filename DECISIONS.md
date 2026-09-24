@@ -1408,3 +1408,32 @@ remaining "best practices" miss is the missing favicon (404), awaiting the user'
 print sit in one card (`--surface-card`, `--radius-xl`, 24px padding) with a single 14px gap
 between every element; fields use the article popup's inset style so they read against the card.
 Measured: 14px between all elements, 24px inner padding, desktop and phone.
+
+**Third round, same day — user decisions on the guides' design-changing tips** (asked via a
+question box after the user pointed out the earlier summary glossed over unimplemented tips):
+- **Phone menu** (user chose it over keeping all links visible): at ≤700px the header is the
+  wordmark + a menu button; the nav opens as a list (44-46px tap targets), closes on Escape, on
+  tapping a link and on route change. `Header` is now a client component. Compact (65px), so it
+  stays pinned on phones again; short (sideways) screens still unpin it.
+- **Send-list popup on phones**: a bottom panel sliding up (no dim overlay, article stays
+  visible, safe-area padding, reduced-motion respected), above the editor-only Preview bar.
+  Desktop unchanged. This also covers the "thumb zone" tip; nothing else was pinned to the bottom
+  (user's choice).
+- **Contrast** ("darken just enough"): four text-only shades in `app/globals.css`
+  (`--text-soft`, `--clay-text`, `--sage-text`, `--sky-text`), each the design colour darkened
+  12-21% to reach ≥4.6:1, applied only where text failed (header links, homepage grey copy, About
+  column links/labels and email link, popup small print). Palette tokens unchanged. Left as
+  designed: the homepage stratosphere's deliberately faded requests (decorative, and the design
+  notes warn against restyling it) and image-placeholder captions (vanish once images exist).
+- **Visible form labels**: kept as placeholders (user's choice).
+Also done: footer link hit areas fill their column gap (37-44px, layout unchanged); `.tap-area`
+helper on small standalone links; tap feedback (opacity) on touch screens; specific form errors
+from the API's message (`lib/formError.ts`); icons bundled inline (`components/ds/Icon.tsx`, no
+jsdelivr requests); hero image `sizes="340px"` + `fetchPriority="high"`; 12px minimum on the
+fallback book-cover author text. Tested in Firefox (no layout or console issues).
+
+**Deliberately not done**: the "legacy JavaScript" audit (~11 KB). Removing it means raising
+the supported-browser floor to 2023-era browsers (Safari 16.4+), which would drop older iPhones
+that can't update — a poor trade for 11 KB on a social-first site. Lighthouse after (local
+build): accessibility 100 on About, The Shortlist and Contact; 95-96 on Home and The Reading Room
+(only the two left-as-designed items above).

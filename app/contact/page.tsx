@@ -48,6 +48,7 @@ export default async function ContactPage() {
           </p>
           <a
             href={`mailto:${settings.contactEmail}`}
+            className="tap-area"
             style={{
               font: "var(--weight-bold) clamp(17px,2.2vw,25px)/1.2 var(--font-display)",
               letterSpacing: "var(--tracking-tight)",

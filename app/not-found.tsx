@@ -28,7 +28,7 @@ export default function NotFound() {
           <p style={{ font: "var(--type-body)", color: "var(--ink-700)", margin: 0 }}>
             We couldn&rsquo;t find that page.
           </p>
-          <Link
+          <Link className="tap-area"
             href="/"
             style={{
               font: "var(--weight-bold) var(--text-base)/1 var(--font-display)",

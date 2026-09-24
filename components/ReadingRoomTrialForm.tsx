@@ -1,5 +1,6 @@
 "use client";
 
+import { GENERIC_FORM_ERROR, formErrorMessage } from "@/lib/formError";
 import { useState, type FormEvent } from "react";
 import styles from "./ReadingRoomTrialForm.module.css";
 
@@ -20,6 +21,7 @@ export function ReadingRoomTrialForm({
   children: React.ReactNode;
 }) {
   const [phase, setPhase] = useState<"idle" | "form" | "sending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState(GENERIC_FORM_ERROR);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
@@ -32,9 +34,14 @@ export function ReadingRoomTrialForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email }),
       });
-      if (!res.ok) throw new Error("request failed");
+      if (!res.ok) {
+        setErrorMessage(await formErrorMessage(res));
+        setPhase("error");
+        return;
+      }
       setPhase("success");
     } catch {
+      setErrorMessage(GENERIC_FORM_ERROR);
       setPhase("error");
     }
   }
@@ -83,7 +90,7 @@ export function ReadingRoomTrialForm({
       </button>
       {phase === "error" ? (
         <p className={styles.message} style={{ color: "var(--status-critical)", width: "100%" }}>
-          Something went wrong — please try again.
+          {errorMessage}
         </p>
       ) : null}
     </form>

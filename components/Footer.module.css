@@ -26,6 +26,14 @@
   color: var(--ink-700);
 }
 
+.exploreLink,
+.siteLink {
+  /* Tap area fills the 14px column gap around each link; layout unchanged. */
+  display: inline-block;
+  padding-block: 7px;
+  margin-block: -7px;
+}
+
 .exploreLink {
   font: var(--weight-bold) var(--text-md) / 1.3 var(--font-display);
   letter-spacing: var(--tracking-display);

@@ -106,7 +106,7 @@ export default async function AboutPage() {
               </p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,230px),1fr))", gap: 18, marginTop: 4 }}>
                 <div style={{ background: "var(--sage-100)", borderRadius: "var(--radius-lg)", padding: 20, display: "flex", flexDirection: "column", gap: 10 }}>
-                  <Link href="/the-shortlist" style={{ font: "var(--weight-bold) var(--text-md)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--sage-700)" }}>
+                  <Link href="/the-shortlist" style={{ font: "var(--weight-bold) var(--text-md)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--sage-text)" }}>
                     The Shortlist
                   </Link>
                   <p style={{ font: "var(--type-small)", color: "var(--ink-700)", margin: 0 }}>
@@ -115,7 +115,7 @@ export default async function AboutPage() {
                   </p>
                 </div>
                 <div style={{ background: "var(--oat-200)", borderRadius: "var(--radius-lg)", padding: 20, display: "flex", flexDirection: "column", gap: 10 }}>
-                  <Link href="/what-to-read-when" style={{ font: "var(--weight-bold) var(--text-md)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--clay-700)" }}>
+                  <Link href="/what-to-read-when" style={{ font: "var(--weight-bold) var(--text-md)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--clay-text)" }}>
                     What To Read When
                   </Link>
                   <p style={{ font: "var(--type-small)", color: "var(--ink-700)", margin: 0 }}>
@@ -124,7 +124,7 @@ export default async function AboutPage() {
                   </p>
                 </div>
                 <div style={{ background: "var(--sky-200)", borderRadius: "var(--radius-lg)", padding: 20, display: "flex", flexDirection: "column", gap: 10 }}>
-                  <Link href="/book-club-book-picks" style={{ font: "var(--weight-bold) var(--text-md)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--sky-700)" }}>
+                  <Link href="/book-club-book-picks" style={{ font: "var(--weight-bold) var(--text-md)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--sky-text)" }}>
                     Book Club Book Picks
                   </Link>
                   <p style={{ font: "var(--type-small)", color: "var(--ink-700)", margin: 0 }}>
@@ -179,7 +179,7 @@ export default async function AboutPage() {
                 }}
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: "44ch" }}>
-                  <span style={{ font: "var(--type-label)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--clay-700)" }}>
+                  <span style={{ font: "var(--type-label)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--clay-text)" }}>
                     The Reading Room by FNFE
                   </span>
                   <span
@@ -242,7 +242,7 @@ export default async function AboutPage() {
           }}
         >
           <div style={{ background: "var(--sky-200)", padding: "clamp(28px,3.4vw,48px) clamp(24px,4vw,64px)" }}>
-            <span style={{ font: "var(--type-label)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--sky-700)" }}>
+            <span style={{ font: "var(--type-label)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--sky-text)" }}>
               Our methodology
             </span>
             <h2
@@ -293,7 +293,7 @@ export default async function AboutPage() {
               is what powers the FNFE publication and every Reading Room newsletter.
             </p>
             <div style={{ borderTop: "1px solid var(--border-hairline)", paddingTop: 22 }}>
-              <p style={{ font: "var(--type-body)", color: "var(--ink-500)", margin: 0 }}>
+              <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0 }}>
                 Ps. You might have noticed that at the top of every reading list we have a tiny &ldquo;
                 <strong style={{ color: "var(--ink-700)" }}>How we made this list</strong>&rdquo; note. Well,
                 that&rsquo;s a tidbit that shares the breadth of research that was undertaken to find the book
@@ -319,7 +319,7 @@ export default async function AboutPage() {
           </p>
           <div style={{ background: "var(--surface-card)", borderRadius: "var(--radius-2xl)", boxShadow: "var(--shadow-raised)", overflow: "hidden" }}>
             <div style={{ background: "var(--oat-200)", padding: "clamp(28px,3.4vw,48px) clamp(24px,4vw,64px)" }}>
-              <span style={{ font: "var(--type-label)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--clay-700)" }}>
+              <span style={{ font: "var(--type-label)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--clay-text)" }}>
                 Editorial independence
               </span>
               <h2
@@ -435,10 +435,11 @@ export default async function AboutPage() {
           </p>
           <a
             href={`mailto:${settings.contactEmail}`}
+            className="tap-area"
             style={{
               font: "var(--weight-bold) clamp(17px,2vw,25px)/1.2 var(--font-display)",
               letterSpacing: "var(--tracking-tight)",
-              color: "var(--accent-primary)",
+              color: "var(--clay-text)",
               textDecoration: "underline",
               textUnderlineOffset: 5,
             }}

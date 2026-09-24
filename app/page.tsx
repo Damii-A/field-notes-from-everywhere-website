@@ -23,9 +23,10 @@ export default async function HomePage() {
                 src="/images/homepage-hero-books.png"
                 alt="A watercolour illustration of a stack of four books"
                 fill
-                sizes="(max-width: 768px) 100vw, 340px"
+                sizes="340px" // displays at min(340px, 100%): never wider than 340px
                 style={{ objectFit: "contain" }}
                 priority
+                fetchPriority="high"
               />
             </div>
           </div>
@@ -50,7 +51,7 @@ export default async function HomePage() {
           style={{
             font: "var(--weight-bold) clamp(30px,3.4vw,44px)/1.1 var(--font-display)",
             letterSpacing: "var(--tracking-tight)",
-            color: "var(--ink-500)",
+            color: "var(--text-soft)",
             margin: 0,
             maxWidth: "30ch",
             textWrap: "pretty",
@@ -72,14 +73,14 @@ export default async function HomePage() {
             padding: "clamp(24px,3.4vw,44px)",
           }}
         >
-          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--ink-500)", margin: 0 }}>
+          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--text-soft)", margin: 0 }}>
             Somewhere out there is a book you&rsquo;re going to absolutely love. We&rsquo;d like to help you find it.
           </p>
-          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--ink-500)", margin: 0 }}>
+          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--text-soft)", margin: 0 }}>
             The good news is, someone out there has probably already read, loved, and recommended it. So, our job is
             to make sure those recommendations find their way to you.
           </p>
-          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--ink-500)", margin: 0 }}>
+          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--text-soft)", margin: 0 }}>
             Here at Field Notes From Everywhere, we spend our time digging through and analysing real reader
             discussions.
           </p>
@@ -88,7 +89,7 @@ export default async function HomePage() {
               font: "var(--type-body)",
               fontSize: "clamp(18px,1.6vw,22px)",
               fontStyle: "italic",
-              color: "var(--ink-500)",
+              color: "var(--text-soft)",
               textAlign: "center",
               display: "flex",
               flexDirection: "column",
@@ -99,7 +100,7 @@ export default async function HomePage() {
             <span>What are other readers recommending?</span>
             <span>Which books keep coming up again and again?</span>
           </div>
-          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--ink-500)", margin: 0 }}>
+          <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--text-soft)", margin: 0 }}>
             Then, we take the top recommendations and share them with you!
           </p>
         </div>
@@ -137,7 +138,7 @@ export default async function HomePage() {
             >
               What to Read When
             </Link>
-            <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--ink-500)", margin: 0, maxWidth: "38ch" }}>
+            <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "38ch" }}>
               For the moments when you know exactly how you want a book to make you feel, and nothing else will do.
             </p>
           </div>
@@ -169,7 +170,7 @@ export default async function HomePage() {
             >
               The Shortlist
             </Link>
-            <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--ink-500)", margin: 0, maxWidth: "56ch" }}>
+            <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "56ch" }}>
               The books that rose to the top of the reader recommendations we analysed. One researched interest, the
               titles readers kept putting forward.
             </p>
@@ -203,7 +204,7 @@ export default async function HomePage() {
             >
               Book Club Book Picks
             </Link>
-            <p style={{ font: "var(--type-body)", color: "var(--ink-500)", margin: 0, maxWidth: "42ch" }}>
+            <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "42ch" }}>
               Books chosen for the group read: the ones worth bringing to a room full of opinions.
             </p>
           </div>
@@ -320,7 +321,7 @@ export default async function HomePage() {
             }}
           >
             <span>The Reading Room</span>
-            <span style={{ font: "var(--weight-regular) clamp(17px,1.7vw,21px)/1.2 var(--font-display)", letterSpacing: "var(--tracking-normal)" }}>
+            <span style={{ font: "var(--weight-regular) clamp(17px,1.7vw,21px)/1.2 var(--font-display)", letterSpacing: "var(--tracking-normal)", color: "var(--clay-text)" }}>
               by Field Notes From Everywhere
             </span>
           </Link>
@@ -383,7 +384,7 @@ export default async function HomePage() {
               style={{
                 font: "var(--weight-bold) clamp(23px,2.9vw,34px)/1.12 var(--font-display)",
                 letterSpacing: "var(--tracking-tight)",
-                color: "var(--ink-500)",
+                color: "var(--text-soft)",
                 margin: 0,
                 maxWidth: "26ch",
                 textWrap: "pretty",
@@ -391,7 +392,7 @@ export default async function HomePage() {
             >
               Sound like your kind of thing? Your first 7 days are on us.
             </h3>
-            <p style={{ font: "var(--type-body)", color: "var(--ink-500)", margin: 0, maxWidth: "54ch" }}>
+            <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "54ch" }}>
               You&rsquo;ll get full access to The Reading Room completely free for 7 days, no credit card required.
               And if you decide to stick around, it&rsquo;s just $7/month after that. Cancel anytime.
             </p>

@@ -60,7 +60,7 @@ export function BookCover({
             {author ? (
               <span
                 style={{
-                  font: "var(--weight-semibold) var(--text-2xs)/1.3 var(--font-mono)",
+                  font: "var(--weight-semibold) var(--text-xs)/1.3 var(--font-mono)", // design: --text-2xs (11px); 12px minimum for legibility
                   color: "rgba(245,247,238,.72)",
                   textTransform: "uppercase",
                   letterSpacing: "var(--tracking-wide)",

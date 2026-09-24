@@ -1,5 +1,6 @@
 "use client";
 
+import { GENERIC_FORM_ERROR, formErrorMessage } from "@/lib/formError";
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Icon } from "./ds/Icon";
@@ -459,6 +460,7 @@ function SendListPopup({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState(GENERIC_FORM_ERROR);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -469,9 +471,14 @@ function SendListPopup({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, source: "send-list", articleSlug, category }),
       });
-      if (!res.ok) throw new Error("request failed");
+      if (!res.ok) {
+        setErrorMessage(await formErrorMessage(res));
+        setStatus("error");
+        return;
+      }
       setStatus("sent");
     } catch {
+      setErrorMessage(GENERIC_FORM_ERROR);
       setStatus("error");
     }
   }
@@ -520,7 +527,7 @@ function SendListPopup({
             </div>
             {status === "error" ? (
               <p className={styles.popupBody} style={{ color: "var(--status-critical)" }}>
-                Something went wrong — please try again.
+                {errorMessage}
               </p>
             ) : null}
             <p className={`${styles.popupBody} ${styles.popupFine}`}>

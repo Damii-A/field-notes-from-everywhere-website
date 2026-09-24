@@ -542,7 +542,7 @@
 
 .popupFine {
   font-size: var(--text-xs);
-  color: var(--text-faint);
+  color: var(--text-soft);
 }
 
 @media (max-width: 1139px) {
@@ -628,4 +628,42 @@
 .popupClose {
   margin: -10px -10px 0 0;
   padding: 12px;
+}
+
+/* Phones: the send-list popup is a panel that slides up from the bottom —
+   reachable with a thumb, dismissable, and the article stays visible (no dim
+   overlay). The user's choice after the mobile-guide review; DECISIONS.md
+   2026-09-24. Desktop keeps the centred popup. */
+@media (max-width: 600px) {
+  .overlay {
+    display: none;
+  }
+  .popup {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    transform: none;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+    z-index: 1001; /* above the editor-only Preview bar (PreviewBanner), which also sits at the bottom */
+    gap: 12px;
+    animation: sheet-up var(--dur-slow) var(--ease-out);
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup {
+    animation: none;
+  }
 }
