@@ -1350,3 +1350,8 @@ loses about a fifth top and bottom there. Measured the other placements (hub lea
 none is wider than 12:5, so an image designed at the banner's shape shows in full on the article
 and only ever loses its sides elsewhere. The rule for designers becomes one sentence: 2400 × 1000,
 main subject in the middle third. Studio field description updated.
+
+**Confirmed with the user same day**: images stay cropped to fill each placement (the built
+design), designed at the article banner's 12:5 so the full image shows there, with sides trimmed
+elsewhere. Considered and declined: never cropping anywhere (letterboxing every placement, which
+leaves large empty bands on the 4:5 homepage cards), and uncropped article banner + hub lead only.
