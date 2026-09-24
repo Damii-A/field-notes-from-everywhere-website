@@ -1462,3 +1462,12 @@ full-screen dark menu; an attached lighter drawer.
 - **Homepage column rows**: article titles centred under their images; each column's name +
   description sits in a rounded box tinted one step lighter than its section's ground
   (`color-mix` of the section colour with `--paper-050`, via a per-section `--box-bg`).
+- **Phone menu card** (follow-up): sized to its content (`width: max-content`) and anchored under
+  the menu button on the right, with a hairline between each column link; the active column is
+  marked by an underline on its text.
+- **Footer social icons**: the official Pinterest and Reddit marks (Simple Icons 16.32.0, CC0),
+  in the brands' own colours (#E60023, #FF4500), replacing the generic pin / speech-bubble
+  icons. The user first linked a Magnific "premium vector" and a pngtree search page; neither is
+  a freely usable single file (both licensed, and both block automated download), so the user
+  chose the official marks instead. The social links themselves are still `href="#"` until real
+  profile URLs are supplied (CURRENT_STATE.md).

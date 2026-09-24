@@ -130,12 +130,13 @@
     display: none;
     position: absolute;
     top: calc(100% + 8px);
-    left: 12px;
     right: 12px;
+    width: max-content; /* as wide as its longest link, anchored under the menu button */
+    max-width: calc(100vw - 24px);
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 0;
-    padding: 8px 20px 20px;
+    padding: 6px 22px 20px;
     background: var(--surface-card);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-float);
@@ -151,13 +152,23 @@
     z-index: 59; /* under the header (60), over the page */
     background: rgba(48, 43, 36, 0.28);
   }
+  /* A hairline between each column; the current column is underlined in
+     the text itself (the desktop bottom-border underline would now span
+     the whole row). */
   .navLink {
     padding: 14px 2px;
     font-size: var(--text-base);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .navLinkActive {
+    border-bottom-color: var(--border-soft);
+    text-decoration: underline 2px var(--accent-primary);
+    text-underline-offset: 7px;
   }
   .readingRoomPill {
+    align-self: flex-start;
     height: 44px;
-    margin-top: 10px;
+    margin-top: 16px;
     font-size: var(--text-base);
   }
 }

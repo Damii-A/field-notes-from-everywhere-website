@@ -44,10 +44,10 @@ export function Footer() {
         <div className={styles.socials}>
           {/* href="#" until real social URLs are supplied — see CURRENT_STATE.md */}
           <a href="#" aria-label="Pinterest" className={styles.socialButton}>
-            <Icon name="pin" size={20} />
+            <Icon name="pinterest" size={22} color="#E60023" /> {/* Pinterest brand red */}
           </a>
           <a href="#" aria-label="Reddit" className={styles.socialButton}>
-            <Icon name="message-circle" size={20} />
+            <Icon name="reddit" size={22} color="#FF4500" /> {/* Reddit brand orange */}
           </a>
         </div>
       </div>
