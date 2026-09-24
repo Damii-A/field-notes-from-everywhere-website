@@ -6,6 +6,7 @@ import {
   pickBooksFromRanking,
   type ArticleCategory,
 } from "../lib/pickBooksFromRanking";
+import { suggestedFocusKeyword } from "../lib/seoChecks";
 
 const CATEGORY_TITLES: Record<ArticleCategory, string> = {
   "the-shortlist": "The Shortlist",
@@ -18,10 +19,12 @@ interface ArticleFields {
   ranking?: { _ref: string };
   rankingCount?: number;
   bookEntries?: unknown[];
+  focusKeyword?: string;
 }
 
 interface SiblingData {
   ranking: string[] | null;
+  rankingName: string | null;
   siblings: { category: ArticleCategory; books: string[] | null }[];
 }
 
@@ -62,6 +65,7 @@ export function FillFromRankingAction(props: DocumentActionProps) {
       const data = await client.fetch<SiblingData>(
         `{
           "ranking": *[_id == $rankingId][0].books[]._ref,
+          "rankingName": *[_id == $rankingId][0].name,
           "siblings": *[_type == "article" && ranking._ref == $rankingId && category in $cats && !(_id in [$id, $draftId])]{
             category, "books": bookEntries[].book._ref
           }
@@ -76,6 +80,8 @@ export function FillFromRankingAction(props: DocumentActionProps) {
 
       const used = new Set(data.siblings.flatMap((s) => s.books ?? []));
       const { bookIds, shortBy } = pickBooksFromRanking(category, ranking, count, used);
+      const keyword =
+        category === "the-shortlist" && !doc?.focusKeyword?.trim() && data.rankingName ? suggestedFocusKeyword(data.rankingName) : null;
       patch.execute([
         {
           set: {
@@ -84,6 +90,7 @@ export function FillFromRankingAction(props: DocumentActionProps) {
               _key: randomKey(),
               book: { _type: "reference", _ref: ref },
             })),
+            ...(keyword ? { focusKeyword: keyword } : {}),
           },
         },
       ]);
@@ -104,6 +111,7 @@ export function FillFromRankingAction(props: DocumentActionProps) {
               yet, so its books couldn&rsquo;t be left out. Create that one first, then click this again.
             </p>
           )}
+          {keyword && <p>Focus keyword set to &ldquo;{keyword}&rdquo; for the SEO checks. Change it if you&rsquo;re targeting something else.</p>}
           <p>Review the list, then publish when ready.</p>
         </>,
       );

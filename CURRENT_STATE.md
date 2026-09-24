@@ -24,6 +24,9 @@ the article meta description field, moved book tags under the author, and fixed 
 showing in articles (see `DECISIONS.md`). 3 empty untitled article drafts still exist (harmless,
 can be deleted). The site's timezone is US Eastern: article dates display in Eastern time and
 the Studio's "Published at" field is entered in Eastern time (see `DECISIONS.md`).
+Shortlist articles now get SEO warnings in the Studio against a "Focus keyword" field (see
+`DECISIONS.md`); the Thriller Shortlist draft currently has warnings for title length (73 chars)
+and a slug missing "recommendations", both the user's call to fix or ignore.
 **Immediately next**: the user reviews the data-quality flags below and, if they fix anything,
 re-imports the same file (safe — books are matched by title+author, and casing-only fixes
 don't change a book's id). Then continue content authoring (articles in the Studio).

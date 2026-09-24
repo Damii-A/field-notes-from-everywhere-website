@@ -1,4 +1,23 @@
-import { defineField, defineType } from "sanity";
+import { defineField, defineType, type RuleDef, type ValidationContext } from "sanity";
+import { TITLE_MAX_CHARS, firstParagraphText, keywordWarning, suggestedFocusKeyword } from "../lib/seoChecks";
+
+interface SeoDoc {
+  category?: string;
+  focusKeyword?: string;
+  ranking?: { _ref: string };
+}
+
+/** Shortlist-only SEO warning: does this field mention the article's focus keyword? See sanity/lib/seoChecks.ts. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function keywordCheck<T, R extends RuleDef<R, any> = any>(r: R, where: string, toText: (value: T | undefined) => string | undefined): R {
+  return r
+    .custom((value: unknown, context: ValidationContext) => {
+      const doc = context.document as SeoDoc | undefined;
+      if (doc?.category !== "the-shortlist" || !doc.focusKeyword?.trim()) return true;
+      return keywordWarning(where, doc.focusKeyword.trim(), toText(value as T | undefined)) ?? true;
+    })
+    .warning();
+}
 
 /**
  * Shared Publication article — one schema for all three categories
@@ -12,8 +31,29 @@ export default defineType({
   title: "Article",
   type: "document",
   fields: [
-    defineField({ name: "title", title: "Title", type: "string", validation: (r) => r.required() }),
-    defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "title" }, validation: (r) => r.required() }),
+    defineField({
+      name: "title",
+      title: "Title",
+      type: "string",
+      validation: (r) => [
+        r.required(),
+        keywordCheck<string>(r, "title", (v) => v),
+        r
+          .custom((value: string | undefined, context) =>
+            (context.document as SeoDoc | undefined)?.category === "the-shortlist" && value && value.length > TITLE_MAX_CHARS
+              ? `SEO: ${value.length} characters. Google usually cuts titles off after about ${TITLE_MAX_CHARS}, so put the keyword early.`
+              : true,
+          )
+          .warning(),
+      ],
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: { source: "title" },
+      validation: (r) => [r.required(), keywordCheck<{ current?: string }>(r, "slug", (v) => v?.current)],
+    }),
     defineField({
       name: "metaDescription",
       title: "Meta description",
@@ -25,7 +65,31 @@ export default defineType({
         r.required(),
         r.min(70).warning("Short for a search result: aim for 120-160 characters."),
         r.max(160).warning("Google usually cuts off descriptions past about 160 characters."),
+        keywordCheck<string>(r, "meta description", (v) => v),
       ],
+    }),
+    defineField({
+      name: "focusKeyword",
+      title: "Focus keyword (SEO)",
+      description:
+        "The search term this article targets, usually the theme + \"book recommendations\" (e.g. \"thriller book recommendations\"). The title, slug, meta description and first intro paragraph get a warning if they don't mention it. \"Fill books from ranking\" fills this in if it's empty.",
+      type: "string",
+      hidden: ({ document }) => document?.category !== "the-shortlist",
+      validation: (r) =>
+        r
+          .custom(async (value: string | undefined, context) => {
+            const doc = context.document as SeoDoc | undefined;
+            if (doc?.category !== "the-shortlist" || value?.trim()) return true;
+            const rankingName = doc.ranking?._ref
+              ? await context
+                  .getClient({ apiVersion: "2025-01-01" })
+                  .fetch<string | null>(`*[_id == $id][0].name`, { id: doc.ranking._ref })
+              : null;
+            return rankingName
+              ? `Add a focus keyword to turn on the SEO checks, e.g. "${suggestedFocusKeyword(rankingName)}".`
+              : "Add a focus keyword to turn on the SEO checks.";
+          })
+          .warning(),
     }),
     defineField({
       name: "category",
@@ -61,7 +125,14 @@ export default defineType({
       rows: 2,
       validation: (r) => r.required(),
     }),
-    defineField({ name: "introText", title: "Intro text", type: "array", of: [{ type: "block" }] }),
+    defineField({
+      name: "introText",
+      title: "Intro text",
+      type: "array",
+      of: [{ type: "block" }],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      validation: (r) => keywordCheck<any[]>(r, "first paragraph of the intro", (v) => firstParagraphText(v)),
+    }),
     defineField({
       name: "ranking",
       title: "Ranking",

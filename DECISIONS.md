@@ -1237,3 +1237,32 @@ a fixed zone also stops server and browser rendering from disagreeing near midni
 **Consequences**: The user's first three articles, entered as ~00:07-00:25 on Sept 26 UTC+1,
 are 7:07-7:25 pm Eastern on Sept 25 and display as September 25. RSS `pubDate` stays UTC (the
 RSS format expects an absolute timestamp).
+
+---
+
+## 2026-09-24 — SEO checks for Shortlist articles in the Studio
+
+**Decision**: Shortlist articles have a `focusKeyword` field (hidden for the other two
+columns) and Studio warnings, never publish-blocking errors, on the fields it should appear in:
+title, slug, meta description and the intro's first paragraph. The title also gets a warning
+past 60 characters. A check passes when every meaningful word of the keyword appears in any
+order, singular or plural, so "15 Thriller Books ... Reader Recommendations" satisfies "thriller
+book recommendations"; small words ("for", "a", "the") are ignored. "Fill books from ranking"
+fills an empty keyword with "<ranking name> book recommendations", the user's stated convention,
+and the empty-keyword warning suggests the same. Rules: `sanity/lib/seoChecks.ts`; wiring:
+`sanity/schemaTypes/article.ts`.
+
+**Context**: User asked for SEO-compliance checks in Sanity, targeting theme + "book
+recommendations" for each Shortlist article.
+
+**Alternatives considered**: A third-party Sanity SEO plugin (Yoast-style panes). Rejected: a new
+dependency inside the Studio runtime for a handful of rules this project can state exactly in
+~60 lines, and its checks wouldn't know this site's keyword convention (Operating Manual §35).
+Exact-phrase matching: rejected, since natural titles rarely contain the literal phrase and the
+user's own first title would fail it. Errors instead of warnings: rejected so SEO advice can
+never stop an article going out.
+
+**Consequences**: Checked against the user's real Shortlist draft: title passes the keyword
+check but is 73 characters (warned); slug lacks "recommendations" (warned); intro passes; meta
+description not yet written. The warnings themselves in the Studio UI weren't seen this session
+(Studio login is the user's own), so the user's first look is that check.
