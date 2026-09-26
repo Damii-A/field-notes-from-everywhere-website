@@ -3,8 +3,14 @@
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **Immediately next**: the user publishes the three Thriller drafts (they go live on their own on
-their dates). Then continue with the open items further down this file (next: favicon, which needs
-the user's icon file).
+their dates). Then continue with the open items further down this file (next: social profile URLs
+for the footer icons, still `href="#"`).
+
+**Done 2026-09-26 (favicon)**: the user's ghost-reading logo is the site icon. `app/favicon.ico`
+(16/32/48), `app/icon.png` (512) and `app/apple-icon.png` (180, on `--paper-050` ivory since iOS
+fills transparency with black), all cut from the 2000px transparent original with its empty
+margins trimmed. Next.js picks these up by filename; verified in a local production build (all
+three return 200, the `<link>` tags are emitted). Previewed at 16/32px on light and dark tabs.
 
 **Done 2026-09-26**: the Studio's "How many books" box now means the article's total in every
 column (it meant "extra on top of the top 5" for What to Read When / Book Club, which made those
@@ -43,7 +49,7 @@ the user; free to change before publishing). 3 empty untitled article drafts exi
   lead spacing on The Shortlist.
 
 **Open, after the Book Club fix** (raise one at a time): largest-contentful-paint 2.6-3.0s vs the
-2.5s target; favicon/browser-tab icon (needs the user's icon file); social profile URLs (footer
+2.5s target; ~~favicon~~ (done 2026-09-26); social profile URLs (footer
 icons are still `href="#"`); the user testing on their own phone/tablet; then the remaining
 outstanding list further down (Reading Room post-trial automation, CRON_SECRET check, legal copy,
 Paddle live switch, domain cutover + Search Console).
@@ -585,8 +591,7 @@ category identity → latest article → all articles (+ See more). Confirmed wi
 entries, phone menu button, bottom-sheet send-list popup, self-hosted fonts, contrast shades,
 tap areas, form autofill/errors, bundled icons; tested in Chromium, WebKit (Safari) and Firefox,
 portrait and landscape. Live Lighthouse (mobile): performance 91-96, accessibility 95-100, layout
-shift 0. **Still open**: largest-contentful-paint 2.6-3.0s vs the 2.5s target; the favicon (404,
-needs the user's icon); a check on the user's own phone and a tablet; the ~11 KB legacy-JS audit
+shift 0. **Still open**: largest-contentful-paint 2.6-3.0s vs the 2.5s target; ~~the favicon~~ (done 2026-09-26); a check on the user's own phone and a tablet; the ~11 KB legacy-JS audit
 deliberately skipped (would drop older iPhones).
 
 (Earlier note, superseded:) **Phone layout pass — first round done 2026-09-24** (see `DECISIONS.md`): book entries, header,
