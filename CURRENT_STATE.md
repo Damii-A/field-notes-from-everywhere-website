@@ -2,8 +2,13 @@
 
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Immediately next**: the user publishes the three Thriller drafts (they go live on their own on
-their dates). Then continue with the open items further down this file.
+**Immediately next**: the user is **holding off publishing the three Thriller drafts until the
+launch date is decided** (2026-09-26). When it is, change their `publishedAt` dates first (an
+article published after its date appears at once, showing the old date), then publish. Site
+Settings is published (2026-09-26). Recommended next work, in order: real legal copy (the user's
+source for it is the open question), then Paddle live-mode review (Paddle checks for
+terms/privacy/refund pages, so it depends on the legal copy), Reading Room trial email content +
+post-trial branch, then domain cutover + Search Console.
 
 **Done 2026-09-26 (social links)**: footer Pinterest/Reddit icons link to
 pinterest.com/fieldnotesfromeverywhere and reddit.com/r/Fieldnotesfromew (new tab). The footer now
