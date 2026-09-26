@@ -74,7 +74,7 @@ export default async function HomePage() {
           }}
         >
           <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--text-soft)", margin: 0 }}>
-            Somewhere out there is a book you&rsquo;re going to absolutely love. We&rsquo;d like to help you find it.
+            Somewhere out there is a book you&rsquo;re going to absolutely love.
           </p>
           <p style={{ font: "var(--type-body)", fontSize: "clamp(18px,1.6vw,22px)", color: "var(--text-soft)", margin: 0 }}>
             The good news is, someone out there has probably already read, loved, and recommended it. So, our job is

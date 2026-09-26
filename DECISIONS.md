@@ -1484,6 +1484,14 @@ full-screen dark menu; an attached lighter drawer.
 
 ---
 
+## 2026-09-26 — Homepage intro: "We'd like to help you find it." removed
+
+User-directed copy change. The intro's first paragraph now ends at "...a book you're going to
+absolutely love." `docs/design-specs/homepage.md` §2 still has the sentence (verbatim mirror, not
+edited); this entry records the departure.
+
+---
+
 ## 2026-09-24 — Homepage Book Club row: an odd article shows on its own
 
 **Decision**: `getHomeShowcase` keeps a leftover Book Club article as a pair with an empty second
