@@ -268,14 +268,14 @@ const LEGAL_PAGE_FALLBACK_TITLE: Record<LegalPage["slug"], string> = {
 };
 
 export async function getLegalPage(slug: LegalPage["slug"]): Promise<LegalPage> {
-  const raw = await groqFetch<{ title: string; body: unknown[] } | null>(
-    `*[_type == "legalPage" && slug == $slug][0]{ title, body }`,
+  const raw = await groqFetch<{ title: string; body: unknown[]; updatedOn: string | null } | null>(
+    `*[_type == "legalPage" && slug == $slug][0]{ title, body, updatedOn }`,
     { slug },
     { tags: ["legalPage"], revalidate: 300 },
   );
   if (raw) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return { slug, title: raw.title, bodyHtml: portableTextToHtml(raw.body as any) };
+    return { slug, title: raw.title, bodyHtml: portableTextToHtml(raw.body as any), updatedOn: raw.updatedOn ?? undefined };
   }
   // No legalPage document authored for this slug yet in Sanity — real legal
   // copy is a known open item (CURRENT_STATE.md), not a bug in this function.

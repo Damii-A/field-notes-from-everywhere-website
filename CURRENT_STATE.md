@@ -2,17 +2,16 @@
 
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Immediately next**: draft the three legal pages (Terms, Privacy & Cookies, Disclosures) from
-how the site actually works, for the user to review before pasting into the Studio (user's
-choice 2026-09-26, over a free generator: the generator's template claims Google ad/DART cookies
-the site doesn't use and names none of the real processors). Facts from the user: run by them as
-an **individual** (legal name left as a marked blank; it must match their Paddle account), based
-in **Nigeria** (NDPA 2023; readers are mostly US, so also cover GDPR/UK GDPR and US state rights).
-Refund policy: **no refunds, cancel anytime** (statutory rights still apply, Paddle handles
-refunds as merchant of record), as a clearly headed section of Terms. Paddle's domain review
-needs Terms, Privacy and a refund policy reachable from navigation, the legal name in the Terms,
-support contact details, and a live HTTPS **own domain**, so the domain cutover now comes
-**before** the Paddle live switch.
+**Immediately next**: the user reviews the three legal-page **drafts** now in the Studio (Legal
+page → Terms / Privacy & Cookies / Disclosures; readable via the Preview tab), replaces
+`[YOUR FULL LEGAL NAME]` (twice: Terms and Privacy intros; must match their Paddle account), sets
+"Last updated" to the publish date, then publishes. Until then the live legal pages show the old
+"This page has not been published in the CMS yet…" placeholder. See DECISIONS.md, "Legal pages
+drafted…". Facts behind them: run by the user as an **individual** in **Nigeria**; refunds: **no
+refunds, cancel anytime**, a section of Terms. Paddle's domain review needs Terms, Privacy and a
+refund policy reachable from navigation, the legal name in the Terms, and a live HTTPS **own
+domain**, so the domain cutover comes **before** the Paddle live switch. If Paddle's reviewer
+wants a separate "Refund policy" link, add one then.
 
 The three Thriller drafts are held until the launch date is decided; change their dates first,
 then publish (an article published after its date appears at once with the old date).

@@ -1486,6 +1486,39 @@ full-screen dark menu; an attached lighter drawer.
 
 ---
 
+## 2026-09-26 — Legal pages drafted from the site's actual behaviour; "Last updated" date
+
+**Decision**: Terms, Privacy & Cookies and Disclosures were drafted by Claude from what the site
+actually does, and saved to Sanity as **unpublished drafts** (`drafts.legal-terms`,
+`drafts.legal-privacy-and-cookies`, `drafts.legal-disclosures`) for the user to review, fill in
+and publish. The legal-page template's design placeholder label ("Body content managed in the
+CMS") is replaced by an optional `legalPage.updatedOn` date, shown as "Last updated …" only when
+set.
+
+**Context**: The user asked for a free option. Termly's free plan covers one policy (three are
+needed); PrivacyPolicyGenerator.info is free, but its template states the site uses Google
+DoubleClick/advertising cookies and names none of the real processors — wrong and incomplete
+for FNFE. The user chose drafting instead. Facts from the user: run by them as an individual,
+based in Nigeria; refund policy "no refunds, cancel anytime", as a section of Terms (user's
+choice over a separate page). Facts from the code/accounts: name + email collected at the three
+signup points; Resend (email + list), Kit (member list), Paddle (checkout, merchant of record),
+Vercel (hosting), Sanity (content/images); no ads, analytics or tracking cookies; Resend open
+and click tracking both off (checked on the sending domain); no affiliate links.
+
+**What the drafts assume, for the user to confirm**: the legal name is a marked blank
+`[YOUR FULL LEGAL NAME]` (Paddle wants it in the Terms; must match the Paddle account);
+governing law Nigeria (NDPA 2023, with GDPR/UK GDPR and US state rights described because the
+readership is mostly US); monthly membership cancellable via the Paddle receipt link, paddle.net
+or email; FNFE currently earns only from Reading Room subscriptions (the About page says it
+*may* use ads/sponsorships/affiliates — Disclosures says none today and commits to updating the
+page first). Paddle's recommended merchant-of-record wording is included verbatim. Not legal
+advice; a lawyer's review is worthwhile but not required for Paddle's domain review.
+
+**Verified**: rendered in preview mode on a local build (desktop and phone): headings, lists and
+all 13 links correct, no sideways scroll, date shown; a visitor still saw the placeholder.
+
+---
+
 ## 2026-09-26 — Unsubscribe links on every free-list email
 
 **Decision**: The weekly recap and the "send this list to me" email carry an "Unsubscribe" footer

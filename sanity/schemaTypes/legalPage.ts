@@ -14,6 +14,12 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({ name: "title", title: "Title", type: "string", validation: (r) => r.required() }),
+    defineField({
+      name: "updatedOn",
+      title: "Last updated",
+      description: "Shown under the page title. Change it whenever you change what the page says (not for typo fixes).",
+      type: "date",
+    }),
     defineField({ name: "body", title: "Body", type: "array", of: [{ type: "block" }], validation: (r) => r.required() }),
   ],
   preview: { select: { title: "title" } },

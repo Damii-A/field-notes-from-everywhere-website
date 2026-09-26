@@ -97,6 +97,8 @@ export interface LegalPageSlug {
 
 export interface LegalPage extends LegalPageSlug {
   bodyHtml: string;
+  /** "YYYY-MM-DD" from the Studio's "Last updated" field, if set. */
+  updatedOn?: string;
 }
 
 export interface SiteSettings {
