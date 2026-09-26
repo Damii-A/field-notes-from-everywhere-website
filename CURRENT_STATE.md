@@ -2,11 +2,9 @@
 
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Immediately next**: once the change below is live, the user re-clicks "Fill books from
-ranking" on the What to Read When Thriller draft, then the Book Club one (in that order), so
-they have 17 and 12 books to match their titles. Then confirm the counts in Sanity. After that,
-continue with the open items further down this file (next: favicon, which needs the user's icon
-file).
+**Immediately next**: the user publishes the three Thriller drafts (they go live on their own on
+their dates). Then continue with the open items further down this file (next: favicon, which needs
+the user's icon file).
 
 **Done 2026-09-26**: the Studio's "How many books" box now means the article's total in every
 column (it meant "extra on top of the top 5" for What to Read When / Book Club, which made those
@@ -17,12 +15,13 @@ only showed complete pairs and just one Book Club article exists. By the user's 
 article now appears on its own (no connecting line) until a partner is published. Verified in
 preview on desktop and phone. See DECISIONS.md.
 
-**Content status (checked in Sanity 2026-09-25)**: all three Thriller articles are still
-**unpublished drafts**, now dated 8:00 am US Eastern on Oct 1 (Shortlist, 15 books), Oct 2 (What
-to Read When, titled 17, currently 22 books) and Oct 3 (Book Club, titled 12, currently 17 books).
-Meta descriptions and the Shortlist focus keyword are filled in. They still need re-filling (see
-above) and Publish. The Book Club slug reads "12-thrillers-books-..." (possible slip; free to change
-before publishing). 3 empty untitled article drafts exist (harmless, deletable).
+**Content status (checked in Sanity 2026-09-26)**: all three Thriller articles are still
+**unpublished drafts**, dated 8:00 am US Eastern on Oct 1 (Shortlist, 15 books, ranks 1-15), Oct 2
+(What to Read When, 17 books: ranks 1-5 + 16-27) and Oct 3 (Book Club, 12 books: ranks 1-5 +
+28-34). Counts now match the titles (re-filled by the user after the fix below; verified, no overlap
+beyond the shared top 5). Meta descriptions and the Shortlist focus keyword are filled in. They
+still need Publish. The Book Club slug reads "12-thrillers-books-..." (possible slip, mentioned to
+the user; free to change before publishing). 3 empty untitled article drafts exist (harmless).
 
 **Built this session (2026-09-24)**, all verified in a browser and pushed:
 - Fixes: live site showed unpublished drafts (perspective bug); book covers never rendered in
