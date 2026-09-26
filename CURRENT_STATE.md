@@ -2,6 +2,11 @@
 
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
+**Session ended 2026-09-26 at cutover step (1)**: the user has been given the instructions to add
+the domain in Vercel (Settings → Domains, www → redirect to root) and send back the DNS records
+Vercel shows. Nothing has been changed in Vercel or Cloudflare yet; the WordPress site is still
+live on the domain. Resume there.
+
 **Domain cutover moved up (user agreed 2026-09-26)** — do it before publishing articles, pinning
 links, and setting up GA/Search Console, so shared links and search results use the real domain
 from day one (Paddle's review needs it too). Findings: no code references the vercel.app URL
@@ -17,7 +22,7 @@ payment link (API), redirect the vercel.app domain to the custom domain in Verce
 `links` CNAME at the same time; verify HTTPS, pages, sitemap, Studio login, email links. Then GA
 (use the real domain as the stream URL), Search Console, Paddle domain review.
 
-**Immediately next** (user setup steps, one at a time):
+**After the cutover** (user setup steps, one at a time):
 1. **Google Analytics**: user creates a GA4 property + web data stream, sets event data retention
    to **14 months** (the privacy policy says so), leaves Google signals **off**, and gives the
    Measurement ID (`G-…`, not a secret). Then set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in `.env.local`
@@ -49,8 +54,9 @@ when their real content is written.
 **Done 2026-09-26 (social links)**: footer Pinterest/Reddit icons link to
 pinterest.com/fieldnotesfromeverywhere and reddit.com/r/Fieldnotesfromew (new tab). The footer now
 reads Site Settings' Social links; the URLs are the code defaults in `getSiteSettings`, which
-now falls back per field, so a Site Settings document can override any one of them later. No
-Site Settings document exists in Sanity yet. The Reddit URL couldn't be checked automatically
+now falls back per field, so a Site Settings document can override any one of them later. The
+user has since published Site Settings in Sanity with the same URLs, contact email
+hello@fieldnotesfromeverywhere.com, and the Reading Room price copy. The Reddit URL couldn't be checked automatically
 (Reddit blocks it); used exactly as the user gave it. Verified in a local production build on
 home, a hub, About, Contact and the 404 page; static pages stayed static.
 
