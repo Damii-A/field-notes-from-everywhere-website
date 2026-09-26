@@ -39,7 +39,7 @@ export async function Footer() {
               {link.label}
             </Link>
           ))}
-          <CookieSettingsLink className={styles.siteLink} />
+          {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && <CookieSettingsLink className={styles.siteLink} />}
         </div>
         <div className={styles.column}>
           <FooterNewsletterForm labelClassName={styles.columnLabel} />

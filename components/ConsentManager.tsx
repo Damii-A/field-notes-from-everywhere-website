@@ -58,6 +58,7 @@ export function ConsentManager({ gaId }: { gaId?: string }) {
   }, [gaId]);
 
   useEffect(() => {
+    if (!gaId) return; // no analytics configured: nothing to ask about
     if (location.pathname.startsWith("/studio")) return; // editors, not readers
     const stored = readConsent();
     setCurrent(stored);
@@ -77,16 +78,17 @@ export function ConsentManager({ gaId }: { gaId?: string }) {
     return () => {
       cancelled = true;
     };
-  }, [enableAnalytics]);
+  }, [gaId, enableAnalytics]);
 
   useEffect(() => {
+    if (!gaId) return;
     const reopen = () => {
       setCurrent(readConsent());
       setOpen(true);
     };
     window.addEventListener(OPEN_COOKIE_SETTINGS_EVENT, reopen);
     return () => window.removeEventListener(OPEN_COOKIE_SETTINGS_EVENT, reopen);
-  }, []);
+  }, [gaId]);
 
   function choose(analytics: boolean) {
     const choice = { analytics };
