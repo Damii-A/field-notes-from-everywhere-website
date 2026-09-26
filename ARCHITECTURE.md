@@ -118,6 +118,7 @@ what would force adding one (building the logged-in Reading Room product).
 | `/the-reading-room` | RR landing page | trial CTA → Paddle checkout overlay |
 | `/about` | About | `#how-we-find-the-books` anchor, linked from every article's methodology box |
 | `/contact` | Contact | static, mailto link only |
+| `/unsubscribe` | Unsubscribe confirm | from email footer links; noindex, not in the design |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | shared legal template | CMS body content |
 | `/studio` | Sanity Studio | embedded, editor-auth'd, not a public route |
 
@@ -300,6 +301,11 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
   evolution (before Resend Automations took over the trial) is no longer used or referenced
   anywhere — removed from env vars 2026-09-22, though the form object itself can stay or be
   deleted in Kit's own dashboard at the user's discretion.
+
+**Unsubscribe** (2026-09-26): every free-list email carries a signed per-address unsubscribe
+link (`lib/unsubscribe.ts`) to `/unsubscribe` (confirm page) plus RFC 8058 one-click headers
+pointing at `/api/unsubscribe` (POST). Unsubscribing sets the Resend contact's `unsubscribed`
+flag, which the weekly recap's recipient list respects; re-signing up clears it.
 
 `/api/subscribe` validates the email and name, adds the contact to the right Resend Segment,
 and (for the "send this list" flow only) sends the transactional book-list email. Starting a
