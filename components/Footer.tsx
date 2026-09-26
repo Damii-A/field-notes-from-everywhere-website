@@ -3,6 +3,7 @@ import styles from "./Footer.module.css";
 import { Icon } from "./ds/Icon";
 import { CATEGORY_LIST, getSiteSettings } from "@/lib/content";
 import { FooterNewsletterForm } from "./FooterNewsletterForm";
+import { CookieSettingsLink } from "./CookieSettingsLink";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -38,6 +39,7 @@ export async function Footer() {
               {link.label}
             </Link>
           ))}
+          <CookieSettingsLink className={styles.siteLink} />
         </div>
         <div className={styles.column}>
           <FooterNewsletterForm labelClassName={styles.columnLabel} />

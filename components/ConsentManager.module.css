@@ -1,0 +1,75 @@
+/* Cookie banner (components/ConsentManager.tsx). Not in the design; built from the
+   design system's card surface, radius, float shadow and Button. Bottom-left card on
+   wide screens, a full-width bottom panel on phones (like the send-list popup). */
+.banner {
+  position: fixed;
+  left: clamp(12px, 2vw, 24px);
+  bottom: clamp(12px, 2vw, 24px);
+  z-index: 1100; /* above the send-list popup (1001) and the editor-only Preview bar (1000) */
+  width: min(420px, calc(100vw - 24px));
+  padding: 20px 22px;
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-float);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: rise var(--dur-med) var(--ease-soft) both;
+}
+
+.title {
+  font: var(--weight-bold) var(--text-md) / 1.2 var(--font-display);
+  letter-spacing: var(--tracking-display);
+  color: var(--text-heading);
+  margin: 0;
+}
+
+.text,
+.current {
+  font: var(--weight-regular) var(--text-sm) / 1.55 var(--font-body);
+  color: var(--text-body);
+  margin: 0;
+}
+
+.current {
+  color: var(--text-soft);
+}
+
+.link {
+  color: var(--text-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.actions > * {
+  flex: 1;
+}
+
+@media (max-width: 600px) {
+  .banner {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner {
+    animation: none;
+  }
+}

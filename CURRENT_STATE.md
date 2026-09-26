@@ -2,16 +2,26 @@
 
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Immediately next**: the user reviews the three legal-page **drafts** now in the Studio (Legal
-page → Terms / Privacy & Cookies / Disclosures; readable via the Preview tab), replaces
-`[YOUR FULL LEGAL NAME]` (twice: Terms and Privacy intros; must match their Paddle account), sets
-"Last updated" to the publish date, then publishes. Until then the live legal pages show the old
-"This page has not been published in the CMS yet…" placeholder. See DECISIONS.md, "Legal pages
-drafted…". Facts behind them: run by the user as an **individual** in **Nigeria**; refunds: **no
-refunds, cancel anytime**, a section of Terms. Paddle's domain review needs Terms, Privacy and a
-refund policy reachable from navigation, the legal name in the Terms, and a live HTTPS **own
-domain**, so the domain cutover comes **before** the Paddle live switch. If Paddle's reviewer
-wants a separate "Refund policy" link, add one then.
+**Immediately next** (user setup steps, one at a time):
+1. **Google Analytics**: user creates a GA4 property + web data stream, sets event data retention
+   to **14 months** (the privacy policy says so), leaves Google signals **off**, and gives the
+   Measurement ID (`G-…`, not a secret). Then set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in `.env.local`
+   and on Vercel (a `NEXT_PUBLIC_` var: change its type to "Config" before Save — see agent
+   memory), redeploy, and confirm real hits in GA's Realtime report.
+2. **Resend tracking DNS**: add CNAME `links` → `links2.resend-dns.com` at Cloudflare (DNS only),
+   then re-verify the domain via the API and confirm the Tracking record verifies.
+3. **Legal pages**: the three drafts in the Studio were rewritten (brand name only; GA with
+   consent; email open/click measurement; ads/sponsorships as planned). The user reviews, sets
+   "Last updated", and publishes **after step 1 is live** (the privacy policy describes GA).
+
+Built 2026-09-26: GA + consent banner + footer "Cookie settings" (inactive until the ID is set),
+Resend tracking enabled pending DNS. See DECISIONS.md. Before joining an **ad network**: a
+Google-certified consent platform for EEA/UK/Swiss visitors, and a policy update naming it.
+
+Facts behind the legal drafts: run by the user as an individual in Nigeria (not named publicly);
+refunds: no refunds, cancel anytime (a section of Terms). Paddle's domain review needs Terms,
+Privacy and a refund policy reachable from navigation and a live HTTPS **own domain**, so the
+domain cutover comes **before** the Paddle live switch.
 
 The three Thriller drafts are held until the launch date is decided; change their dates first,
 then publish (an article published after its date appears at once with the old date).

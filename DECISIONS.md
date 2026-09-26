@@ -1486,6 +1486,51 @@ full-screen dark menu; an attached lighter drawer.
 
 ---
 
+## 2026-09-26 — Google Analytics behind a consent banner; email open/click tracking; ads-ready policies
+
+**Decision** (user-directed after reviewing the first legal drafts): the site uses **Google
+Analytics 4** for website analytics, behind a **cookie consent banner**; **Resend open and click
+tracking** is on; the legal pages identify the operator by **brand name only**, and are written
+to cover future **advertising networks and sponsorships** (site, emails, social media) without
+claiming they exist yet.
+
+**How consent works** (`components/ConsentManager.tsx`, `lib/consent.ts`, `app/api/geo/route.ts`):
+nothing from Google loads until analytics is allowed. A stored choice (`fnfe_consent` cookie,
+`{analytics: bool}`, one year) is applied as-is. With no choice, `/api/geo` reads Vercel's
+`x-vercel-ip-country`: the EEA, UK and Switzerland (or an unknown country) get the banner and
+analytics waits for "accept"; everyone else gets analytics by default and no banner. The footer's
+"Cookie settings" reopens the banner for anyone; declining sets `ga-disable-<id>` and deletes the
+`_ga` cookies. gtag.js loads once the page is idle (never competes with page load); nothing loads
+on `/studio`. Env var: `NEXT_PUBLIC_GA_MEASUREMENT_ID` (unset = no analytics at all).
+
+**Alternatives considered**: Cookie-free analytics (Cloudflare Web Analytics: free, no banner)
+— offered; the user chose GA for its detail and because ads will need a consent banner anyway.
+Google Consent Mode "advanced" (load gtag everywhere with consent defaulted to denied by region)
+— rejected: it sends cookieless pings before consent, which the privacy policy says doesn't
+happen. A banner for every visitor — rejected: needless friction for most readers (mostly US).
+A third-party consent platform — not needed for analytics alone; **Google requires a
+Google-certified consent platform for ads to EEA/UK/Swiss visitors**, so revisit this when an ad
+network is added (the stored choice is shaped as categories so ads can be added).
+
+**Resend tracking** needs a verified tracking subdomain: `links.fieldnotesfromeverywhere.com`
+(CNAME → `links2.resend-dns.com`) is registered with Resend; tracking is enabled on the domain but
+only becomes active once the user adds that DNS record at Cloudflare (DNS only, not proxied) and
+the domain is re-verified.
+
+**Identity**: Paddle asks for "the company name or sole proprietor's brand (legal name preferred
+for sole proprietors)" in the Terms, so the brand name plus contact email is used; "an individual
+based in Nigeria" was removed; Nigerian governing law kept. Lighter than a named operator for
+privacy law; registering a business name later would give a non-personal legal name.
+
+**Verified** on a local production build with a fake measurement ID and Google's script stubbed:
+EU first visit shows the banner with zero Google requests and no cookies; decline persists over a
+reload; Cookie settings reopens it showing the current state; accept loads gtag.js; switching off
+clears `_ga`; a non-EU first visit loads analytics with no banner; `/studio` loads nothing;
+banner fits a 390px phone with no sideways scroll; footer link spacing unchanged (40px). Real GA
+data collection can't be verified until the user's measurement ID is set.
+
+---
+
 ## 2026-09-26 — Legal pages drafted from the site's actual behaviour; "Last updated" date
 
 **Decision**: Terms, Privacy & Cookies and Disclosures were drafted by Claude from what the site

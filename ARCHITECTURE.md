@@ -361,6 +361,7 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `NEXT_PUBLIC_PADDLE_ENVIRONMENT` | `sandbox` or `production` |
 | `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID` | the $7/mo + 7-day-trial Price to check out against (Price IDs aren't secret either — Paddle.js needs this client-side) |
 | `NEXT_PUBLIC_SITE_URL` | canonical URL for metadata/OG/sitemap |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 ID; unset = no analytics. Loaded only with consent where required (`components/ConsentManager.tsx`) |
 
 None of these exist yet. See `CURRENT_STATE.md` for what's actually needed from the user
 before each integration can be implemented.
@@ -380,6 +381,10 @@ scope" framing in the initialization brief):
 - `prefers-reduced-motion` handling for every bespoke animation (stratosphere, article
   progress rail, Reading Room drift/shelf) — the spec explicitly requires this in multiple
   places; treat it as a hard requirement, not a nice-to-have.
+- **Analytics and consent** (2026-09-26): Google Analytics 4 behind a consent banner for
+  EEA/UK/Swiss visitors (country from `/api/geo`, Vercel's IP-country header), default-on
+  elsewhere, "Cookie settings" in the footer for everyone; gtag.js loads when the page is idle.
+  See `DECISIONS.md`.
 - Core Web Vitals attention specifically on Home (the stratosphere must not jank or block
   interaction) and article pages (image-heavy, many book covers).
 

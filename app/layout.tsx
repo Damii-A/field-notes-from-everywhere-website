@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity";
 import { PreviewBanner } from "@/components/PreviewBanner";
+import { ConsentManager } from "@/components/ConsentManager";
 import { fontVariables } from "./fonts";
 import "./globals.css";
 
@@ -25,6 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className={fontVariables}>
       <body>
         {children}
+        <ConsentManager gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         {preview && (
           <>
             <VisualEditing />
