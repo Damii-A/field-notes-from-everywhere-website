@@ -2,6 +2,21 @@
 
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
+**Domain cutover moved up (user agreed 2026-09-26)** — do it before publishing articles, pinning
+links, and setting up GA/Search Console, so shared links and search results use the real domain
+from day one (Paddle's review needs it too). Findings: no code references the vercel.app URL
+(everything reads `SITE_URL`); the root domain currently serves an old **WordPress** site via
+Cloudflare-proxied A/AAAA records (user: nothing on it matters, replace outright, no redirects
+needed); root MX is **Zoho** mail (must stay untouched), plus Resend's `send.*` MX/TXT and
+`resend._domainkey` records. Steps: (1) user adds the domain in Vercel → Settings → Domains
+(www → redirect to root) and sends the DNS records Vercel asks for; (2) Claude maps them against
+Cloudflare (replace the WordPress A/AAAA; DNS only / grey cloud); (3) **confirm with the user
+right before** they change Cloudflare (the actual switch; reversible by restoring the old
+records); (4) update `SITE_URL` on Vercel (user) + redeploy, Sanity CORS (API), Paddle default
+payment link (API), redirect the vercel.app domain to the custom domain in Vercel, add the Resend
+`links` CNAME at the same time; verify HTTPS, pages, sitemap, Studio login, email links. Then GA
+(use the real domain as the stream URL), Search Console, Paddle domain review.
+
 **Immediately next** (user setup steps, one at a time):
 1. **Google Analytics**: user creates a GA4 property + web data stream, sets event data retention
    to **14 months** (the privacy policy says so), leaves Google signals **off**, and gives the
