@@ -3,8 +3,15 @@
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **Immediately next**: the user publishes the three Thriller drafts (they go live on their own on
-their dates). Then continue with the open items further down this file (next: social profile URLs
-for the footer icons, still `href="#"`).
+their dates). Then continue with the open items further down this file.
+
+**Done 2026-09-26 (social links)**: footer Pinterest/Reddit icons link to
+pinterest.com/fieldnotesfromeverywhere and reddit.com/r/Fieldnotesfromew (new tab). The footer now
+reads Site Settings' Social links; the URLs are the code defaults in `getSiteSettings`, which
+now falls back per field, so a Site Settings document can override any one of them later. No
+Site Settings document exists in Sanity yet. The Reddit URL couldn't be checked automatically
+(Reddit blocks it); used exactly as the user gave it. Verified in a local production build on
+home, a hub, About, Contact and the 404 page; static pages stayed static.
 
 **Done 2026-09-26 (favicon)**: the user's ghost-reading logo is the site icon. `app/favicon.ico`
 (16/32/48), `app/icon.png` (512) and `app/apple-icon.png` (180, on `--paper-050` ivory since iOS
@@ -49,8 +56,7 @@ the user; free to change before publishing). 3 empty untitled article drafts exi
   lead spacing on The Shortlist.
 
 **Open, after the Book Club fix** (raise one at a time): largest-contentful-paint 2.6-3.0s vs the
-2.5s target; ~~favicon~~ (done 2026-09-26); social profile URLs (footer
-icons are still `href="#"`); the user testing on their own phone/tablet; then the remaining
+2.5s target; ~~favicon~~ and ~~social profile URLs~~ (done 2026-09-26); the user testing on their own phone/tablet; then the remaining
 outstanding list further down (Reading Room post-trial automation, CRON_SECRET check, legal copy,
 Paddle live switch, domain cutover + Search Console).
 

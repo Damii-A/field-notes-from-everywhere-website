@@ -183,10 +183,11 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   ordinary editable entries, not a live link.
 - **`legalPage`** — `title`, `slug` (terms / privacy-and-cookies / disclosures), `body`
   (rich text). Matches `utility_pages.md` §2.1 exactly ("CMS-managed body content").
-- **`siteSettings`** singleton — the contact email, social links (Pinterest/Reddit URLs,
-  currently `href="#"` placeholders in the built footer), and Reading Room price/trial copy
+- **`siteSettings`** singleton — the contact email, social links (Pinterest/Reddit URLs, read
+  by the footer), and Reading Room price/trial copy
   surfaced on the landing page and article rail card, so a price change doesn't require a
-  code deploy.
+  code deploy. Each field falls back to a default in `getSiteSettings` when the document or
+  the field is empty (the real social URLs live there as defaults).
 
 Not modeled in V1 (documented backlog, matches the cuts in
 `DESIGN_PROJECT_BUILD_NOTES.md`): `readingRoomIssue` (Past Issues / individual issue pages),

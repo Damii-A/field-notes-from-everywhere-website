@@ -288,19 +288,37 @@ export async function getLegalPage(slug: LegalPage["slug"]): Promise<LegalPage> 
 
 const SITE_SETTINGS_FALLBACK: SiteSettings = {
   contactEmail: "hello@fieldnotesfromeverywhere.com",
-  socialLinks: {},
+  socialLinks: {
+    pinterest: "https://www.pinterest.com/fieldnotesfromeverywhere/",
+    reddit: "https://www.reddit.com/r/Fieldnotesfromew/",
+  },
   readingRoomPriceCopy: "7 days free, no credit card. $7/month after that.",
 };
 
+type RawSiteSettings = {
+  contactEmail: string | null;
+  socialLinks: { pinterest?: string | null; reddit?: string | null } | null;
+  readingRoomPriceCopy: string | null;
+};
+
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const raw = await groqFetch<SiteSettings | null>(
+  const raw = await groqFetch<RawSiteSettings | null>(
     `*[_type == "siteSettings"][0]{ contactEmail, socialLinks, readingRoomPriceCopy }`,
     {},
     { tags: ["siteSettings"], revalidate: 300 },
   );
-  // No siteSettings singleton authored yet — fall back rather than crash
-  // every page that reads it (Footer, About, Contact, Reading Room).
-  return raw ?? SITE_SETTINGS_FALLBACK;
+  // No siteSettings singleton authored yet (or a field left blank) — fall back
+  // per field rather than crash every page that reads it (Footer, About,
+  // Contact, Reading Room).
+  const fb = SITE_SETTINGS_FALLBACK;
+  return {
+    contactEmail: raw?.contactEmail || fb.contactEmail,
+    socialLinks: {
+      pinterest: raw?.socialLinks?.pinterest || fb.socialLinks.pinterest,
+      reddit: raw?.socialLinks?.reddit || fb.socialLinks.reddit,
+    },
+    readingRoomPriceCopy: raw?.readingRoomPriceCopy || fb.readingRoomPriceCopy,
+  };
 }
 
 export interface HomeShowcase {
