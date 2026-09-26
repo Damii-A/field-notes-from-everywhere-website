@@ -1486,6 +1486,40 @@ full-screen dark menu; an attached lighter drawer.
 
 ---
 
+## 2026-09-26 — Unsubscribe links on every free-list email
+
+**Decision**: The weekly recap and the "send this list to me" email carry an "Unsubscribe" footer
+link and `List-Unsubscribe` / `List-Unsubscribe-Post` headers (RFC 8058 one-click). Links are
+signed per address (HMAC, `lib/unsubscribe.ts`), keyed off `CRON_SECRET` with an
+`unsubscribe:` prefix so no new env var was needed. The footer link opens `/unsubscribe`, a
+confirm page with one button (noindex, laid out like /contact); the header URL,
+`/api/unsubscribe`, unsubscribes on POST and redirects a GET to the confirm page. Unsubscribing
+sets the Resend contact's `unsubscribed` flag; `listSegmentContacts` leaves those contacts out of
+the recap; signing up again through `/api/subscribe` clears the flag (a fresh opt-in).
+
+**Context**: Found while gathering facts for the privacy policy (user approved fixing it first).
+The signup forms promise "Unsubscribe any time", but no email had an unsubscribe link and
+nothing recorded one. Required by US CAN-SPAM, UK/EU privacy rules, and Gmail/Yahoo's bulk-sender
+rules (one-click unsubscribe); the privacy policy also has to be able to say it truthfully. No
+real recap had been sent yet (no published articles), so no one was affected.
+
+**Alternatives considered**: Unsubscribe directly on opening the link — rejected: mail security
+scanners open links, which would unsubscribe people who never asked. Unsigned links (email in
+the URL only) — rejected: anyone could unsubscribe anyone. A dedicated `UNSUBSCRIBE_SECRET` —
+cleaner, but one more value for the user to add on Vercel; revisit if `CRON_SECRET` is ever
+rotated often (old emails' links would stop working). Resend Broadcasts' built-in unsubscribe —
+not applicable: these emails are sent through `emails.send`/`batch.send`, not Broadcasts.
+
+**Consequences**: Verified locally against the real Resend account with a throwaway contact
+(deleted afterwards): bad token and a token for another address are refused (400); a GET changes
+nothing; the confirm page's button unsubscribes and the recap list skips the contact; re-signing
+up re-subscribes; the RFC 8058 one-click POST unsubscribes. A real recap sent to Resend's test
+inbox (`delivered@resend.dev`) carried the footer link; Resend's API doesn't return sent headers,
+so the `List-Unsubscribe` header itself wasn't observed. **Not covered**: the Reading Room trial
+emails, which are Resend Automation templates configured in the dashboard, not this code.
+
+---
+
 ## 2026-09-26 — Homepage intro: "We'd like to help you find it." removed
 
 User-directed copy change. The intro's first paragraph now ends at "...a book you're going to

@@ -2,13 +2,25 @@
 
 Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Immediately next**: the user is **holding off publishing the three Thriller drafts until the
-launch date is decided** (2026-09-26). When it is, change their `publishedAt` dates first (an
-article published after its date appears at once, showing the old date), then publish. Site
-Settings is published (2026-09-26). Recommended next work, in order: real legal copy (the user's
-source for it is the open question), then Paddle live-mode review (Paddle checks for
-terms/privacy/refund pages, so it depends on the legal copy), Reading Room trial email content +
-post-trial branch, then domain cutover + Search Console.
+**Immediately next**: draft the three legal pages (Terms, Privacy & Cookies, Disclosures) from
+how the site actually works, for the user to review before pasting into the Studio (user's
+choice 2026-09-26, over a free generator: the generator's template claims Google ad/DART cookies
+the site doesn't use and names none of the real processors). Facts from the user: run by them as
+an **individual** (legal name left as a marked blank; it must match their Paddle account), based
+in **Nigeria** (NDPA 2023; readers are mostly US, so also cover GDPR/UK GDPR and US state rights).
+Refund policy: **no refunds, cancel anytime** (statutory rights still apply, Paddle handles
+refunds as merchant of record), as a clearly headed section of Terms. Paddle's domain review
+needs Terms, Privacy and a refund policy reachable from navigation, the legal name in the Terms,
+support contact details, and a live HTTPS **own domain**, so the domain cutover now comes
+**before** the Paddle live switch.
+
+The three Thriller drafts are held until the launch date is decided; change their dates first,
+then publish (an article published after its date appears at once with the old date).
+
+**Done 2026-09-26 (unsubscribe)**: every free-list email now has an unsubscribe link + one-click
+header; unsubscribed readers are skipped by the weekly recap. See DECISIONS.md. **Still open**:
+the Reading Room trial emails (Resend Automation templates) need their own unsubscribe handling
+when their real content is written.
 
 **Done 2026-09-26 (social links)**: footer Pinterest/Reddit icons link to
 pinterest.com/fieldnotesfromeverywhere and reddit.com/r/Fieldnotesfromew (new tab). The footer now

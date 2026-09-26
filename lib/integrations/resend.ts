@@ -10,6 +10,7 @@ import { Resend } from "resend";
 import { articlePath, type Article, type FeedArticle } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
 import { splitParagraphs } from "@/lib/content/paragraphs";
+import { unsubscribeHeaders, unsubscribePageUrl } from "@/lib/unsubscribe";
 
 export class ResendNotConfiguredError extends Error {
   constructor() {
@@ -19,6 +20,11 @@ export class ResendNotConfiguredError extends Error {
 }
 
 const FROM_ADDRESS = "Field Notes From Everywhere <hello@fieldnotesfromeverywhere.com>";
+
+/** Footer on every free-list email: why they're getting it, and a way out (see lib/unsubscribe.ts). */
+function unsubscribeFooterHtml(email: string): string {
+  return `<p style="margin-top:32px;padding-top:16px;border-top:1px solid #e3e0ce;font-size:12px;line-height:1.5;color:#736858;">You're getting this because you joined the Field Notes From Everywhere email list. <a href="${escapeHtml(unsubscribePageUrl(email))}" style="color:#736858;">Unsubscribe</a></p>`;
+}
 
 export async function sendBookListEmail(to: string, article: Article): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
@@ -38,7 +44,8 @@ export async function sendBookListEmail(to: string, article: Article): Promise<v
     from: FROM_ADDRESS,
     to,
     subject: article.title,
-    html: `<p>Here's the list you asked for:</p><ol>${bookListHtml}</ol><p>— Field Notes From Everywhere</p>`,
+    html: `<p>Here's the list you asked for:</p><ol>${bookListHtml}</ol><p>— Field Notes From Everywhere</p>${unsubscribeFooterHtml(to)}`,
+    headers: unsubscribeHeaders(to),
   });
   if (error) throw new Error(`Resend send failed: ${error.message}`);
 }
@@ -71,9 +78,23 @@ export async function addToSegment(email: string, firstName: string, segmentId: 
   await upsertContact(resend, email, firstName);
   const { error } = await resend.contacts.segments.add({ email, segmentId });
   if (error) throw new Error(`Resend add-to-segment failed: ${error.message}`);
+  // Signing up again is a fresh opt-in, so it clears an earlier unsubscribe.
+  const { error: resubError } = await resend.contacts.update({ email, unsubscribed: false });
+  if (resubError) throw new Error(`Resend re-subscribe failed: ${resubError.message}`);
 }
 
-/** Every contact in a segment (email + first name), paginated. Used by the weekly recap to build its recipient list from Resend's own contacts instead of Kit. */
+/** Marks a contact unsubscribed (the weekly recap skips them — see `listSegmentContacts`). Used by /api/unsubscribe. */
+export async function unsubscribeContact(email: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
+
+  const resend = new Resend(apiKey);
+  const { error } = await resend.contacts.update({ email, unsubscribed: true });
+  // An address that was never a contact has nothing to stop sending to.
+  if (error && !/not.?found/i.test(error.message)) throw new Error(`Resend unsubscribe failed: ${error.message}`);
+}
+
+/** Every subscribed contact in a segment (email + first name), paginated; unsubscribed contacts are left out. Used by the weekly recap to build its recipient list. */
 export async function listSegmentContacts(segmentId: string): Promise<ResendContactInfo[]> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new ResendNotConfiguredError();
@@ -86,7 +107,7 @@ export async function listSegmentContacts(segmentId: string): Promise<ResendCont
     const { data, error } = await resend.contacts.list({ segmentId, limit: 100, ...(after ? { after } : {}) });
     if (error) throw new Error(`Resend list-contacts failed: ${error.message}`);
     if (!data) break;
-    contacts.push(...data.data.map((c) => ({ email: c.email, firstName: c.first_name })));
+    contacts.push(...data.data.filter((c) => !c.unsubscribed).map((c) => ({ email: c.email, firstName: c.first_name })));
     if (!data.has_more || data.data.length === 0) break;
     after = data.data[data.data.length - 1]!.id;
   }
@@ -199,8 +220,9 @@ export async function sendWeeklyRecap(recipients: ResendContactInfo[], articles:
         <p style="margin-top:28px;">
           <a href="${escapeHtml(SITE_URL)}" style="display:inline-block;padding:12px 24px;background:#1a1a1a;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;">Go to the site</a>
         </p>
-        <p>— Field Notes From Everywhere</p>`;
-      return { from: FROM_ADDRESS, to: r.email, subject, html };
+        <p>— Field Notes From Everywhere</p>
+        ${unsubscribeFooterHtml(r.email)}`;
+      return { from: FROM_ADDRESS, to: r.email, subject, html, headers: unsubscribeHeaders(r.email) };
     });
     const { error } = await resend.batch.send(payload, { idempotencyKey: `weekly-recap-${weekKey}-${i / BATCH_SIZE}` });
     if (error) throw new Error(`Resend weekly-recap batch send failed: ${error.message}`);
