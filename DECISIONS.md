@@ -1475,6 +1475,8 @@ full-screen dark menu; an attached lighter drawer.
 - **Phone menu card** (follow-up): sized to its content (`width: max-content`) and anchored under
   the menu button on the right, with a hairline between each column link; the active column is
   marked by an underline on its text.
+- **Footer social icon circles** (2026-09-26): the page's base colour (`--surface-page`, #ECEEDF)
+  instead of the near-white card surface.
 - **Footer social icons**: the official Pinterest and Reddit marks (Simple Icons 16.32.0, CC0),
   in the brands' own colours (#E60023, #FF4500), replacing the generic pin / speech-bubble
   icons. The user first linked a Magnific "premium vector" and a pngtree search page; neither is
