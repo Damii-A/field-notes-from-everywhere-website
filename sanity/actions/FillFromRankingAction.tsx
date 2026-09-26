@@ -102,7 +102,7 @@ export function FillFromRankingAction(props: DocumentActionProps) {
           <p>
             {category === "the-shortlist"
               ? `The top ${bookIds.length} books from the ranking, in rank order.`
-              : `The ranking's top ${Math.min(TOP_N_SHARED, ranking.length)} plus ${bookIds.length - Math.min(TOP_N_SHARED, ranking.length)} more, shuffled. Drag to rearrange if you like.`}
+              : `The ranking's top ${Math.min(TOP_N_SHARED, bookIds.length)} plus ${bookIds.length - Math.min(TOP_N_SHARED, bookIds.length)} more, shuffled. Drag to rearrange if you like.`}
           </p>
           {shortBy > 0 && <p>The ranking ran out of unused books — {shortBy} fewer than you asked for.</p>}
           {missingSiblings.length > 0 && (

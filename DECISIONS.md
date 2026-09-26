@@ -1128,6 +1128,16 @@ or duplicates; temporaries deleted. The Studio button itself wasn't clicked this
 
 **Status**: user-approved 2026-09-23.
 
+**Update 2026-09-26 — "How many books" is now the article's total in every column.** For What to
+Read When and Book Club Book Picks it previously meant "extra books on top of the top 5", so the
+user's first two articles came out 5 books longer than the counts in their titles (typed 17 → 22
+books, 12 → 17), even though the field description said so. The same box meant "total" on The
+Shortlist, so reading it as a total was the natural assumption. By the user's choice it's now the
+total everywhere: 17 = the top 5 + 12 more. Checked against the real Thriller ranking (simulated,
+nothing written): What to Read When 17 = ranks 1-5 + 16-27, Book Club 12 = ranks 1-5 + 28-34, no
+overlap. The user re-clicks the button on both drafts (What to Read When first, so Book Club
+leaves out its books); neither had per-book overrides to lose.
+
 ---
 
 ## 2026-09-24 — Site queries must request the `published` perspective explicitly (bug fix)

@@ -217,7 +217,7 @@ export default defineType({
       name: "rankingCount",
       title: "How many books",
       description:
-        "The Shortlist: how many of the ranking's top books to include (10 = ranks 1-10). What to Read When / Book Club Book Picks: how many books to add ALONGSIDE the ranking's top 5 (7 = 12 books total), skipping books already used by this theme's other articles.",
+        "The total number of books in this article. The Shortlist: the ranking's top books in order (10 = ranks 1-10). What to Read When / Book Club Book Picks: the ranking's top 5 plus the rest from further down, skipping books already used by this theme's other articles (12 = the top 5 + 7 more).",
       type: "number",
       validation: (r) => r.integer().min(1),
     }),

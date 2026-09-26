@@ -3,10 +3,12 @@
  * the rules behind the Studio's "Fill books from ranking" action (DECISIONS.md,
  * 2026-09-23). Each theme gets one article per column:
  *
+ * `count` is always the article's total number of books.
+ *
  * - The Shortlist: the ranking's top `count` books, in rank order.
- * - What to Read When: the top 5, plus `count` more books not already in that
- *   theme's Shortlist article.
- * - Book Club Book Picks: the top 5, plus `count` more books not already in
+ * - What to Read When: the top 5, plus `count - 5` more books not already in
+ *   that theme's Shortlist article.
+ * - Book Club Book Picks: the top 5, plus `count - 5` more books not already in
  *   that theme's Shortlist or What to Read When article.
  *
  * "More books" continue down the ranking. The two unranked columns are
@@ -28,7 +30,7 @@ export const EXCLUDED_SIBLING_CATEGORIES: Record<ArticleCategory, ArticleCategor
 
 export interface PickResult {
   bookIds: string[];
-  /** How many "more" books were asked for but the ranking ran out of. */
+  /** How many books were asked for but the ranking ran out of. */
   shortBy: number;
 }
 
@@ -44,12 +46,13 @@ export function pickBooksFromRanking(
     return { bookIds, shortBy: count - bookIds.length };
   }
 
-  const top = ranking.slice(0, TOP_N_SHARED);
+  const top = ranking.slice(0, Math.min(TOP_N_SHARED, count));
   const extra = ranking
     .slice(TOP_N_SHARED)
     .filter((id) => !usedBySiblings.has(id))
-    .slice(0, count);
-  return { bookIds: shuffle([...top, ...extra], random), shortBy: count - extra.length };
+    .slice(0, Math.max(0, count - TOP_N_SHARED));
+  const bookIds = [...top, ...extra];
+  return { bookIds: shuffle(bookIds, random), shortBy: count - bookIds.length };
 }
 
 function shuffle<T>(items: T[], random: () => number): T[] {
