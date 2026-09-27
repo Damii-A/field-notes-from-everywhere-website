@@ -71,8 +71,10 @@ export async function addToSegment(email: string, firstName: string, segmentId: 
   await upsertContact(resend, email, firstName);
   const { error } = await resend.contacts.segments.add({ email, segmentId });
   if (error) throw new Error(`Resend add-to-segment failed: ${error.message}`);
-  // Signing up again is a fresh opt-in, so it clears an earlier unsubscribe.
-  const { error: resubError } = await resend.contacts.update({ email, unsubscribed: false });
+  // Signing up again is a fresh opt-in, so it clears an earlier unsubscribe,
+  // and the name just typed replaces an older one (create() leaves an
+  // existing contact untouched; the weekly recap greets by this name).
+  const { error: resubError } = await resend.contacts.update({ email, unsubscribed: false, firstName });
   if (resubError) throw new Error(`Resend re-subscribe failed: ${resubError.message}`);
 }
 
