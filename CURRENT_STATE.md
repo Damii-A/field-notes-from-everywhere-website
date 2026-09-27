@@ -2,6 +2,31 @@
 
 Last updated: 2026-09-27. Full reasoning is in `DECISIONS.md`; this is the short version.
 
+**Session ended 2026-09-27 (user taking a break). Resume here.** Everything is committed and
+pushed; nothing is pending in code. The site is live on the real domain with all three thriller
+articles published.
+
+Next steps, in order:
+1. **Paddle live switch** (top priority: the "Join The Reading Room" buttons are live but Paddle
+   is in sandbox, so nobody can actually pay). First step for the user: sign in at
+   login.paddle.com and report whether a *live* account exists and what verification /
+   domain-review steps it shows. Full checklist under "Next priority" below.
+2. **Google Analytics** setup (user creates the GA4 property; steps under "After the cutover").
+   The emails' UTM links only pay off once this is live.
+3. **Sunday 2026-10-04**: first weekly newsletter as a Resend Broadcast. Afterwards confirm it
+   sent (Resend → Broadcasts) and show the user its stats.
+4. Ask the user to try the phone share-sheet button ("More ways to share") on a real phone;
+   the headless test browser can't exercise `navigator.share`.
+
+Done this session (2026-09-27), each with a DECISIONS.md entry: domain cutover; canonical URLs;
+header logo; Reading Room trial paused (checkout-only CTAs, legal pages edited); send-list
+email rebuilt in the article's style (user's copy, P.S./P.P.S., on the column colour) + popup
+"sent" heading; social sharing buttons (Pinterest/Reddit/Facebook/X/copy link; rail only beside
+the book list); homepage landscape article cards, column order, slimmer "And if your TBR" strip;
+hub lead inset on phones (square corners kept); Reading Room copy swapped between homepage and
+landing page, real book covers on the landing page; email analytics (newsletter as a Broadcast,
+tagged list emails, UTM links); Resend clean-up (trial automation stopped, test contact removed).
+
 **Reading Room free trial PAUSED 2026-09-27 (user's decision) — rebuild it later.** Every
 Reading Room button now says "Join The Reading Room" and goes straight to
 `/the-reading-room/subscribe` (Paddle checkout); all trial wording is gone from the site, Site
@@ -68,8 +93,9 @@ refunds: no refunds, cancel anytime (a section of Terms). Paddle's domain review
 Privacy and a refund policy reachable from navigation and a live HTTPS **own domain**, so the
 domain cutover comes **before** the Paddle live switch.
 
-The three Thriller drafts are held until the launch date is decided; change their dates first,
-then publish (an article published after its date appears at once with the old date).
+(Superseded 2026-09-27: all three thriller articles are published and live.) General rule still
+holds: when publishing an article whose date has passed, update its date first, or it appears
+with the old date.
 
 **Done 2026-09-26 (unsubscribe)**: every free-list email now has an unsubscribe link + one-click
 header; unsubscribed readers are skipped by the weekly recap. See DECISIONS.md. **Still open**:
