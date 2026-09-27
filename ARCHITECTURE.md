@@ -383,8 +383,9 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `SITE_URL` | the site's public address (`https://fieldnotesfromeverywhere.com`), for canonical/OG metadata, sitemap, RSS and email links. Server-side only, no `NEXT_PUBLIC_` prefix |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 ID; unset = no analytics. Loaded only with consent where required (`components/ConsentManager.tsx`) |
 
-All of these are set locally (`.env.local`) and on Vercel except `NEXT_PUBLIC_GA_MEASUREMENT_ID`,
-which waits on the Google Analytics setup (see `CURRENT_STATE.md`).
+All of these are set locally (`.env.local`) and on Vercel (`NEXT_PUBLIC_GA_MEASUREMENT_ID` since
+2026-09-27). The Paddle values on Vercel are still the sandbox ones until the live switch; the live
+account's values sit in `.env.local` as `PADDLE_LIVE_*` meanwhile (see `CURRENT_STATE.md`).
 
 ## 13. Accessibility, performance, SEO — standing requirements, not optional add-ons
 
