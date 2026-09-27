@@ -1492,9 +1492,9 @@ full-screen dark menu; an attached lighter drawer.
   hero image cropped to a tall narrow strip. Book Club pair cards unchanged.
 - **Homepage column order** (2026-09-27): The Shortlist, What to Read When, Book Club Book Picks,
   as `homepage.md` lists them (the build had What to Read When first).
-- **Hub "Newest" card on phones** (2026-09-27): The Shortlist's lead is an inset rounded card with
-  a shadow on phones (≤700px), like the other two columns; from 701px up it stays square and
-  unshadowed as designed. While a column's lead is its only article, the empty "All articles"
+- **Hub "Newest" card on phones** (2026-09-27): The Shortlist's lead is inset from the screen
+  edges on phones (≤700px), like the other two columns, but keeps its designed square corners and
+  no shadow at every width (a first pass also rounded it; the user wanted only the width fixed). While a column's lead is its only article, the empty "All articles"
   heading is hidden and the lead gets the bottom spacing instead.
 
 ---
@@ -1738,6 +1738,12 @@ comes from `SITE_URL` (passed by each article page as `shareUrl`); Pinterest als
 image. Icons: the official marks from Simple Icons 16.32.0 (CC0) in brand colours (Facebook
 #0866FF, X #000000, alongside the existing Pinterest/Reddit), and Lucide `share-2`; the X mark is
 `x-logo` in `Icon.tsx` since `x` is the close icon.
+
+**Follow-up the same day (user)**: buttons were too big and the white discs too stark on the
+tinted pages, and the rail beside the title was distracting. Now 36px circles with 16px icons, a
+translucent white wash + hairline border (takes on each page's colour, no shadow), 44px tap area
+kept on touch screens; the rail shows only while the book list is beside it (hidden up by the
+title and after the last book).
 
 **Verified** (local production build with the real `SITE_URL`): rail at 1440px, byline row +
 end row at 820px and 390px, no sideways scroll; share URLs carry the real article address.

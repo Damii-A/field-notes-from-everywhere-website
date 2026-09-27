@@ -46,17 +46,17 @@
   box-shadow: var(--shadow-raised);
 }
 
-/* The Shortlist: edge to edge, square corners, no shadow (the design), from
-   tablet width up. Phones keep the inset card, like the other two columns
-   (user's choice 2026-09-27). */
+/* The Shortlist: square corners and no shadow (the design) at every width;
+   edge to edge from tablet width up, inset from the screen edges on phones
+   like the other two columns (user's choice 2026-09-27). */
+.leadCardFlush {
+  border-radius: 0;
+  box-shadow: none;
+}
 @media (min-width: 701px) {
   .leadSectionFlush {
     padding-left: 0;
     padding-right: 0;
-  }
-  .leadCardFlush {
-    border-radius: 0;
-    box-shadow: none;
   }
 }
 

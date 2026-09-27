@@ -76,15 +76,15 @@ export function ShareButtons({
             title={`Share on ${n.name}`}
             className={styles.button}
           >
-            <Icon name={n.icon} size={rail ? 20 : 19} color={n.color} />
+            <Icon name={n.icon} size={16} color={n.color} />
           </a>
         ))}
         <button type="button" onClick={copyLink} aria-label="Copy article link" title="Copy link" className={styles.button}>
-          <Icon name="link" size={rail ? 20 : 19} />
+          <Icon name="link" size={16} />
         </button>
         {canNativeShare && !rail ? (
           <button type="button" onClick={nativeShare} aria-label="More ways to share" title="More ways to share" className={styles.button}>
-            <Icon name="share" size={19} />
+            <Icon name="share" size={16} />
           </button>
         ) : null}
       </div>

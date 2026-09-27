@@ -105,7 +105,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
   const [inList, setInList] = useState(false);
   const [narrow, setNarrow] = useState(false);
   const [roomForShare, setRoomForShare] = useState(false);
-  const [articleOnScreen, setArticleOnScreen] = useState(true);
+  const [articleOnScreen, setArticleOnScreen] = useState(false);
   const [popup, setPopup] = useState(false);
   const [, setPopupDone] = useState(false);
   const [, setDismissed] = useState(false);
@@ -124,10 +124,13 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
         setInList(nowInList);
         setIndex(nowIndex);
       }
-      // The share rail is fixed at 30vh (~340px tall); hide it once the
-      // article's last book scrolls above it, so it doesn't ride along past
-      // the article into "What to read next" and the footer.
-      if (list) setArticleOnScreen(list.getBoundingClientRect().bottom > vh * 0.3 + 340);
+      // The share rail (fixed at 30vh, ~280px tall) shows only alongside the
+      // book list: not up beside the title (user: distracting), and not once
+      // the last book has scrolled above it into "What to read next".
+      if (list) {
+        const r = list.getBoundingClientRect();
+        setArticleOnScreen(r.top < vh * 0.3 && r.bottom > vh * 0.3 + 280);
+      }
       const doc = document.documentElement;
       const scrolled = (window.scrollY + vh) / doc.scrollHeight;
       if (window.scrollY > vh * 0.9 && scrolled > 0.5) {

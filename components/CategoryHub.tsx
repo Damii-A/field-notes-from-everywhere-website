@@ -58,7 +58,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
         </div>
       </section>
 
-      {/* The Shortlist's lead is full-bleed and square on wider screens (as designed); on phones it's an inset card like the other two (CSS). */}
+      {/* The Shortlist's lead is square and unshadowed (as designed), full-bleed on wider screens and inset on phones (CSS). */}
       {hub.latest ? (
         <section
           className={[styles.leadSection, category === "the-shortlist" ? styles.leadSectionFlush : "", visible.length === 0 ? styles.leadSectionLast : ""].filter(Boolean).join(" ")}
