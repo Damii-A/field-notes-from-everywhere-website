@@ -12,8 +12,9 @@ Next steps, in order:
    login.paddle.com and report whether a *live* account exists and what verification /
    domain-review steps it shows. Full checklist under "Next priority" below.
 2. **Google Analytics** — set up 2026-09-27: GA4 property created by the user, Measurement ID
-   `G-4DSKEJTSC5` in `.env.local` and on Vercel (type "Config"). Still to confirm: real hits in
-   GA's Realtime report, and that the user set event retention to 14 months / Google signals off.
+   `G-4DSKEJTSC5` in `.env.local` and on Vercel (type "Config"); the user set event retention to
+   14 months and left Google signals off. **Done and verified**: deployed (ID present in the live
+   HTML) and the user saw their own visit in GA's Realtime report (2026-09-27).
    The emails' UTM links only pay off once this is live.
 3. **Sunday 2026-10-04**: first weekly newsletter as a Resend Broadcast. Afterwards confirm it
    sent (Resend → Broadcasts) and show the user its stats.
@@ -90,7 +91,7 @@ live switch (the live account needs its own anyway, plus its own webhook destina
 vercel.app CORS entries in Sanity are now unused and can be removed.
 
 **After the cutover** (user setup steps, one at a time):
-1. **Google Analytics**: user creates a GA4 property + web data stream, sets event data retention
+1. ~~**Google Analytics**~~ — done 2026-09-27 (see the top of this file). Original steps: user creates a GA4 property + web data stream, sets event data retention
    to **14 months** (the privacy policy says so), leaves Google signals **off**, and gives the
    Measurement ID (`G-…`, not a secret). Then set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in `.env.local`
    and on Vercel (a `NEXT_PUBLIC_` var: change its type to "Config" before Save — see agent
