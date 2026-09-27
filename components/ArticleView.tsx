@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Icon } from "./ds/Icon";
 import { BookCover } from "./ds/BookCover";
 import { ImagePlaceholder } from "./ImagePlaceholder";
+import { ShareButtons } from "./ShareButtons";
 import styles from "./ArticleView.module.css";
 import type { Article, CategorySlug } from "@/lib/content";
 import { formatArticleDate } from "@/lib/content/dates";
@@ -92,7 +93,8 @@ const CATEGORY_STYLE: Record<
   },
 };
 
-export function ArticleView({ article }: { article: Article }) {
+/** `shareUrl`: the article's absolute URL on the real domain (built from SITE_URL by the page). */
+export function ArticleView({ article, shareUrl }: { article: Article; shareUrl: string }) {
   const category = article.category;
   const identity = CATEGORIES[category];
   const style = CATEGORY_STYLE[category];
@@ -104,7 +106,6 @@ export function ArticleView({ article }: { article: Article }) {
   const [narrow, setNarrow] = useState(false);
   const [roomForShare, setRoomForShare] = useState(false);
   const [articleOnScreen, setArticleOnScreen] = useState(true);
-  const [copied, setCopied] = useState(false);
   const [popup, setPopup] = useState(false);
   const [, setPopupDone] = useState(false);
   const [, setDismissed] = useState(false);
@@ -123,10 +124,10 @@ export function ArticleView({ article }: { article: Article }) {
         setInList(nowInList);
         setIndex(nowIndex);
       }
-      // The copy-link control is fixed at 44vh; hide it once the article's
-      // last book scrolls above it, so it doesn't ride along past the
-      // article into "What to read next" and the footer.
-      if (list) setArticleOnScreen(list.getBoundingClientRect().bottom > vh * 0.44 + 120);
+      // The share rail is fixed at 30vh (~340px tall); hide it once the
+      // article's last book scrolls above it, so it doesn't ride along past
+      // the article into "What to read next" and the footer.
+      if (list) setArticleOnScreen(list.getBoundingClientRect().bottom > vh * 0.3 + 340);
       const doc = document.documentElement;
       const scrolled = (window.scrollY + vh) / doc.scrollHeight;
       if (window.scrollY > vh * 0.9 && scrolled > 0.5) {
@@ -153,15 +154,6 @@ export function ArticleView({ article }: { article: Article }) {
       window.removeEventListener("resize", onResize);
     };
   }, [article.books.length]);
-
-  function copyLink() {
-    const done = () => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    };
-    if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done, done);
-    else done();
-  }
 
   const showRail = !narrow;
   const showProgress = inList && !narrow;
@@ -190,6 +182,9 @@ export function ArticleView({ article }: { article: Article }) {
               {formatArticleDate(article.publishedAt)}
             </span>
           </div>
+
+          {/* Where the floating share rail doesn't fit (hidden by CSS on wide screens). */}
+          <ShareButtons url={shareUrl} title={article.title} image={article.heroImage?.url} layout="row" className={styles.bylineShare} />
 
           <div className={styles.methodologyBox} style={{ borderLeftColor: style.methodologyBorder }}>
             <span className={styles.methodologyLabel}>How we made this list</span>
@@ -288,6 +283,8 @@ export function ArticleView({ article }: { article: Article }) {
             })}
           </div>
 
+          <ShareButtons url={shareUrl} title={article.title} image={article.heroImage?.url} layout="row" heading="Share this list" className={styles.endShare} />
+
           <aside className={styles.rrBanner} style={{ background: style.rrBannerBg }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: "44ch" }}>
               <span className={styles.rrBannerLabel} style={{ color: style.rrBannerLabelColor }}>
@@ -340,14 +337,7 @@ export function ArticleView({ article }: { article: Article }) {
         ) : null}
       </div>
 
-      {showShare ? (
-        <div className={styles.shareRail}>
-          <button type="button" onClick={copyLink} aria-label="Copy article link" className={styles.shareButton}>
-            <Icon name="link" size={20} />
-          </button>
-          <span className={styles.shareLabel}>{copied ? "Link copied!" : "Copy link"}</span>
-        </div>
-      ) : null}
+      {showShare ? <ShareButtons url={shareUrl} title={article.title} image={article.heroImage?.url} layout="rail" /> : null}
 
       {popup ? (
         <SendListPopup

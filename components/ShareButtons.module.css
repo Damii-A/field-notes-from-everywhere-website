@@ -1,0 +1,83 @@
+/* Wide desktops: fixed beside the article column (position from the design's
+   original copy-link control). */
+.rail {
+  position: fixed;
+  left: calc(50vw - 626px);
+  top: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 40;
+}
+.rail .buttons {
+  flex-direction: column;
+}
+.rail .status {
+  writing-mode: vertical-rl;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+}
+
+.heading {
+  font: var(--type-label);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-card);
+  color: var(--ink-700);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+.button:hover {
+  transform: translateY(-2px);
+  color: var(--accent-primary);
+}
+.button:focus-visible {
+  outline: 2px solid var(--ochre-500);
+  outline-offset: 2px;
+}
+
+.status {
+  font: var(--type-label);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--ink-700);
+}
+.row .status:empty {
+  display: none;
+}
+.row .status {
+  flex-basis: 100%;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

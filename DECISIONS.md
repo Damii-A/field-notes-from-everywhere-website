@@ -1709,3 +1709,33 @@ after sending; it now changes to "Your list is on its way!" (announced to screen
 sent state checked on desktop and phone with the send faked (payload includes the name).
 
 ---
+
+## 2026-09-27 — Social sharing buttons on articles (Pinterest, Reddit, Facebook, X)
+
+**Decision** (user-directed): every article offers sharing to **Pinterest, Reddit, Facebook and
+X**, plus copy link, and on touch devices a "More ways to share" button that opens the phone's
+own share sheet (`navigator.share`). `components/ShareButtons.tsx`, in three places:
+- **Wide desktops (≥1308px)**: the floating rail beside the article (where the design's lone
+  copy-link control was), now five buttons stacked with a vertical "Share" label; fixed at 30vh
+  and hidden once the book list scrolls past it, as before.
+- **Below 1308px** (tablets, phones, where the rail never fitted, so sharing was missing
+  entirely): a row of the same buttons under the byline (CSS-hidden on wide screens).
+- **All sizes**: a "Share this list" row after the last book, before the Reading Room banner.
+
+This departs from `pub_article.md` §6.3 ("do not introduce a permanent row of social-network
+buttons"). The user decided the reach is worth it (What to Read When / Book Club Book Picks are
+social-first). No record of an earlier rejection was found in this repo.
+
+Share links are plain URLs to each network's share page (no third-party scripts, so nothing
+loads or tracks before a click, consistent with the consent setup). The article's absolute URL
+comes from `SITE_URL` (passed by each article page as `shareUrl`); Pinterest also gets the hero
+image. Icons: the official marks from Simple Icons 16.32.0 (CC0) in brand colours (Facebook
+#0866FF, X #000000, alongside the existing Pinterest/Reddit), and Lucide `share-2`; the X mark is
+`x-logo` in `Icon.tsx` since `x` is the close icon.
+
+**Verified** (local production build with the real `SITE_URL`): rail at 1440px, byline row +
+end row at 820px and 390px, no sideways scroll; share URLs carry the real article address.
+`navigator.share` can't be exercised in the headless test browser, so the phone share-sheet
+button needs a check on a real phone.
+
+---
