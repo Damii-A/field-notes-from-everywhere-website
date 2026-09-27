@@ -49,8 +49,10 @@ testing). Created in live via the API, copying the sandbox exactly: product
 trial, tax by location), client token `ctkn_01m3j7tdwqyd1d309bgp69ctvq`, notification destination
 `ntfset_01m3j7te7sraen15jcmd15q3wd` (the same 4 subscription events → the real-domain webhook). Their
 values are saved in `.env.local` as `PADDLE_LIVE_WEBHOOK_SECRET` / `PADDLE_LIVE_CLIENT_TOKEN` /
-`PADDLE_LIVE_PRICE_ID`. Still to do, in order: domain approval (Checkout → Request domain approval),
-default payment link, payout details, any identity verification Paddle asks for; then swap the
+`PADDLE_LIVE_PRICE_ID`. Also done by the user 2026-09-27: domain approval **requested** (form asked
+only for the domain; **pending** Paddle's review) and payout details added. Still to do, in order:
+once the domain is approved, the default payment link
+(`https://fieldnotesfromeverywhere.com/the-reading-room/subscribe`, Checkout settings); then swap the
 five Vercel env vars to the live values + `NEXT_PUBLIC_PADDLE_ENVIRONMENT=production`, redeploy, and
 a real purchase test. No code change is needed (all Paddle config comes from env vars).
 
