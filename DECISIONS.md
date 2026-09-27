@@ -1622,3 +1622,62 @@ at a time. The design doesn't say what a lone article should do. The user chose 
 
 **Alternatives considered**: Hide the row until two Book Club articles exist (the previous
 behaviour). Rejected: the row would be missing at launch.
+
+## 2026-09-27 — Reading Room free trial paused; every CTA goes straight to checkout
+
+**Decision** (user-directed): the 7-day free trial is **paused** until the first 7 real Reading
+Room issues have been sent to paying members; those 7 issues then become the trial's sample
+issues and the trial is rebuilt. Until then every Reading Room CTA reads **"Join The Reading
+Room"** and links to `/the-reading-room/subscribe` (Paddle checkout). The user will build issues
+in advance (unpublished) and start sending the moment there is a single subscriber, and the
+Publication is about to start promoting the Reading Room, so nothing should stop people
+subscribing. The refund policy stays **no refunds, cancel anytime** (user's choice), minus the
+old "because there's a free trial" reason.
+
+**Why now**: with the site live on its real domain, the trial form worked for real visitors but
+the Resend automation's 7 issue templates are placeholders, so anyone starting a trial would have
+received placeholder emails.
+
+**Alternatives considered**: a waitlist (email capture into a new Resend segment) until Paddle
+goes live, then Subscribe. Chosen first, then dropped by the user before it was built in favour
+of going straight to checkout. A 14-day money-back promise on the first payment in place of the
+trial: offered, declined. Paddle doesn't require either: its domain review only needs a refund
+policy reachable from navigation, and its buyer terms are non-refundable by default apart from
+the statutory 14-day right on a first subscription payment (EU/EEA/UK/CH), which the Terms'
+"doesn't affect any rights you have under the law" line already preserves.
+
+**What changed** (this is a departure from `rr_landing.md`, the design and the homepage/article
+specs, which all show a 7-day trial):
+- `/the-reading-room`: the hero's "Try it free" + "Subscribe" pair is one "Join The Reading
+  Room" link; the bottom section ("Sound interesting? Well, it gets even better!" + trial copy +
+  "Try it free", `id="trial"`) is now "Sound like your kind of thing?" + what members get + "Join
+  The Reading Room" (`id="join"`); meta description ends "$7/month, cancel anytime."
+- Homepage Reading Room box: heading "Sound like your kind of thing?" (was "…Your first 7 days are
+  on us."), body now states the catalogue and "$7/month. Cancel anytime."
+- Article Reading Room banner and floating rail ad: "$7/month. Cancel anytime." / "Just
+  $7/month. Cancel anytime." (were "7 days free, no credit card…" / "Your first 7 days are on us…").
+- Site Settings `readingRoomPriceCopy` (Sanity, published; shown on About and the Reading Room
+  page) and its code fallback: "$7/month. Cancel anytime."
+- `/the-reading-room/subscribe` body: "…every Reading Room catalogue, Monday through Saturday,
+  plus the Sunday recap." (was "…every day", inaccurate).
+- Removed: `components/ReadingRoomTrialForm.tsx` (+ CSS) and `app/api/reading-room/start-trial/`.
+  Recover both from git: `git show 6f65462:components/ReadingRoomTrialForm.tsx` etc. Kept:
+  `triggerReadingRoomTrialEvent` / `READING_ROOM_TRIAL_EVENT` in `lib/integrations/resend.ts`,
+  and the Resend automation "Reading Room Trial Sequence" (ids in CURRENT_STATE.md), unused.
+- Live legal pages (Sanity, published): Terms lost its "Free trial." bullet and the refund
+  paragraph now opens "**Reading Room payments are not refundable.**"; Privacy lost "The Reading
+  Room free trial." paragraph and "start a Reading Room trial" became "subscribe to The Reading
+  Room". Both pages' "Last updated" set to 2026-09-27.
+
+**To rebuild the trial later** (after the first 7 issues have gone to members):
+1. Swap the 7 placeholder issue templates in Resend for the 7 real issues; write the welcome
+   email and per-issue conversion nudges; build the post-trial branch (condition on the
+   `reading_room_member` contact property, set by the Paddle webhook).
+2. Restore the trial form and `/api/reading-room/start-trial` from git; put back the hero's
+   "Try it free" + "Subscribe" pair and the trial section (design: `rr_landing.md`).
+3. Restore the trial copy on the homepage box, article banner/rail ad, Site Settings price copy.
+4. Re-add the trial to the Terms (bullet + refund reasoning, if still wanted) and Privacy (what
+   trial signups collect); update "Last updated".
+5. Test end-to-end with a real inbox before switching it on.
+
+---

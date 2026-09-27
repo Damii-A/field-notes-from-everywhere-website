@@ -2,6 +2,22 @@
 
 Last updated: 2026-09-27. Full reasoning is in `DECISIONS.md`; this is the short version.
 
+**Reading Room free trial PAUSED 2026-09-27 (user's decision) — rebuild it later.** Every
+Reading Room button now says "Join The Reading Room" and goes straight to
+`/the-reading-room/subscribe` (Paddle checkout); all trial wording is gone from the site, Site
+Settings and the live Terms/Privacy. The trial comes back **after the first 7 real issues have
+gone to paying members**, using those 7 as its sample issues. Full list of what changed and the
+rebuild steps: `DECISIONS.md`, "Reading Room free trial paused". The Resend trial automation is
+still there, unused.
+
+**Next priority: Paddle live switch.** The Join buttons are live but Paddle is still in sandbox,
+so a real visitor can't actually pay yet. Needs: Paddle live account verification + domain
+review (Terms/Privacy/refund policy are published and reachable from the footer), then a live
+API key, client token, Price, webhook destination (`https://fieldnotesfromeverywhere.com/api/webhooks/paddle`)
+and default payment link (`https://fieldnotesfromeverywhere.com/the-reading-room/subscribe`),
+the matching Vercel env vars (`NEXT_PUBLIC_PADDLE_ENVIRONMENT=production` etc.), redeploy, and
+a real low-stakes purchase test. Header logo added 2026-09-27 (DECISIONS.md, visual tweaks).
+
 **Domain cutover done 2026-09-27** — the site is live at **https://fieldnotesfromeverywhere.com**
 (the old WordPress site is gone). Cloudflare: root and `www` are CNAMEs to Vercel's target
 `9cafd724e379f8df.vercel-dns-017.com`, DNS only (grey cloud); `links` CNAME for Resend added;
@@ -27,9 +43,9 @@ vercel.app CORS entries in Sanity are now unused and can be removed.
    and on Vercel (a `NEXT_PUBLIC_` var: change its type to "Config" before Save — see agent
    memory), redeploy, and confirm real hits in GA's Realtime report.
 2. ~~**Resend tracking DNS**~~ — done 2026-09-27 with the cutover (Tracking record verified).
-3. **Legal pages**: the three drafts in the Studio were rewritten (brand name only; GA with
-   consent; email open/click measurement; ads/sponsorships as planned). The user reviews, sets
-   "Last updated", and publishes **after step 1 is live** (the privacy policy describes GA).
+3. **Legal pages**: found **already published** on 2026-09-27 (Terms, Privacy, Disclosures are
+   live), and Terms/Privacy were edited that day to remove the free trial. The Privacy policy
+   describes GA, which isn't live until step 1 is done.
 
 Built 2026-09-26: GA + consent banner + footer "Cookie settings" (inactive until the ID is set),
 Resend tracking enabled pending DNS. See DECISIONS.md. Before joining an **ad network**: a

@@ -4,13 +4,12 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BookCover } from "@/components/ds/BookCover";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
-import { ReadingRoomTrialForm } from "@/components/ReadingRoomTrialForm";
 import { getSiteSettings } from "@/lib/content";
 import styles from "./ReadingRoom.module.css";
 
 export const metadata: Metadata = {
   title: "The Reading Room",
-  description: "30+ themed book recommendations, Monday through Saturday. Try it free for 7 days.",
+  description: "30+ themed book recommendations, Monday through Saturday. $7/month, cancel anytime.",
 };
 
 const SPINES = ["var(--slate-600)", "var(--clay-600)", "var(--sky-600)", "var(--sage-600)", "var(--clay-700)", "var(--sky-700)"];
@@ -50,14 +49,11 @@ export default async function ReadingRoomPage() {
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>The Reading Room</h1>
           <p className={styles.heroByline}>by Field Notes From Everywhere</p>
-          <div className={styles.heroCtaRow}>
-            <ReadingRoomTrialForm ctaClassName={styles.heroCta} formClassName={styles.heroFormAbove}>
-              Try it free
-            </ReadingRoomTrialForm>
-            <Link href="/the-reading-room/subscribe" className={styles.heroCtaSecondary}>
-              Subscribe
-            </Link>
-          </div>
+          {/* The design's "Try it free" + "Subscribe" pair: the free trial is paused
+              (DECISIONS.md 2026-09-27), so one button straight to the payment page. */}
+          <Link href="/the-reading-room/subscribe" className={styles.heroCta}>
+            Join The Reading Room
+          </Link>
         </div>
       </section>
 
@@ -100,15 +96,16 @@ export default async function ReadingRoomPage() {
         </div>
       </section>
 
-      <section id="trial" className={styles.trialSection}>
+      <section id="join" className={styles.trialSection}>
         <div className={styles.trialInner}>
-          <h2 className={styles.trialHeading}>Sound interesting? Well, it gets even better!</h2>
+          <h2 className={styles.trialHeading}>Sound like your kind of thing?</h2>
           <p className={styles.trialBody}>
-            You can try The Reading Room for 7 days completely free of charge. We won&rsquo;t even ask for your
-            credit card. If you decide you&rsquo;d like to stay after your trial, membership is $7/month. Cancel
-            anytime.
+            Join today and get a new themed catalogue of 30+ book recommendations in your inbox every Monday
+            through Saturday, plus a Sunday recap of the week.
           </p>
-          <ReadingRoomTrialForm ctaClassName={styles.trialCta}>Try it free</ReadingRoomTrialForm>
+          <Link href="/the-reading-room/subscribe" className={styles.trialCta}>
+            Join The Reading Room
+          </Link>
           <p className={styles.trialNote}>{settings.readingRoomPriceCopy}</p>
         </div>
       </section>

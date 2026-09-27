@@ -63,24 +63,6 @@
   margin: 0;
 }
 
-.heroCtaRow {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-/* Forces the trial form (and its success/error message) onto its own full-width
-   line, ordered before the button row, instead of sitting inline next to
-   Subscribe once expanded. */
-.heroFormAbove {
-  flex-basis: 100%;
-  order: -1;
-  justify-content: center;
-  margin-bottom: 4px;
-}
-
 .heroCta {
   display: inline-flex;
   align-items: center;
@@ -93,8 +75,8 @@
   font: var(--weight-bold) var(--text-md) / 1 var(--font-display);
   letter-spacing: var(--tracking-display);
   white-space: nowrap;
+  text-decoration: none;
   box-shadow: var(--shadow-card);
-  cursor: pointer;
   transition:
     transform var(--dur-fast) var(--ease-spring),
     filter var(--dur-fast) var(--ease-soft);
@@ -102,34 +84,6 @@
 .heroCta:hover {
   transform: translateY(-2px);
   filter: brightness(1.06);
-}
-.heroCta:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-  transform: none;
-}
-
-.heroCtaSecondary {
-  display: inline-flex;
-  align-items: center;
-  height: 54px;
-  padding: 0 32px;
-  border: 1px solid var(--paper-050);
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--paper-050);
-  font: var(--weight-bold) var(--text-md) / 1 var(--font-display);
-  letter-spacing: var(--tracking-display);
-  white-space: nowrap;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    transform var(--dur-fast) var(--ease-spring),
-    background var(--dur-fast) var(--ease-soft);
-}
-.heroCtaSecondary:hover {
-  transform: translateY(-2px);
-  background: rgba(250, 247, 242, 0.1);
 }
 
 .section {
@@ -281,8 +235,8 @@
   font: var(--weight-bold) clamp(16px, 1.6vw, 19px) / 1 var(--font-display);
   letter-spacing: var(--tracking-display);
   white-space: nowrap;
+  text-decoration: none;
   box-shadow: var(--shadow-card);
-  cursor: pointer;
   transition:
     transform var(--dur-fast) var(--ease-spring),
     filter var(--dur-fast) var(--ease-soft);
@@ -291,12 +245,6 @@
   transform: translateY(-2px);
   filter: brightness(1.06);
 }
-.trialCta:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-  transform: none;
-}
-
 .trialNote {
   font: var(--type-small);
   color: var(--paper-050);

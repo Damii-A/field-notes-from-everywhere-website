@@ -401,11 +401,11 @@ export default async function HomePage() {
                 textWrap: "pretty",
               }}
             >
-              Sound like your kind of thing? Your first 7 days are on us.
+              Sound like your kind of thing?
             </h3>
             <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "54ch" }}>
-              You&rsquo;ll get full access to The Reading Room completely free for 7 days, no credit card required.
-              And if you decide to stick around, it&rsquo;s just $7/month after that. Cancel anytime.
+              Get a new themed catalogue of 30+ book recommendations in your inbox every Monday through Saturday,
+              for just $7/month. Cancel anytime.
             </p>
             <Link
               href="/the-reading-room"

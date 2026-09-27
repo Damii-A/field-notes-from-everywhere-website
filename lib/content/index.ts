@@ -292,7 +292,7 @@ const SITE_SETTINGS_FALLBACK: SiteSettings = {
     pinterest: "https://www.pinterest.com/fieldnotesfromeverywhere/",
     reddit: "https://www.reddit.com/r/Fieldnotesfromew/",
   },
-  readingRoomPriceCopy: "7 days free, no credit card. $7/month after that.",
+  readingRoomPriceCopy: "$7/month. Cancel anytime.",
 };
 
 type RawSiteSettings = {

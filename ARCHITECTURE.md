@@ -283,7 +283,10 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
   - The **one-off "send this list to me" email** (`pub_article.md` §6.4) — the reader gets
     the specific book list from the specific article they were reading, immediately, as a
     transactional send (`sendBookListEmail`) — not something a marketing ESP templates well.
-  - The **Reading Room trial-to-conversion journey** — `/api/reading-room/start-trial` fires
+  - The **Reading Room trial-to-conversion journey** — **paused 2026-09-27** (DECISIONS.md,
+    "Reading Room free trial paused"): the site has no trial entry point and
+    `/api/reading-room/start-trial` is deleted; the Resend automation below still exists,
+    unused. As built before the pause: `/api/reading-room/start-trial` fired
     a **Resend Automations** event (`reading_room_trial_started`,
     `triggerReadingRoomTrialEvent`) with no Kit call at all. That event runs the entire
     journey in Resend: welcome, 7 days of fixed trial catalogue content (the last day(s)
@@ -308,10 +311,9 @@ pointing at `/api/unsubscribe` (POST). Unsubscribing sets the Resend contact's `
 flag, which the weekly recap's recipient list respects; re-signing up clears it.
 
 `/api/subscribe` validates the email and name, adds the contact to the right Resend Segment,
-and (for the "send this list" flow only) sends the transactional book-list email. Starting a
-Reading Room trial is `/api/reading-room/start-trial`, used by `ReadingRoomTrialForm` (the
-"Join for free" / "Join The Reading Room" CTAs on `/the-reading-room`): it only fires the
-Resend trial event.
+and (for the "send this list" flow only) sends the transactional book-list email. Every
+Reading Room CTA ("Join The Reading Room") links to `/the-reading-room/subscribe` (Paddle
+checkout); there is no trial signup while the trial is paused.
 
 ## 10. Paddle (billing)
 

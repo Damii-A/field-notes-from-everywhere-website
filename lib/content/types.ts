@@ -104,5 +104,5 @@ export interface LegalPage extends LegalPageSlug {
 export interface SiteSettings {
   contactEmail: string;
   socialLinks: { pinterest?: string; reddit?: string };
-  readingRoomPriceCopy: string; // e.g. "7 days free, no credit card. $7/month after that."
+  readingRoomPriceCopy: string; // e.g. "$7/month. Cancel anytime."
 }

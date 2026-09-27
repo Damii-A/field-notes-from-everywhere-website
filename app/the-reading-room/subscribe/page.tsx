@@ -12,13 +12,11 @@ export const metadata: Metadata = {
 };
 
 /**
- * The single destination every "subscribe"/"keep it going" CTA points to —
- * the Reading Room landing page's own CTA, the trial-issue email nudges,
- * and the post-trial conversion push all link here, rather than each
- * triggering Paddle checkout independently. Reached by someone who's
- * already decided to pay (mid-trial, post-trial, or skipping the trial
- * entirely), so it doesn't re-explain what The Reading Room is — that's
- * the landing page's job.
+ * The single destination every "Join The Reading Room" CTA points to,
+ * rather than each triggering Paddle checkout independently. Reached by
+ * someone who's already decided to pay, so it doesn't re-explain what The
+ * Reading Room is — that's the landing page's job. (While the free trial is
+ * paused, DECISIONS.md 2026-09-27, this is the only way in.)
  */
 export default async function ReadingRoomSubscribePage() {
   return (
@@ -28,7 +26,7 @@ export default async function ReadingRoomSubscribePage() {
         <div className={styles.card}>
           <h1 className={styles.heading}>Join The Reading Room</h1>
           <p className={styles.body}>
-            You&rsquo;re one step away from full access to every Reading Room catalogue, every day.
+            You&rsquo;re one step away from every Reading Room catalogue, Monday through Saturday, plus the Sunday recap.
           </p>
           <p className={styles.priceNote}>$7/month. Cancel anytime.</p>
           <ReadingRoomCheckoutButton className={styles.cta}>Subscribe now</ReadingRoomCheckoutButton>

@@ -149,6 +149,8 @@ export async function setReadingRoomMemberProperty(email: string, active: boolea
 }
 
 /**
+ * Unused while the free trial is paused (DECISIONS.md 2026-09-27); kept for
+ * when it returns, since the Resend automation is still keyed to this event.
  * Fires a Resend Automations event to start the Reading Room trial sequence
  * (welcome, 7 days of trial catalogue content, then a conversion push). The
  * automation itself — content and timing — is configured in Resend's
