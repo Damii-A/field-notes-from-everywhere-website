@@ -1511,6 +1511,9 @@ full-screen dark menu; an attached lighter drawer.
   through Saturday, we send out a daily catalogue…", "The books in these catalogues are sourced
   from hundreds of reader recommendations…", the Sunday-recap line, then "Oh and it's just
   $7/month." in the same body style; its box is heading + "Take a look" only.
+- **Homepage "And if your TBR can handle even more..." strip** (2026-09-27): a slim transition
+  into The Reading Room rather than a full section: vertical padding clamp(24px,3vw,40px)
+  (was 48-80px), 12px gaps (was 18), "Introducing..." at clamp(23px,2.6vw,34px) (was 28-44px).
 - **Reading Room book covers** (2026-09-27): the drifting hero covers and "A few of the books
   we've recommended so far" shelf show real covers from published articles
   (`getRecommendedCovers`, newest articles first, each book once, up to 24), falling back to

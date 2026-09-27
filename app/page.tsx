@@ -269,12 +269,13 @@ export default async function HomePage() {
       <section
         style={{
           background: "var(--sage-700)",
-          padding: "clamp(48px,6vw,80px) var(--gutter-screen)",
+          // A slim transitional strip into The Reading Room, not a full section (user, 2026-09-27).
+          padding: "clamp(24px,3vw,40px) var(--gutter-screen)",
           textAlign: "center",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 18,
+          gap: 12,
         }}
       >
         <h2
@@ -294,7 +295,7 @@ export default async function HomePage() {
         </p>
         <p
           style={{
-            font: "var(--weight-bold) clamp(28px,3.4vw,44px)/1.1 var(--font-display)",
+            font: "var(--weight-bold) clamp(23px,2.6vw,34px)/1.1 var(--font-display)",
             letterSpacing: "var(--tracking-tight)",
             color: "var(--ochre-100)",
             margin: 0,
