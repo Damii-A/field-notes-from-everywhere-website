@@ -5,30 +5,31 @@ Last updated: 2026-09-27. Full reasoning is in `DECISIONS.md`; this is the short
 **Session ended 2026-09-27, second session (user taking a break). Resume here.** Everything is
 committed and pushed; nothing is pending in code. The site is live on the real domain with all
 three thriller articles published. This session: live Paddle account set up (waiting on domain
-approval), Google Analytics live and verified, phone share sheet verified. **First thing next
-time: ask whether Paddle has approved the domain.**
+approval), Google Analytics live and verified, Search Console set up, phone share sheet
+verified. **First thing next time: ask whether Paddle has approved the domain.**
 
 Next steps, in order:
 1. **Paddle live switch** (top priority: the "Join The Reading Room" buttons are live but Paddle
-   is in sandbox, so nobody can actually pay). First step for the user: sign in at
-   login.paddle.com and report whether a *live* account exists and what verification /
-   domain-review steps it shows. Full checklist under "Next priority" below.
-2. **Google Analytics** — set up 2026-09-27: GA4 property created by the user, Measurement ID
-   `G-4DSKEJTSC5` in `.env.local` and on Vercel (type "Config"); the user set event retention to
-   14 months and left Google signals off. **Done and verified**: deployed (ID present in the live
-   HTML) and the user saw their own visit in GA's Realtime report (2026-09-27).
-   The emails' UTM links only pay off once this is live.
+   is in sandbox, so nobody can actually pay). Waiting on Paddle's domain approval; remaining
+   steps under "Paddle live switch — in progress" below.
+2. **Search Console sitemap status**: submitted 2026-09-27, showed "Couldn't fetch" straight
+   after (usual for a new property; the sitemap serves 200 `application/xml` to a Googlebot user
+   agent, 13 URLs, robots.txt points to it). If it still says "Couldn't fetch" after ~3 days,
+   investigate. The user chose not to request indexing manually.
 3. **Sunday 2026-10-04**: first weekly newsletter as a Resend Broadcast. Afterwards confirm it
    sent (Resend → Broadcasts) and show the user its stats.
-5. **Google Search Console** (user asked 2026-09-27 where to see search rankings; GA doesn't show
-   them). Next session: user adds a Domain property for fieldnotesfromeverywhere.com, verifies it
-   with the TXT record Google gives (Cloudflare, DNS only, leave the Zoho/Resend records alone),
-   then submit `https://fieldnotesfromeverywhere.com/sitemap.xml` and link it to GA4 (Admin →
-   Product links → Search Console).
-6. Optional tidy-up offered to the user: the book data-quality flags further down (low-res
+4. Optional tidy-up offered to the user: the book data-quality flags further down (low-res
    covers, Dragon Tattoo tagged Dark Fantasy, near-duplicate tags).
-4. ~~Phone share-sheet button~~ — verified by the user on a real phone 2026-09-27 (opens the
-   phone's own share menu).
+
+Done 2026-09-27 (second session):
+- **Google Analytics**: GA4 property created by the user, Measurement ID `G-4DSKEJTSC5` in
+  `.env.local` and on Vercel (type "Config"); event retention 14 months, Google signals off.
+  Verified: ID in the live HTML, and the user saw their own visit in GA's Realtime report.
+- **Google Search Console**: Domain property verified by the user via Cloudflare DNS; sitemap
+  `https://fieldnotesfromeverywhere.com/sitemap.xml` submitted (full URL; a Domain property has
+  no prefilled address); linked to GA4 (Admin → Product links → Search Console links).
+- **Phone share-sheet button**: verified by the user on a real phone (opens the phone's own
+  share menu).
 
 Done this session (2026-09-27), each with a DECISIONS.md entry: domain cutover; canonical URLs;
 header logo; Reading Room trial paused (checkout-only CTAs, legal pages edited); send-list
