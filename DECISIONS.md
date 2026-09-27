@@ -1507,8 +1507,10 @@ full-screen dark menu; an attached lighter drawer.
   "Take a look", so it doesn't repeat the teaser above it.
   Follow-up (user, same day): the landing page keeps the "30+ themed book recommendations, Monday
   through Saturday." heading above the four blocks (no "The daily catalogue" label); the
-  homepage teaser drops that label, ends "Oh and it's just $7/month.", and its box is heading +
-  "Take a look" only.
+  homepage teaser drops that label and heading, and is now the user's own copy: "Every Monday
+  through Saturday, we send out a daily catalogue…", "The books in these catalogues are sourced
+  from hundreds of reader recommendations…", the Sunday-recap line, then "Oh and it's just
+  $7/month." in the same body style; its box is heading + "Take a look" only.
 - **Reading Room book covers** (2026-09-27): the drifting hero covers and "A few of the books
   we've recommended so far" shelf show real covers from published articles
   (`getRecommendedCovers`, newest articles first, each book once, up to 24), falling back to

@@ -362,18 +362,18 @@ export default async function HomePage() {
           </div>
           {/* Short teaser here, the full four-part pitch on /the-reading-room: swapped with the landing page by the user, 2026-09-27 (DECISIONS.md). */}
           <div style={{ display: "flex", flexDirection: "column", gap: 20, textAlign: "left", alignSelf: "center" }}>
-            <h3 style={{ font: "var(--weight-bold) clamp(26px,3vw,38px)/1.15 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--ink-800)", margin: 0, textWrap: "balance" }}>
-              30+ themed book recommendations, Monday through Saturday.
-            </h3>
             <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
-              Every catalogue focuses on one specific reader interest. For each one, we analyse hundreds of real reader
-              recommendations to find and bring the top picks right to your inbox.
+              Every Monday through Saturday, we send out a daily catalogue of themed book recommendations.
+            </p>
+            <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
+              The books in these catalogues are sourced from hundreds of reader recommendations, which are analyzed to
+              uncover the top picks by real readers.
             </p>
             <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--clay-700)", margin: 0, textWrap: "pretty" }}>
-              And if you miss a day, no worries. Every Sunday, we&rsquo;ll send you a recap of all six catalogues from the
+              And if you miss a day, no worries. Every Sunday, we also send out a recap of all six catalogues from the
               week, so you can easily catch up on anything you missed.
             </p>
-            <p style={{ font: "var(--weight-bold) clamp(19px,1.8vw,22px)/1.4 var(--font-display)", color: "var(--ink-800)", margin: 0 }}>
+            <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
               Oh and it&rsquo;s just $7/month.
             </p>
           </div>
