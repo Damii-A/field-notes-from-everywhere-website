@@ -1496,6 +1496,15 @@ full-screen dark menu; an attached lighter drawer.
   edges on phones (≤700px), like the other two columns, but keeps its designed square corners and
   no shadow at every width (a first pass also rounded it; the user wanted only the width fixed). While a column's lead is its only article, the empty "All articles"
   heading is hidden and the lead gets the bottom spacing instead.
+- **Reading Room copy swapped between homepage and landing page** (2026-09-27): the homepage's
+  four labelled blocks (What you get / The themes / The research / Sunday catch-up, from
+  `homepage.md` §4) now sit on `/the-reading-room`, and the landing page's short "The daily
+  catalogue" text ("30+ themed book recommendations, Monday through Saturday." + two paragraphs)
+  is the homepage teaser. User's reasoning: the long pitch belongs where people decide to pay.
+  Also by the user: themes read "dark romance", "emotionally devastating", "found family"; "The
+  research" is expanded from the About page's "How we find the books" and links to it. The
+  homepage "Sound like your kind of thing?" box is now just "Just $7/month. Cancel anytime." +
+  "Take a look", so it doesn't repeat the teaser above it.
 
 ---
 

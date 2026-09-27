@@ -12,6 +12,24 @@ export const metadata: Metadata = {
   description: "30+ themed book recommendations, Monday through Saturday. $7/month, cancel anytime.",
 };
 
+/* "The research" is drawn from the About page's "How we find the books" (user's request). */
+const PITCH: { label: string; body: React.ReactNode[] }[] = [
+  { label: "What you get", body: ["Reading Room subscribers get a themed daily newsletter sharing the most-recommended books for one specific interest."] },
+  { label: "The themes", body: ["Think “dark romance”, “emotionally devastating”, “found family”, you name it. We’re basically working our way through as many reader interests as we can."] },
+  {
+    label: "The research",
+    body: [
+      "And of course, in true FNFE spirit, we’re not just cobbling together a list of five random recommendations. For every theme, we go through multiple independent reader discussions, which can mean hundreds or even thousands of individual recommendations.",
+      "We check that each person is genuinely recommending the book for that specific theme, not just mentioning it in passing, and we verify every book so the title and details are right. Then we look at how often readers independently recommended each one across all of those discussions.",
+      <>
+        The books readers keep putting forward are the ones that make the catalogue. At least 30 of them, every single time.{" "}
+        <Link href="/about#how-we-find-the-books">See exactly how we find the books</Link>
+      </>,
+    ],
+  },
+  { label: "Sunday catch-up", body: ["Oh and don’t worry about having to keep up all the time. On Sundays we round up the week’s catalogues so you can catch up on anything you missed."] },
+];
+
 const SPINES = ["var(--slate-600)", "var(--clay-600)", "var(--sky-600)", "var(--sage-600)", "var(--clay-700)", "var(--sky-700)"];
 
 const TITLES: [string, string][] = [
@@ -59,17 +77,18 @@ export default async function ReadingRoomPage() {
 
       <section className={styles.section}>
         <div className={styles.sectionInner}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            <span className={styles.kicker}>The daily catalogue</span>
-            <h2 className={styles.sectionHeading}>30+ themed book recommendations, Monday through Saturday.</h2>
-            <p className={styles.sectionBody}>
-              Every catalogue focuses on one specific reader interest. For each one, we analyse hundreds of real
-              reader recommendations to find and bring the top picks right to your inbox.
-            </p>
-            <p className={styles.sectionBody} style={{ color: "var(--clay-700)" }}>
-              And if you miss a day, no worries. Every Sunday, we&rsquo;ll send you a recap of all six catalogues from
-              the week, so you can easily catch up on anything you missed.
-            </p>
+          {/* The full four-part pitch here, the short teaser on the homepage: swapped by the user, 2026-09-27 (DECISIONS.md). */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "clamp(24px,3vw,36px)" }}>
+            {PITCH.map((block) => (
+              <div key={block.label} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <h2 className={styles.kicker} style={{ margin: 0 }}>{block.label}</h2>
+                {block.body.map((para, i) => (
+                  <p key={i} className={styles.sectionBody}>
+                    {para}
+                  </p>
+                ))}
+              </div>
+            ))}
           </div>
           <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
             <div className={styles.mockFrame}>
