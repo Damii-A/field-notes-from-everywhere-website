@@ -13,10 +13,9 @@ issues to the user). Also removed that day: the `@example.com` test contact from
 segment. Resend shows each contact's *first* signup date; re-signups keep it (not a bug).
 
 **Email analytics (2026-09-27)**: weekly newsletter now a Resend Broadcast to "Email list
-(everyone)"; list emails tagged per article; UTM links in both (DECISIONS.md). **Needs the user**:
-add `RESEND_EMAIL_LIST_SEGMENT_ID` = `8cc353d8-01f9-4e6a-a3f9-dc61420682e9` on Vercel (Production)
-before Sunday 2026-10-04, or that week's newsletter fails (signups keep working either way).
-After the first send, check its stats in Resend → Broadcasts.
+(everyone)"; list emails tagged per article; UTM links in both (DECISIONS.md). `RESEND_EMAIL_LIST_SEGMENT_ID`
+(`8cc353d8-01f9-4e6a-a3f9-dc61420682e9`) added on Vercel by the user 2026-09-27. First real
+Broadcast: Sunday 2026-10-04; afterwards, check its stats in Resend → Broadcasts.
 
 **Next priority: Paddle live switch.** The Join buttons are live but Paddle is still in sandbox,
 so a real visitor can't actually pay yet. Needs: Paddle live account verification + domain
