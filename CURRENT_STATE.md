@@ -36,8 +36,8 @@ reached the webhook on the real domain (2026-09-27, 200 `revalidated`).
 
 **First article live 2026-09-27**: the user published the Shortlist thriller article
 (`/the-shortlist/thriller-book-recommendations`) and moved its date to 2026-09-27 so it shows now
-(it had been scheduled for Oct 1). The What to Read When and Book Club thriller articles are
-still drafts dated Oct 2 / Oct 3. **Paddle's default payment link**
+(it had been scheduled for Oct 1). The What to Read When and Book Club thriller articles were
+published the same day too (all three live, dated 2026-09-27). **Paddle's default payment link**
 still points at the vercel.app subscribe page (works via the redirect); set it to
 `https://fieldnotesfromeverywhere.com/the-reading-room/subscribe` in the dashboard at the Paddle
 live switch (the live account needs its own anyway, plus its own webhook destination). The
@@ -667,9 +667,8 @@ deliberately skipped (would drop older iPhones).
 
 (Earlier note, superseded:) **Phone layout pass — first round done 2026-09-24** (see `DECISIONS.md`): book entries, header,
 homepage intro text and the send-list popup fixed at phone width; every page audited at 390px.
-Not yet looked at: tablet widths in detail, the Reading Room book shelf's placeholder covers (a
-content gap, not layout), and hub "All articles" showing an empty heading when a column has only
-its lead article.
+Not yet looked at: tablet widths in detail and the Reading Room book shelf's placeholder covers (a
+content gap, not layout). (The empty "All articles" heading was fixed 2026-09-27.)
 
 ~~**Mobile polish, deliberately deferred (2026-09-22)**~~: the user noted the site doesn't perform
 particularly well on mobile generally, and wants that tackled as a dedicated pass at the end

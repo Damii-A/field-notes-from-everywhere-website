@@ -26,11 +26,38 @@
   text-align: left;
 }
 
+.leadSection {
+  padding: clamp(28px, 3.6vw, 52px) var(--gutter-screen) 0;
+}
+/* The only article in its column: the "All articles" section is hidden, so
+   leave the gap it would have left above the footer. */
+.leadSectionLast {
+  padding-bottom: clamp(48px, 6vw, 88px);
+}
+
 .leadCard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
   max-width: var(--max-content);
   margin: 0 auto;
+  background: var(--surface-card);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-raised);
+}
+
+/* The Shortlist: edge to edge, square corners, no shadow (the design), from
+   tablet width up. Phones keep the inset card, like the other two columns
+   (user's choice 2026-09-27). */
+@media (min-width: 701px) {
+  .leadSectionFlush {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .leadCardFlush {
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
 
 .leadImage {

@@ -58,17 +58,14 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
         </div>
       </section>
 
+      {/* The Shortlist's lead is full-bleed and square on wider screens (as designed); on phones it's an inset card like the other two (CSS). */}
       {hub.latest ? (
-        <section style={{ padding: category === "the-shortlist" ? "clamp(28px,3.6vw,52px) 0 0" : "clamp(28px,3.6vw,52px) var(--gutter-screen) 0" }}>
+        <section
+          className={[styles.leadSection, category === "the-shortlist" ? styles.leadSectionFlush : "", visible.length === 0 ? styles.leadSectionLast : ""].filter(Boolean).join(" ")}
+        >
           <Link
             href={`/${category}/${hub.latest.slug}`}
-            className={styles.leadCard}
-            style={{
-              background: "var(--surface-card)",
-              borderRadius: category === "the-shortlist" ? 0 : "var(--radius-2xl)",
-              overflow: "hidden",
-              boxShadow: category === "the-shortlist" ? undefined : "var(--shadow-raised)",
-            }}
+            className={category === "the-shortlist" ? `${styles.leadCard} ${styles.leadCardFlush}` : styles.leadCard}
           >
             <div className={styles.leadImage}>
               <ImagePlaceholder label="Lead article image" src={hub.latest.heroImage?.url} position={hub.latest.heroImage?.position} alt={hub.latest.heroImage?.alt} />
@@ -92,6 +89,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
         </section>
       ) : null}
 
+      {visible.length > 0 || !hub.latest ? (
       <section className={styles.allSection}>
         <div className={styles.allInner}>
           <h2 className={styles.allHeading}>All articles</h2>
@@ -123,6 +121,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
           ) : null}
         </div>
       </section>
+      ) : null}
     </div>
   );
 }

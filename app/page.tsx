@@ -120,6 +120,41 @@ export default async function HomePage() {
         </h3>
       </section>
 
+      {/* The Shortlist rail */}
+      {showcase.shortlist.length > 0 ? (
+        <section style={{ background: "var(--sage-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
+          <div className={styles.showcaseHeader}>
+            <div className={styles.showcaseBox} style={{ ["--box-bg" as string]: "var(--sage-100)" }}>
+              <Link
+                href="/the-shortlist"
+                style={{
+                  display: "block",
+                  font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
+                  letterSpacing: "var(--tracking-tight)",
+                  color: "var(--sage-700)",
+                }}
+              >
+                The Shortlist
+              </Link>
+              <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "56ch" }}>
+                The books that rose to the top of the reader recommendations we analysed. One researched interest, the
+                titles readers kept putting forward.
+              </p>
+            </div>
+          </div>
+          <div className={styles.rail} style={{ gap: "clamp(20px,2.4vw,32px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
+            {showcase.shortlist.map((a) => (
+              <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
+                <div className={styles.railCardImage}>
+                  <ImagePlaceholder label="Article image" src={a.heroImage?.url} position={a.heroImage?.position} alt={a.heroImage?.alt} />
+                </div>
+                <span className={styles.railCardTitle}>{a.title}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       {/* What to Read When rail */}
       {showcase.when.length > 0 ? (
         <section style={{ background: "var(--oat-200)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
@@ -146,41 +181,6 @@ export default async function HomePage() {
           </div>
           <div className={styles.rail} style={{ gap: "clamp(28px,4vw,64px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
             {showcase.when.map((a) => (
-              <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
-                <div className={styles.railCardImage}>
-                  <ImagePlaceholder label="Article image" src={a.heroImage?.url} position={a.heroImage?.position} alt={a.heroImage?.alt} />
-                </div>
-                <span className={styles.railCardTitle}>{a.title}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {/* The Shortlist rail */}
-      {showcase.shortlist.length > 0 ? (
-        <section style={{ background: "var(--sage-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
-          <div className={styles.showcaseHeader}>
-            <div className={styles.showcaseBox} style={{ ["--box-bg" as string]: "var(--sage-100)" }}>
-              <Link
-                href="/the-shortlist"
-                style={{
-                  display: "block",
-                  font: "var(--weight-bold) clamp(28px,3.2vw,38px)/1.02 var(--font-display)",
-                  letterSpacing: "var(--tracking-tight)",
-                  color: "var(--sage-700)",
-                }}
-              >
-                The Shortlist
-              </Link>
-              <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "56ch" }}>
-                The books that rose to the top of the reader recommendations we analysed. One researched interest, the
-                titles readers kept putting forward.
-              </p>
-            </div>
-          </div>
-          <div className={styles.rail} style={{ gap: "clamp(20px,2.4vw,32px)", padding: "clamp(36px,5vw,64px) var(--gutter-screen) 60px" }}>
-            {showcase.shortlist.map((a) => (
               <Link key={a.slug} href={`/${a.category}/${a.slug}`} className={styles.railCard}>
                 <div className={styles.railCardImage}>
                   <ImagePlaceholder label="Article image" src={a.heroImage?.url} position={a.heroImage?.position} alt={a.heroImage?.alt} />
