@@ -42,7 +42,19 @@ segment. Resend shows each contact's *first* signup date; re-signups keep it (no
 (`8cc353d8-01f9-4e6a-a3f9-dc61420682e9`) added on Vercel by the user 2026-09-27. First real
 Broadcast: Sunday 2026-10-04; afterwards, check its stats in Resend → Broadcasts.
 
-**Next priority: Paddle live switch.** The Join buttons are live but Paddle is still in sandbox,
+**Paddle live switch — in progress (2026-09-27).** Done: the user created the live Paddle account
+and a live API key (`PADDLE_LIVE_API_KEY` in `.env.local`; the sandbox values stay for local
+testing). Created in live via the API, copying the sandbox exactly: product
+`pro_01m3j7tcyp08vmnx18avy12pfk`, price `pri_01m3j7tdjww6pbve0azdszysw5` ($7.00 USD monthly, no
+trial, tax by location), client token `ctkn_01m3j7tdwqyd1d309bgp69ctvq`, notification destination
+`ntfset_01m3j7te7sraen15jcmd15q3wd` (the same 4 subscription events → the real-domain webhook). Their
+values are saved in `.env.local` as `PADDLE_LIVE_WEBHOOK_SECRET` / `PADDLE_LIVE_CLIENT_TOKEN` /
+`PADDLE_LIVE_PRICE_ID`. Still to do, in order: domain approval (Checkout → Request domain approval),
+default payment link, payout details, any identity verification Paddle asks for; then swap the
+five Vercel env vars to the live values + `NEXT_PUBLIC_PADDLE_ENVIRONMENT=production`, redeploy, and
+a real purchase test. No code change is needed (all Paddle config comes from env vars).
+
+**Paddle live switch — original checklist.** The Join buttons are live but Paddle is still in sandbox,
 so a real visitor can't actually pay yet. Needs: Paddle live account verification + domain
 review (Terms/Privacy/refund policy are published and reachable from the footer), then a live
 API key, client token, Price, webhook destination (`https://fieldnotesfromeverywhere.com/api/webhooks/paddle`)
