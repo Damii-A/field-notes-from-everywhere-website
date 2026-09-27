@@ -29,8 +29,8 @@ at the dead `o6jkwewmr` deployment was deleted), Paddle sandbox notification des
 domain, Resend domain re-verified (Tracking record now verified, so open/click tracking is live).
 Verified live: HTTPS on root and www, every page 200, 404 page, sitemap/robots/RSS on the real
 domain, both webhook endpoints reachable (reject unsigned requests), Studio CORS header returned.
-**Not yet verified**: the user logging into `/studio` on the real domain; a real Sanity publish
-reaching the webhook (check with the first article published). **Paddle's default payment link**
+The user logged into `/studio` on the real domain successfully (2026-09-27). **Not yet
+verified**: a real Sanity publish reaching the webhook (check with the first article published). **Paddle's default payment link**
 still points at the vercel.app subscribe page (works via the redirect); set it to
 `https://fieldnotesfromeverywhere.com/the-reading-room/subscribe` in the dashboard at the Paddle
 live switch (the live account needs its own anyway, plus its own webhook destination). The
