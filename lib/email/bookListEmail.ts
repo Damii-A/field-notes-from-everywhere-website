@@ -6,22 +6,22 @@ import { SITE_URL } from "@/lib/siteUrl";
 /**
  * The "send this list to me" email (pub_article.md §6.4), laid out like the
  * article it came from: logo, greeting, article image + title + methodology
- * box, then every book with cover, author, tags and blurb, in the article's
- * own category colours. Email clients can't read the site's CSS variables,
+ * box, then every book with cover, author, tags and blurb, on the article's
+ * own category colour (no white card; user, 2026-09-27). Email clients can't read the site's CSS variables,
  * so the colours below are the hex values of the tokens ArticleView uses
  * (styles/tokens). Tables + inline styles throughout, for email clients.
  */
 
-const COLOURS: Record<CategorySlug, { pageBg: string; title: string; tagBorder: string; methodBorder: string; button: string; buttonText: string }> = {
-  "the-shortlist": { pageBg: "#E5EAD8", title: "#657455", tagBorder: "#B4C09E", methodBorder: "#8B9C71", button: "#657455", buttonText: "#F5F7EE" },
-  "what-to-read-when": { pageBg: "#ECEEDF", title: "#8F5F3C", tagBorder: "#CFAB8D", methodBorder: "#B98E6B", button: "#8F5F3C", buttonText: "#F5F7EE" },
-  "book-club-book-picks": { pageBg: "#F5F7EE", title: "#3F606B", tagBorder: "#8FC4D2", methodBorder: "#5C9FB2", button: "#3F606B", buttonText: "#F5F7EE" },
+// methodBg: the "How we made this list" box, one shade off the page colour (as on the site).
+const COLOURS: Record<CategorySlug, { pageBg: string; methodBg: string; title: string; tagBorder: string; methodBorder: string; button: string; buttonText: string }> = {
+  "the-shortlist": { pageBg: "#E5EAD8", methodBg: "#F5F7EE", title: "#657455", tagBorder: "#B4C09E", methodBorder: "#8B9C71", button: "#657455", buttonText: "#F5F7EE" },
+  "what-to-read-when": { pageBg: "#ECEEDF", methodBg: "#F5F7EE", title: "#8F5F3C", tagBorder: "#CFAB8D", methodBorder: "#B98E6B", button: "#8F5F3C", buttonText: "#F5F7EE" },
+  "book-club-book-picks": { pageBg: "#F5F7EE", methodBg: "#ECEEDF", title: "#3F606B", tagBorder: "#8FC4D2", methodBorder: "#5C9FB2", button: "#3F606B", buttonText: "#F5F7EE" },
 };
 
 const INK = "#302B24";
 const INK_SOFT = "#4E463C";
 const INK_MUTED = "#736858";
-const CARD = "#FFFFFF";
 const RULE = "#D9C4B0";
 const DISPLAY = "'Comfortaa','Nunito',Arial,Helvetica,sans-serif";
 const BODY = "'Nunito',Arial,Helvetica,sans-serif";
@@ -92,7 +92,7 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
   @media (max-width: 480px) {
     .fnfe-cover, .fnfe-text { display: block !important; width: 100% !important; }
     .fnfe-cover { padding: 0 0 14px !important; }
-    .fnfe-card { padding: 24px 18px !important; }
+    .fnfe-card { padding: 4px 12px 24px !important; }
   }
 </style></head>
 <body style="margin:0;padding:0;background:${c.pageBg};">
@@ -107,7 +107,7 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
         </tr></table>
       </a>
     </td></tr>
-    <tr><td class="fnfe-card" style="background:${CARD};border-radius:16px;padding:32px 28px;">
+    <tr><td class="fnfe-card" style="padding:8px 28px 32px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr><td style="padding:0 0 24px;">
           <p style="margin:0 0 14px;font:16px/1.6 ${BODY};color:${INK};">${hi ? `Hi ${esc(hi)},` : "Hi there,"}</p>
@@ -122,7 +122,7 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
           <a href="${esc(url)}" style="text-decoration:none;"><h1 style="margin:0;font:700 26px/1.2 ${DISPLAY};color:${c.title};">${esc(article.title)}</h1></a>
         </td></tr>
         ${article.methodologySentence ? `<tr><td style="padding:0 0 8px;">
-          <div style="background:${c.pageBg};border-left:3px solid ${c.methodBorder};border-radius:8px;padding:14px 18px;">
+          <div style="background:${c.methodBg};border-left:3px solid ${c.methodBorder};border-radius:8px;padding:14px 18px;">
             <div style="font:600 11px/1.4 ${MONO};letter-spacing:1.5px;text-transform:uppercase;color:${INK_MUTED};margin:0 0 6px;">How we made this list</div>
             <div style="font:14px/1.55 ${BODY};color:${INK_SOFT};">${esc(article.methodologySentence)}</div>
           </div>

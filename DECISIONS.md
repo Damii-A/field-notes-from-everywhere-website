@@ -1505,6 +1505,16 @@ full-screen dark menu; an attached lighter drawer.
   research" is expanded from the About page's "How we find the books" and links to it. The
   homepage "Sound like your kind of thing?" box is now just "Just $7/month. Cancel anytime." +
   "Take a look", so it doesn't repeat the teaser above it.
+  Follow-up (user, same day): the landing page keeps the "30+ themed book recommendations, Monday
+  through Saturday." heading above the four blocks (no "The daily catalogue" label); the
+  homepage teaser drops that label, ends "Oh and it's just $7/month.", and its box is heading +
+  "Take a look" only.
+- **Reading Room book covers** (2026-09-27): the drifting hero covers and "A few of the books
+  we've recommended so far" shelf show real covers from published articles
+  (`getRecommendedCovers`, newest articles first, each book once, up to 24), falling back to
+  the design's placeholder titles while fewer than 8 covered books are published.
+- **Book-list email background** (2026-09-27): no white card; the email sits on the article's
+  category colour like the article page, with the methodology box one shade off it.
 
 ---
 

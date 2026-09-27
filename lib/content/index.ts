@@ -396,6 +396,40 @@ export async function getFeedArticles(limit: number): Promise<FeedArticle[]> {
   }));
 }
 
+export interface CoverBook {
+  title: string;
+  author: string;
+  coverUrl: string;
+}
+
+/**
+ * Real covers of books recommended in published articles (newest articles
+ * first, each book once, only books that have a cover) — the Reading Room
+ * page's drifting hero covers and "A few of the books we've recommended so
+ * far" shelf. Empty until something with covers is published; the page then
+ * falls back to its placeholder titles.
+ */
+export async function getRecommendedCovers(limit: number): Promise<CoverBook[]> {
+  const raws = await groqFetch<{ books: ({ _id: string; title: string; author: string; coverUrl: string | null } | null)[] | null }[]>(
+    `*[_type == "article" && ${RELEASED}] | order(publishedAt desc){
+      "books": bookEntries[].book->{ _id, title, author, "coverUrl": coverImage.asset->url }
+    }`,
+    {},
+    { tags: ["article", "book"], revalidate: 300 },
+  );
+  const seen = new Set<string>();
+  const out: CoverBook[] = [];
+  for (const a of raws) {
+    for (const b of a.books ?? []) {
+      if (!b?.coverUrl || seen.has(b._id)) continue;
+      seen.add(b._id);
+      out.push({ title: b.title, author: b.author, coverUrl: b.coverUrl });
+      if (out.length === limit) return out;
+    }
+  }
+  return out;
+}
+
 export function categoryPath(category: CategorySlug): string {
   return `/${category}`;
 }

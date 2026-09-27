@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BookCover } from "@/components/ds/BookCover";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
-import { getSiteSettings } from "@/lib/content";
+import { getRecommendedCovers, getSiteSettings } from "@/lib/content";
 import styles from "./ReadingRoom.module.css";
 
 export const metadata: Metadata = {
@@ -48,8 +48,10 @@ const TITLES: [string, string][] = [
 ];
 
 export default async function ReadingRoomPage() {
-  const settings = await getSiteSettings();
-  const doubled = [...TITLES, ...TITLES];
+  const [settings, covers] = await Promise.all([getSiteSettings(), getRecommendedCovers(24)]);
+  // Real covers from published articles (user, 2026-09-27); the placeholder titles only until enough exist.
+  const books = covers.length >= 8 ? covers.map((c) => ({ title: c.title, author: c.author, src: c.coverUrl })) : TITLES.map(([title, author]) => ({ title, author, src: undefined }));
+  const doubled = [...books, ...books]; // two copies, so the drifting rows loop seamlessly
 
   return (
     <>
@@ -59,7 +61,7 @@ export default async function ReadingRoomPage() {
         <div className={styles.driftLayer} aria-hidden="true">
           <div className={styles.driftTrack}>
             {doubled.map((b, i) => (
-              <BookCover key={i} title={b[0]} author={b[1]} spine={SPINES[i % SPINES.length]} width={104} ratio={1.5} bookmark={false} />
+              <BookCover key={i} title={b.title} author={b.author} src={b.src} spine={SPINES[i % SPINES.length]} width={104} ratio={1.5} bookmark={false} />
             ))}
           </div>
         </div>
@@ -79,9 +81,10 @@ export default async function ReadingRoomPage() {
         <div className={styles.sectionInner}>
           {/* The full four-part pitch here, the short teaser on the homepage: swapped by the user, 2026-09-27 (DECISIONS.md). */}
           <div style={{ display: "flex", flexDirection: "column", gap: "clamp(24px,3vw,36px)" }}>
+            <h2 className={styles.sectionHeading}>30+ themed book recommendations, Monday through Saturday.</h2>
             {PITCH.map((block) => (
               <div key={block.label} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <h2 className={styles.kicker} style={{ margin: 0 }}>{block.label}</h2>
+                <h3 className={styles.kicker} style={{ margin: 0 }}>{block.label}</h3>
                 {block.body.map((para, i) => (
                   <p key={i} className={styles.sectionBody}>
                     {para}
@@ -105,11 +108,15 @@ export default async function ReadingRoomPage() {
           <span className={styles.shelfLabel}>A few of the books we&rsquo;ve recommended so far</span>
           <div className={styles.shelfMask}>
             <div className={styles.shelfTrack}>
-              {doubled.map((b, i) => (
-                <div key={i} style={{ position: "relative", flex: "0 0 auto", width: 136, aspectRatio: "2/3", borderRadius: "4px 10px 10px 4px", overflow: "hidden", boxShadow: "var(--shadow-cover)" }}>
-                  <ImagePlaceholder label={b[0]} />
-                </div>
-              ))}
+              {doubled.map((b, i) =>
+                b.src ? (
+                  <BookCover key={i} title={b.title} author={b.author} src={b.src} alt={`${b.title} by ${b.author}`} width={136} ratio={1.5} bookmark={false} />
+                ) : (
+                  <div key={i} style={{ position: "relative", flex: "0 0 auto", width: 136, aspectRatio: "2/3", borderRadius: "4px 10px 10px 4px", overflow: "hidden", boxShadow: "var(--shadow-cover)" }}>
+                    <ImagePlaceholder label={b.title} />
+                  </div>
+                ),
+              )}
             </div>
           </div>
         </div>
