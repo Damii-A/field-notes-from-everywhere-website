@@ -18,8 +18,8 @@ Next steps, in order:
    The emails' UTM links only pay off once this is live.
 3. **Sunday 2026-10-04**: first weekly newsletter as a Resend Broadcast. Afterwards confirm it
    sent (Resend → Broadcasts) and show the user its stats.
-4. Ask the user to try the phone share-sheet button ("More ways to share") on a real phone;
-   the headless test browser can't exercise `navigator.share`.
+4. ~~Phone share-sheet button~~ — verified by the user on a real phone 2026-09-27 (opens the
+   phone's own share menu).
 
 Done this session (2026-09-27), each with a DECISIONS.md entry: domain cutover; canonical URLs;
 header logo; Reading Room trial paused (checkout-only CTAs, legal pages edited); send-list
