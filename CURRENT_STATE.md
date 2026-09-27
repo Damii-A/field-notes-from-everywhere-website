@@ -1,26 +1,24 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-26. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-09-27. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Session ended 2026-09-26 at cutover step (1)**: the user has been given the instructions to add
-the domain in Vercel (Settings → Domains, www → redirect to root) and send back the DNS records
-Vercel shows. Nothing has been changed in Vercel or Cloudflare yet; the WordPress site is still
-live on the domain. Resume there.
-
-**Domain cutover moved up (user agreed 2026-09-26)** — do it before publishing articles, pinning
-links, and setting up GA/Search Console, so shared links and search results use the real domain
-from day one (Paddle's review needs it too). Findings: no code references the vercel.app URL
-(everything reads `SITE_URL`); the root domain currently serves an old **WordPress** site via
-Cloudflare-proxied A/AAAA records (user: nothing on it matters, replace outright, no redirects
-needed); root MX is **Zoho** mail (must stay untouched), plus Resend's `send.*` MX/TXT and
-`resend._domainkey` records. Steps: (1) user adds the domain in Vercel → Settings → Domains
-(www → redirect to root) and sends the DNS records Vercel asks for; (2) Claude maps them against
-Cloudflare (replace the WordPress A/AAAA; DNS only / grey cloud); (3) **confirm with the user
-right before** they change Cloudflare (the actual switch; reversible by restoring the old
-records); (4) update `SITE_URL` on Vercel (user) + redeploy, Sanity CORS (API), Paddle default
-payment link (API), redirect the vercel.app domain to the custom domain in Vercel, add the Resend
-`links` CNAME at the same time; verify HTTPS, pages, sitemap, Studio login, email links. Then GA
-(use the real domain as the stream URL), Search Console, Paddle domain review.
+**Domain cutover done 2026-09-27** — the site is live at **https://fieldnotesfromeverywhere.com**
+(the old WordPress site is gone). Cloudflare: root and `www` are CNAMEs to Vercel's target
+`9cafd724e379f8df.vercel-dns-017.com`, DNS only (grey cloud); `links` CNAME for Resend added;
+Zoho MX/TXT untouched. Vercel: `www` and `field-notes-from-everywhere-website.vercel.app` both
+308-redirect to the root (path and query kept); `SITE_URL` on Vercel is the real domain; every
+page now has a canonical URL on it (`metadataBase` in `app/layout.tsx`). Updated via API: Sanity
+CORS (real domain added), Sanity publish webhook → real domain (a stale second webhook pointing
+at the dead `o6jkwewmr` deployment was deleted), Paddle sandbox notification destination → real
+domain, Resend domain re-verified (Tracking record now verified, so open/click tracking is live).
+Verified live: HTTPS on root and www, every page 200, 404 page, sitemap/robots/RSS on the real
+domain, both webhook endpoints reachable (reject unsigned requests), Studio CORS header returned.
+**Not yet verified**: the user logging into `/studio` on the real domain; a real Sanity publish
+reaching the webhook (check with the first article published). **Paddle's default payment link**
+still points at the vercel.app subscribe page (works via the redirect); set it to
+`https://fieldnotesfromeverywhere.com/the-reading-room/subscribe` in the dashboard at the Paddle
+live switch (the live account needs its own anyway, plus its own webhook destination). The
+vercel.app CORS entries in Sanity are now unused and can be removed.
 
 **After the cutover** (user setup steps, one at a time):
 1. **Google Analytics**: user creates a GA4 property + web data stream, sets event data retention
@@ -28,8 +26,7 @@ payment link (API), redirect the vercel.app domain to the custom domain in Verce
    Measurement ID (`G-…`, not a secret). Then set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in `.env.local`
    and on Vercel (a `NEXT_PUBLIC_` var: change its type to "Config" before Save — see agent
    memory), redeploy, and confirm real hits in GA's Realtime report.
-2. **Resend tracking DNS**: add CNAME `links` → `links2.resend-dns.com` at Cloudflare (DNS only),
-   then re-verify the domain via the API and confirm the Tracking record verifies.
+2. ~~**Resend tracking DNS**~~ — done 2026-09-27 with the cutover (Tracking record verified).
 3. **Legal pages**: the three drafts in the Studio were rewritten (brand name only; GA with
    consent; email open/click measurement; ads/sponsorships as planned). The user reviews, sets
    "Last updated", and publishes **after step 1 is live** (the privacy policy describes GA).
@@ -624,9 +621,7 @@ Full reasoning in `DECISIONS.md`; summary here for quick reference:
   Paddle's own receipt email didn't arrive on the sandbox test purchase — likely just sandbox
   behavior (Paddle's transactional emails are entirely outside this app's code either way),
   worth a glance once testing with production credentials but not chased now.
-- **Production domain DNS cutover** — deliberately deferred to near the end of the build (see
-  "Deployment" above). The domain's DNS is managed at Cloudflare (nameservers delegated there
-  from Namecheap, which is just the registrar).
+- ~~**Production domain DNS cutover**~~ — done 2026-09-27, see the top of this file.
 - **Real legal copy** for Terms, Privacy & Cookies, and Disclosures — currently placeholder
   in the design; needs real text (from the user or their legal counsel) before public launch.
   Deliberately sequenced last, alongside content authoring.
@@ -671,7 +666,8 @@ sessions should push completed logical work regularly per `AI_ENGINEERING_OPERAT
 
 ## Deployment
 
-**Production URL**: `https://field-notes-from-everywhere-website.vercel.app` — no hash
+**Production URL (since 2026-09-27)**: `https://fieldnotesfromeverywhere.com`. The vercel.app
+alias below now 308-redirects there. **Before 2026-09-27**: `https://field-notes-from-everywhere-website.vercel.app` — no hash
 suffix. This is Vercel's stable, project-name-based alias that always points to whatever the
 current production deployment is. Deploys automatically on push to `master`.
 
@@ -740,10 +736,7 @@ sets `NEXT_PUBLIC_SANITY_PROJECT_ID` directly, so it was never affected by this 
   live afterward — both routes now return real success responses in production.
 - **Deployment Protection**: was on by default (Vercel's own SSO-gate, blocking all public
   access) and has been turned off so the site is actually publicly reachable.
-- **Custom production domain**: deliberately not connected yet — Vercel's domain-connection
-  flow asks for either a nameserver handover or a root CNAME, both of which are the real DNS
-  cutover this project is holding off on until the site is otherwise ready to launch (see
-  `DECISIONS.md`/`CLAUDE.md` on treating that as a deliberate, late step, not routine).
+- **Custom production domain**: connected 2026-09-27 (see the top of this file).
 - **Not yet done**: Kit env vars on Vercel (account/integration itself is done locally — see
   "Kit connection" above) and Paddle account/integration; real content authoring (deliberately
   sequenced last — see below); legal copy; the domain cutover above.
