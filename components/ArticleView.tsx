@@ -493,13 +493,18 @@ function SendListPopup({
       <div onClick={onClose} aria-hidden="true" className={styles.overlay} />
       <div className={styles.popup}>
         <div className={styles.popupHeader}>
-          <span className={styles.popupHeading}>Want us to send this book list to your email?</span>
+          <span className={styles.popupHeading} role={status === "sent" ? "status" : undefined}>
+            {status === "sent" ? "Your list is on its way!" : "Want us to send this book list to your email?"}
+          </span>
           <button type="button" onClick={onClose} aria-label="Close" className={styles.popupClose}>
             <Icon name="x" size={18} />
           </button>
         </div>
         {status === "sent" ? (
-          <p className={styles.popupBody}>Sent! Check your inbox — and welcome to the free FNFE list.</p>
+          <p className={styles.popupBody}>
+            Check your inbox for all {bookCount} books. You&rsquo;re also on the free Field Notes From Everywhere email
+            list now. Welcome!
+          </p>
         ) : (
           <form onSubmit={handleSubmit}>
             <p className={styles.popupBody}>

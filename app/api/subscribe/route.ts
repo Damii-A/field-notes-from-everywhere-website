@@ -63,7 +63,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Article not found" }, { status: 404 });
     }
     try {
-      await sendBookListEmail(email, article);
+      await sendBookListEmail(email, name, article);
     } catch (err) {
       console.error("[api/subscribe] Resend send failed:", err);
       // The segment subscribe above already succeeded — don't report total

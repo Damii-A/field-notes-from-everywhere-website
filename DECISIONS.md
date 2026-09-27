@@ -1684,3 +1684,25 @@ specs, which all show a 7-day trial):
 5. Test end-to-end with a real inbox before switching it on.
 
 ---
+
+## 2026-09-27 — "Send this list to me": email rebuilt in the article's style; popup confirms in its heading
+
+**Decision** (user-directed after testing it live): the book-list email (`lib/email/bookListEmail.ts`)
+is laid out like the article: ghost logo + wordmark, "Hi {first name}," (capitalised; "Hi there,"
+without one), the user's own intro ("Here's the list you asked for. Enjoy!") and a **P.S.** about
+The Reading Room linking to `/the-reading-room`, then the article image, category pill, title,
+"How we made this list" box, and every book (rank on the Shortlist, cover, title, author, tags,
+blurb) in the category's colours, a "Read it on the site" button, "Happy reading, The FNFE Team",
+and a **P.P.S.** saying they'll also get the free weekly newsletter and can unsubscribe any time.
+Subject: "Your book list: {title}". A plain-text version is sent alongside. On phones (media
+query) covers sit above the text; clients without media-query support keep side-by-side.
+The article's own intro paragraphs are deliberately not included.
+
+Previously: subject = the title, "Here's the list you asked for:" and an unstyled numbered list,
+no name. In the popup, the heading kept asking "Want us to send this book list to your email?"
+after sending; it now changes to "Your list is on its way!" (announced to screen readers).
+
+**Verified**: email rendered from the live article at 760px and 390px (no sideways scroll); popup
+sent state checked on desktop and phone with the send faked (payload includes the name).
+
+---

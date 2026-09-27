@@ -9,8 +9,8 @@
 import { Resend } from "resend";
 import { articlePath, type Article, type FeedArticle } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
-import { splitParagraphs } from "@/lib/content/paragraphs";
 import { unsubscribeHeaders, unsubscribePageUrl } from "@/lib/unsubscribe";
+import { bookListEmailHtml, bookListEmailSubject, bookListEmailText } from "@/lib/email/bookListEmail";
 
 export class ResendNotConfiguredError extends Error {
   constructor() {
@@ -23,28 +23,21 @@ const FROM_ADDRESS = "Field Notes From Everywhere <hello@fieldnotesfromeverywher
 
 /** Footer on every free-list email: why they're getting it, and a way out (see lib/unsubscribe.ts). */
 function unsubscribeFooterHtml(email: string): string {
-  return `<p style="margin-top:32px;padding-top:16px;border-top:1px solid #e3e0ce;font-size:12px;line-height:1.5;color:#736858;">You're getting this because you joined the Field Notes From Everywhere email list. <a href="${escapeHtml(unsubscribePageUrl(email))}" style="color:#736858;">Unsubscribe</a></p>`;
+  return `<p style="margin-top:32px;padding-top:16px;border-top:1px solid #e3e0ce;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#736858;">You're getting this because you joined the Field Notes From Everywhere email list. <a href="${escapeHtml(unsubscribePageUrl(email))}" style="color:#736858;">Unsubscribe</a></p>`;
 }
 
-export async function sendBookListEmail(to: string, article: Article): Promise<void> {
+/** The "send this list to me" email; its layout lives in lib/email/bookListEmail.ts. */
+export async function sendBookListEmail(to: string, name: string, article: Article): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new ResendNotConfiguredError();
 
   const resend = new Resend(apiKey);
-  const bookListHtml = article.books
-    .map(
-      (b) =>
-        `<li><strong>${escapeHtml(b.rank ? `${b.rank}. ${b.title}` : b.title)}</strong> — ${escapeHtml(b.author)}<br/>${splitParagraphs(b.blurb)
-          .map((p) => escapeHtml(p).replace(/\n/g, "<br/>"))
-          .join("<br/><br/>")}</li>`,
-    )
-    .join("");
-
   const { error } = await resend.emails.send({
     from: FROM_ADDRESS,
     to,
-    subject: article.title,
-    html: `<p>Here's the list you asked for:</p><ol>${bookListHtml}</ol><p>— Field Notes From Everywhere</p>${unsubscribeFooterHtml(to)}`,
+    subject: bookListEmailSubject(article),
+    html: bookListEmailHtml(article, name, unsubscribeFooterHtml(to)),
+    text: bookListEmailText(article, name, unsubscribePageUrl(to)),
     headers: unsubscribeHeaders(to),
   });
   if (error) throw new Error(`Resend send failed: ${error.message}`);
