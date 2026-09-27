@@ -89,9 +89,11 @@
   background: color-mix(in srgb, var(--box-bg) 55%, var(--paper-050));
 }
 
+/* Landscape cards (user's choice 2026-09-27; the design's were 200px wide at 4:5),
+   so the wide article hero images aren't cropped to a narrow strip. */
 .railCard {
   flex: 0 0 auto;
-  width: 200px;
+  width: 260px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -104,7 +106,7 @@
 .railCardImage {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/5;
+  aspect-ratio: 3/2;
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-raised);

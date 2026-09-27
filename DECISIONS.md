@@ -1487,6 +1487,9 @@ full-screen dark menu; an attached lighter drawer.
   192px cut of `app/icon.png`) sits left of the two-line wordmark, sized to the wordmark's
   height (48px desktop, 40px mid-width, 38px phones). Decorative (`alt=""`), since the link
   text already names the site. Verified at 1280, 820 and 390px with no sideways scroll.
+- **Homepage article cards** (2026-09-27, Shortlist and What to Read When rows): 260px wide at
+  3:2 landscape (design: 200px at 4:5 portrait), after the first live article showed its wide
+  hero image cropped to a tall narrow strip. Book Club pair cards unchanged.
 
 ---
 
