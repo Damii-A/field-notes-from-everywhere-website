@@ -8,7 +8,9 @@ Reading Room button now says "Join The Reading Room" and goes straight to
 Settings and the live Terms/Privacy. The trial comes back **after the first 7 real issues have
 gone to paying members**, using those 7 as its sample issues. Full list of what changed and the
 rebuild steps: `DECISIONS.md`, "Reading Room free trial paused". The Resend trial automation is
-still there, unused.
+still there but **stopped/disabled** (2026-09-27, which cancelled two test runs sending placeholder
+issues to the user). Also removed that day: the `@example.com` test contact from the send-list
+segment. Resend shows each contact's *first* signup date; re-signups keep it (not a bug).
 
 **Next priority: Paddle live switch.** The Join buttons are live but Paddle is still in sandbox,
 so a real visitor can't actually pay yet. Needs: Paddle live account verification + domain

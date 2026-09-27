@@ -1681,7 +1681,10 @@ specs, which all show a 7-day trial):
 3. Restore the trial copy on the homepage box, article banner/rail ad, Site Settings price copy.
 4. Re-add the trial to the Terms (bullet + refund reasoning, if still wanted) and Privacy (what
    trial signups collect); update "Last updated".
-5. Test end-to-end with a real inbox before switching it on.
+5. Switch the Resend automation back on (it was **stopped** 2026-09-27 to cancel two test runs
+   still sending placeholder issues to the user's inbox: `status: "enabled"` via the Update
+   Automation API, or in the dashboard).
+6. Test end-to-end with a real inbox before switching it on.
 
 ---
 
