@@ -11,6 +11,7 @@ import { articlePath, type Article, type FeedArticle } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
 import { unsubscribeHeaders, unsubscribePageUrl } from "@/lib/unsubscribe";
 import { bookListEmailHtml, bookListEmailSubject, bookListEmailText } from "@/lib/email/bookListEmail";
+import { withUtm } from "@/lib/email/utm";
 
 export class ResendNotConfiguredError extends Error {
   constructor() {
@@ -39,17 +40,18 @@ export async function sendBookListEmail(to: string, name: string, article: Artic
     html: bookListEmailHtml(article, name, unsubscribeFooterHtml(to)),
     text: bookListEmailText(article, name, unsubscribePageUrl(to)),
     headers: unsubscribeHeaders(to),
+    // Labels for per-article reporting (DECISIONS.md, 2026-09-27, "Email analytics").
+    tags: [
+      { name: "email_type", value: "book_list" },
+      { name: "category", value: article.category },
+      { name: "article", value: article.slug.slice(0, 256) },
+    ],
   });
   if (error) throw new Error(`Resend send failed: ${error.message}`);
 }
 
 /** Resend's own event name for automations — matches whatever trigger is configured on the Reading Room trial automation in Resend's dashboard. */
 export const READING_ROOM_TRIAL_EVENT = "reading_room_trial_started";
-
-export interface ResendContactInfo {
-  email: string;
-  firstName: string | null;
-}
 
 /** Creates the contact in Resend if it doesn't already exist. Duplicate-email errors are expected and ignored — the subsequent segment-add call addresses the contact by email regardless of whether this call created it. */
 async function upsertContact(resend: Resend, email: string, firstName: string): Promise<void> {
@@ -66,11 +68,18 @@ async function upsertContact(resend: Resend, email: string, firstName: string): 
 export async function addToSegment(email: string, firstName: string, segmentId: string): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new ResendNotConfiguredError();
+  // The whole-list segment the weekly newsletter Broadcast is sent to. If it's
+  // missing from the environment, still sign them up (just log it): a config
+  // slip shouldn't turn away subscribers.
+  const emailListSegmentId = process.env.RESEND_EMAIL_LIST_SEGMENT_ID;
+  if (!emailListSegmentId) console.error("[resend] RESEND_EMAIL_LIST_SEGMENT_ID is not set; contact not added to the newsletter list.");
 
   const resend = new Resend(apiKey);
   await upsertContact(resend, email, firstName);
-  const { error } = await resend.contacts.segments.add({ email, segmentId });
-  if (error) throw new Error(`Resend add-to-segment failed: ${error.message}`);
+  for (const id of emailListSegmentId ? [segmentId, emailListSegmentId] : [segmentId]) {
+    const { error } = await resend.contacts.segments.add({ email, segmentId: id });
+    if (error) throw new Error(`Resend add-to-segment failed: ${error.message}`);
+  }
   // Signing up again is a fresh opt-in, so it clears an earlier unsubscribe,
   // and the name just typed replaces an older one (create() leaves an
   // existing contact untouched; the weekly recap greets by this name).
@@ -87,27 +96,6 @@ export async function unsubscribeContact(email: string): Promise<void> {
   const { error } = await resend.contacts.update({ email, unsubscribed: true });
   // An address that was never a contact has nothing to stop sending to.
   if (error && !/not.?found/i.test(error.message)) throw new Error(`Resend unsubscribe failed: ${error.message}`);
-}
-
-/** Every subscribed contact in a segment (email + first name), paginated; unsubscribed contacts are left out. Used by the weekly recap to build its recipient list. */
-export async function listSegmentContacts(segmentId: string): Promise<ResendContactInfo[]> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) throw new ResendNotConfiguredError();
-
-  const resend = new Resend(apiKey);
-  const contacts: ResendContactInfo[] = [];
-  let after: string | undefined;
-
-  for (;;) {
-    const { data, error } = await resend.contacts.list({ segmentId, limit: 100, ...(after ? { after } : {}) });
-    if (error) throw new Error(`Resend list-contacts failed: ${error.message}`);
-    if (!data) break;
-    contacts.push(...data.data.filter((c) => !c.unsubscribed).map((c) => ({ email: c.email, firstName: c.first_name })));
-    if (!data.has_more || data.data.length === 0) break;
-    after = data.data[data.data.length - 1]!.id;
-  }
-
-  return contacts;
 }
 
 /**
@@ -163,13 +151,11 @@ export async function triggerReadingRoomTrialEvent(email: string, name: string):
   if (error) throw new Error(`Resend event send failed: ${error.message}`);
 }
 
-const BATCH_SIZE = 100; // Resend's own limit per batch call
-
 const COVER_WIDTH = 90;
 
 /** One article's block: heading (linked), summary, first-3-covers row — per the format specified 2026-09-22. */
-function articleBlockHtml(a: FeedArticle): string {
-  const url = `${SITE_URL}${articlePath(a)}`;
+function articleBlockHtml(a: FeedArticle, weekKey: string): string {
+  const url = withUtm(`${SITE_URL}${articlePath(a)}`, "weekly_newsletter", weekKey);
   const coversHtml = a.books
     .map((b) =>
       b.coverImage
@@ -187,43 +173,44 @@ function articleBlockHtml(a: FeedArticle): string {
 }
 
 /**
- * Sends the weekly Publication recap (a fixed-size digest of the most recent
- * articles, not a full listing — see DECISIONS.md, "Build the weekly recap
- * ourselves via Resend") to every given recipient, via Resend Batch.
- * Personalized per recipient with their first name (falls back to "there" if
- * none is on file). Chunked into batches of `BATCH_SIZE` with a
- * deterministic idempotency key per chunk, keyed by `weekKey` — Vercel
- * Cron's delivery is best-effort and can invoke the same scheduled run more
- * than once, so a repeat run within the same week must not double-send (see
- * Vercel's own cron-idempotency guidance).
+ * Sends the weekly newsletter (a digest of the week's articles) as a Resend
+ * **Broadcast** to the whole-list segment, so each issue gets its own
+ * delivered / open / click / unsubscribe stats in Resend's Broadcasts page
+ * (DECISIONS.md, 2026-09-27, "Email analytics"; previously one batch email per
+ * recipient, which Resend can only report on account-wide). Resend fills in
+ * each contact's first name and a per-recipient unsubscribe link (which sets
+ * the same `unsubscribed` flag as our own /unsubscribe), and skips
+ * unsubscribed contacts itself.
+ *
+ * Vercel Cron can run the same schedule more than once, so an issue is named
+ * after its date and not sent again if a Broadcast with that name exists.
  */
-export async function sendWeeklyRecap(recipients: ResendContactInfo[], articles: FeedArticle[], weekKey: string): Promise<void> {
+export async function sendWeeklyNewsletter(articles: FeedArticle[], weekKey: string): Promise<{ sent: boolean; broadcastId?: string }> {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) throw new ResendNotConfiguredError();
-  if (recipients.length === 0) return;
+  const segmentId = process.env.RESEND_EMAIL_LIST_SEGMENT_ID;
+  if (!apiKey || !segmentId) throw new ResendNotConfiguredError();
 
   const resend = new Resend(apiKey);
-  const subject = `Field Notes From Everywhere: ${articles.length} new reading list${articles.length === 1 ? "" : "s"}`;
-  const articlesHtml = articles.map(articleBlockHtml).join("");
+  const name = `Weekly newsletter ${weekKey}`;
+  const { data: existing, error: listError } = await resend.broadcasts.list({ limit: 100 });
+  if (listError) throw new Error(`Resend list-broadcasts failed: ${listError.message}`);
+  if (existing?.data.some((b) => b.name === name)) return { sent: false };
 
-  for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
-    const chunk = recipients.slice(i, i + BATCH_SIZE);
-    const payload = chunk.map((r) => {
-      const greetingName = r.firstName?.trim() || "there";
-      const html = `
-        <p>Hi ${escapeHtml(greetingName)},</p>
-        <p>Here's what we've published this week on Field Notes From Everywhere.</p>
-        <table role="presentation" cellpadding="0" cellspacing="0" width="100%">${articlesHtml}</table>
-        <p style="margin-top:28px;">
-          <a href="${escapeHtml(SITE_URL)}" style="display:inline-block;padding:12px 24px;background:#1a1a1a;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;">Go to the site</a>
-        </p>
-        <p>— Field Notes From Everywhere</p>
-        ${unsubscribeFooterHtml(r.email)}`;
-      return { from: FROM_ADDRESS, to: r.email, subject, html, headers: unsubscribeHeaders(r.email) };
-    });
-    const { error } = await resend.batch.send(payload, { idempotencyKey: `weekly-recap-${weekKey}-${i / BATCH_SIZE}` });
-    if (error) throw new Error(`Resend weekly-recap batch send failed: ${error.message}`);
-  }
+  const subject = `Field Notes From Everywhere: ${articles.length} new reading list${articles.length === 1 ? "" : "s"}`;
+  const home = withUtm(SITE_URL, "weekly_newsletter", weekKey);
+  const html = `
+    <p>Hi {{{contact.first_name|there}}},</p>
+    <p>Here's what we've published this week on Field Notes From Everywhere.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%">${articles.map((a) => articleBlockHtml(a, weekKey)).join("")}</table>
+    <p style="margin-top:28px;">
+      <a href="${escapeHtml(home)}" style="display:inline-block;padding:12px 24px;background:#1a1a1a;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;">Go to the site</a>
+    </p>
+    <p>— Field Notes From Everywhere</p>
+    <p style="margin-top:32px;padding-top:16px;border-top:1px solid #e3e0ce;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#736858;">You're getting this because you joined the Field Notes From Everywhere email list. <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#736858;">Unsubscribe</a></p>`;
+
+  const { data, error } = await resend.broadcasts.create({ name, segmentId, from: FROM_ADDRESS, subject, html, send: true });
+  if (error) throw new Error(`Resend weekly-newsletter broadcast failed: ${error.message}`);
+  return { sent: true, broadcastId: data?.id };
 }
 
 function escapeHtml(s: string): string {

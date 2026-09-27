@@ -1,19 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getFeedArticles } from "@/lib/content";
-import { listSegmentContacts, sendWeeklyRecap, ResendNotConfiguredError, type ResendContactInfo } from "@/lib/integrations/resend";
+import { sendWeeklyNewsletter } from "@/lib/integrations/resend";
 
 const RECAP_HIGHLIGHT_COUNT = 10; // publishing volume can exceed 20/week — a digest, not a full listing
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
 /**
- * Weekly Publication recap — replaces Kit's RSS-to-email (Creator-plan-only,
- * see DECISIONS.md "Build the weekly recap ourselves via Resend"). Triggered
- * by Vercel Cron (see vercel.json). Recipients are everyone in either
- * free-list Resend segment (newsletter signup or send-list opt-in) — Kit is
- * not involved at all (see DECISIONS.md, "Move the free list from Kit to
- * Resend contacts"). Sends the most recent `RECAP_HIGHLIGHT_COUNT` articles
- * as a digest with a link to see everything else, not every article
- * published that week — at 20+ articles/week that would make the email
- * unreadable.
+ * Weekly newsletter (the "weekly recap") — triggered by Vercel Cron on Sundays
+ * (see vercel.json). Sends up to `RECAP_HIGHLIGHT_COUNT` of the articles
+ * published in the past 7 days, as a Resend Broadcast to everyone on the free
+ * email list (see `sendWeeklyNewsletter`). A week with nothing new sends
+ * nothing: the email promises a roundup of that week's lists.
  */
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
@@ -22,26 +19,15 @@ export async function GET(request: NextRequest) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const articles = await getFeedArticles(RECAP_HIGHLIGHT_COUNT);
+  const since = Date.now() - WEEK_MS;
+  const articles = (await getFeedArticles(RECAP_HIGHLIGHT_COUNT)).filter((a) => new Date(a.publishedAt).getTime() >= since);
 
   if (articles.length === 0) {
-    return NextResponse.json({ sent: false, reason: "no articles published yet" });
+    return NextResponse.json({ sent: false, reason: "no articles published in the past 7 days" });
   }
 
-  const newsletterSegmentId = process.env.RESEND_NEWSLETTER_SEGMENT_ID;
-  const sendListSegmentId = process.env.RESEND_SEND_LIST_SEGMENT_ID;
-  if (!newsletterSegmentId || !sendListSegmentId) throw new ResendNotConfiguredError();
-
-  const [newsletterContacts, sendListContacts] = await Promise.all([
-    listSegmentContacts(newsletterSegmentId),
-    listSegmentContacts(sendListSegmentId),
-  ]);
-  const byEmail = new Map<string, ResendContactInfo>();
-  for (const c of [...newsletterContacts, ...sendListContacts]) byEmail.set(c.email, c);
-  const recipients = [...byEmail.values()];
-
   const weekKey = new Date().toISOString().slice(0, 10);
-  await sendWeeklyRecap(recipients, articles, weekKey);
+  const result = await sendWeeklyNewsletter(articles, weekKey);
 
-  return NextResponse.json({ sent: true, articleCount: articles.length, recipientCount: recipients.length });
+  return NextResponse.json({ ...result, articleCount: articles.length, reason: result.sent ? undefined : "already sent this week" });
 }

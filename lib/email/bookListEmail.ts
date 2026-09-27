@@ -2,6 +2,7 @@ import { articlePath, type Article, type CategorySlug } from "@/lib/content";
 import { CATEGORIES } from "@/lib/content/categories";
 import { splitParagraphs } from "@/lib/content/paragraphs";
 import { SITE_URL } from "@/lib/siteUrl";
+import { withUtm } from "./utm";
 
 /**
  * The "send this list to me" email (pub_article.md §6.4), laid out like the
@@ -49,7 +50,9 @@ export function bookListEmailSubject(article: Article): string {
 
 export function bookListEmailHtml(article: Article, name: string, footerHtml: string): string {
   const c = COLOURS[article.category];
-  const url = `${SITE_URL}${articlePath(article)}`;
+  const url = withUtm(`${SITE_URL}${articlePath(article)}`, "book_list", article.slug);
+  const home = withUtm(SITE_URL, "book_list", article.slug);
+  const readingRoom = withUtm(`${SITE_URL}/the-reading-room`, "book_list", article.slug);
   const hi = firstName(name);
 
   const books = article.books
@@ -100,7 +103,7 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${c.pageBg};"><tr><td align="center" style="padding:28px 12px;">
   <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">
     <tr><td align="center" style="padding:0 0 20px;">
-      <a href="${esc(SITE_URL)}" style="text-decoration:none;">
+      <a href="${esc(home)}" style="text-decoration:none;">
         <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
           <td style="padding:0 10px 0 0;"><img src="${esc(SITE_URL)}/images/logo-ghost.png" alt="" width="44" height="44" style="display:block;border:0;" /></td>
           <td style="font:700 17px/1.1 ${DISPLAY};color:${INK_SOFT};">Field Notes<br/>From Everywhere</td>
@@ -112,7 +115,7 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
         <tr><td style="padding:0 0 24px;">
           <p style="margin:0 0 14px;font:16px/1.6 ${BODY};color:${INK};">${hi ? `Hi ${esc(hi)},` : "Hi there,"}</p>
           <p style="margin:0 0 14px;font:16px/1.6 ${BODY};color:${INK};">Here&rsquo;s the list you asked for. Enjoy!</p>
-          <p style="margin:0;font:15px/1.6 ${BODY};color:${INK_SOFT};"><strong>P.S.</strong> In case you didn&rsquo;t know, we have a fun little community called The Reading Room. We send members a themed book list of 30+ recommendations every Monday to Saturday. Feel free to <a href="${esc(SITE_URL)}/the-reading-room" style="color:${c.title};">check it out here</a>.</p>
+          <p style="margin:0;font:15px/1.6 ${BODY};color:${INK_SOFT};"><strong>P.S.</strong> In case you didn&rsquo;t know, we have a fun little community called The Reading Room. We send members a themed book list of 30+ recommendations every Monday to Saturday. Feel free to <a href="${esc(readingRoom)}" style="color:${c.title};">check it out here</a>.</p>
         </td></tr>
         ${hero}
         <tr><td style="padding:0 0 8px;">
@@ -153,14 +156,14 @@ export function bookListEmailText(article: Article, name: string, unsubscribeUrl
 
 Here's the list you asked for. Enjoy!
 
-P.S. In case you didn't know, we have a fun little community called The Reading Room. We send members a themed book list of 30+ recommendations every Monday to Saturday. Feel free to check it out here: ${SITE_URL}/the-reading-room
+P.S. In case you didn't know, we have a fun little community called The Reading Room. We send members a themed book list of 30+ recommendations every Monday to Saturday. Feel free to check it out here: ${withUtm(`${SITE_URL}/the-reading-room`, "book_list", article.slug)}
 
 ${article.title}
 ${article.methodologySentence}
 
 ${books}
 
-Read it on the site: ${SITE_URL}${articlePath(article)}
+Read it on the site: ${withUtm(`${SITE_URL}${articlePath(article)}`, "book_list", article.slug)}
 
 Happy reading,
 The FNFE Team

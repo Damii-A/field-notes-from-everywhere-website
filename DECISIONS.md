@@ -1772,3 +1772,36 @@ end row at 820px and 390px, no sideways scroll; share URLs carry the real articl
 button needs a check on a real phone.
 
 ---
+
+## 2026-09-27 — Email analytics: weekly newsletter as a Resend Broadcast; list emails tagged; UTM links
+
+**Decision** (user-approved): so each email's performance can be measured and optimised:
+1. The **weekly newsletter** is sent as a **Resend Broadcast** to a whole-list segment, "Email
+   list (everyone)", instead of one batch email per recipient. Resend's Broadcasts page then
+   shows each issue's delivered / open rate / click rate / unsubscribes; individually sent
+   emails only appear in account-wide numbers (Resend's metrics API groups by broadcast,
+   email, domain or period, never by tag), and don't show in a contact's activity feed.
+2. Every **"send this list" email** is tagged `email_type=book_list`, `category`, `article`, so
+   open/click rates per article can be pulled from Resend's API (within the plan's data
+   retention window; a permanent history would need our own store fed by Resend's
+   `email.opened`/`email.clicked` webhooks: a new service, not built, a later decision).
+3. **UTM tags** on every link in both emails, so Google Analytics (once live) shows visits,
+   reading and Reading Room joins per email type and article/issue.
+
+Also: the newsletter now covers only articles published in the past 7 days (up to 10) and is
+skipped in a week with nothing new, matching what the book-list email's P.P.S. promises ("a
+roundup of the book lists we've published on the site that week"); it used to resend the
+latest 10 regardless.
+
+**Segment limit**: the Resend plan allows 3 segments (newsletter, send-list, and the default
+"General"). The empty, unused "General" segment was renamed "Email list (everyone)" and used,
+rather than upgrading. Current subscribers were added to it; `addToSegment` adds every new
+signup to it as well as to its source segment (logging, not failing, if the env var is
+missing, so a config slip never blocks a signup).
+
+**Verified**: a tagged book-list email sent to Resend's test inbox (`delivered@resend.dev`)
+carries the three tags and UTM links; a draft Broadcast to the new segment with the
+personalisation and unsubscribe placeholders was accepted by Resend, then deleted unsent. The
+first real Broadcast is the Sunday 2026-10-04 run.
+
+---

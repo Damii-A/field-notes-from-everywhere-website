@@ -269,15 +269,21 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
   - The **free list** (`/api/subscribe` — direct newsletter signup or the article "send this
     list to me" popup) — each contact is added to one of two Resend **Segments**
     (`RESEND_NEWSLETTER_SEGMENT_ID` / `RESEND_SEND_LIST_SEGMENT_ID`, `addToSegment` in
-    `lib/integrations/resend.ts`) for source attribution. Segments are Resend's replacement
+    `lib/integrations/resend.ts`) for source attribution, **and** to the whole-list segment
+    "Email list (everyone)" (`RESEND_EMAIL_LIST_SEGMENT_ID`; the account's default "General"
+    segment, renamed, since the plan allows only 3 segments), which the weekly newsletter
+    Broadcast is sent to. Segments are Resend's replacement
     for the old mandatory-Audience model (contacts are global, belong to any number of
     Segments) — created via `resend.segments.create()` directly against the API, not
     manually in the dashboard.
-  - The **weekly Publication recap** — a **Vercel Cron job** (`vercel.json`, `GET
-    /api/cron/weekly-recap`, Sundays) reads the last 7 days of articles (`getFeedArticles`,
-    the same function `/rss` uses), pulls the recipient list from both free-list Segments
-    (`listSegmentContacts`, merged and deduped by email), and sends a personalized digest
-    (`sendWeeklyRecap`) — built ourselves since Kit's RSS-to-email isn't free-plan-available.
+  - The **weekly newsletter** (weekly Publication recap) — a **Vercel Cron job**
+    (`vercel.json`, `GET /api/cron/weekly-recap`, Sundays) takes up to 10 articles published
+    in the past 7 days (`getFeedArticles`, the same function `/rss` uses; nothing new = no
+    email) and sends them as a Resend **Broadcast** to "Email list (everyone)"
+    (`sendWeeklyNewsletter`), so each issue has its own stats in Resend. Resend personalises
+    the greeting (`{{{contact.first_name|there}}}`), adds a per-recipient unsubscribe link
+    (`{{{RESEND_UNSUBSCRIBE_URL}}}`) and skips unsubscribed contacts. Named "Weekly newsletter
+    YYYY-MM-DD"; a repeat cron run skips if that name exists.
     Secured by `CRON_SECRET`, an internal shared secret (Vercel's documented cron-auth
     pattern), not a third-party credential.
   - The **one-off "send this list to me" email** (`pub_article.md` §6.4) — the reader gets
@@ -308,7 +314,14 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
 **Unsubscribe** (2026-09-26): every free-list email carries a signed per-address unsubscribe
 link (`lib/unsubscribe.ts`) to `/unsubscribe` (confirm page) plus RFC 8058 one-click headers
 pointing at `/api/unsubscribe` (POST). Unsubscribing sets the Resend contact's `unsubscribed`
-flag, which the weekly recap's recipient list respects; re-signing up clears it.
+flag, which the weekly newsletter Broadcast respects (as does Resend's own unsubscribe link in
+it, which sets the same flag); re-signing up clears it.
+
+**Email analytics** (2026-09-27): newsletter issues are Broadcasts (per-issue stats in Resend's
+Broadcasts page); every book-list email is tagged `email_type=book_list`, `category`,
+`article` (slug) for per-article reporting from Resend's API; links in both emails carry UTM
+tags (`lib/email/utm.ts`: `utm_source=fnfe_email`, `utm_medium=email`, `utm_campaign=book_list`
+or `weekly_newsletter`, `utm_content` = article slug / issue date) for Google Analytics.
 
 `/api/subscribe` validates the email and name, adds the contact to the right Resend Segment,
 and (for the "send this list" flow only) sends the transactional book-list email. Every
@@ -360,6 +373,7 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `KIT_READING_ROOM_TAG_ID` | confirmed Reading Room member tag — applied only by the Paddle webhook at actual conversion, removed on cancellation |
 | `RESEND_API_KEY` | Resend API access — transactional email, the free-list contacts, the weekly recap, and the Reading Room trial's Automations sequence (see §9) |
 | `RESEND_NEWSLETTER_SEGMENT_ID` / `RESEND_SEND_LIST_SEGMENT_ID` | source-attribution segments for the two free-list entry points |
+| `RESEND_EMAIL_LIST_SEGMENT_ID` | "Email list (everyone)", the segment the weekly newsletter Broadcast goes to (not a secret) |
 | `CRON_SECRET` | internal shared secret verifying Vercel Cron → `/api/cron/weekly-recap` calls — generated locally, not a third-party credential |
 | `PADDLE_API_KEY` | server-side Paddle API access |
 | `PADDLE_WEBHOOK_SECRET` | verifies Paddle → `/api/webhooks/paddle` calls |

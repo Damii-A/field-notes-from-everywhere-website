@@ -19,8 +19,8 @@ const PITCH: { label: string; body: React.ReactNode[] }[] = [
   {
     label: "The research",
     body: [
-      "And of course, in true FNFE spirit, we’re not just cobbling together a list of five random recommendations. For every theme, we go through multiple independent reader discussions, which can mean hundreds or even thousands of individual recommendations.",
-      "We check that each person is genuinely recommending the book for that specific theme, not just mentioning it in passing, and we verify every book so the title and details are right. Then we look at how often readers independently recommended each one across all of those discussions.",
+      "And of course, in true FNFE spirit, we’re not just cobbling together a list of five random recommendations.",
+      "For every theme, we go through multiple independent reader discussions, which can mean hundreds or even thousands of individual recommendations. Then we look at how often readers recommended each book across all of those discussions.",
       <>
         The books readers keep putting forward are the ones that make the catalogue. At least 30 of them, every single time.{" "}
         <Link href="/about#how-we-find-the-books">See exactly how we find the books</Link>
