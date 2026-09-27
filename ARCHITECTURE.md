@@ -336,12 +336,16 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 
 - **Vercel**, deploying this Next.js app directly from the Git repository, with preview
   deployments per pull request (Operating Manual §37, small reversible releases).
-- The domain is registered at **Namecheap**; Namecheap stays the registrar. Production
-  traffic is pointed at Vercel via Namecheap's DNS management (Vercel-provided A/CNAME
-  records, or Vercel nameservers), not by moving the registration. Vercel issues and renews
-  TLS automatically once DNS is pointed at it. This is a DNS change to a live domain and is
-  sequenced near the end of the build, with the user's explicit go-ahead before it's made —
-  see `DECISIONS.md`.
+- The domain `fieldnotesfromeverywhere.com` is registered at **Namecheap** (registrar only);
+  its DNS is managed at **Cloudflare** (nameservers delegated there). Cut over to Vercel
+  2026-09-27: the root is a CNAME to Vercel's project-specific target (Cloudflare flattens it
+  at the apex), `www` is a CNAME to the same target and Vercel redirects it to the root. Both
+  are **DNS only (grey cloud)**, never proxied, so Vercel issues and renews TLS itself. The
+  root MX/TXT records (Zoho mail) and Resend's `send.*`, `resend._domainkey` and `links`
+  records sit alongside and must be left alone.
+- `SITE_URL` (`lib/siteUrl.ts`) is the only place the site's own address comes from:
+  sitemap, robots, RSS, email links, and the root layout's `metadataBase`, which gives every
+  page a canonical URL (`alternates.canonical: "./"`) on the real domain.
 
 ## 12. Environment variables / secrets (names only — see `.env.example`)
 
@@ -360,11 +364,11 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` | Paddle.js client-side checkout (not a secret — Paddle's client SDK is designed to ship this to the browser) |
 | `NEXT_PUBLIC_PADDLE_ENVIRONMENT` | `sandbox` or `production` |
 | `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID` | the $7/mo + 7-day-trial Price to check out against (Price IDs aren't secret either — Paddle.js needs this client-side) |
-| `NEXT_PUBLIC_SITE_URL` | canonical URL for metadata/OG/sitemap |
+| `SITE_URL` | the site's public address (`https://fieldnotesfromeverywhere.com`), for canonical/OG metadata, sitemap, RSS and email links. Server-side only, no `NEXT_PUBLIC_` prefix |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 ID; unset = no analytics. Loaded only with consent where required (`components/ConsentManager.tsx`) |
 
-None of these exist yet. See `CURRENT_STATE.md` for what's actually needed from the user
-before each integration can be implemented.
+All of these are set locally (`.env.local`) and on Vercel except `NEXT_PUBLIC_GA_MEASUREMENT_ID`,
+which waits on the Google Analytics setup (see `CURRENT_STATE.md`).
 
 ## 13. Accessibility, performance, SEO — standing requirements, not optional add-ons
 
