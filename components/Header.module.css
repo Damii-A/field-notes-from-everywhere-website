@@ -19,7 +19,16 @@
   letter-spacing: var(--tracking-tight);
   color: var(--ink-700);
   text-align: center;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Sized to the two-line wordmark beside it. */
+.logo {
+  width: clamp(40px, 4.6vw, 48px);
+  height: auto;
+  flex: none;
 }
 
 .nav {
@@ -110,6 +119,10 @@
   }
   .brand {
     text-align: left;
+    gap: 8px;
+  }
+  .logo {
+    width: 38px;
   }
   .menuButton {
     display: flex;

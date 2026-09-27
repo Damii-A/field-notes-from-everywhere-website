@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Header.module.css";
@@ -37,9 +38,13 @@ export function Header({ active }: HeaderProps) {
     <header className={styles.header}>
       <div className={styles.brandRow}>
         <Link href="/" className={styles.brand}>
-          Field&nbsp;Notes
-          <br />
-          From&nbsp;Everywhere
+          {/* Logo beside the wordmark: the user's addition (DECISIONS.md 2026-09-27), not in the design. */}
+          <Image src="/images/logo-ghost.png" alt="" width={48} height={48} className={styles.logo} priority />
+          <span>
+            Field&nbsp;Notes
+            <br />
+            From&nbsp;Everywhere
+          </span>
         </Link>
         <button
           type="button"
