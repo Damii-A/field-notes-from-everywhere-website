@@ -19,6 +19,9 @@ const nextConfig = {
       process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || process.env.SANITY_API_DATASET,
   },
   images: {
+    // Next's defaults plus 560: the homepage hero (315px wide) on a 1.75x
+    // phone needs ~551px, and without 560 the next size up is 640.
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 560],
     remotePatterns: [
       {
         protocol: "https",

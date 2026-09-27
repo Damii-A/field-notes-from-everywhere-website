@@ -23,7 +23,7 @@ export default async function HomePage() {
                 src="/images/homepage-hero-books.png"
                 alt="A watercolour illustration of a stack of four books"
                 fill
-                sizes="340px" // displays at min(340px, 100%): never wider than 340px
+                sizes="315px" // measured 2026-09-27: never displays wider than ~315px at any viewport
                 style={{ objectFit: "contain" }}
                 priority
                 fetchPriority="high"

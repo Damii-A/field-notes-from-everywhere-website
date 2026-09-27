@@ -30,6 +30,12 @@ Done 2026-09-27 (second session):
   no prefilled address); linked to GA4 (Admin → Product links → Search Console links).
 - **Phone share-sheet button**: verified by the user on a real phone (opens the phone's own
   share menu).
+- **PageSpeed (mobile, homepage)**: Google's run (user) FCP 1.4s, LCP 3.3s, TBT 20ms, CLS 0.
+  LCP is the homepage hero image. Fix made: its `sizes` now says 315px (measured: it never shows
+  wider at any viewport; was 340px) and `next.config.mjs` adds a 560 image width, so a 1.75x
+  phone (Lighthouse's Moto G) downloads 560 instead of 640 (~12 KiB less). Verified locally: 560
+  at 412px@1.75x, 384 at 1x, no sideways scroll or console errors. Remaining LCP levers, not
+  done: ~300ms render-blocking CSS, and the homepage preloads 7 font files alongside the image.
 
 Done this session (2026-09-27), each with a DECISIONS.md entry: domain cutover; canonical URLs;
 header logo; Reading Room trial paused (checkout-only CTAs, legal pages edited); send-list
