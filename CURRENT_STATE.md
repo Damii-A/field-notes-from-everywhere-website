@@ -6,9 +6,9 @@ Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short
 committed and pushed; nothing is pending in code. The site is live on the real domain with all
 three thriller articles published. This session: live Paddle account set up (waiting on domain
 approval), Google Analytics live and verified, Search Console set up, phone share sheet
-verified. **First thing next time: ask whether Paddle has approved the domain.**
+verified. (Superseded 2026-09-29: see below.)
 
-**2026-09-29**: the user is filling in Paddle's verification form (domain still not approved).
+**2026-09-29**: the user **submitted Paddle's verification form; it and the domain review are both pending**. **First thing next time: ask whether Paddle has approved them.**
 Answers given: product description (The Reading Room, 30+ themed book picks by email Mon-Sat +
 Sunday recap, US$7/month, cancel anytime); pricing page `/the-reading-room`; terms `/terms`;
 privacy `/privacy-and-cookies`; refund policy `/terms#refund-policy`. Paddle doesn't require
