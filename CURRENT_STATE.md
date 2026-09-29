@@ -2,7 +2,8 @@
 
 Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Session ended 2026-09-29 (user taking a break). Resume here.** Everything is committed and
+**Session ended 2026-09-29 (second session that day: Paddle went live). Resume here.**
+Low-res covers: user said "later" again (2026-09-29). Everything is committed and
 pushed; nothing is pending in code; no local servers left running. **Paddle went live
 2026-09-29** (real purchase + cancellation tested, see below). Search Console sitemap read
 successfully (2026-09-28). **Next dated item: Sunday 2026-10-04 newsletter** (next step 3). This session: Paddle
