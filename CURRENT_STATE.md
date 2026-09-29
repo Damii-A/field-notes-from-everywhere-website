@@ -4,8 +4,8 @@ Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short
 
 **Session ended 2026-09-29 (user taking a break). Resume here.** Everything is committed and
 pushed; nothing is pending in code; no local servers left running. **Paddle went live
-2026-09-29** (real purchase + cancellation tested, see below). **First thing next time: check the
-Search Console sitemap status** (next step 2; due from 2026-09-30). This session: Paddle
+2026-09-29** (real purchase + cancellation tested, see below). Search Console sitemap read
+successfully (2026-09-28). **Next dated item: Sunday 2026-10-04 newsletter** (next step 3). This session: Paddle
 verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
 left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional
 data item: the 9 low-res covers (user would source replacements; not started).
@@ -47,10 +47,11 @@ load at 1440/1100/900/390 wide and phone-landscape; lands below the pinned heade
 
 Next steps, in order:
 1. ~~**Paddle live switch**~~ — **done 2026-09-29**, real payments work (see above).
-2. **Search Console sitemap status**: submitted 2026-09-27, showed "Couldn't fetch" straight
+2. ~~**Search Console sitemap status**~~ — **resolved**: checked by the user 2026-09-29, "Sitemap
+   processed successfully", last read 2026-09-28, 13 pages discovered. (Was: submitted 2026-09-27, showed "Couldn't fetch" straight
    after (usual for a new property; the sitemap serves 200 `application/xml` to a Googlebot user
    agent, 13 URLs, robots.txt points to it). If it still says "Couldn't fetch" after ~3 days,
-   investigate. The user chose not to request indexing manually.
+   investigate. The user chose not to request indexing manually.)
 3. **Sunday 2026-10-04**: first weekly newsletter as a Resend Broadcast. Afterwards confirm it
    sent (Resend → Broadcasts) and show the user its stats.
 4. Optional tidy-up offered to the user: the book data-quality flags further down (low-res
