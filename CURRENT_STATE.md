@@ -1,12 +1,21 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-27. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **Session ended 2026-09-27, second session (user taking a break). Resume here.** Everything is
 committed and pushed; nothing is pending in code. The site is live on the real domain with all
 three thriller articles published. This session: live Paddle account set up (waiting on domain
 approval), Google Analytics live and verified, Search Console set up, phone share sheet
 verified. **First thing next time: ask whether Paddle has approved the domain.**
+
+**2026-09-29**: the user is filling in Paddle's verification form (domain still not approved).
+Answers given: product description (The Reading Room, 30+ themed book picks by email Mon-Sat +
+Sunday recap, US$7/month, cancel anytime); pricing page `/the-reading-room`; terms `/terms`;
+privacy `/privacy-and-cookies`; refund policy `/terms#refund-policy`. Paddle doesn't require
+separate pricing/refund pages (only that they're reachable from navigation) and requires no
+minimum refund period, so "no refunds, cancel anytime" stands. Built for this: legal-page
+headings now have ids so `#refund-policy` jumps to the section (verified in Chrome from a cold
+load at 1440/1100/900/390 wide and phone-landscape; lands below the pinned header).
 
 Next steps, in order:
 1. **Paddle live switch** (top priority: the "Join The Reading Room" buttons are live but Paddle

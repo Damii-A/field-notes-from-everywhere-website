@@ -1,5 +1,6 @@
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { HashScrollFix } from "./HashScrollFix";
 import type { LegalPage } from "@/lib/content";
 import { formatArticleDate } from "@/lib/content/dates";
 
@@ -45,6 +46,7 @@ export function LegalPageBody({ page }: { page: LegalPage }) {
             </p>
           )}
           <div
+            className="legal-body"
             style={{
               marginTop: "clamp(28px,3.4vw,48px)",
               font: "var(--weight-regular) var(--text-md)/1.7 var(--font-body)",
@@ -57,6 +59,7 @@ export function LegalPageBody({ page }: { page: LegalPage }) {
         </div>
       </main>
       <Footer />
+      <HashScrollFix />
     </>
   );
 }

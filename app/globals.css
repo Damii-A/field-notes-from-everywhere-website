@@ -64,6 +64,25 @@ a:hover {
   color: var(--text-link-hover);
 }
 
+/* Legal-page headings are link targets (/terms#refund-policy): land them
+   below the pinned header rather than under it. */
+.legal-body :is(h2, h3) {
+  scroll-margin-top: 170px;
+}
+
+@media (max-width: 700px) {
+  .legal-body :is(h2, h3) {
+    scroll-margin-top: 100px;
+  }
+}
+
+/* The header isn't pinned on short screens (Header.module.css). */
+@media (max-height: 500px) {
+  .legal-body :is(h2, h3) {
+    scroll-margin-top: 24px;
+  }
+}
+
 img {
   max-width: 100%;
   display: block;

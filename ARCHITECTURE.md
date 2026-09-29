@@ -115,8 +115,9 @@ what would force adding one (building the logged-in Reading Room product).
 | `/what-to-read-when/[slug]` | article | unranked |
 | `/book-club-book-picks` | hub | same hub template, sky identity |
 | `/book-club-book-picks/[slug]` | article | unranked, paired presentation |
-| `/the-reading-room` | RR landing page | trial CTA → Paddle checkout overlay |
+| `/the-reading-room` | RR landing page | "Join The Reading Room" → `/the-reading-room/subscribe` (Paddle checkout overlay); trial paused |
 | `/about` | About | `#how-we-find-the-books` anchor, linked from every article's methodology box |
+| `/terms`, `/privacy-and-cookies`, `/disclosures` | legal pages (CMS body) | every heading gets an id from its text, e.g. `/terms#refund-policy` (the refund link given to Paddle) |
 | `/contact` | Contact | static, mailto link only |
 | `/unsubscribe` | Unsubscribe confirm | from email footer links; noindex, not in the design |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | shared legal template | CMS body content |
@@ -379,7 +380,7 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `PADDLE_WEBHOOK_SECRET` | verifies Paddle → `/api/webhooks/paddle` calls |
 | `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` | Paddle.js client-side checkout (not a secret — Paddle's client SDK is designed to ship this to the browser) |
 | `NEXT_PUBLIC_PADDLE_ENVIRONMENT` | `sandbox` or `production` |
-| `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID` | the $7/mo + 7-day-trial Price to check out against (Price IDs aren't secret either — Paddle.js needs this client-side) |
+| `NEXT_PUBLIC_PADDLE_READING_ROOM_PRICE_ID` | the $7/mo Price (no Paddle-side trial) to check out against (Price IDs aren't secret either — Paddle.js needs this client-side) |
 | `SITE_URL` | the site's public address (`https://fieldnotesfromeverywhere.com`), for canonical/OG metadata, sitemap, RSS and email links. Server-side only, no `NEXT_PUBLIC_` prefix |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 ID; unset = no analytics. Loaded only with consent where required (`components/ConsentManager.tsx`) |
 

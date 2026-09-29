@@ -48,9 +48,32 @@ export function portableTextToParagraphs(blocks: PortableTextBlock[] | undefined
     .filter((segments) => segments.some((s) => s.text.trim().length > 0));
 }
 
-/** Legal pages need real rich-text structure (headings, lists, links) — rendered as trusted HTML, see LegalPageBody. */
+/** "Refund policy" → "refund-policy". */
+function headingId(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Legal pages need real rich-text structure (headings, lists, links) — rendered as trusted HTML, see LegalPageBody.
+ * Headings get an `id` from their text, so a section can be linked to directly
+ * (e.g. /terms#refund-policy, the refund policy link given to Paddle).
+ */
 export function portableTextToHtml(blocks: PortableTextBlock[] | undefined): string {
   if (!blocks || blocks.length === 0) return "";
+  const used = new Set<string>();
+  const heading =
+    (tag: "h2" | "h3") =>
+    ({ children, value }: { children?: string; value: PortableTextBlock }) => {
+      const base = headingId((value.children ?? []).map((c) => c.text).join("")) || tag;
+      let id = base;
+      for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+      used.add(id);
+      return `<${tag} id="${id}">${children ?? ""}</${tag}>`;
+    };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return toHTML(blocks as any);
+  return toHTML(blocks as any, { components: { block: { h2: heading("h2"), h3: heading("h3") } as any } });
 }
