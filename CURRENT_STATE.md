@@ -2,11 +2,13 @@
 
 Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Session ended 2026-09-27, second session (user taking a break). Resume here.** Everything is
-committed and pushed; nothing is pending in code. The site is live on the real domain with all
-three thriller articles published. This session: live Paddle account set up (waiting on domain
-approval), Google Analytics live and verified, Search Console set up, phone share sheet
-verified. (Superseded 2026-09-29: see below.)
+**Session ended 2026-09-29 (user taking a break). Resume here.** Everything is committed and
+pushed; nothing is pending in code; no local servers left running. **First thing next time: ask
+whether Paddle has approved the verification + domain review** (both submitted 2026-09-29), then
+check the Search Console sitemap status (next step 2; due from 2026-09-30). This session: Paddle
+verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
+left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional
+data item: the 9 low-res covers (user would source replacements; not started).
 
 **2026-09-29**: the user **submitted Paddle's verification form; it and the domain review are both pending**. **First thing next time: ask whether Paddle has approved them.**
 Answers given: product description (The Reading Room, 30+ themed book picks by email Mon-Sat +
