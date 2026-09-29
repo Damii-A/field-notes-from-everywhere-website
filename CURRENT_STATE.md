@@ -24,7 +24,15 @@ delivery proves the API key, webhook secret, Kit and Resend all worked. The user
 (immediately) and refunded it; `subscription.canceled` appeared in the notification log ~10 minutes
 later, **Delivered** (so the member tag/property were removed) (dashboard cancellations lag; Paddle's event list is API-only, not in the dashboard). The
 test customer (the user's own email) stays in Paddle as a customer record (always "Active"; the
-subscription itself is "Canceled"). Note: the auto-mode classifier blocks scripts that read the
+subscription itself is "Canceled"). **Kit check (read-only API, user-approved)**: the key's
+account is "Field Notes From Everywhere" (hello@fieldnotesfromeverywhere.com); the user's email
+was already a subscriber from 2026-09-22 testing ("Test Person"), now untagged, so Kit can't show
+today's tag-then-untag visually (proven only by the first-try "Delivered", since the handler throws
+on any Kit error). The member tag (id `23811808`) was named "reading-room-trialing"; the user
+renamed it (to a member name) 2026-09-29. **Still tagged as a member: `lululope@yahoo.com`** (left
+over from the 2026-09-22 sandbox purchase, never cancelled); offered to the user to untag.
+**Pending, user's choice: when the first real member pays, check Kit shows their email with the
+member tag** (the visible end-to-end proof). Note: the auto-mode classifier blocks scripts that read the
 live Paddle key from `.env.local`, so Paddle API checks now need the user's approval or dashboard
 checks by the user.
 
