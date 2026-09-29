@@ -10,7 +10,14 @@ verification form answered (below), `/terms#refund-policy` anchor built and veri
 left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional
 data item: the 9 low-res covers (user would source replacements; not started).
 
-**2026-09-29**: the user **submitted Paddle's verification form; it and the domain review are both pending**. **First thing next time: ask whether Paddle has approved them.**
+**2026-09-29 (later)**: Paddle **domain approved and account verified**; the user set the live
+default payment link and swapped the five Vercel Paddle env vars to the live values
+(`NEXT_PUBLIC_PADDLE_ENVIRONMENT=production`). Paddle's own "migrate to live" AI guide was checked
+item by item: nothing missing (no discounts to copy; Retain/`pwCustomer` n/a without logins; webhook
+IP allowlisting skipped, signature verification already enforced). Remaining: confirm the live
+deploy uses live values, then a real $7 purchase test.
+
+**2026-09-29**: the user **submitted Paddle's verification form; it and the domain review are both pending**. (Both since approved, see above.)
 Answers given: product description (The Reading Room, 30+ themed book picks by email Mon-Sat +
 Sunday recap, US$7/month, cancel anytime); pricing page `/the-reading-room`; terms `/terms`;
 privacy `/privacy-and-cookies`; refund policy `/terms#refund-policy`. Paddle doesn't require
