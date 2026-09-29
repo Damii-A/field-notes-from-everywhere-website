@@ -28,7 +28,7 @@ Next steps, in order:
 3. **Sunday 2026-10-04**: first weekly newsletter as a Resend Broadcast. Afterwards confirm it
    sent (Resend → Broadcasts) and show the user its stats.
 4. Optional tidy-up offered to the user: the book data-quality flags further down (low-res
-   covers, Dragon Tattoo tagged Dark Fantasy). Near-duplicate tags: user declined merging
+   covers; the Dragon Tattoo tag was already fixed). Near-duplicate tags: user declined merging
    (2026-09-29), don't offer again.
 
 Done 2026-09-27 (second session):
@@ -204,8 +204,8 @@ Paddle live switch, domain cutover + Search Console).
 **Data-quality flags from the first batch (user's call, not fixed silently)**: 9 covers are
 low-resolution (under 300px wide — Dark Places, Kill For Me Kill For You, Nightwatching,
 Orphan X, Shutter Island, The Fourth Monkey, The Girl with the Dragon Tattoo, The Likeness,
-What Lies Between Us); "The Girl with the Dragon Tattoo" is tagged Dark Fantasy (likely a
-slip); ~~inconsistent title/author capitalization~~ — **fixed directly in Sanity 2026-09-23**
+What Lies Between Us); ~~"The Girl with the Dragon Tattoo" tagged Dark Fantasy~~ (already
+fixed: checked 2026-09-29, it's tagged Thriller and no book uses Dark Fantasy); ~~inconsistent title/author capitalization~~ — **fixed directly in Sanity 2026-09-23**
 (11 books patched; the source CSV in Downloads still has the old casing, so re-importing it
 unedited would revert them); a few near-duplicate tags exist (**user chose 2026-09-29 not to merge any; leave them**) (Plot Twist / Plot Twist
 Ending, FBI Profiler / FBI Profiler MC, Toxic couple / Toxic Marriage, Global / International
