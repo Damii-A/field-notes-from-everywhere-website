@@ -385,8 +385,9 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 ID; unset = no analytics. Loaded only with consent where required (`components/ConsentManager.tsx`) |
 
 All of these are set locally (`.env.local`) and on Vercel (`NEXT_PUBLIC_GA_MEASUREMENT_ID` since
-2026-09-27). The Paddle values on Vercel are still the sandbox ones until the live switch; the live
-account's values sit in `.env.local` as `PADDLE_LIVE_*` meanwhile (see `CURRENT_STATE.md`).
+2026-09-27). Since 2026-09-29 the Paddle values on Vercel are the **live** account's
+(`NEXT_PUBLIC_PADDLE_ENVIRONMENT=production`). `.env.local` keeps the sandbox values under the
+normal names for local testing, and the live ones as `PADDLE_LIVE_*`.
 
 ## 13. Accessibility, performance, SEO — standing requirements, not optional add-ons
 

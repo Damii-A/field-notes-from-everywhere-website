@@ -3,9 +3,9 @@
 Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **Session ended 2026-09-29 (user taking a break). Resume here.** Everything is committed and
-pushed; nothing is pending in code; no local servers left running. **First thing next time: ask
-whether Paddle has approved the verification + domain review** (both submitted 2026-09-29), then
-check the Search Console sitemap status (next step 2; due from 2026-09-30). This session: Paddle
+pushed; nothing is pending in code; no local servers left running. **Paddle went live
+2026-09-29** (real purchase + cancellation tested, see below). **First thing next time: check the
+Search Console sitemap status** (next step 2; due from 2026-09-30). This session: Paddle
 verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
 left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional
 data item: the 9 low-res covers (user would source replacements; not started).
@@ -14,8 +14,19 @@ data item: the 9 low-res covers (user would source replacements; not started).
 default payment link and swapped the five Vercel Paddle env vars to the live values
 (`NEXT_PUBLIC_PADDLE_ENVIRONMENT=production`). Paddle's own "migrate to live" AI guide was checked
 item by item: nothing missing (no discounts to copy; Retain/`pwCustomer` n/a without logins; webhook
-IP allowlisting skipped, signature verification already enforced). Remaining: confirm the live
-deploy uses live values, then a real $7 purchase test.
+IP allowlisting skipped, signature verification already enforced). **Paddle is LIVE and verified
+end to end**: after redeploying (commit `fd8c707`), the live subscribe page's bundle carries the live
+price `pri_01m3j7tdjww6pbve0azdszysw5`, a `live_` client token and `production` (checked by
+fetching the page's JS). The user made a real $7 purchase: `subscription.activated` was
+**Delivered** on the first attempt (Paddle's notification log, 2:37pm). The handler throws (→ 500,
+Paddle retries) if the customer lookup, Kit tag or Resend property call fails, so a first-try
+delivery proves the API key, webhook secret, Kit and Resend all worked. The user then cancelled
+(immediately) and refunded it; `subscription.canceled` appeared in the notification log ~10 minutes
+later, **Delivered** (so the member tag/property were removed) (dashboard cancellations lag; Paddle's event list is API-only, not in the dashboard). The
+test customer (the user's own email) stays in Paddle as a customer record (always "Active"; the
+subscription itself is "Canceled"). Note: the auto-mode classifier blocks scripts that read the
+live Paddle key from `.env.local`, so Paddle API checks now need the user's approval or dashboard
+checks by the user.
 
 **2026-09-29**: the user **submitted Paddle's verification form; it and the domain review are both pending**. (Both since approved, see above.)
 Answers given: product description (The Reading Room, 30+ themed book picks by email Mon-Sat +
@@ -27,9 +38,7 @@ headings now have ids so `#refund-policy` jumps to the section (verified in Chro
 load at 1440/1100/900/390 wide and phone-landscape; lands below the pinned header).
 
 Next steps, in order:
-1. **Paddle live switch** (top priority: the "Join The Reading Room" buttons are live but Paddle
-   is in sandbox, so nobody can actually pay). Waiting on Paddle's domain approval; remaining
-   steps under "Paddle live switch — in progress" below.
+1. ~~**Paddle live switch**~~ — **done 2026-09-29**, real payments work (see above).
 2. **Search Console sitemap status**: submitted 2026-09-27, showed "Couldn't fetch" straight
    after (usual for a new property; the sitemap serves 200 `application/xml` to a Googlebot user
    agent, 13 URLs, robots.txt points to it). If it still says "Couldn't fetch" after ~3 days,
@@ -80,7 +89,7 @@ segment. Resend shows each contact's *first* signup date; re-signups keep it (no
 (`8cc353d8-01f9-4e6a-a3f9-dc61420682e9`) added on Vercel by the user 2026-09-27. First real
 Broadcast: Sunday 2026-10-04; afterwards, check its stats in Resend → Broadcasts.
 
-**Paddle live switch — in progress (2026-09-27).** Done: the user created the live Paddle account
+**Paddle live switch — completed 2026-09-29 (history below).** Done: the user created the live Paddle account
 and a live API key (`PADDLE_LIVE_API_KEY` in `.env.local`; the sandbox values stay for local
 testing). Created in live via the API, copying the sandbox exactly: product
 `pro_01m3j7tcyp08vmnx18avy12pfk`, price `pri_01m3j7tdjww6pbve0azdszysw5` ($7.00 USD monthly, no
