@@ -225,9 +225,9 @@ export default async function HomePage() {
                 Book Club Book Picks
               </Link>
               <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "42ch" }}>
-                This is the column for readers looking for book recommendations for shared reading experiences. The
-                lists are built from our database of recommendations gathered from real reader discussions, based on the
-                specific theme we&rsquo;re exploring.
+                This is the column for readers looking for book recommendations for shared reading experiences. These
+                book lists are built from our analysis of real reader recommendations for the specific experience
+                we&rsquo;re curating for.
               </p>
             </div>
           </div>
