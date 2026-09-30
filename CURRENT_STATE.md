@@ -9,6 +9,12 @@ pushed; nothing is pending in code; no local servers left running. **Paddle went
 successfully (2026-09-28). **2026-09-30: The Reading Room is now Tuesday/Thursday/Saturday, no Sunday recap** (was Mon-Sat +
 Sunday recap; user's choice, price unchanged; all site/email/legal wording updated; see DECISIONS.md).
 **User to check**: Paddle's product description in the dashboard, if it mentions daily emails.
+**2026-09-30 crawlability check** (user saw an AI crawler holding the old WordPress site): live
+domain verified serving only the Vercel site to every user agent/hostname/protocol/IP tested; the
+WordPress copy is a pre-cutover (June) crawl. Fixed: homepage canonical said `/index` (layout's
+`canonical: "./"` resolves so on the root page), now the root URL. Offered to the user, not done:
+accurate sitemap lastmod, JSON-LD structured data, Search Console "Request indexing" on the
+homepage, cancelling the old WordPress hosting, Cloudflare record-list / Vercel AI-bot setting check.
 **Next dated item: Wednesday 2026-10-07 newsletter** (next step 3; moved from Sundays 2026-09-30). This session: Paddle
 verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
 left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional

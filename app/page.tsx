@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
@@ -6,6 +7,15 @@ import { Stratosphere } from "@/components/Stratosphere";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { getHomeShowcase } from "@/lib/content";
 import styles from "./Home.module.css";
+
+// The layout's canonical "./" resolves to "/index" on the root page, a duplicate
+// address of the homepage; state "/" explicitly (keeps the layout's RSS link).
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+    types: { "application/rss+xml": "/feed.xml" },
+  },
+};
 
 export default async function HomePage() {
   const showcase = await getHomeShowcase();
