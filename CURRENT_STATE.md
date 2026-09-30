@@ -16,6 +16,14 @@ WordPress copy is a pre-cutover (June) crawl. Fixed: homepage canonical said `/i
 checklist): full share tags on every page, and `/llms.txt`; `robots.txt` left allowing all crawlers
 (user's choice). Offered, not done: accurate sitemap lastmod, JSON-LD structured data, Search Console "Request indexing" on the
 homepage, cancelling the old WordPress hosting, Cloudflare record-list / Vercel AI-bot setting check.
+**2026-09-30 ChatGPT access check**: ChatGPT returned the June WordPress copy / "cache miss". All four
+OpenAI user agents (OAI-SearchBot, ChatGPT-User, GPTBot, OAI-AdsBot, from developers.openai.com/api/docs/bots)
+get the current site (GET/HEAD, root/www, query strings, HTTP/1.1+2, TLS 1.2/1.3, 40-request burst).
+Cloudflare is DNS-only (not in the request path). Vercel Firewall (user's screenshots): Bot Protection
+Off, AI Bots Allow, no custom rules; its automatic DDoS mitigation denies WordPress-probe scanners
+(l9scan/LeakIX, Azure/DigitalOcean IPs); none of those IPs is in OpenAI's published ranges. Conclusion:
+OpenAI's own cached index is stale (last saved pre-cutover); nothing to fix on the site. User decided
+not to block AI training crawlers (robots.txt allows all).
 **Next dated item: Wednesday 2026-10-07 newsletter** (next step 3; moved from Sundays 2026-09-30). This session: Paddle
 verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
 left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional
