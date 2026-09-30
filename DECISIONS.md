@@ -1491,6 +1491,9 @@ full-screen dark menu; an attached lighter drawer.
   3:2 landscape (design: 200px at 4:5 portrait), after the first live article showed its wide
   hero image cropped to a tall narrow strip. Book Club pair cards unchanged at first; on 2026-09-30
   (user) they got the same 260px 3:2 image size too, keeping their tilt, pairing and hairline.
+- **Homepage column boxes** (2026-09-30, user): new three-sentence descriptions (user's copy); the
+  column name now sits above its description in every box (What to Read When no longer mirrored),
+  description capped at 70ch for readable line length, box still full width.
 - **Homepage column order** (2026-09-27): The Shortlist, What to Read When, Book Club Book Picks,
   as `homepage.md` lists them (the build had What to Read When first).
 - **Hub "Newest" card on phones** (2026-09-27): The Shortlist's lead is inset from the screen

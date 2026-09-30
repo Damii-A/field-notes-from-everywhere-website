@@ -148,7 +148,7 @@ export default async function HomePage() {
               >
                 The Shortlist
               </Link>
-              <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "56ch" }}>
+              <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
                 Our shortlists are ranked collections of books built around a specific theme, trope, or reader request.
                 We analyse real reader discussions to uncover the books recommended most often, then distill those
                 recommendations into ranked lists.
@@ -172,7 +172,7 @@ export default async function HomePage() {
       {showcase.when.length > 0 ? (
         <section style={{ background: "var(--oat-200)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
           <div className={styles.showcaseHeader}>
-            <div className={styles.showcaseBox} style={{ ["--box-bg" as string]: "var(--oat-200)", flexDirection: "row-reverse" }}>
+            <div className={styles.showcaseBox} style={{ ["--box-bg" as string]: "var(--oat-200)" }}>
               <Link
                 href="/what-to-read-when"
                 style={{
@@ -182,12 +182,11 @@ export default async function HomePage() {
                   color: "var(--clay-700)",
                   margin: 0,
                   maxWidth: "24ch",
-                  textAlign: "right",
                 }}
               >
                 What to Read When
               </Link>
-              <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "38ch" }}>
+              <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
                 This is where you&rsquo;ll find book lists for specific reading cravings. Whether you want something
                 deliciously messy, genuinely terrifying, or simply impossible to put down, we probably have (or are
                 currently working on) a list to match.
@@ -224,7 +223,7 @@ export default async function HomePage() {
               >
                 Book Club Book Picks
               </Link>
-              <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "42ch" }}>
+              <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
                 This is the column for readers looking for book recommendations for shared reading experiences. These
                 book lists are built from our analysis of real reader recommendations for the specific experience
                 we&rsquo;re curating for.
