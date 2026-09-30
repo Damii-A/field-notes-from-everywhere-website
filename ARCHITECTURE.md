@@ -278,7 +278,8 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
     Segments) — created via `resend.segments.create()` directly against the API, not
     manually in the dashboard.
   - The **weekly newsletter** (weekly Publication recap) — a **Vercel Cron job**
-    (`vercel.json`, `GET /api/cron/weekly-recap`, Sundays) takes up to 10 articles published
+    (`vercel.json`, `GET /api/cron/weekly-recap`, Wednesdays 14:00 UTC, i.e. 10am US Eastern in
+    summer, 9am in winter) takes up to 10 articles published
     in the past 7 days (`getFeedArticles`, the same function `/rss` uses; nothing new = no
     email) and sends them as a Resend **Broadcast** to "Email list (everyone)"
     (`sendWeeklyNewsletter`), so each issue has its own stats in Resend. Resend personalises

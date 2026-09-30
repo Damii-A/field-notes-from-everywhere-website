@@ -6,7 +6,7 @@ Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short
 Low-res covers: user said "later" again (2026-09-29). Everything is committed and
 pushed; nothing is pending in code; no local servers left running. **Paddle went live
 2026-09-29** (real purchase + cancellation tested, see below). Search Console sitemap read
-successfully (2026-09-28). **Next dated item: Sunday 2026-10-04 newsletter** (next step 3). This session: Paddle
+successfully (2026-09-28). **Next dated item: Wednesday 2026-10-07 newsletter** (next step 3; moved from Sundays 2026-09-30). This session: Paddle
 verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
 left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional
 data item: the 9 low-res covers (user would source replacements; not started).
@@ -53,8 +53,12 @@ Next steps, in order:
    after (usual for a new property; the sitemap serves 200 `application/xml` to a Googlebot user
    agent, 13 URLs, robots.txt points to it). If it still says "Couldn't fetch" after ~3 days,
    investigate. The user chose not to request indexing manually.)
-3. **Sunday 2026-10-04**: first weekly newsletter as a Resend Broadcast. Afterwards confirm it
-   sent (Resend → Broadcasts) and show the user its stats.
+3. **Wednesday 2026-10-07, 14:00 UTC (10am Eastern)**: first weekly newsletter as a Resend
+   Broadcast. The newsletter moved from Sundays to Wednesdays 2026-09-30 (user's choice; see
+   DECISIONS.md). It only sends if an article was published after 2026-09-30 14:00 UTC; the three
+   thriller articles (27 Sept) fall outside that window, by the user's choice. Afterwards: confirm
+   it sent (Resend → Broadcasts), show the user its stats, and **remove the one-off `FIRST_SEND`
+   guard** in `app/api/cron/weekly-recap/route.ts` (it only stopped a send on 2026-09-30).
 4. Optional tidy-up offered to the user: the book data-quality flags further down (low-res
    covers; the Dragon Tattoo tag was already fixed). Near-duplicate tags: user declined merging
    (2026-09-29), don't offer again.
@@ -97,7 +101,7 @@ segment. Resend shows each contact's *first* signup date; re-signups keep it (no
 **Email analytics (2026-09-27)**: weekly newsletter now a Resend Broadcast to "Email list
 (everyone)"; list emails tagged per article; UTM links in both (DECISIONS.md). `RESEND_EMAIL_LIST_SEGMENT_ID`
 (`8cc353d8-01f9-4e6a-a3f9-dc61420682e9`) added on Vercel by the user 2026-09-27. First real
-Broadcast: Sunday 2026-10-04; afterwards, check its stats in Resend → Broadcasts.
+Broadcast: Wednesday 2026-10-07 (moved from Sunday 2026-10-04); afterwards, check its stats in Resend → Broadcasts.
 
 **Paddle live switch — completed 2026-09-29 (history below).** Done: the user created the live Paddle account
 and a live API key (`PADDLE_LIVE_API_KEY` in `.env.local`; the sandbox values stay for local
@@ -636,7 +640,7 @@ configuration, not app code.
 across all three categories. Originally built so Kit's RSS-to-email automation could compose
 the weekly recap automatically — but Kit's RSS-to-email turned out to be a Creator-plan-only
 feature too, so the feed's actual consumer is now this app's own weekly cron job instead:
-`GET /api/cron/weekly-recap` (`vercel.json`, Sundays). The `/rss`/`/feed.xml` endpoint itself
+`GET /api/cron/weekly-recap` (`vercel.json`, Wednesdays since 2026-09-30). The `/rss`/`/feed.xml` endpoint itself
 still exists and still works — useful as a plain RSS feed regardless — it's just no longer
 wired into an external automation.
 

@@ -1808,3 +1808,21 @@ personalisation and unsubscribe placeholders was accepted by Resend, then delete
 first real Broadcast is the Sunday 2026-10-04 run.
 
 ---
+
+## 2026-09-30 — Weekly newsletter moves from Sundays to Wednesdays
+
+**Decision** (user-directed): the weekly newsletter cron (`vercel.json`) runs Wednesdays at 14:00
+UTC (10am US Eastern in summer, 9am in winter) instead of Sundays at the same time. The Reading
+Room's own "Sunday recap" for members is a different email and is unchanged, as is all site copy
+about it. No public page said which day the free newsletter goes out, so no copy changed.
+
+**First send is Wednesday 2026-10-07, not the day of the change** (user's choice). The change was
+deployed on a Wednesday morning before 14:00 UTC, so the new schedule would have fired the same
+day with the three thriller articles (published 27 Sept), unpreviewed. The user chose to start the
+following week instead. Consequence: those three articles are never in a newsletter, and the
+7 October issue only sends if something is published after 2026-09-30 14:00 UTC. A Vercel cron
+expression can't say "starting next week", so the route skips any run before 2026-10-07
+(`FIRST_SEND` in `app/api/cron/weekly-recap/route.ts`), to be removed after that run.
+
+**Alternatives offered**: send today with a preview to the user's inbox first (recommended), or
+send today without a preview.

@@ -4,10 +4,13 @@ import { sendWeeklyNewsletter } from "@/lib/integrations/resend";
 
 const RECAP_HIGHLIGHT_COUNT = 10; // publishing volume can exceed 20/week — a digest, not a full listing
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+// One-off: the switch from Sundays to Wednesdays deployed on Wednesday 2026-09-30,
+// and the user chose 2026-10-07 as the first send. Remove after that run.
+const FIRST_SEND = Date.parse("2026-10-07T00:00:00Z");
 
 /**
- * Weekly newsletter (the "weekly recap") — triggered by Vercel Cron on Sundays
- * (see vercel.json). Sends up to `RECAP_HIGHLIGHT_COUNT` of the articles
+ * Weekly newsletter (the "weekly recap") — triggered by Vercel Cron on Wednesdays
+ * at 14:00 UTC (see vercel.json). Sends up to `RECAP_HIGHLIGHT_COUNT` of the articles
  * published in the past 7 days, as a Resend Broadcast to everyone on the free
  * email list (see `sendWeeklyNewsletter`). A week with nothing new sends
  * nothing: the email promises a roundup of that week's lists.
@@ -17,6 +20,10 @@ export async function GET(request: NextRequest) {
   const cronSecret = process.env.CRON_SECRET;
   if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return new Response("Unauthorized", { status: 401 });
+  }
+
+  if (Date.now() < FIRST_SEND) {
+    return NextResponse.json({ sent: false, reason: "first Wednesday send is 2026-10-07" });
   }
 
   const since = Date.now() - WEEK_MS;
