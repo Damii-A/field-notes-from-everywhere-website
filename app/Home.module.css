@@ -137,3 +137,18 @@
     text-align: left;
   }
 }
+
+/* Reading Room teaser: text + screenshot card sit together as a centred pair
+   (two equal halves left a wide gap once the text got shorter, 2026-09-30). */
+.rrTeaser {
+  display: grid;
+  grid-template-columns: minmax(0, 34rem) 280px;
+  justify-content: center;
+  gap: clamp(32px, 4.5vw, 64px);
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .rrTeaser {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

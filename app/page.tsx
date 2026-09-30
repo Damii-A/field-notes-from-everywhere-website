@@ -343,14 +343,11 @@ export default async function HomePage() {
         </div>
 
         <div
+          className={styles.rrTeaser}
           style={{
             maxWidth: "var(--max-content)",
             margin: "clamp(20px,2.4vw,32px) auto 0",
             padding: "0 var(--gutter-screen)",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
-            gap: "clamp(32px,4.5vw,64px)",
-            alignItems: "start",
           }}
         >
           <div style={{ display: "flex", justifyContent: "center", alignSelf: "center", order: 2 }}>

@@ -1520,7 +1520,8 @@ full-screen dark menu; an attached lighter drawer.
   the design's placeholder titles while fewer than 8 covered books are published.
 - **Homepage Reading Room teaser** (2026-09-30, after the text got shorter): the text starts level
   with the top of the screenshot card instead of being centred beside it, and the card is 280px wide
-  (was 360px).
+  (was 360px). Then (user): text and card sit together as a centred pair (text column up to 34rem,
+  card column 280px, same gap) instead of two equal halves, which left a wide gap; stacked ≤720px.
 - **Book-list email background** (2026-09-27): no white card; the email sits on the article's
   category colour like the article page, with the methodology box one shade off it.
 
