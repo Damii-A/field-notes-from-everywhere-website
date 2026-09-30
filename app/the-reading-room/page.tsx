@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -7,10 +8,11 @@ import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { getRecommendedCovers, getSiteSettings } from "@/lib/content";
 import styles from "./ReadingRoom.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Reading Room",
   description: "30+ themed book recommendations, every Tuesday, Thursday and Saturday. $7/month, cancel anytime.",
-};
+  path: "/the-reading-room",
+});
 
 /* "The research" is drawn from the About page's "How we find the books" (user's request). */
 const PITCH: { label: string; body: React.ReactNode[] }[] = [

@@ -1866,3 +1866,29 @@ assumed 7 daily issues in a 7-day trial. At three a week, the first 7 issues tak
 7-day trial would show 3 issues, so the trial's length or sample needs rethinking when it's rebuilt.
 The Paddle verification answers (2026-09-29) described the product as Mon-Sat + Sunday recap;
 Paddle's own product description, if it says daily, is the user's to update in the dashboard.
+
+## 2026-09-30 — Crawlability check; homepage canonical fix; share tags on every page; llms.txt
+
+**Context**: an AI tool held the old WordPress site for the domain. Checked live: DNS (Cloudflare,
+DNS-only) leads only to Vercel; every user agent tested (browser, Googlebot, Bingbot, GPTBot,
+ClaudeBot, PerplexityBot, CCBot, curl, none) × root/www × http/https × each Vercel IP got the
+current site; old WordPress paths 404 (`noindex`) or are blocked by Vercel's firewall. The
+WordPress copy is a pre-cutover crawl (cutover 2026-09-27). Found and fixed one real problem:
+the homepage canonical was `/index` (the layout's `canonical: "./"` resolves so on the root
+page; `/index` also serves the homepage), contradicting the sitemap's `/`.
+
+**Share tags** (user-approved, from an AI-discoverability checklist): only the 3 articles had Open
+Graph tags. Every page now gets the full set via `pageMetadata` (`lib/metadata.ts`): title,
+description (the site description when a page has none), url, site name, locale, type, image, and
+an X large-image card. Pages without their own image use `public/images/share-default.png`
+(the homepage illustration, trimmed, on `--paper-050`, 1200 × 630; user's choice over making a
+bespoke image, which can replace it later). The layout keeps share defaults (no URL) for pages
+that set none, like the 404 page, since Next.js replaces rather than merges `openGraph`.
+
+**llms.txt** (user's choice after being told the evidence it's used by AI providers is thin):
+`/llms.txt` (rewrite to `app/llms/route.ts`, like `/feed.xml`) lists the columns and every
+published article with its meta description, built from Sanity so it stays current. Uses the
+site's own copy only.
+
+**robots.txt left as is** (user's choice): it already allows every crawler, AI ones included.
+The alternative offered was allowing AI search crawlers while blocking AI training crawlers.

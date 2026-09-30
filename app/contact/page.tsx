@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { getSiteSettings } from "@/lib/content";
 
-export const metadata: Metadata = {
-  title: "Contact",
-};
+export const metadata: Metadata = pageMetadata({ title: "Contact", path: "/contact" });
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();

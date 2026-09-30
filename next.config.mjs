@@ -33,7 +33,10 @@ const nextConfig = {
   // use), rewritten to the actual route at app/rss/route.ts — see that
   // file's comment for why it isn't just named app/feed.xml/route.ts.
   async rewrites() {
-    return [{ source: "/feed.xml", destination: "/rss" }];
+    return [
+      { source: "/feed.xml", destination: "/rss" },
+      { source: "/llms.txt", destination: "/llms" }, // see app/llms/route.ts
+    ];
   },
 };
 

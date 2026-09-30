@@ -12,8 +12,9 @@ Sunday recap; user's choice, price unchanged; all site/email/legal wording updat
 **2026-09-30 crawlability check** (user saw an AI crawler holding the old WordPress site): live
 domain verified serving only the Vercel site to every user agent/hostname/protocol/IP tested; the
 WordPress copy is a pre-cutover (June) crawl. Fixed: homepage canonical said `/index` (layout's
-`canonical: "./"` resolves so on the root page), now the root URL. Offered to the user, not done:
-accurate sitemap lastmod, JSON-LD structured data, Search Console "Request indexing" on the
+`canonical: "./"` resolves so on the root page), now the root URL. Then (user's choices after an AI-discoverability
+checklist): full share tags on every page, and `/llms.txt`; `robots.txt` left allowing all crawlers
+(user's choice). Offered, not done: accurate sitemap lastmod, JSON-LD structured data, Search Console "Request indexing" on the
 homepage, cancelling the old WordPress hosting, Cloudflare record-list / Vercel AI-bot setting check.
 **Next dated item: Wednesday 2026-10-07 newsletter** (next step 3; moved from Sundays 2026-09-30). This session: Paddle
 verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags

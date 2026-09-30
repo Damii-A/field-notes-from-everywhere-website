@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { getSiteSettings } from "@/lib/content";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description: "What Field Notes From Everywhere is, how we find the books we recommend, and who's behind it.",
-};
+  path: "/about",
+});
 
 export default async function AboutPage() {
   const settings = await getSiteSettings();

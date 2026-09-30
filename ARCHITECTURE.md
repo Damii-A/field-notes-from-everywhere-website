@@ -119,6 +119,7 @@ what would force adding one (building the logged-in Reading Room product).
 | `/about` | About | `#how-we-find-the-books` anchor, linked from every article's methodology box |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | legal pages (CMS body) | every heading gets an id from its text, e.g. `/terms#refund-policy` (the refund link given to Paddle) |
 | `/contact` | Contact | static, mailto link only |
+| `/llms.txt` | llms.txt (rewrite to `/llms`) | Markdown site overview for AI tools, built from published articles (`app/llms/route.ts`) |
 | `/unsubscribe` | Unsubscribe confirm | from email footer links; noindex, not in the design |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | shared legal template | CMS body content |
 | `/studio` | Sanity Studio | embedded, editor-auth'd, not a public route |
@@ -399,8 +400,11 @@ scope" framing in the initialization brief):
 - Semantic HTML and real alt text (Sanity image `alt` field, required on `heroImage`/`cover`
   fields) — required both for accessibility and because this is an image-heavy editorial
   site.
-- Per-page metadata via Next.js's Metadata API: title/description/OG image per article (from
-  CMS fields), sensible defaults elsewhere.
+- Per-page metadata via Next.js's Metadata API. Every page builds its title, description and full
+  share tags (Open Graph + X card) through `pageMetadata` (`lib/metadata.ts`); articles use their
+  hero image and `type=article`, other pages the default share image
+  (`public/images/share-default.png`, the homepage illustration at 1200 × 630). The homepage sets
+  its canonical to `/` explicitly (the layout's `"./"` resolves to `/index` there).
 - `sitemap.xml` and `robots.txt` generated from the same Sanity queries that render the hubs.
 - `prefers-reduced-motion` handling for every bespoke animation (stratosphere, article
   progress rail, Reading Room drift/shelf) — the spec explicitly requires this in multiple

@@ -7,6 +7,7 @@
  * handling below and in the pages that call these functions).
  */
 import { groqFetch } from "@/lib/sanity/groqFetch";
+import { pageMetadata } from "@/lib/metadata";
 import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
 import { CATEGORIES } from "./categories";
 import { formatArticleDate } from "./dates";
@@ -445,13 +446,11 @@ export function categoryHref(category: CategorySlug): string {
 /** Shared `generateMetadata` body for the three `[category]/[slug]` article pages. */
 export function articleMetadata(article: Article | null) {
   if (!article) return { title: "Article not found" };
-  return {
+  return pageMetadata({
     title: article.title,
     description: article.description,
-    openGraph: {
-      title: article.title,
-      description: article.description,
-      images: article.heroImage ? [{ url: article.heroImage.url, alt: article.heroImage.alt }] : undefined,
-    },
-  };
+    path: articlePath(article),
+    image: article.heroImage ? { url: article.heroImage.url, alt: article.heroImage.alt } : undefined,
+    publishedTime: article.publishedAt,
+  });
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
@@ -11,6 +12,7 @@ import styles from "./Home.module.css";
 // The layout's canonical "./" resolves to "/index" on the root page, a duplicate
 // address of the homepage; state "/" explicitly (keeps the layout's RSS link).
 export const metadata: Metadata = {
+  ...pageMetadata({ path: "/" }),
   alternates: {
     canonical: "/",
     types: { "application/rss+xml": "/feed.xml" },
