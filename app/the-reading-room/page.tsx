@@ -9,12 +9,12 @@ import styles from "./ReadingRoom.module.css";
 
 export const metadata: Metadata = {
   title: "The Reading Room",
-  description: "30+ themed book recommendations, Monday through Saturday. $7/month, cancel anytime.",
+  description: "30+ themed book recommendations, every Tuesday, Thursday and Saturday. $7/month, cancel anytime.",
 };
 
 /* "The research" is drawn from the About page's "How we find the books" (user's request). */
 const PITCH: { label: string; body: React.ReactNode[] }[] = [
-  { label: "What you get", body: ["Reading Room subscribers get a themed daily newsletter sharing the most-recommended books for one specific interest."] },
+  { label: "What you get", body: ["Reading Room subscribers get a themed newsletter three times a week, sharing the most-recommended books for one specific interest."] },
   { label: "The themes", body: ["Think “dark romance”, “emotionally devastating”, “found family”, you name it. We’re basically working our way through as many reader interests as we can."] },
   {
     label: "The research",
@@ -27,7 +27,6 @@ const PITCH: { label: string; body: React.ReactNode[] }[] = [
       </>,
     ],
   },
-  { label: "Sunday catch-up", body: ["Oh and don’t worry about having to keep up all the time. On Sundays we round up the week’s catalogues so you can catch up on anything you missed."] },
 ];
 
 const SPINES = ["var(--slate-600)", "var(--clay-600)", "var(--sky-600)", "var(--sage-600)", "var(--clay-700)", "var(--sky-700)"];
@@ -79,9 +78,9 @@ export default async function ReadingRoomPage() {
 
       <section className={styles.section}>
         <div className={styles.sectionInner}>
-          {/* The full four-part pitch here, the short teaser on the homepage: swapped by the user, 2026-09-27 (DECISIONS.md). */}
+          {/* The full pitch here, the short teaser on the homepage: swapped by the user, 2026-09-27 (DECISIONS.md). */}
           <div style={{ display: "flex", flexDirection: "column", gap: "clamp(24px,3vw,36px)" }}>
-            <h2 className={styles.sectionHeading}>30+ themed book recommendations, Monday through Saturday.</h2>
+            <h2 className={styles.sectionHeading}>30+ themed book recommendations, every Tuesday, Thursday and Saturday.</h2>
             {PITCH.map((block) => (
               <div key={block.label} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 <h3 className={styles.kicker} style={{ margin: 0 }}>{block.label}</h3>
@@ -126,8 +125,8 @@ export default async function ReadingRoomPage() {
         <div className={styles.trialInner}>
           <h2 className={styles.trialHeading}>Sound like your kind of thing?</h2>
           <p className={styles.trialBody}>
-            Join today and get a new themed catalogue of 30+ book recommendations in your inbox every Monday
-            through Saturday, plus a Sunday recap of the week.
+            Join today and get a new themed catalogue of 30+ book recommendations in your inbox every
+            Tuesday, Thursday and Saturday.
           </p>
           <Link href="/the-reading-room/subscribe" className={styles.trialCta}>
             Join The Reading Room

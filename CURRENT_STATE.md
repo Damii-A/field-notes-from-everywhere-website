@@ -6,7 +6,10 @@ Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short
 Low-res covers: user said "later" again (2026-09-29). Everything is committed and
 pushed; nothing is pending in code; no local servers left running. **Paddle went live
 2026-09-29** (real purchase + cancellation tested, see below). Search Console sitemap read
-successfully (2026-09-28). **Next dated item: Wednesday 2026-10-07 newsletter** (next step 3; moved from Sundays 2026-09-30). This session: Paddle
+successfully (2026-09-28). **2026-09-30: The Reading Room is now Tuesday/Thursday/Saturday, no Sunday recap** (was Mon-Sat +
+Sunday recap; user's choice, price unchanged; all site/email/legal wording updated; see DECISIONS.md).
+**User to check**: Paddle's product description in the dashboard, if it mentions daily emails.
+**Next dated item: Wednesday 2026-10-07 newsletter** (next step 3; moved from Sundays 2026-09-30). This session: Paddle
 verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
 left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional
 data item: the 9 low-res covers (user would source replacements; not started).

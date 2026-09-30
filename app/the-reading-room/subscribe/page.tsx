@@ -26,7 +26,7 @@ export default async function ReadingRoomSubscribePage() {
         <div className={styles.card}>
           <h1 className={styles.heading}>Join The Reading Room</h1>
           <p className={styles.body}>
-            You&rsquo;re one step away from every Reading Room catalogue, Monday through Saturday, plus the Sunday recap.
+            You&rsquo;re one step away from every Reading Room catalogue, sent every Tuesday, Thursday and Saturday.
           </p>
           <p className={styles.priceNote}>$7/month. Cancel anytime.</p>
           <ReadingRoomCheckoutButton className={styles.cta}>Subscribe now</ReadingRoomCheckoutButton>

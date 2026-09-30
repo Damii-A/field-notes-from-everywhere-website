@@ -1826,3 +1826,38 @@ expression can't say "starting next week", so the route skips any run before 202
 
 **Alternatives offered**: send today with a preview to the user's inbox first (recommended), or
 send today without a preview.
+
+## 2026-09-30 — The Reading Room goes from daily (Mon-Sat + Sunday recap) to Tuesday/Thursday/Saturday
+
+**Decision** (user-directed): Reading Room catalogues go out every **Tuesday, Thursday and
+Saturday**, with **no Sunday recap**. Each is still a themed catalogue of 30+ books; the price
+stays $7/month.
+
+**Context**: the user expected a daily cadence to become hard to sustain. No one had paid yet
+(the member tag in Kit was empty), so no member was sold the daily version. This departs from
+`rr_landing.md`, `homepage.md` and the design, which describe a daily catalogue plus a Sunday
+recap; those mirrors are not edited, this entry is the record.
+
+**Why no recap** (my recommendation, accepted): at three issues a week readers can easily keep up,
+the recap would arrive the day after the Saturday issue, it contains no new books, and it is a
+fourth weekly email to produce, working against the reason for the change. Easy to add back if
+members ask; harder to take away once paid for. Tuesday/Thursday/Saturday also stays clear of the
+Wednesday free newsletter.
+
+**What changed**: the homepage Reading Room tagline ("…right in your inbox. Every. Single. Day."
+now ends at "inbox.", the user's wording), the homepage teaser (the "if you miss a day… Sunday
+recap" paragraph removed),
+the About page (schedule sentence; Sunday recap paragraph removed; ad "three times a week"), the
+article Reading Room banner and floating rail ad ("three times a week"), `/the-reading-room`
+(meta description, heading, "What you get", the "Sunday catch-up" block removed, join section),
+`/the-reading-room/subscribe`, and the book-list email's P.S. Live legal pages in Sanity: Terms
+("an email of themed book recommendations, sent three times a week") and Disclosures ("our paid
+email of themed book recommendations, sent three times a week"), both "Last updated" 2026-09-30.
+The legal wording says "three times a week" rather than naming days, so a change of days needs no
+Terms update. Nothing that sends email changed: member issues are sent by hand (Kit broadcasts).
+
+**Future implications**: the paused free trial's rebuild plan ("Reading Room free trial paused")
+assumed 7 daily issues in a 7-day trial. At three a week, the first 7 issues take ~2.5 weeks and a
+7-day trial would show 3 issues, so the trial's length or sample needs rethinking when it's rebuilt.
+The Paddle verification answers (2026-09-29) described the product as Mon-Sat + Sunday recap;
+Paddle's own product description, if it says daily, is the user's to update in the dashboard.

@@ -8,7 +8,7 @@ built as the system evolved (see `DECISIONS.md` for the specific changes and why
 ## 1. What this system is
 
 FNFE is a book-recommendation editorial publication with a free content hub (the
-"Publication") and a paid daily-newsletter product ("The Reading Room"). V1, as actually
+"Publication") and a paid newsletter product ("The Reading Room", Tuesday/Thursday/Saturday since 2026-09-30). V1, as actually
 built in the Claude Design project, is:
 
 - a **public marketing/editorial website**: homepage, three Publication category hubs, an

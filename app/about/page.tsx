@@ -157,14 +157,10 @@ export default async function AboutPage() {
               </div>
               <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>This is our paid offer.</p>
               <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>
-                Every Monday through Saturday, we send members an email catalogue of 30+ book recommendations around a
+                Every Tuesday, Thursday and Saturday, we send members an email catalogue of 30+ book recommendations around a
                 specific reader theme.
               </p>
               <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>This could be a genre, trope, mood, reader experience, etc.</p>
-              <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>
-                Then on Sundays we send a recap of all the themes we&rsquo;ve covered that week for members who need a
-                refresher, roundup, or catch-up.
-              </p>
               <div
                 style={{
                   marginTop: 10,
@@ -190,7 +186,7 @@ export default async function AboutPage() {
                       textWrap: "pretty",
                     }}
                   >
-                    Get 30+ book recommendations, delivered to your inbox six days a week.
+                    Get 30+ book recommendations, delivered to your inbox three times a week.
                   </span>
                   <span style={{ font: "var(--type-small)", color: "var(--ink-700)" }}>{settings.readingRoomPriceCopy}</span>
                 </div>

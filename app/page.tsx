@@ -338,8 +338,7 @@ export default async function HomePage() {
             </span>
           </Link>
           <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.7vw,21px)", lineHeight: 1.6, color: "var(--ink-700)", margin: 0, maxWidth: "62ch", textWrap: "balance" }}>
-            Curated book recommendations, right in your inbox.{" "}
-            <span style={{ fontWeight: "var(--weight-bold)", fontSize: "1.18em" }}>Every. Single. Day.</span>
+            Curated book recommendations, right in your inbox.
           </p>
         </div>
 
@@ -361,18 +360,14 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
-          {/* Short teaser here, the full four-part pitch on /the-reading-room: swapped with the landing page by the user, 2026-09-27 (DECISIONS.md). */}
+          {/* Short teaser here, the full pitch on /the-reading-room: swapped with the landing page by the user, 2026-09-27 (DECISIONS.md). */}
           <div style={{ display: "flex", flexDirection: "column", gap: 20, textAlign: "left", alignSelf: "center" }}>
             <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
-              Every Monday through Saturday, we send out a daily catalogue of themed book recommendations.
+              Every Tuesday, Thursday and Saturday, we send out a catalogue of themed book recommendations.
             </p>
             <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
               The books in these catalogues are sourced from hundreds of reader recommendations, which are analyzed to
               uncover the top picks by real readers.
-            </p>
-            <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--clay-700)", margin: 0, textWrap: "pretty" }}>
-              And if you miss a day, no worries. Every Sunday, we also send out a recap of all six catalogues from the
-              week, so you can easily catch up on anything you missed.
             </p>
             <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
               Oh and it&rsquo;s just $7/month.
