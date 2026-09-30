@@ -1489,7 +1489,8 @@ full-screen dark menu; an attached lighter drawer.
   text already names the site. Verified at 1280, 820 and 390px with no sideways scroll.
 - **Homepage article cards** (2026-09-27, Shortlist and What to Read When rows): 260px wide at
   3:2 landscape (design: 200px at 4:5 portrait), after the first live article showed its wide
-  hero image cropped to a tall narrow strip. Book Club pair cards unchanged.
+  hero image cropped to a tall narrow strip. Book Club pair cards unchanged at first; on 2026-09-30
+  (user) they got the same 260px 3:2 image size too, keeping their tilt, pairing and hairline.
 - **Homepage column order** (2026-09-27): The Shortlist, What to Read When, Book Club Book Picks,
   as `homepage.md` lists them (the build had What to Read When first).
 - **Hub "Newest" card on phones** (2026-09-27): The Shortlist's lead is inset from the screen

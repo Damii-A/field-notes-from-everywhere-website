@@ -220,14 +220,14 @@ export default async function HomePage() {
                 <Link
                   href={`/${a.category}/${a.slug}`}
                   style={{
-                    width: 200,
+                    width: 260,
                     display: "flex",
                     flexDirection: "column",
                     gap: 14,
                     transform: "rotate(-1.6deg)",
                   }}
                 >
-                  <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-raised)" }}>
+                  <div style={{ position: "relative", width: "100%", aspectRatio: "3/2", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-raised)" }}>
                     <ImagePlaceholder label="Article image" src={a.heroImage?.url} position={a.heroImage?.position} alt={a.heroImage?.alt} />
                   </div>
                   <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
@@ -244,14 +244,14 @@ export default async function HomePage() {
                     <Link
                       href={`/${b.category}/${b.slug}`}
                       style={{
-                        width: 200,
+                        width: 260,
                         display: "flex",
                         flexDirection: "column",
                         gap: 14,
                         transform: `rotate(1.4deg) translateY(${i === 0 ? 34 : 34}px)`,
                       }}
                     >
-                      <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
+                      <div style={{ position: "relative", width: "100%", aspectRatio: "3/2", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-card)" }}>
                         <ImagePlaceholder label="Article image" src={b.heroImage?.url} position={b.heroImage?.position} alt={b.heroImage?.alt} />
                       </div>
                       <span className={styles.railCardTitle} style={{ fontSize: "clamp(13px,1.3vw,15px)", lineHeight: 1.32 }}>
