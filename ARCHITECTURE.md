@@ -244,6 +244,10 @@ the Claude Design authoring/preview environment, not a production runtime:
   the webhook signature → calls Next.js's on-demand `revalidateTag`/`revalidatePath` for the
   affected route. This means an editor publishing an article goes live within seconds without
   a full site rebuild, and the site isn't hammering Sanity on every request either.
+  The same webhook also notifies search engines via **IndexNow** (`lib/integrations/indexnow.ts`,
+  after responding; failures only logged): a live article → its page, its column hub and `/`; a
+  legal page → itself. Future-dated articles are left to the sitemap. Key file: `public/<key>.txt`
+  (public by design).
 - Image pipeline: Sanity's asset CDN, rendered through `next/image`. Article hero images honour
   the Studio crop (applied as Sanity's `rect` URL parameter) and hotspot (a CSS `object-position`),
   via `toHeroImage` in `lib/content/index.ts` — the same image is shown at 12:5, ~16:9, 3:2, 4:5

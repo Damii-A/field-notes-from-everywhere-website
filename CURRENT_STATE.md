@@ -24,6 +24,10 @@ Off, AI Bots Allow, no custom rules; its automatic DDoS mitigation denies WordPr
 (l9scan/LeakIX, Azure/DigitalOcean IPs); none of those IPs is in OpenAI's published ranges. Conclusion:
 OpenAI's own cached index is stale (last saved pre-cutover); nothing to fix on the site. User decided
 not to block AI training crawlers (robots.txt allows all).
+**2026-09-30 Bing**: site imported into Bing Webmaster Tools from Search Console by the user; sitemap
+Success (13 URLs); old WordPress sitemaps (`/blog`, `/sitemap_index.xml`) removed from Bing and Search
+Console; Bing had the homepage as "Discovered but not crawled" since Mar 2025, live test passed, indexing
+requested (Bing + Google). IndexNow added (see ARCHITECTURE.md §8).
 **Next dated item: Wednesday 2026-10-07 newsletter** (next step 3; moved from Sundays 2026-09-30). This session: Paddle
 verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
 left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional

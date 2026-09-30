@@ -1892,3 +1892,23 @@ site's own copy only.
 
 **robots.txt left as is** (user's choice): it already allows every crawler, AI ones included.
 The alternative offered was allowing AI search crawlers while blocking AI training crawlers.
+
+## 2026-09-30 — IndexNow notifications from the Sanity publish webhook
+
+**Decision** (user-approved): the Sanity webhook (`app/api/webhooks/sanity/route.ts`) also tells
+search engines which public pages changed, via IndexNow (Bing and others; Google doesn't take part).
+A published/updated/deleted article → its page, its column hub and the homepage; a legal page →
+itself. Sent with Next.js `after()` so the webhook replies first; a failure is logged, never fails
+the webhook. Skipped for localhost / `*.vercel.app` site URLs.
+
+**Context**: while investigating ChatGPT's stale copy of the site, Bing turned out never to have
+crawled the homepage ("Discovered but not crawled" since March 2025). Bing has supplied search
+results to ChatGPT, so faster Bing discovery may help there too (not guaranteed).
+
+**Alternatives considered**: waiting for Bing to read the sitemap (no code, slower); manual URL
+submission in Bing Webmaster Tools each time (work for the user on every publish).
+
+**Consequences**: the key (`INDEXNOW_KEY`, `lib/integrations/indexnow.ts`) is public by design and
+served at `/<key>.txt` from `public/`; changing it means renaming that file. Future-dated articles
+aren't notified at publish time (their URL 404s until then); they reach Bing via the sitemap. No new
+account, env var or cost.
