@@ -1518,6 +1518,9 @@ full-screen dark menu; an attached lighter drawer.
   we've recommended so far" shelf show real covers from published articles
   (`getRecommendedCovers`, newest articles first, each book once, up to 24), falling back to
   the design's placeholder titles while fewer than 8 covered books are published.
+- **Homepage Reading Room teaser** (2026-09-30, after the text got shorter): the text starts level
+  with the top of the screenshot card instead of being centred beside it, and the card is 280px wide
+  (was 360px).
 - **Book-list email background** (2026-09-27): no white card; the email sits on the article's
   category colour like the article page, with the methodology box one shade off it.
 

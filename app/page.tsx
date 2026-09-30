@@ -354,14 +354,14 @@ export default async function HomePage() {
           }}
         >
           <div style={{ display: "flex", justifyContent: "center", alignSelf: "center", order: 2 }}>
-            <div style={{ width: "100%", maxWidth: 360, background: "var(--surface-card)", borderRadius: "var(--radius-2xl)", padding: "clamp(16px,2vw,24px)", boxShadow: "var(--shadow-raised)" }}>
+            <div style={{ width: "100%", maxWidth: 280, background: "var(--surface-card)", borderRadius: "var(--radius-2xl)", padding: "clamp(16px,2vw,24px)", boxShadow: "var(--shadow-raised)" }}>
               <div style={{ position: "relative", width: "100%", aspectRatio: "4/5", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
                 <ImagePlaceholder label="Screenshot of a Reading Room catalogue email" />
               </div>
             </div>
           </div>
           {/* Short teaser here, the full pitch on /the-reading-room: swapped with the landing page by the user, 2026-09-27 (DECISIONS.md). */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 20, textAlign: "left", alignSelf: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20, textAlign: "left", alignSelf: "start" }}>
             <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
               Every Tuesday, Thursday and Saturday, we send out a catalogue of themed book recommendations.
             </p>
