@@ -1915,3 +1915,25 @@ submission in Bing Webmaster Tools each time (work for the user on every publish
 served at `/<key>.txt` from `public/`; changing it means renaming that file. Future-dated articles
 aren't notified at publish time (their URL 404s until then); they reach Bing via the sitemap. No new
 account, env var or cost.
+
+## 2026-09-27 — Domain cutover to Vercel; canonical URLs on the real domain (recorded 2026-09-30)
+
+*Recorded after the fact: CURRENT_STATE.md referred to this entry but it was never written. Facts
+from CURRENT_STATE.md's cutover notes and ARCHITECTURE.md §11.*
+
+**Decision**: `fieldnotesfromeverywhere.com` serves the Next.js site on Vercel, replacing the old
+WordPress site. The domain stays registered at Namecheap with DNS at Cloudflare: the root and `www`
+are CNAMEs to Vercel's project target (`9cafd724e379f8df.vercel-dns-017.com`; Cloudflare flattens
+the root), **DNS only (grey cloud)** so Vercel issues and renews TLS itself and Cloudflare is not in
+the request path. `www` and the `vercel.app` alias 308-redirect to the root (path and query kept).
+`SITE_URL` on Vercel is the real domain, and the root layout's `metadataBase` +
+`alternates.canonical: "./"` gives every page a canonical URL there (the homepage sets `/` itself,
+see the 2026-09-30 crawlability entry). Zoho MX/TXT and Resend's records sit alongside, untouched.
+
+**Why before the Paddle live switch**: Paddle's domain review needs a live HTTPS own domain with the
+Terms, Privacy and refund policy reachable from navigation.
+
+**Consequences**: Sanity CORS and the publish webhook, the Paddle notification destination and
+Resend's domain were all moved to the real domain via their APIs the same day (details in
+CURRENT_STATE.md). Old WordPress URLs now 404 (`noindex`); crawlers holding pre-cutover copies (an
+AI crawler's June copy, ChatGPT's index) refresh on their own schedule.

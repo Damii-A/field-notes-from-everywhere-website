@@ -1,37 +1,43 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-29. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-09-30. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Session ended 2026-09-29 (second session that day: Paddle went live). Resume here.**
-Low-res covers: user said "later" again (2026-09-29). Everything is committed and
-pushed; nothing is pending in code; no local servers left running. **Paddle went live
-2026-09-29** (real purchase + cancellation tested, see below). Search Console sitemap read
-successfully (2026-09-28). **2026-09-30: The Reading Room is now Tuesday/Thursday/Saturday, no Sunday recap** (was Mon-Sat +
-Sunday recap; user's choice, price unchanged; all site/email/legal wording updated; see DECISIONS.md).
-**User to check**: Paddle's product description in the dashboard, if it mentions daily emails.
-**2026-09-30 crawlability check** (user saw an AI crawler holding the old WordPress site): live
-domain verified serving only the Vercel site to every user agent/hostname/protocol/IP tested; the
-WordPress copy is a pre-cutover (June) crawl. Fixed: homepage canonical said `/index` (layout's
-`canonical: "./"` resolves so on the root page), now the root URL. Then (user's choices after an AI-discoverability
-checklist): full share tags on every page, and `/llms.txt`; `robots.txt` left allowing all crawlers
-(user's choice). Offered, not done: accurate sitemap lastmod, JSON-LD structured data, Search Console "Request indexing" on the
-homepage, cancelling the old WordPress hosting, Cloudflare record-list / Vercel AI-bot setting check.
-**2026-09-30 ChatGPT access check**: ChatGPT returned the June WordPress copy / "cache miss". All four
-OpenAI user agents (OAI-SearchBot, ChatGPT-User, GPTBot, OAI-AdsBot, from developers.openai.com/api/docs/bots)
-get the current site (GET/HEAD, root/www, query strings, HTTP/1.1+2, TLS 1.2/1.3, 40-request burst).
-Cloudflare is DNS-only (not in the request path). Vercel Firewall (user's screenshots): Bot Protection
-Off, AI Bots Allow, no custom rules; its automatic DDoS mitigation denies WordPress-probe scanners
-(l9scan/LeakIX, Azure/DigitalOcean IPs); none of those IPs is in OpenAI's published ranges. Conclusion:
-OpenAI's own cached index is stale (last saved pre-cutover); nothing to fix on the site. User decided
-not to block AI training crawlers (robots.txt allows all).
-**2026-09-30 Bing**: site imported into Bing Webmaster Tools from Search Console by the user; sitemap
-Success (13 URLs); old WordPress sitemaps (`/blog`, `/sitemap_index.xml`) removed from Bing and Search
-Console; Bing had the homepage as "Discovered but not crawled" since Mar 2025, live test passed, indexing
-requested (Bing + Google). IndexNow added (see ARCHITECTURE.md §8).
-**Next dated item: Wednesday 2026-10-07 newsletter** (next step 3; moved from Sundays 2026-09-30). This session: Paddle
-verification form answered (below), `/terms#refund-policy` anchor built and verified live, tags
-left unmerged (user's choice), Dragon Tattoo tag found already fixed. Only remaining optional
-data item: the 9 low-res covers (user would source replacements; not started).
+**Session ended 2026-09-30. Resume here.** Everything is committed and pushed; nothing is pending
+in code; no local servers left running.
+
+**Next dated item: Wednesday 2026-10-07, 14:00 UTC (10am Eastern)** — the first weekly newsletter
+(see "Next steps" item 3 below). Afterwards: confirm it sent, show the user its stats, and remove
+the one-off `FIRST_SEND` guard in `app/api/cron/weekly-recap/route.ts`.
+
+Done 2026-09-30 (each has a DECISIONS.md entry):
+- **Weekly newsletter moved from Sundays to Wednesdays**, first send 2026-10-07 (user's choice not
+  to send on the day of the change, so the three 27 Sept thriller articles are never in a newsletter).
+- **The Reading Room is now Tuesday/Thursday/Saturday, no Sunday recap** (was Mon-Sat + Sunday
+  recap; price unchanged). All site, email and legal wording updated (Terms/Disclosures in Sanity).
+- **Homepage**: Reading Room teaser (text beside a smaller screenshot card, as a centred pair); Book
+  Club cards now the same 260px 3:2 as the other columns; new column descriptions (user's copy),
+  name stacked above description in all three boxes.
+- **Crawlability / AI discoverability**: live domain verified serving only the Vercel site to every
+  user agent, hostname, protocol and IP tested; the old WordPress copy an AI crawler held is a June
+  (pre-cutover) crawl. Fixed the homepage canonical (`/index` → root). Full share tags on every page
+  (`lib/metadata.ts`, default image `public/images/share-default.png`); `/llms.txt`; IndexNow from the
+  Sanity webhook (all 13 URLs also submitted once, accepted 202). `robots.txt` still allows all
+  crawlers, AI ones included (user's choice, twice: no blocking of AI training crawlers).
+- **ChatGPT access**: ChatGPT's URL tool serves its own June copy / "Cache miss" (ChatGPT itself
+  confirmed its tool can't fetch live). All four OpenAI user agents get the current site; Vercel
+  Firewall: Bot Protection Off, AI Bots Allow; the denied traffic is WordPress-probe scanners, none
+  from OpenAI's published IP ranges. Nothing to fix on the site; it's OpenAI's stale index.
+- **Bing Webmaster Tools** set up by the user (imported from Search Console): sitemap Success (13
+  URLs); old WordPress sitemaps (`/blog`, `/sitemap_index.xml`) removed from Bing and Search Console;
+  homepage live test passed, indexing requested on Bing and Google.
+
+**Open, raise one at a time** (nothing blocking): the user may check Paddle's product description
+mentions daily emails (they described Mon-Sat + Sunday recap at verification); cancelling the old
+WordPress hosting if the account still exists (provider unknown); optional sitemap `lastmod`
+accuracy and JSON-LD structured data (offered, not chosen); the column hub pages' own descriptions
+(`lib/content/categories.ts`, also used by llms.txt and search results) still differ from the new
+homepage copy (offered, not chosen); the 9 low-res covers (user said "later"). When the first real
+member pays, check Kit shows them with the member tag.
 
 **2026-09-29 (later)**: Paddle **domain approved and account verified**; the user set the live
 default payment link and swapped the five Vercel Paddle env vars to the live values
