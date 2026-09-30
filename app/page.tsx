@@ -149,8 +149,9 @@ export default async function HomePage() {
                 The Shortlist
               </Link>
               <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "56ch" }}>
-                The books that rose to the top of the reader recommendations we analysed. One researched interest, the
-                titles readers kept putting forward.
+                Our shortlists are ranked collections of books built around a specific theme, trope, or reader request.
+                We analyse real reader discussions to uncover the books recommended most often, then distill those
+                recommendations into ranked lists.
               </p>
             </div>
           </div>
@@ -187,7 +188,9 @@ export default async function HomePage() {
                 What to Read When
               </Link>
               <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "38ch" }}>
-                For the moments when you know exactly how you want a book to make you feel, and nothing else will do.
+                This is where you&rsquo;ll find book lists for specific reading cravings. Whether you want something
+                deliciously messy, genuinely terrifying, or simply impossible to put down, we probably have (or are
+                currently working on) a list to match.
               </p>
             </div>
           </div>
@@ -222,7 +225,9 @@ export default async function HomePage() {
                 Book Club Book Picks
               </Link>
               <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "42ch" }}>
-                Books chosen for the group read: the ones worth bringing to a room full of opinions.
+                This is the column for readers looking for book recommendations for shared reading experiences. The
+                lists are built from our database of recommendations gathered from real reader discussions, based on the
+                specific theme we&rsquo;re exploring.
               </p>
             </div>
           </div>
