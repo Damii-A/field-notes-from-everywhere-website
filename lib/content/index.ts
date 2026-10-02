@@ -458,11 +458,20 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
     };
   });
 
+  // "Books like": the books right after this one in each list (wrapping round),
+  // taken from the lists in turn. Neighbours in a list are its closest peers, and
+  // starting from each book's own position means every book gets linked from
+  // others' pages; starting every page at the top linked the same 17 of 34.
+  const queues = raw.lists.map((a) => {
+    const entries = a.entries ?? [];
+    const pos = entries.findIndex((e) => e.id === raw._id);
+    return [...entries.slice(pos + 1), ...entries.slice(0, Math.max(pos, 0))];
+  });
   const seen = new Set([raw.slug]);
   const related: WhereToReadBook["related"] = [];
-  for (const a of raw.lists) {
-    for (const e of a.entries ?? []) {
-      const b = e.book;
+  while (related.length < RELATED_LIMIT && queues.some((q) => q.length > 0)) {
+    for (const q of queues) {
+      const b = q.shift()?.book;
       if (!b?.slug || seen.has(b.slug) || related.length === RELATED_LIMIT) continue;
       seen.add(b.slug);
       related.push({ slug: b.slug, title: b.title, author: b.author, coverUrl: b.coverUrl ?? undefined });

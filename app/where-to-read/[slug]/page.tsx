@@ -167,7 +167,8 @@ export default async function WhereToReadPage({ params }: Props) {
 
             {book.related.length > 0 && (
               <section aria-labelledby="related" className={styles.section}>
-                <h2 id="related" className={styles.heading}>Readers who recommend {book.title} also recommend</h2>
+                {/* "Books like X" is how people search for this (user-approved, 2026-10-02). */}
+                <h2 id="related" className={styles.heading}>Books like {book.title}</h2>
                 <ul className={styles.related}>
                   {book.related.map((r) => (
                     <li key={r.slug}>

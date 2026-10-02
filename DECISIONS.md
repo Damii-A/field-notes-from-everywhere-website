@@ -2130,3 +2130,10 @@ narrow. Headings are centred and name the book: "Where to buy or borrow {Title}"
 "Readers who recommend {Title} also recommend". Wrapping rows are centred (tags; related books at
 most 3 per row, 2 on phones, so 6 books are 3 + 3, not 5 + 1). Text blocks (answer, blurb, lists
 intro) are justified with hyphenation on phones (≤700px).
+
+**Update, same day — "Books like {Title}"** (user-approved): the related-books heading is now "Books
+like {Title}", the phrasing people actually search. Related books are now the books right after this
+one in each list it's in (wrapping round), taken from its lists in turn: neighbours in a reader
+ranking are its closest peers, and starting from each book's own position links every featured
+book from others' pages (34 of 34; taking every page's picks from the top of the lists linked only
+the same 17). Each related book (cover, title, author) is one link to its own page; all checked.
