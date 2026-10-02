@@ -8,7 +8,7 @@ from Reading Room issues ("Full blurb & where to read →"); `/find-it` redirect
 a `slug` ("Web address" in the Studio). **For the user**: press "Update Kit draft" on the Thriller
 issue so its Kit draft (made before this) gets the new links. Optional: check one page in Google's
 Rich Results Test.
-Goodreads links filled for all 49 books (2026-10-02). Email now uses calm light palettes (pick pending, default slate).
+Goodreads links filled for all 49 books (2026-10-02). Email uses the sage palette (user's pick).
 
 **Done 2026-10-02 — Reading Room issues in the Studio → Kit drafts** (DECISIONS.md, same date).
 "Reading Room issues" in the Studio sidebar: subject, preview text, the user's four text sections,

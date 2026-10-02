@@ -2156,3 +2156,6 @@ element now sets its own colour. The user also found the slate/sky/ochre/clay mi
 dark box is gone: `ISSUE_PALETTES` (`lib/email/readingRoomIssueEmail.ts`) holds three calm,
 light-box palettes (clay, sage, slate) shown to the user side by side with their real Thriller issue
 (a private artifact); `DEFAULT_ISSUE_PALETTE` is "slate" until they pick.
+
+**Palette chosen (user, same day): B, "sage"** (`--sage-100` background, `--paper-050` box, `--sage-700`
+headings and titles, `--clay-700` links, `--sage-500` dividers, ochre tags). Now `DEFAULT_ISSUE_PALETTE`.

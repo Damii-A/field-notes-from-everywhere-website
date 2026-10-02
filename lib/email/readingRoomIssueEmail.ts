@@ -66,7 +66,7 @@ export const ISSUE_PALETTES = {
 } satisfies Record<string, IssuePalette>;
 
 export type IssuePaletteName = keyof typeof ISSUE_PALETTES;
-export const DEFAULT_ISSUE_PALETTE: IssuePaletteName = "slate";
+export const DEFAULT_ISSUE_PALETTE: IssuePaletteName = "sage"; // the user's pick, 2026-10-02
 
 const TAG_BG = "#F6E7C8"; // --ochre-100
 const TAG_BORDER = "#BC9143"; // --ochre-600
