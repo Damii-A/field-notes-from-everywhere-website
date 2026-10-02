@@ -55,21 +55,24 @@ const COVER_WIDTH = 96;
 const TEXT = "margin:0 0 14px;font-size:16px;line-height:1.6;";
 // Set on the book's text cell (inherited) so each blurb paragraph only carries its margin.
 const BOOK_TEXT = `font-size:15px;line-height:1.6;color:${INK_SOFT};`;
-const BLURB = "margin:0 0 12px;";
+const BLURB = "margin:0 0 10px;";
 // Tags are a main thing readers scan for (user, 2026-10-02), so they're filled
 // pills, a step larger and bolder than body small print. Plain inline spans (no
 // per-pill margin/display): the row's line-height spaces wrapped rows and a
-// space separates pills, set once.
-const PILL_ROW = `margin:0 0 12px;font-size:13px;font-weight:600;line-height:2.4;color:${INK};`;
-const PILL = `padding:4px 11px;background:${TAG_BG};border:1px solid ${TAG_BORDER};border-radius:99px;white-space:nowrap`;
+// space separates pills, set once; &nbsp; inside a tag keeps it on one line.
+const PILL_ROW = `margin:0 0 10px;font-size:13px;font-weight:600;line-height:2.4;color:${INK};`;
+const PILL = `padding:3px 10px;background:${TAG_BG};border:1px solid ${TAG_BORDER};border-radius:99px`;
 
 const LABEL = `font:600 11px/1.4 ${MONO};letter-spacing:1.5px;text-transform:uppercase;color:${TITLE};`;
+// The per-book rank label: same look as LABEL, with the capitals written into
+// the text rather than styled, since it repeats 30+ times.
+const RANK = `margin:0 0 4px;font:11px ${MONO};letter-spacing:1px;color:${TITLE}`;
 
 // One link per book to its /find-it page, which offers the stores: four
 // direct store links per book pushed a 30-book issue past Gmail's clip limit
 // (DECISIONS.md, 2026-10-02).
 function findItLink(b: IssueEmailBook): string {
-  return `<p style="margin:0 0 4px;font-size:14px;"><a href="${esc(b.findUrl)}" style="color:${TITLE};font-weight:700;">Find this book &rarr;</a></p>`;
+  return `<p style="margin:0"><a href="${esc(b.findUrl)}" style="color:${TITLE};font-weight:700;font-size:14px">Find this book &rarr;</a></p>`;
 }
 
 /** A boxed section with a small heading: the article's "How we made this list" box, in Reading Room colours. */
@@ -90,17 +93,17 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
   const books = issue.books
     .map((b, i) => {
       const cover = b.coverUrl
-        ? `<img src="${esc(sized(b.coverUrl, COVER_WIDTH * 2))}" alt="${esc(b.title)}" width="${COVER_WIDTH}" style="display:block;width:${COVER_WIDTH}px;height:auto;border-radius:3px 6px 6px 3px;border:0;" />`
+        ? `<img src="${esc(sized(b.coverUrl, COVER_WIDTH * 2))}" alt="${esc(b.title)}" width="${COVER_WIDTH}" style="display:block;border-radius:3px 6px 6px 3px">`
         : `<div style="width:${COVER_WIDTH}px;height:${Math.round(COVER_WIDTH * 1.5)}px;background:${COVER_STANDIN};border-radius:3px 6px 6px 3px;"></div>`;
-      const tags = b.tags.map((t) => `<span style="${PILL}">${esc(t)}</span>`).join("&#32; ");
+      const tags = b.tags.map((t) => `<span style="${PILL}">${esc(t).replace(/ /g, "&nbsp;")}</span>`).join("&#32;"); // &#32;: a real space the whitespace-stripping below keeps
       return `
-        <tr><td style="padding:24px 0;${i > 0 ? `border-top:1px solid ${RULE};` : ""}">
+        <tr><td style="padding:22px 0;${i > 0 ? `border-top:1px solid ${RULE}` : ""}">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-            <td class="fnfe-cover" width="${COVER_WIDTH}" valign="top" style="padding:0 18px 0 0;">${cover}</td>
-            <td class="fnfe-text" valign="top" style="${BOOK_TEXT}">
-              ${b.rank ? `<div style="margin:0 0 6px;${LABEL}">#${b.rank} most recommended</div>` : ""}
-              <h2 style="margin:0 0 4px;font:700 20px/1.25 ${DISPLAY};color:${TITLE};">${esc(b.title)}</h2>
-              <p style="margin:0 0 10px;font-size:14px;font-weight:600;color:${INK};">${esc(b.author)}</p>
+            <td class="fc" width="${COVER_WIDTH}" valign="top" style="padding-right:18px">${cover}</td>
+            <td class="ft" valign="top" style="${BOOK_TEXT}">
+              ${b.rank ? `<p style="${RANK}">#${b.rank} MOST RECOMMENDED</p>` : ""}
+              <h2 style="margin:0 0 2px;font:700 20px/1.25 ${DISPLAY};color:${TITLE}">${esc(b.title)}</h2>
+              <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:${INK}">${esc(b.author)}</p>
               ${tags ? `<div style="${PILL_ROW}">${tags}</div>` : ""}
               ${paragraphs(b.blurb ?? "", BLURB)}
               ${findItLink(b)}
@@ -115,8 +118,8 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
   const html = `<style>
   /* Phones: cover above the book's text (clients without media-query support keep side-by-side). */
   @media (max-width: 480px) {
-    .fnfe-cover, .fnfe-text { display: block !important; width: 100% !important; }
-    .fnfe-cover { padding: 0 0 14px !important; }
+    .fc, .ft { display: block !important; width: 100% !important; }
+    .fc { padding: 0 0 14px !important; }
     .fnfe-issue { padding: 20px 16px !important; }
   }
 </style>

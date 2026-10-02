@@ -2020,3 +2020,21 @@ styling set once per book. 30 books with full publisher blurbs (~25 KB of text):
 ~88 KB with Kit's tracking estimated; the size warning (85 KB) still fires for that test issue.
 Kit's template adds an unmeasured amount, so whether it clips is to be confirmed by a Kit test
 send to a Gmail inbox. Blurb length is the main lever.
+
+## 2026-10-02 — Reading Room issue emails show a shortened blurb; the full one is on /find-it
+
+**Decision** (user-chosen): Kit's own size check estimated the 30-book test issue at **133 KB** for
+an 85 KB body, i.e. Kit's template, footer and link tracking add ~48 KB, and Kit/Gmail want under
+100. Full publisher blurbs alone were 28 KB of the body, so they can't all fit. Now a book's own
+(publisher) blurb is shortened in the email to its first sentence or two, ~260 characters, ending
+in "…" (`lib/email/excerpt.ts`), and its `/find-it` page shows the full blurb above the store
+buttons. A blurb written in the issue's per-book blurb box is used as written, never cut.
+Alternatives offered: the user writes short blurbs per issue (30+ blurbs, three times a week), or
+fewer books per issue (conflicts with "30+ books" in the site copy and Terms).
+
+Also trimmed the repeated per-book code (rank label capitals in the text, shorter cover/pill/link
+styles, shorter class names); fixed in testing: the whitespace-stripping had removed the plain
+space between tag pills, making each tag row unbreakable and the email wider than a phone (spaces
+are now `&#32;`). 30-book test issue body: **59 KB** (from 85). The Studio's size warning now uses
+the measured Kit overhead (body + 48 KB > 100 KB). Whether Kit's addition is fixed or grows with the
+body is unknown until Kit's estimate for the new draft is read.

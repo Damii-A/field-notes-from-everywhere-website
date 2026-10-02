@@ -404,13 +404,13 @@ export interface CoverBook {
 }
 
 /** One book by id, for its /find-it page (Reading Room issue "Find this book" links). Null if it doesn't exist. */
-export async function getBookById(id: string): Promise<{ title: string; author: string; coverUrl?: string } | null> {
-  const raw = await groqFetch<{ title: string; author: string; coverUrl: string | null } | null>(
-    `*[_type == "book" && _id == $id][0]{ title, author, "coverUrl": coverImage.asset->url }`,
+export async function getBookById(id: string): Promise<{ title: string; author: string; coverUrl?: string; blurb?: string } | null> {
+  const raw = await groqFetch<{ title: string; author: string; coverUrl: string | null; blurb: string | null } | null>(
+    `*[_type == "book" && _id == $id][0]{ title, author, "coverUrl": coverImage.asset->url, "blurb": canonicalBlurb }`,
     { id },
     { tags: ["book"], revalidate: 300 },
   );
-  return raw ? { title: raw.title, author: raw.author, coverUrl: raw.coverUrl ?? undefined } : null;
+  return raw ? { title: raw.title, author: raw.author, coverUrl: raw.coverUrl ?? undefined, blurb: raw.blurb ?? undefined } : null;
 }
 
 /**

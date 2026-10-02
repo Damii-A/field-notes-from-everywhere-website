@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { BookCover } from "@/components/ds/BookCover";
 import { getBookById } from "@/lib/content";
 import { STORES } from "@/lib/books/stores";
+import { splitParagraphs } from "@/lib/content/paragraphs";
 import styles from "./FindIt.module.css";
 
 /**
@@ -50,6 +51,14 @@ export default async function FindItPage({ params }: Props) {
             <h1 className={styles.title}>{book.title}</h1>
             <p className={styles.author}>{book.author}</p>
           </div>
+          {/* The full blurb: Reading Room emails show only its start (lib/email/excerpt.ts). */}
+          {book.blurb && (
+            <div className={styles.blurb}>
+              {splitParagraphs(book.blurb).map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
+          )}
           <ul className={styles.stores}>
             {STORES.map((s) => (
               <li key={s.name}>

@@ -87,3 +87,18 @@
     transform: none;
   }
 }
+
+.blurb {
+  text-align: left;
+  font: var(--type-body);
+  color: var(--ink-700);
+  white-space: pre-line;
+}
+
+.blurb p {
+  margin: 0 0 12px;
+}
+
+.blurb p:last-child {
+  margin: 0;
+}

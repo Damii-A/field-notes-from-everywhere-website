@@ -12,10 +12,10 @@ Same day, after the user's Kit preview: theme / what-to-expect are now boxed sec
 headings, and tags are filled ochre pills (more prominent).
 Later the same day: each book shows "#N most recommended" (from the issue's ranking) and one "Find
 this book →" link to the new `/find-it/<book>` page (Amazon, Bookshop.org, Goodreads, library).
-**Open: email size.** A 30-book test issue with full publisher blurbs is ~85 KB before Kit's template;
-Gmail clips at ~102 KB. Needs a Kit test send to a Gmail inbox to see if it clips; blurb length is
-the lever if so.
-**A test draft is in Kit** (id `26205922`, subject "TEST (v3): 30 thrillers", members-only,
+**Open: email size.** Kit estimated the first version at 133 KB (Kit adds ~48 KB). Publisher blurbs
+are now shortened in the email (full blurb on /find-it); test issue body 59 KB. Waiting on Kit's
+estimate for the "TEST (v4)" draft; if still over 100 KB, shorten excerpts further or slim links.
+**A test draft is in Kit** (id `26205922`, subject "TEST (v4): 30 thrillers", members-only,
 never sent) for the user to preview there; delete it afterwards (Kit or API). The user's own two
 Kit drafts ("Subject line", "hello") were not touched.
 

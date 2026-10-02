@@ -120,7 +120,7 @@ what would force adding one (building the logged-in Reading Room product).
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | legal pages (CMS body) | every heading gets an id from its text, e.g. `/terms#refund-policy` (the refund link given to Paddle) |
 | `/contact` | Contact | static, mailto link only |
 | `/llms.txt` | llms.txt (rewrite to `/llms`) | Markdown site overview for AI tools, built from published articles (`app/llms/route.ts`) |
-| `/find-it/[bookId]` | Find this book | where a Reading Room issue's per-book link lands: cover + Amazon / Bookshop.org / Goodreads / library (OverDrive→Libby) searches (`lib/books/stores.ts`); noindex, not in sitemap |
+| `/find-it/[bookId]` | Find this book | where a Reading Room issue's per-book link lands: cover, full blurb (emails show a shortened one) + Amazon / Bookshop.org / Goodreads / library (OverDrive→Libby) searches (`lib/books/stores.ts`); noindex, not in sitemap |
 | `/unsubscribe` | Unsubscribe confirm | from email footer links; noindex, not in the design |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | shared legal template | CMS body content |
 | `/studio` | Sanity Studio | embedded, editor-auth'd, not a public route |

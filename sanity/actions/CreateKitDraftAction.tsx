@@ -69,7 +69,7 @@ export function CreateKitDraftAction(props: DocumentActionProps) {
           <p>Open it in Kit to preview it, then send or schedule it from there.</p>
           {body.nearClipLimit && (
             <p>
-              <strong>Heads up:</strong> this email is large ({body.sizeKb} KB). Gmail cuts off emails over about 100 KB, so readers
+              <strong>Heads up:</strong> this email is large (about {body.sizeKb} KB once Kit adds its parts). Gmail cuts off emails over about 100 KB, so readers
               may see &ldquo;[Message clipped]&rdquo; partway down. Shortening some blurbs (the per-book blurb box) or using fewer
               books fixes it; then press this button again.
             </p>

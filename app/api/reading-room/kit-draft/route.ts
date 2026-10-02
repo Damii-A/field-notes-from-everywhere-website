@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { blurbExcerpt } from "@/lib/email/excerpt";
 import { readingRoomIssueHtml, type IssueEmail } from "@/lib/email/readingRoomIssueEmail";
 import { withUtm } from "@/lib/email/utm";
 import { KitDraftLockedError, saveReadingRoomDraft } from "@/lib/integrations/kit";
@@ -25,10 +26,12 @@ const DATASET =
   process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || process.env.SANITY_API_DATASET || "production";
 const TOKEN = process.env.SANITY_API_TOKEN || process.env.SANITY_API_READ_TOKEN;
 const REQUEST_TTL_SECONDS = 300;
-// Gmail clips emails over ~102 KB ("[Message clipped]"), and Kit's template +
-// footer add to our body; warn the editor with room to spare.
-const CLIP_WARNING_KB = 85;
-const KIT_LINK_BASE_BYTES = 60;
+// Gmail clips emails over ~102 KB ("[Message clipped]"); Kit's editor warns
+// past 100 KB of its own estimate. Kit's template, footer and link tracking add
+// about KIT_OVERHEAD_KB to our body (measured 2026-10-02: Kit estimated 133 KB
+// for an 85 KB body with 30 links), so warn when body + that passes 100.
+const CLIP_WARNING_KB = 100;
+const KIT_OVERHEAD_KB = 48;
 
 async function query<T>(groq: string, params: Record<string, unknown>, perspective: "raw" | "drafts"): Promise<T> {
   const url = new URL(`https://${PROJECT_ID}.api.sanity.io/v2025-02-19/data/query/${DATASET}`);
@@ -47,7 +50,7 @@ const ISSUE_QUERY = `*[_type == "readingRoomIssue" && _id == $id][0]{
   "rankedIds": ranking->books[]._ref,
   "books": bookEntries[defined(book)]{
     "id": book._ref, "title": book->title, "author": book->author, "coverUrl": book->coverImage.asset->url,
-    "blurb": coalesce(blurb, book->canonicalBlurb),
+    "ownBlurb": blurb, "canonicalBlurb": book->canonicalBlurb,
     "tags": select(count(tags) > 0 => tags[]->name, book->tags[]->name)
   }
 }`;
@@ -58,7 +61,7 @@ type Issue = Partial<Omit<IssueEmail, "books">> & {
   previewText?: string;
   kitBroadcastId?: number;
   rankedIds?: string[] | null;
-  books: (Omit<IssueEmail["books"][number], "tags" | "rank"> & { id: string; tags: (string | null)[] | null })[] | null;
+  books: (Omit<IssueEmail["books"][number], "tags" | "rank" | "findUrl" | "blurb"> & { id: string; ownBlurb?: string | null; canonicalBlurb?: string | null; tags: (string | null)[] | null })[] | null;
 };
 
 const REQUIRED: [keyof Issue, string][] = [
@@ -99,10 +102,13 @@ export async function POST(req: Request) {
     expectHeading: issue.expectHeading?.trim() || "What to expect",
     whatToExpect: issue.whatToExpect!,
     transitionSentence: issue.transitionSentence!,
-    books: books.map(({ id, ...b }) => {
+    books: books.map(({ id, ownBlurb, canonicalBlurb, ...b }) => {
       const pos = issue.rankedIds?.indexOf(id) ?? -1;
       return {
         ...b,
+        // A blurb written for this issue is used as written; the book's own
+        // (publisher) blurb is shortened, with the full text on its /find-it page.
+        blurb: ownBlurb?.trim() ? ownBlurb : blurbExcerpt(canonicalBlurb ?? ""),
         tags: (b.tags ?? []).filter((t): t is string => !!t),
         rank: pos >= 0 ? pos + 1 : undefined,
         // No utm_content: Kit reports clicks per issue itself, and every byte of
@@ -120,11 +126,7 @@ export async function POST(req: Request) {
       previewText: issue.previewText!,
       content,
     });
-    // Kit swaps each link for a click-tracking link that carries the original
-    // address base64-encoded (~4/3 its length) plus ~60 bytes of its own.
-    const hrefs = content.match(/href="[^"]*"/g) ?? [];
-    const trackingExtra = hrefs.reduce((n, h) => n + KIT_LINK_BASE_BYTES + Math.ceil(h.length / 3), 0);
-    const sizeKb = Math.round((Buffer.byteLength(content) + trackingExtra) / 1000);
+    const sizeKb = Math.round(Buffer.byteLength(content) / 1000) + KIT_OVERHEAD_KB;
     return NextResponse.json({ ...result, bookCount: books.length, sizeKb, nearClipLimit: sizeKb > CLIP_WARNING_KB });
   } catch (err) {
     if (err instanceof KitDraftLockedError) return NextResponse.json({ error: err.message }, { status: 409 });
