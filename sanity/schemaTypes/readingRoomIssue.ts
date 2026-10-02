@@ -45,12 +45,26 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: "themeHeading",
+      title: "2. Theme section heading",
+      description: "The small heading on the theme box.",
+      type: "string",
+      initialValue: "About this theme",
+    }),
+    defineField({
       name: "themeExplanation",
       title: "2. Explaining the theme",
       description: PARAGRAPHS_HINT,
       type: "text",
       rows: 6,
       validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "expectHeading",
+      title: "3. \"What to expect\" section heading",
+      description: "The small heading on the what-to-expect box.",
+      type: "string",
+      initialValue: "What to expect",
     }),
     defineField({
       name: "whatToExpect",

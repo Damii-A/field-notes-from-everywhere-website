@@ -1983,3 +1983,11 @@ template, 30 books with covers, name greeting kept); pressing again updated the 
 duplicate; desktop and phone renders checked (cover above text on phones, no sideways scroll);
 `sanity schema validate` 0 errors; production build clean. Not verified: the buttons in the real
 Studio (the user's own login) and the email inside Kit's template (Kit's preview).
+
+**Update, same day (user, after previewing in Kit)**: the theme and what-to-expect parts didn't read
+as sections, and tags need more prominence ("one of the core interest signals the reader will be
+looking for when scanning the catalogue"). Now: each of those two parts is a boxed section (white,
+`--slate-600` left rule, small mono uppercase heading: the article's "How we made this list" box
+pattern), with the heading editable per issue (`themeHeading` / `expectHeading`, defaults "About this
+theme" / "What to expect"); tags are filled pills (`--ochre-100` fill, `--ochre-600` border, 13px
+semibold, ink text). 30 books: 75 KB. Checked rendered at desktop and phone widths.

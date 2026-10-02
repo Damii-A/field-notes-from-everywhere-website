@@ -40,7 +40,7 @@ async function query<T>(groq: string, params: Record<string, unknown>, perspecti
 // The "drafts" perspective shows unpublished edits over the published issue —
 // what the editor is looking at when they press the button.
 const ISSUE_QUERY = `*[_type == "readingRoomIssue" && _id == $id][0]{
-  title, subject, previewText, introSentence, themeExplanation, whatToExpect, transitionSentence, kitBroadcastId,
+  title, subject, previewText, introSentence, themeHeading, themeExplanation, expectHeading, whatToExpect, transitionSentence, kitBroadcastId,
   "books": bookEntries[defined(book)]{
     "title": book->title, "author": book->author, "coverUrl": book->coverImage.asset->url,
     "blurb": coalesce(blurb, book->canonicalBlurb),
@@ -89,7 +89,9 @@ export async function POST(req: Request) {
 
   const content = readingRoomIssueHtml({
     introSentence: issue.introSentence!,
+    themeHeading: issue.themeHeading?.trim() || "About this theme",
     themeExplanation: issue.themeExplanation!,
+    expectHeading: issue.expectHeading?.trim() || "What to expect",
     whatToExpect: issue.whatToExpect!,
     transitionSentence: issue.transitionSentence!,
     books: books.map((b) => ({ ...b, tags: (b.tags ?? []).filter((t): t is string => !!t) })),

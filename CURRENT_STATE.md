@@ -8,7 +8,9 @@ a ranking + "Fill books from ranking", then **"Create Kit draft"**, which saves 
 **draft** broadcast in Kit (pressing again updates it; nothing is ever sent from the site). Tested
 end to end against real Sanity + Kit; test data deleted from Sanity. **Still to check, by the user**:
 the two buttons in the real Studio (their login), and the email inside Kit's template (Kit preview).
-**A test draft is in Kit** (id `26205922`, subject "TEST (updated): 30 thrillers", members-only,
+Same day, after the user's Kit preview: theme / what-to-expect are now boxed sections with editable
+headings, and tags are filled ochre pills (more prominent).
+**A test draft is in Kit** (id `26205922`, subject "TEST (v2): 30 thrillers", members-only,
 never sent) for the user to preview there; delete it afterwards (Kit or API). The user's own two
 Kit drafts ("Subject line", "hello") were not touched.
 

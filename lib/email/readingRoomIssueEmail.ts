@@ -1,12 +1,13 @@
 import { splitParagraphs } from "@/lib/content/paragraphs";
-import { BODY, DISPLAY, INK, INK_SOFT, RULE, esc, sized } from "./shared";
+import { BODY, DISPLAY, INK, INK_SOFT, MONO, RULE, esc, sized } from "./shared";
 
 /**
  * A Reading Room issue's email body, saved to Kit as a draft broadcast
  * (lib/integrations/kit.ts). Kit's "Text only" template wraps it and adds the
  * unsubscribe footer, so this is a body fragment, not a whole document.
  * Order is the user's (DECISIONS.md, 2026-10-02): greeting, intro sentence,
- * the theme, what to expect, transition sentence, then every book (cover,
+ * the theme and what to expect (each a boxed section with a heading),
+ * transition sentence, then every book (cover,
  * title, author, tags, blurb — the same book row as the book-list email),
  * on the Reading Room's colours. Tables + inline styles, for email clients.
  *
@@ -25,7 +26,9 @@ export interface IssueEmailBook {
 
 export interface IssueEmail {
   introSentence: string;
+  themeHeading: string;
   themeExplanation: string;
+  expectHeading: string;
   whatToExpect: string;
   transitionSentence: string;
   books: IssueEmailBook[];
@@ -33,16 +36,28 @@ export interface IssueEmail {
 
 const PAGE_BG = "#F5F7EE"; // --paper-050, the Reading Room page
 const TITLE = "#3F606B"; // --slate-600
-const TAG_BORDER = "#DDB671"; // --ochre-500, the Reading Room highlight
+const SECTION_BG = "#FFFFFF"; // --paper-000
+const TAG_BG = "#F6E7C8"; // --ochre-100, the Reading Room highlight
+const TAG_BORDER = "#BC9143"; // --ochre-600
 const COVER_STANDIN = "#D9E4E8"; // --slate-100
 const COVER_WIDTH = 96;
 
 const TEXT = "margin:0 0 14px;font-size:16px;line-height:1.6;";
 const BLURB = `margin:0 0 12px;font-size:15px;line-height:1.6;color:${INK_SOFT};`;
-// Pills are plain inline spans (no per-pill margin/display): the row's
-// line-height spaces wrapped rows and a space separates pills, set once.
-const PILL_ROW = `margin:0 0 10px;font-size:12px;line-height:2.3;color:${INK_SOFT};`;
-const PILL = `padding:3px 10px;border:1px solid ${TAG_BORDER};border-radius:99px;white-space:nowrap`;
+// Tags are a main thing readers scan for (user, 2026-10-02), so they're filled
+// pills, a step larger and bolder than body small print. Plain inline spans (no
+// per-pill margin/display): the row's line-height spaces wrapped rows and a
+// space separates pills, set once.
+const PILL_ROW = `margin:0 0 12px;font-size:13px;font-weight:600;line-height:2.4;color:${INK};`;
+const PILL = `padding:4px 11px;background:${TAG_BG};border:1px solid ${TAG_BORDER};border-radius:99px;white-space:nowrap`;
+
+/** A boxed section with a small heading: the article's "How we made this list" box, in Reading Room colours. */
+function section(heading: string, text: string): string {
+  return `<tr><td style="padding:0 0 16px;"><div style="background:${SECTION_BG};border-left:3px solid ${TITLE};border-radius:8px;padding:16px 20px 4px;">
+    <div style="margin:0 0 8px;font:600 11px/1.4 ${MONO};letter-spacing:1.5px;text-transform:uppercase;color:${TITLE};">${esc(heading)}</div>
+    ${paragraphs(text, TEXT)}
+  </div></td></tr>`;
+}
 
 function paragraphs(text: string, style: string): string {
   return splitParagraphs(text)
@@ -88,10 +103,10 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
       <tr><td style="padding:0 0 10px;">
         <p style="${TEXT}">Hi {{ subscriber.first_name | default: "there" }},</p>
         ${paragraphs(issue.introSentence, TEXT)}
-        ${paragraphs(issue.themeExplanation, TEXT)}
-        ${paragraphs(issue.whatToExpect, TEXT)}
-        ${paragraphs(issue.transitionSentence, TEXT)}
       </td></tr>
+      ${section(issue.themeHeading, issue.themeExplanation)}
+      ${section(issue.expectHeading, issue.whatToExpect)}
+      <tr><td style="padding:6px 0 10px;">${paragraphs(issue.transitionSentence, TEXT)}</td></tr>
       ${books}
     </table>
   </td></tr>
