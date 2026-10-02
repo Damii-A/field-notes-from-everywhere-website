@@ -1,5 +1,5 @@
 import { splitParagraphs } from "@/lib/content/paragraphs";
-import { INK, INK_SOFT, RULE, esc, sized } from "./shared";
+import { INK, INK_SOFT, esc, sized } from "./shared";
 
 /**
  * A Reading Room issue's email body, saved to Kit as a draft broadcast
@@ -7,9 +7,9 @@ import { INK, INK_SOFT, RULE, esc, sized } from "./shared";
  * unsubscribe footer, so this is a body fragment, not a whole document.
  * Order is the user's (DECISIONS.md, 2026-10-02): greeting, an "About this
  * issue" box, then every book (cover, ranking position, title, author, tags,
- * a shortened blurb, a "Full blurb & where to read" link — the book-list email's book row),
- * then a closing sentence and sign-off, on the Reading Room's colours.
- * Tables + inline styles, for email clients.
+ * a shortened blurb, a "Full blurb & where to read" link), then a closing
+ * sentence and sign-off. Colours: the Reading Room's own identity (user's
+ * pick), with no pure white or black anywhere. Inline styles, for email clients.
  *
  * Size matters: Gmail clips emails over ~102 KB and an issue has 30+ books.
  * So the font and ink colour are set once on the wrapper (inherited), the
@@ -41,17 +41,28 @@ const BODY = "Nunito,Arial,sans-serif";
 const DISPLAY = "Comfortaa,Arial,sans-serif";
 const MONO = "'Courier New',monospace";
 
-const PAGE_BG = "#F5F7EE"; // --paper-050, the Reading Room page
+// The Reading Room palette (styles/tokens/colors.css).
+const PAGE_BG = "#E4F1F5"; // --sky-100
+const PANEL = "#2C464F"; // --slate-700, the "About this issue" box
+const PANEL_TEXT = "#F5F7EE"; // --paper-050 (cream, not white)
+const HIGHLIGHT = "#DDB671"; // --ochre-500, the box's heading
 const TITLE = "#3F606B"; // --slate-600
-const SECTION_BG = "#FFFFFF"; // --paper-000
-const TAG_BG = "#F6E7C8"; // --ochre-100, the Reading Room highlight
+const LINK = "#8F5F3C"; // --clay-700
+const DIVIDER = "#BBDCE5"; // --sky-200
+const TAG_BG = "#F6E7C8"; // --ochre-100
 const TAG_BORDER = "#BC9143"; // --ochre-600
 const COVER_STANDIN = "#D9E4E8"; // --slate-100
 const COVER_WIDTH = 96;
+// The text block's widest; cover + gap + this = 494px. Narrower than that (any
+// phone), the text block wraps below the cover and takes the full width: the
+// stacked layout the user prefers on phones, without a media query (some email
+// apps ignore those, which is how phones briefly got two columns).
+const TEXT_MAX = 380;
 
 const TEXT = "margin:0 0 14px;font-size:16px;line-height:1.6;";
-// Set on the book's text cell (inherited) so each blurb paragraph only carries its margin.
-const BOOK_TEXT = `font-size:15px;line-height:1.6;color:${INK_SOFT};`;
+// Set on the book's text block (inherited) so each blurb paragraph only carries its margin.
+const BOOK_TEXT = `display:inline-block;vertical-align:top;width:100%;max-width:${TEXT_MAX}px;font-size:15px;line-height:1.6;color:${INK_SOFT}`;
+const COVER_BOX = `display:inline-block;vertical-align:top;width:${COVER_WIDTH}px;margin:0 18px 14px 0`;
 const BLURB = "margin:0 0 10px;";
 // Tags are a main thing readers scan for (user, 2026-10-02), so they're filled
 // pills, a step larger and bolder than body small print. Plain inline spans (no
@@ -59,10 +70,7 @@ const BLURB = "margin:0 0 10px;";
 // space separates pills, set once; &nbsp; inside a tag keeps it on one line.
 const PILL_ROW = `margin:0 0 10px;font-size:13px;font-weight:600;line-height:2.4;color:${INK};`;
 const PILL = `padding:3px 10px;background:${TAG_BG};border:1px solid ${TAG_BORDER};border-radius:99px`;
-
-const LABEL = `font:600 11px/1.4 ${MONO};letter-spacing:1.5px;text-transform:uppercase;color:${TITLE};`;
-// The per-book rank label: same look as LABEL, with the capitals written into
-// the text rather than styled, since it repeats 30+ times.
+// The per-book rank label, capitals written into the text since it repeats 30+ times.
 const RANK = `margin:0 0 4px;font:11px ${MONO};letter-spacing:1px;color:${TITLE}`;
 
 // One link per book to its "Where to read" page: the email shows only the
@@ -71,13 +79,13 @@ const RANK = `margin:0 0 4px;font:11px ${MONO};letter-spacing:1px;color:${TITLE}
 // the full blurb is there too (user, 2026-10-02).
 function pageLink(b: IssueEmailBook): string {
   if (!b.pageUrl) return "";
-  return `<p style="margin:0"><a href="${esc(b.pageUrl)}" style="color:${TITLE};font-weight:700;font-size:14px">Full blurb &amp; where to read &rarr;</a></p>`;
+  return `<p style="margin:0"><a href="${esc(b.pageUrl)}" style="color:${LINK};font-weight:700;font-size:14px">Full blurb &amp; where to read &rarr;</a></p>`;
 }
 
-/** A boxed section with a small heading: the article's "How we made this list" box, in Reading Room colours. */
-function section(heading: string, text: string): string {
-  return `<tr><td style="padding:0 0 16px;"><div style="background:${SECTION_BG};border-left:3px solid ${TITLE};border-radius:8px;padding:16px 20px 4px;">
-    <div style="margin:0 0 8px;${LABEL}">${esc(heading)}</div>
+/** The "About this issue" box: the Reading Room's deep slate panel, cream text, ochre heading. */
+function panel(heading: string, text: string): string {
+  return `<tr><td style="padding:0 0 18px;"><div style="background:${PANEL};color:${PANEL_TEXT};border-radius:10px;padding:18px 20px 4px;">
+    <div style="margin:0 0 8px;font:600 11px/1.4 ${MONO};letter-spacing:1.5px;text-transform:uppercase;color:${HIGHLIGHT};">${esc(heading)}</div>
     ${paragraphs(text, TEXT)}
   </div></td></tr>`;
 }
@@ -96,18 +104,15 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
         : `<div style="width:${COVER_WIDTH}px;height:${Math.round(COVER_WIDTH * 1.5)}px;background:${COVER_STANDIN};border-radius:3px 6px 6px 3px;"></div>`;
       const tags = b.tags.map((t) => `<span style="${PILL}">${esc(t).replace(/ /g, "&nbsp;")}</span>`).join("&#32;"); // &#32;: a real space the whitespace-stripping below keeps
       return `
-        <tr><td style="padding:22px 0;${i > 0 ? `border-top:1px solid ${RULE}` : ""}">
-          <table width="100%" cellpadding="0" cellspacing="0"><tr>
-            <td class="fc" width="${COVER_WIDTH}" valign="top" style="padding-right:18px">${cover}</td>
-            <td class="ft" valign="top" style="${BOOK_TEXT}">
-              ${b.rank ? `<p style="${RANK}">#${b.rank} MOST RECOMMENDED</p>` : ""}
-              <h2 style="margin:0 0 2px;font:700 20px/1.25 ${DISPLAY};color:${TITLE}">${esc(b.title)}</h2>
-              <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:${INK}">${esc(b.author)}</p>
-              ${tags ? `<div style="${PILL_ROW}">${tags}</div>` : ""}
-              ${paragraphs(b.blurb ?? "", BLURB)}
-              ${pageLink(b)}
-            </td>
-          </tr></table>
+        <tr><td style="padding:22px 0 8px;${i > 0 ? `border-top:1px solid ${DIVIDER}` : ""}">
+          <div style="${COVER_BOX}">${cover}</div><div style="${BOOK_TEXT}">
+            ${b.rank ? `<p style="${RANK}">#${b.rank} MOST RECOMMENDED</p>` : ""}
+            <h2 style="margin:0 0 2px;font:700 20px/1.25 ${DISPLAY};color:${TITLE}">${esc(b.title)}</h2>
+            <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:${INK}">${esc(b.author)}</p>
+            ${tags ? `<div style="${PILL_ROW}">${tags}</div>` : ""}
+            ${paragraphs(b.blurb ?? "", BLURB)}
+            ${pageLink(b)}
+          </div>
         </td></tr>`;
     })
     .join("");
@@ -117,23 +122,15 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
 
   // {{ subscriber.first_name }} is Kit's Liquid personalisation; `default`
   // also covers subscribers with an empty name.
-  const html = `<style>
-  /* Phones: cover above the book's text (clients without media-query support keep side-by-side). */
-  @media (max-width: 480px) {
-    .fc, .ft { display: block !important; width: 100% !important; }
-    .fc { padding: 0 0 14px !important; }
-    .fnfe-issue { padding: 20px 16px !important; }
-  }
-</style>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PAGE_BG};border-radius:12px;">
-  <tr><td class="fnfe-issue" style="padding:28px 28px 8px;font-family:${BODY};color:${INK};">
+  const html = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PAGE_BG};border-radius:12px;">
+  <tr><td style="padding:24px 20px 8px;font-family:${BODY};color:${INK};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr><td style="padding:0 0 4px;">
         <p style="${TEXT}">Hi {{ subscriber.first_name | default: "there" }},</p>
       </td></tr>
-      ${section("About this issue", issue.aboutThisIssue)}
+      ${panel("About this issue", issue.aboutThisIssue)}
       ${books}
-      <tr><td style="padding:22px 0 14px;border-top:1px solid ${RULE};">
+      <tr><td style="padding:22px 0 14px;border-top:1px solid ${DIVIDER};">
         ${paragraphs(issue.closingSentence, TEXT)}
         <p style="${TEXT}">${signOffLines}</p>
       </td></tr>

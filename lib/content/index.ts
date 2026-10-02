@@ -411,6 +411,7 @@ interface RawWhereToRead {
   title: string;
   author: string;
   coverUrl: string | null;
+  goodreadsUrl: string | null;
   canonicalBlurb: string | null;
   tags: (string | null)[] | null;
   lists: {
@@ -432,7 +433,7 @@ const RELATED_LIMIT = 6;
 export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook | null> {
   const raw = await groqFetch<(RawWhereToRead & { _id: string }) | null>(
     `*[_type == "book" && slug.current == $slug][0]{
-      _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, canonicalBlurb,
+      _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, goodreadsUrl, canonicalBlurb,
       "tags": tags[]->name,
       "lists": *[_type == "article" && ${RELEASED} && references(^._id)] | order(publishedAt desc){
         title, "slug": slug.current, category,
@@ -473,6 +474,7 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
     title: raw.title,
     author: raw.author,
     coverUrl: raw.coverUrl ?? undefined,
+    goodreadsUrl: raw.goodreadsUrl ?? undefined,
     blurb: lists.find((l) => l.ownBlurb)?.ownBlurb ?? raw.canonicalBlurb ?? undefined,
     tags: (raw.tags ?? []).filter((t): t is string => !!t),
     // A ranking ("#1 of 15") is the strongest reason to read it, so ranked lists lead; otherwise newest first.

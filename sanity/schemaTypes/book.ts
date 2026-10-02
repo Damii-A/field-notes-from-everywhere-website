@@ -21,6 +21,15 @@ export default defineType({
       options: { source: (doc) => `${doc.title ?? ""} ${doc.author ?? ""}`, maxLength: 96 },
       validation: (r) => r.required(),
     }),
+    defineField({
+      name: "goodreadsUrl",
+      title: "Goodreads link",
+      description:
+        "This book's own Goodreads page, for the Goodreads button on its \"Where to read\" page. Filled in automatically on import (the top title match by this author); paste a different goodreads.com/book/show/… link to correct it. Empty = a Goodreads title search instead.",
+      type: "url",
+      validation: (r) =>
+        r.custom((v: string | undefined) => (!v || /^https:\/\/www\.goodreads\.com\/book\/show\//.test(v) ? true : "Use a goodreads.com/book/show/… link")),
+    }),
     defineField({ name: "coverImage", title: "Cover image", type: "image", options: { hotspot: true } }),
     defineField({ name: "canonicalBlurb", title: "Canonical blurb", type: "text", rows: 3 }),
     defineField({ name: "tags", title: "Tags", type: "array", of: [{ type: "reference", to: [{ type: "tag" }] }] }),

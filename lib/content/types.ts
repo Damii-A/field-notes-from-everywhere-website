@@ -53,6 +53,8 @@ export interface WhereToReadBook {
   title: string;
   author: string;
   coverUrl?: string;
+  /** The book's own Goodreads page, when known (lib/books/stores.ts). */
+  goodreadsUrl?: string;
   /** The blurb to show: a featuring article's own per-list blurb if one exists, else the book's canonical blurb. */
   blurb?: string;
   tags: string[];

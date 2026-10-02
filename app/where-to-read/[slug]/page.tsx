@@ -107,7 +107,7 @@ export default async function WhereToReadPage({ params }: Props) {
             <ul className={styles.stores}>
               {STORES.map((s) => (
                 <li key={s.name}>
-                  <a className={styles.store} href={s.url(book.title, book.author)} rel="nofollow noopener">
+                  <a className={styles.store} href={s.url(book)} rel="nofollow noopener">
                     <span className={styles.storeName}>{s.name}</span>
                     <span className={styles.storeNote}>{s.note}</span>
                   </a>

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "import-books": "node --env-file=.env.local scripts/import-books.mjs"
+    "import-books": "node --env-file=.env.local scripts/import-books.mjs",
+    "goodreads-links": "node --env-file=.env.local scripts/backfill-goodreads.mjs"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.3.2",

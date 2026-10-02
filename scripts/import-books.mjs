@@ -41,6 +41,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, resolve, isAbsolute } from "node:path";
 import { parse } from "csv-parse/sync";
+import { GoodreadsBlockedError, findGoodreadsUrl } from "./lib/goodreads.mjs";
 
 const PROJECT_ID =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_STUDIO_PROJECT_ID || process.env.SANITY_API_PROJECT_ID;
@@ -222,9 +223,28 @@ function resolveTagId(name) {
   return id;
 }
 
-// --- Existing books' current cover, so a blank `cover` cell on a re-run doesn't clear it. ---
-const existingBooks = await sanityQuery(`*[_type == "book" && !(_id in path("drafts.**"))]{ _id, coverImage }`);
+// --- Existing books' current cover and Goodreads link, so a re-run doesn't clear them
+// (a blank `cover` cell, or a Goodreads link corrected by hand in the Studio). ---
+const existingBooks = await sanityQuery(`*[_type == "book" && !(_id in path("drafts.**"))]{ _id, coverImage, goodreadsUrl }`);
 const existingCoverById = new Map(existingBooks.filter((b) => b.coverImage).map((b) => [b._id, b.coverImage]));
+const existingGoodreadsById = new Map(existingBooks.filter((b) => b.goodreadsUrl).map((b) => [b._id, b.goodreadsUrl]));
+// Goodreads lookups for books without a link (scripts/lib/goodreads.mjs). Never
+// fails the import: once Goodreads blocks us, the rest are skipped and can be
+// filled later with `npm run goodreads-links`.
+let goodreadsBlocked = false;
+async function goodreadsFor(id, title, author) {
+  if (existingGoodreadsById.has(id)) return existingGoodreadsById.get(id);
+  if (goodreadsBlocked) return undefined;
+  try {
+    const url = await findGoodreadsUrl(title, author);
+    await new Promise((r) => setTimeout(r, 3000)); // rapid lookups trip Goodreads' bot check
+    return url ?? undefined;
+  } catch (err) {
+    if (err instanceof GoodreadsBlockedError) goodreadsBlocked = true;
+    else warnings.push(`"${title}": Goodreads lookup failed (${err.message}).`);
+    return undefined;
+  }
+}
 
 const bookMutations = [];
 for (const row of validRows) {
@@ -252,6 +272,8 @@ for (const row of validRows) {
     coverImage = existingCoverById.get(id); // preserve what's already there
   }
 
+  const goodreadsUrl = await goodreadsFor(id, row.title.trim(), row.author.trim());
+
   bookMutations.push({
     createOrReplace: {
       _id: id,
@@ -260,6 +282,7 @@ for (const row of validRows) {
       author: row.author.trim(),
       // The book's /where-to-read/<slug> address; same as the id minus "book-", so re-imports keep it.
       slug: { _type: "slug", current: `${slugify(row.title)}-${slugify(row.author)}` },
+      ...(goodreadsUrl ? { goodreadsUrl } : {}),
       ...(row.blurb ? { canonicalBlurb: row.blurb.trim() } : {}),
       ...(tagRefs.length > 0 ? { tags: tagRefs } : {}),
       ...(coverImage ? { coverImage } : {}),
@@ -296,6 +319,9 @@ if (rankingName) console.log(`Saved ranking "${rankingName}" (${rankingMutations
 if (skipped.length > 0) {
   console.log("\nSkipped rows:");
   skipped.forEach((s) => console.log(`  - ${s}`));
+}
+if (goodreadsBlocked) {
+  warnings.push("Goodreads blocked lookups partway (bot check), so some books have no Goodreads link yet. Run `npm run goodreads-links` later.");
 }
 if (warnings.length > 0) {
   console.log("\nWarnings:");

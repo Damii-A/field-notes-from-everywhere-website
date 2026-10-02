@@ -2097,3 +2097,25 @@ all 49 books backfilled as `<title>-<author>` (matches their ids minus "book-"; 
 sideways scroll or console errors. Kit draft from a test issue: 30 links to the new pages, ~97 KB.
 Also confirmed live in Kit: when an issue's linked draft has been deleted in Kit, the button makes a
 new one.
+
+## 2026-10-02 — Reading Room email: slate palette, self-stacking book rows, Goodreads book links
+
+**User feedback after a phone preview**, three fixes:
+- **Phone layout**: books went two-column on the user's phone (the narrow-screen rule relies on a
+  CSS media query; after the class names were shortened for size, their email app stopped applying
+  it). Book rows are now two inline blocks, cover (96px) and text (max 380px): side by side when
+  there's ~494px, otherwise the text wraps below the cover at full width. No media query, so it
+  works in apps that ignore them; Outlook desktop shows them stacked.
+- **Colours** (user's pick of three offered palettes, all brand tokens): the Reading Room identity,
+  with no pure white or black anywhere ("I don't like seeing any true whites or blacks"): `--sky-100`
+  background, "About this issue" box in `--slate-700` with `--paper-050` text and an `--ochre-500`
+  heading, titles `--slate-600`, links `--clay-700`, dividers `--sky-200`, tags ochre as before.
+  Kit's own template and footer around the body are outside this code.
+- **Goodreads**: a "title + author" Goodreads search ranks study guides and summaries first (user
+  saw only summaries). Books gain `goodreadsUrl` (Studio "Goodreads link", hand-correctable), found
+  by a title-only Goodreads search taking the first result by a matching author
+  (`scripts/lib/goodreads.mjs`; title-only alone sent In the Woods to Bill Bryson, ISBNs from Open
+  Library gave foreign editions). Set by the importer for new books (kept on re-import) and by
+  `npm run goodreads-links` for existing ones; without it, the button does a title-only search.
+  Goodreads' bot check blocked this computer after testing (202, empty page), so the 49 existing
+  books are not filled yet; the script stops cleanly when blocked and is safe to re-run.
