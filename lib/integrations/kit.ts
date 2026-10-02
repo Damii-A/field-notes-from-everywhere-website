@@ -1,6 +1,7 @@
 /**
  * Kit (formerly ConvertKit) — holds only confirmed, converted Reading Room
- * members. Nothing else touches Kit: the free list lives in Resend's own
+ * members, and the draft broadcasts the Studio makes for their issues
+ * (`saveReadingRoomDraft`). Nothing else touches Kit: the free list lives in Resend's own
  * contacts instead (see resend.ts, ARCHITECTURE.md §9, and DECISIONS.md,
  * "Kit holds only confirmed Reading Room members, never trial-only
  * signups").
@@ -56,6 +57,69 @@ export async function tagSubscriber(email: string, tagId: string, firstName?: st
   if (!res.ok) {
     throw new Error(`Kit tag failed: ${res.status} ${await res.text()}`);
   }
+}
+
+export class KitDraftLockedError extends Error {
+  constructor(status: string) {
+    super(`The Kit email for this issue is no longer a draft (status: ${status}), so it can't be changed from here.`);
+    this.name = "KitDraftLockedError";
+  }
+}
+
+interface KitBroadcast {
+  id: number;
+  status: string;
+  email_template: { id: number } | null;
+}
+
+/**
+ * Saves a Reading Room issue to Kit as a draft broadcast for members only
+ * (the member tag), never sending it: `send_at: null` + `public: false` is
+ * Kit's draft state. With `existingId`, updates that broadcast instead, as
+ * long as it's still a draft (a scheduled or sent one throws
+ * KitDraftLockedError; a deleted one is recreated). DECISIONS.md, 2026-10-02.
+ */
+export async function saveReadingRoomDraft(input: {
+  existingId?: number;
+  description: string;
+  subject: string;
+  previewText: string;
+  content: string;
+}): Promise<{ id: number; created: boolean }> {
+  const apiKey = requireApiKey();
+  const tagId = Number(process.env.KIT_READING_ROOM_TAG_ID);
+  if (!tagId) throw new KitNotConfiguredError();
+  const body = {
+    subject: input.subject,
+    preview_text: input.previewText,
+    description: input.description,
+    content: input.content,
+    public: false,
+    send_at: null,
+    subscriber_filter: [{ all: [{ type: "tag", ids: [tagId] }] }],
+  };
+
+  if (input.existingId) {
+    const res = await fetch(`${KIT_API_BASE}/broadcasts/${input.existingId}`, { headers: kitHeaders(apiKey) });
+    if (res.ok) {
+      const { broadcast } = (await res.json()) as { broadcast: KitBroadcast };
+      if (broadcast.status !== "draft") throw new KitDraftLockedError(broadcast.status);
+      const put = await fetch(`${KIT_API_BASE}/broadcasts/${input.existingId}`, {
+        method: "PUT",
+        headers: kitHeaders(apiKey),
+        body: JSON.stringify({ ...body, email_template_id: broadcast.email_template?.id }),
+      });
+      if (!put.ok) throw new Error(`Kit update-broadcast failed: ${put.status} ${await put.text()}`);
+      return { id: input.existingId, created: false };
+    }
+    if (res.status !== 404) throw new Error(`Kit get-broadcast failed: ${res.status} ${await res.text()}`);
+    // Deleted in Kit since: fall through and make a new draft.
+  }
+
+  const res = await fetch(`${KIT_API_BASE}/broadcasts`, { method: "POST", headers: kitHeaders(apiKey), body: JSON.stringify(body) });
+  if (!res.ok) throw new Error(`Kit create-broadcast failed: ${res.status} ${await res.text()}`);
+  const { broadcast } = (await res.json()) as { broadcast: KitBroadcast };
+  return { id: broadcast.id, created: true };
 }
 
 /** Looks a subscriber up by email (Kit's `id` lookup only takes a numeric id, not an email — this is the documented workaround via List subscribers). Returns null if no subscriber exists with that email. */

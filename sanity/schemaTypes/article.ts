@@ -35,6 +35,25 @@ function shortlistWarning<T, R extends RuleDef<R, any> = any>(
     .warning();
 }
 
+/** One book in a list: a book plus optional per-list blurb/tag overrides. Shared by articles and Reading Room issues. */
+export const bookEntry = {
+  type: "object",
+  name: "bookEntry",
+  fields: [
+    defineField({ name: "book", title: "Book", type: "reference", to: [{ type: "book" }], validation: (r) => r.required() }),
+    defineField({ name: "blurb", title: "Blurb (overrides the book's canonical blurb)", type: "text", rows: 3 }),
+    defineField({
+      name: "tags",
+      title: "Tags shown here (overrides the book's own tags)",
+      description:
+        "Leave empty to show all of this book's own tags. Fill in just the ones relevant to THIS list to show only those instead — e.g. a book tagged dark fantasy, brutal, and emotionally devastating on its own record can show just \"dark fantasy\" here if that's the only one relevant to this particular list.",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "tag" }] }],
+    }),
+  ],
+  preview: { select: { title: "book.title", subtitle: "book.author" } },
+};
+
 /**
  * Shared Publication article — one schema for all three categories
  * (pub_article.md §1: "not three different page structures ... three
@@ -227,25 +246,7 @@ export default defineType({
       description:
         "pub_article.md §5. Drag entries into the order you want them to appear — for The Shortlist, that order IS the rank (1, 2, 3…), shown automatically. There's no separate number to set or keep in sync.",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "bookEntry",
-          fields: [
-            defineField({ name: "book", title: "Book", type: "reference", to: [{ type: "book" }], validation: (r) => r.required() }),
-            defineField({ name: "blurb", title: "Blurb (overrides the book's canonical blurb)", type: "text", rows: 3 }),
-            defineField({
-              name: "tags",
-              title: "Tags shown here (overrides the book's own tags)",
-              description:
-                "Leave empty to show all of this book's own tags. Fill in just the ones relevant to THIS list to show only those instead — e.g. a book tagged dark fantasy, brutal, and emotionally devastating on its own record can show just \"dark fantasy\" here if that's the only one relevant to this particular article.",
-              type: "array",
-              of: [{ type: "reference", to: [{ type: "tag" }] }],
-            }),
-          ],
-          preview: { select: { title: "book.title", subtitle: "book.author" } },
-        },
-      ],
+      of: [bookEntry],
     }),
     defineField({
       name: "whatToReadNext",

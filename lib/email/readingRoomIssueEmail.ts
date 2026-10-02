@@ -1,0 +1,100 @@
+import { splitParagraphs } from "@/lib/content/paragraphs";
+import { BODY, DISPLAY, INK, INK_SOFT, RULE, esc, sized } from "./shared";
+
+/**
+ * A Reading Room issue's email body, saved to Kit as a draft broadcast
+ * (lib/integrations/kit.ts). Kit's "Text only" template wraps it and adds the
+ * unsubscribe footer, so this is a body fragment, not a whole document.
+ * Order is the user's (DECISIONS.md, 2026-10-02): greeting, intro sentence,
+ * the theme, what to expect, transition sentence, then every book (cover,
+ * title, author, tags, blurb — the same book row as the book-list email),
+ * on the Reading Room's colours. Tables + inline styles, for email clients.
+ *
+ * Size matters: Gmail clips emails over ~102 KB and an issue has 30+ books.
+ * So the font and ink colour are set once on the wrapper (inherited), the
+ * repeated styles are kept short, and layout whitespace is stripped.
+ */
+
+export interface IssueEmailBook {
+  title: string;
+  author: string;
+  blurb?: string;
+  coverUrl?: string;
+  tags: string[];
+}
+
+export interface IssueEmail {
+  introSentence: string;
+  themeExplanation: string;
+  whatToExpect: string;
+  transitionSentence: string;
+  books: IssueEmailBook[];
+}
+
+const PAGE_BG = "#F5F7EE"; // --paper-050, the Reading Room page
+const TITLE = "#3F606B"; // --slate-600
+const TAG_BORDER = "#DDB671"; // --ochre-500, the Reading Room highlight
+const COVER_STANDIN = "#D9E4E8"; // --slate-100
+const COVER_WIDTH = 96;
+
+const TEXT = "margin:0 0 14px;font-size:16px;line-height:1.6;";
+const BLURB = `margin:0 0 12px;font-size:15px;line-height:1.6;color:${INK_SOFT};`;
+// Pills are plain inline spans (no per-pill margin/display): the row's
+// line-height spaces wrapped rows and a space separates pills, set once.
+const PILL_ROW = `margin:0 0 10px;font-size:12px;line-height:2.3;color:${INK_SOFT};`;
+const PILL = `padding:3px 10px;border:1px solid ${TAG_BORDER};border-radius:99px;white-space:nowrap`;
+
+function paragraphs(text: string, style: string): string {
+  return splitParagraphs(text)
+    .map((p) => `<p style="${style}">${esc(p).replace(/\n/g, "<br/>")}</p>`)
+    .join("");
+}
+
+export function readingRoomIssueHtml(issue: IssueEmail): string {
+  const books = issue.books
+    .map((b, i) => {
+      const cover = b.coverUrl
+        ? `<img src="${esc(sized(b.coverUrl, COVER_WIDTH * 2))}" alt="${esc(b.title)}" width="${COVER_WIDTH}" style="display:block;width:${COVER_WIDTH}px;height:auto;border-radius:3px 6px 6px 3px;border:0;" />`
+        : `<div style="width:${COVER_WIDTH}px;height:${Math.round(COVER_WIDTH * 1.5)}px;background:${COVER_STANDIN};border-radius:3px 6px 6px 3px;"></div>`;
+      const tags = b.tags.map((t) => `<span style="${PILL}">${esc(t)}</span>`).join("&#32; ");
+      return `
+        <tr><td style="padding:24px 0;${i > 0 ? `border-top:1px solid ${RULE};` : ""}">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td class="fnfe-cover" width="${COVER_WIDTH}" valign="top" style="padding:0 18px 0 0;">${cover}</td>
+            <td class="fnfe-text" valign="top">
+              <h2 style="margin:0 0 4px;font:700 20px/1.25 ${DISPLAY};color:${TITLE};">${esc(b.title)}</h2>
+              <p style="margin:0 0 10px;font-size:14px;font-weight:600;">${esc(b.author)}</p>
+              ${tags ? `<div style="${PILL_ROW}">${tags}</div>` : ""}
+              ${paragraphs(b.blurb ?? "", BLURB)}
+            </td>
+          </tr></table>
+        </td></tr>`;
+    })
+    .join("");
+
+  // {{ subscriber.first_name }} is Kit's Liquid personalisation; `default`
+  // also covers subscribers with an empty name.
+  const html = `<style>
+  /* Phones: cover above the book's text (clients without media-query support keep side-by-side). */
+  @media (max-width: 480px) {
+    .fnfe-cover, .fnfe-text { display: block !important; width: 100% !important; }
+    .fnfe-cover { padding: 0 0 14px !important; }
+    .fnfe-issue { padding: 20px 16px !important; }
+  }
+</style>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PAGE_BG};border-radius:12px;">
+  <tr><td class="fnfe-issue" style="padding:28px 28px 8px;font-family:${BODY};color:${INK};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="padding:0 0 10px;">
+        <p style="${TEXT}">Hi {{ subscriber.first_name | default: "there" }},</p>
+        ${paragraphs(issue.introSentence, TEXT)}
+        ${paragraphs(issue.themeExplanation, TEXT)}
+        ${paragraphs(issue.whatToExpect, TEXT)}
+        ${paragraphs(issue.transitionSentence, TEXT)}
+      </td></tr>
+      ${books}
+    </table>
+  </td></tr>
+</table>`;
+  return html.replace(/>\s+</g, "><").replace(/\n\s*/g, " ");
+}

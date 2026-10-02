@@ -1937,3 +1937,49 @@ Terms, Privacy and refund policy reachable from navigation.
 Resend's domain were all moved to the real domain via their APIs the same day (details in
 CURRENT_STATE.md). Old WordPress URLs now 404 (`noindex`); crawlers holding pre-cutover copies (an
 AI crawler's June copy, ChatGPT's index) refresh on their own schedule.
+
+## 2026-10-02 — Reading Room issues are authored in the Studio and saved to Kit as drafts
+
+**Decision** (user-chosen): each Reading Room issue is a `readingRoomIssue` document in the Studio
+("Reading Room issues" in the sidebar). Its fields follow the user's email layout, in order:
+"Hi {first name}," (automatic; Kit's `{{ subscriber.first_name | default: "there" }}`), a one-sentence
+intro, a section explaining the theme, a section on what to expect from the books, a one-sentence
+transition, then the book list (cover, title, author, tags, blurb, the same book row as the
+book-list email, on the Reading Room's colours: `--paper-050` ground, `--slate-600` titles,
+`--ochre-500` tag pills). Nothing else is added (no banner, no sign-off; the user's layout has
+none). Books come from a ranking via the existing "Fill books from ranking" button (an issue takes
+the ranking's top N in rank order, default 30) and stay editable. A **"Create Kit draft"** button
+saves the email in Kit as a **draft broadcast for the member tag only** (`saveReadingRoomDraft`,
+`lib/integrations/kit.ts`); pressing it again updates that draft while it is still a draft. Nothing
+is ever sent from the site: the user previews, sends or schedules in Kit.
+
+**Context**: the user asked whether the Kit API can create an email template. It can't (Kit's v4
+API only lists templates), but it can create and update draft broadcasts with full HTML content,
+which covers the need. Kit's free plan allows broadcasts; the account's only template is the
+default Classic "Text only", which wraps our body and adds Kit's unsubscribe footer.
+
+**Alternatives offered**: a spreadsheet per issue run through a script (no Studio record); the user
+describing each issue in chat (no tooling). The Studio was chosen because it keeps every issue,
+which the future Past Issues view and the paused free trial (its sample issues) need, and reuses
+the imported books and covers. This shares the Publication's `book`/`tag` records with the Reading
+Room for now, which earlier notes (`tag.ts`) expected to be separate one day; splitting later is a
+contained change.
+
+**Security**: the Kit key stays on the server. The button writes a short-lived
+`kitDraftRequest.<random>` document with the editor's own Studio session, then calls
+`POST /api/reading-room/kit-draft` with its id; the route accepts only an id that exists and is
+under 5 minutes old (ids with a "." are never publicly readable), the same idea as the preview
+secret. The button deletes the request document afterwards.
+
+**Email size**: Gmail clips emails over ~102 KB. Repeated inline styles are kept short (font set
+once on the wrapper, slim tag pills, whitespace stripped): 30 books with full publisher blurbs came
+to 72 KB (from 87 KB). Kit's template adds an unknown amount on top, so the button warns when the
+body passes 85 KB.
+
+**Verified** (local dev server against the real Sanity and Kit accounts, test data deleted after):
+made-up, missing and over-5-minute-old request ids are refused (401); a missing section is named
+(400); a valid request created a members-only draft (status draft, tag filter, "Text only"
+template, 30 books with covers, name greeting kept); pressing again updated the same draft, no
+duplicate; desktop and phone renders checked (cover above text on phones, no sideways scroll);
+`sanity schema validate` 0 errors; production build clean. Not verified: the buttons in the real
+Studio (the user's own login) and the email inside Kit's template (Kit's preview).

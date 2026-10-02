@@ -2,6 +2,7 @@ import { articlePath, type Article, type CategorySlug } from "@/lib/content";
 import { CATEGORIES } from "@/lib/content/categories";
 import { splitParagraphs } from "@/lib/content/paragraphs";
 import { SITE_URL } from "@/lib/siteUrl";
+import { BODY, DISPLAY, INK, INK_MUTED, INK_SOFT, MONO, RULE, esc, sized } from "./shared";
 import { withUtm } from "./utm";
 
 /**
@@ -20,23 +21,7 @@ const COLOURS: Record<CategorySlug, { pageBg: string; methodBg: string; title: s
   "book-club-book-picks": { pageBg: "#F5F7EE", methodBg: "#ECEEDF", title: "#3F606B", tagBorder: "#8FC4D2", methodBorder: "#5C9FB2", button: "#3F606B", buttonText: "#F5F7EE" },
 };
 
-const INK = "#302B24";
-const INK_SOFT = "#4E463C";
-const INK_MUTED = "#736858";
-const RULE = "#D9C4B0";
-const DISPLAY = "'Comfortaa','Nunito',Arial,Helvetica,sans-serif";
-const BODY = "'Nunito',Arial,Helvetica,sans-serif";
-const MONO = "'IBM Plex Mono','Courier New',monospace";
 const COVER_WIDTH = 96;
-
-function esc(s: string): string {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
-}
-
-/** Sanity CDN images at a fixed width (keeps the original format: some email clients can't show WebP). */
-function sized(url: string, width: number): string {
-  return url.includes("cdn.sanity.io") ? `${url}${url.includes("?") ? "&" : "?"}w=${width}` : url;
-}
 
 /** "dami" → "Dami"; leaves the rest of what the reader typed alone. */
 function firstName(name: string): string {

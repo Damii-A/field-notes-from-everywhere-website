@@ -51,6 +51,8 @@ export const structure: StructureResolver = (S) =>
               ),
             ),
         ),
+      S.documentTypeListItem("readingRoomIssue").title("Reading Room issues"),
+      S.divider(),
       S.documentTypeListItem("theme").title("Themes"),
       S.documentTypeListItem("book").title("Books"),
       S.documentTypeListItem("ranking").title("Rankings"),

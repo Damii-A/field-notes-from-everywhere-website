@@ -123,6 +123,7 @@ what would force adding one (building the logged-in Reading Room product).
 | `/unsubscribe` | Unsubscribe confirm | from email footer links; noindex, not in the design |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | shared legal template | CMS body content |
 | `/studio` | Sanity Studio | embedded, editor-auth'd, not a public route |
+| `/api/reading-room/kit-draft` | (POST only) | Studio "Create Kit draft" button → Kit draft broadcast; accepts only a fresh Studio-written request id (§9) |
 
 Slugs are kebab-case URL-safe versions of the `.dc.html` filenames. Hub sections 5–12
 ("Browse our Collections" / Genre…Experience) and the Recent-Articles carousel are in the
@@ -184,6 +185,12 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   document action (`sanity/actions/FillFromRankingAction.tsx`, rules in
   `sanity/lib/pickBooksFromRanking.ts`) fills `bookEntries` from it — a one-time fill into
   ordinary editable entries, not a live link.
+- **`readingRoomIssue`** — one Reading Room email (added 2026-10-02, see `DECISIONS.md`): `title`
+  (the theme), `subject`, `previewText`, `introSentence`, `themeExplanation`, `whatToExpect`,
+  `transitionSentence` (the user's layout, in order), `ranking` + `rankingCount` (for "Fill books
+  from ranking": top N in rank order), `bookEntries[]` (same shape as an article's), and
+  `kitBroadcastId` (read-only, set by "Create Kit draft"). Not shown on the site yet; it's the
+  record future Past Issues pages can read.
 - **`legalPage`** — `title`, `slug` (terms / privacy-and-cookies / disclosures), `body`
   (rich text). Matches `utility_pages.md` §2.1 exactly ("CMS-managed body content").
 - **`siteSettings`** singleton — the contact email, social links (Pinterest/Reddit URLs, read
@@ -307,6 +314,13 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
     exit into a single "you're a member now" email whenever conversion actually happens, or
     continue a post-trial conversion-focused series if it hasn't — content/timing configured
     in Resend's dashboard, not this app.
+- **Reading Room issues** (2026-10-02): written in the Studio (`readingRoomIssue`, §6); its
+  "Create Kit draft" button (`sanity/actions/CreateKitDraftAction.tsx`) calls
+  `/api/reading-room/kit-draft`, which renders the email (`lib/email/readingRoomIssueEmail.ts`, a
+  body fragment for Kit's "Text only" template) and creates or updates a **draft** broadcast for
+  the member tag (`saveReadingRoomDraft`). The user sends or schedules it in Kit; the site never
+  sends. Auth: the button first writes a `kitDraftRequest.<random>` document with the editor's
+  Studio session; the route only accepts an id that exists and is under 5 minutes old.
 - **Kit** holds only confirmed, converted Reading Room members (`KIT_READING_ROOM_TAG_ID`,
   "membership" in the user's words) — added exclusively by the future Paddle webhook (§10) at
   the moment of actual conversion, never at trial-start. It sends nothing automated (both its

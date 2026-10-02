@@ -33,14 +33,16 @@ function randomKey() {
 }
 
 /**
- * Studio document action on articles: fills `bookEntries` from the chosen
- * ranking using the per-column rules in sanity/lib/pickBooksFromRanking.ts.
- * The result is an ordinary, editable book list on the draft — the author
- * still reviews, reorders and publishes it.
+ * Studio document action on articles and Reading Room issues: fills
+ * `bookEntries` from the chosen ranking using the per-column rules in
+ * sanity/lib/pickBooksFromRanking.ts (an issue takes the ranking's top books
+ * in rank order, like The Shortlist). The result is an ordinary, editable
+ * book list on the draft — the author still reviews, reorders and publishes it.
  */
 export function FillFromRankingAction(props: DocumentActionProps) {
   const { id, type, draft, published, onComplete } = props;
   const doc = (draft ?? published) as ArticleFields | null;
+  const isIssue = type === "readingRoomIssue";
   const client = useClient({ apiVersion: "2025-01-01" });
   const { patch } = useDocumentOperation(id, type);
   const [dialog, setDialog] = useState<DocumentActionDialogProps | null>(null);
@@ -81,6 +83,7 @@ export function FillFromRankingAction(props: DocumentActionProps) {
       const used = new Set(data.siblings.flatMap((s) => s.books ?? []));
       const { bookIds, shortBy } = pickBooksFromRanking(category, ranking, count, used);
       const keyword =
+        !isIssue &&
         category === "the-shortlist" && !doc?.focusKeyword?.trim() && data.rankingName ? suggestedFocusKeyword(data.rankingName) : null;
       patch.execute([
         {
@@ -100,7 +103,7 @@ export function FillFromRankingAction(props: DocumentActionProps) {
         `Added ${bookIds.length} books`,
         <>
           <p>
-            {category === "the-shortlist"
+            {isIssue || category === "the-shortlist"
               ? `The top ${bookIds.length} books from the ranking, in rank order.`
               : `The ranking's top ${Math.min(TOP_N_SHARED, bookIds.length)} plus ${bookIds.length - Math.min(TOP_N_SHARED, bookIds.length)} more, shuffled. Drag to rearrange if you like.`}
           </p>
@@ -127,13 +130,15 @@ export function FillFromRankingAction(props: DocumentActionProps) {
     disabled: running,
     dialog,
     onHandle: () => {
-      const category = doc?.category;
+      const category = isIssue ? "the-shortlist" : doc?.category;
       const rankingId = doc?.ranking?._ref;
       const count = doc?.rankingCount;
       if (!category || !rankingId || !count) {
         message(
           "A few fields first",
-          "Set the article's Category, the Ranking it's drawn from, and How many books, then click this again.",
+          isIssue
+            ? "Set the Ranking this issue's books come from and How many books, then click this again."
+            : "Set the article's Category, the Ranking it's drawn from, and How many books, then click this again.",
         );
         return;
       }
@@ -141,7 +146,7 @@ export function FillFromRankingAction(props: DocumentActionProps) {
       if (existing > 0) {
         setDialog({
           type: "confirm",
-          message: `This replaces the ${existing} book${existing === 1 ? "" : "s"} already in this article, including any blurb or tag overrides on them. Continue?`,
+          message: `This replaces the ${existing} book${existing === 1 ? "" : "s"} already in this ${isIssue ? "issue" : "article"}, including any blurb or tag overrides on them. Continue?`,
           onConfirm: () => fill(category, rankingId, count),
           onCancel: () => {
             setDialog(null);

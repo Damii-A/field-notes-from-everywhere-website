@@ -1,9 +1,18 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-09-30. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-02. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Session ended 2026-09-30. Resume here.** Everything is committed and pushed; nothing is pending
-in code; no local servers left running.
+**Done 2026-10-02 — Reading Room issues in the Studio → Kit drafts** (DECISIONS.md, same date).
+"Reading Room issues" in the Studio sidebar: subject, preview text, the user's four text sections,
+a ranking + "Fill books from ranking", then **"Create Kit draft"**, which saves a members-only
+**draft** broadcast in Kit (pressing again updates it; nothing is ever sent from the site). Tested
+end to end against real Sanity + Kit; test data deleted from Sanity. **Still to check, by the user**:
+the two buttons in the real Studio (their login), and the email inside Kit's template (Kit preview).
+**A test draft is in Kit** (id `26205922`, subject "TEST (updated): 30 thrillers", members-only,
+never sent) for the user to preview there; delete it afterwards (Kit or API). The user's own two
+Kit drafts ("Subject line", "hello") were not touched.
+
+**Session ended 2026-09-30.** Everything was committed and pushed; no local servers left running.
 
 **Next dated item: Wednesday 2026-10-07, 14:00 UTC (10am Eastern)** — the first weekly newsletter
 (see "Next steps" item 3 below). Afterwards: confirm it sent, show the user its stats, and remove
