@@ -2148,3 +2148,11 @@ tab (`target="_blank" rel="noopener"`): store buttons, the lists and related boo
 articles' "Where to read …" links. Header/footer navigation unchanged (my reading of "our links";
 offered to extend). Reading Room email link text: "View full book page →" (user: earlier labels were
 confusing).
+
+**Update, same day — readable email colours (bug) and palette choice**: in Kit the dark-slate "About
+this issue" box showed near-invisible text: the box set its cream text colour once for its
+paragraphs to inherit, and Kit's template colours paragraphs itself, which overrode it. Every text
+element now sets its own colour. The user also found the slate/sky/ochre/clay mix clashing, so the
+dark box is gone: `ISSUE_PALETTES` (`lib/email/readingRoomIssueEmail.ts`) holds three calm,
+light-box palettes (clay, sage, slate) shown to the user side by side with their real Thriller issue
+(a private artifact); `DEFAULT_ISSUE_PALETTE` is "slate" until they pick.
