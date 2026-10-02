@@ -1,39 +1,107 @@
-.main {
-  display: flex;
-  justify-content: center;
-  padding: clamp(48px, 8vw, 110px) var(--gutter-screen);
-  background: var(--paper-050);
+/*
+ * "Where to read {Book}" — the Reading Room's visual treatment (user, 2026-10-02):
+ * a deep slate hero band like app/the-reading-room's, then light sections with
+ * display-font headings, clay mono kickers and ochre accents. Headings and
+ * wrapping rows are centred; text blocks are justified on phones. No pure white
+ * surfaces: cards are --paper-050 on the page's --paper-100.
+ */
+
+.hero {
+  background: var(--slate-700);
+  padding: clamp(48px, 6vw, 88px) var(--gutter-screen) clamp(44px, 5.5vw, 80px);
 }
 
-.inner {
-  width: 100%;
-  max-width: 620px;
+.heroInner {
+  max-width: var(--max-content);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
   text-align: center;
+  gap: clamp(14px, 1.8vw, 22px);
 }
 
-.heading {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
+/* As wide as the screen allows: no max-width, so a title only wraps when it has to. */
 .title {
-  margin: 0;
-  font: var(--weight-bold) clamp(26px, 4vw, 38px) / 1.12 var(--font-display);
+  margin: 8px 0 0;
+  font: var(--weight-bold) clamp(32px, 5.2vw, 64px) / 1.04 var(--font-display);
   letter-spacing: var(--tracking-tight);
-  color: var(--slate-600);
-  text-wrap: balance;
+  color: var(--clay-100);
 }
 
 .author {
   margin: 0;
+  font: var(--weight-regular) clamp(17px, 1.9vw, 23px) / 1.3 var(--font-display);
+  letter-spacing: var(--tracking-display);
+  color: var(--ochre-500);
+}
+
+.answer {
+  margin: 0;
+  max-width: 60ch;
   font: var(--type-body);
-  font-weight: var(--weight-semibold);
+  font-size: clamp(16px, 1.4vw, 18px);
+  line-height: 1.62;
+  color: var(--paper-050);
+}
+
+.inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(48px, 6vw, 88px) var(--gutter-screen) clamp(56px, 7vw, 104px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(48px, 6vw, 72px);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.heading {
+  margin: 0;
+  max-width: 24ch;
+  font: var(--weight-bold) clamp(24px, 3vw, 36px) / 1.12 var(--font-display);
+  letter-spacing: var(--tracking-tight);
   color: var(--ink-700);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.text,
+.blurb {
+  width: 100%;
+  font: var(--type-body);
+  font-size: clamp(16px, 1.4vw, 18px);
+  line-height: 1.62;
+  color: var(--ink-700);
+}
+
+.text {
+  margin: 0;
+  text-align: center;
+}
+
+.blurb {
+  white-space: pre-line;
+}
+
+.blurb p {
+  margin: 0 0 14px;
+}
+
+.blurb p:last-child {
+  margin: 0;
+}
+
+.kicker {
+  font: var(--weight-semibold) var(--text-sm) / 1.2 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clay-700);
 }
 
 .stores {
@@ -41,108 +109,63 @@
   margin: 0;
   padding: 0;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
 }
 
-.store {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 14px 20px;
-  min-height: 44px;
-  border-radius: var(--radius-xl);
-  background: var(--surface-card);
-  box-shadow: var(--shadow-card);
-  text-decoration: none;
-  text-align: left;
-  transition: transform var(--dur-fast) var(--ease-soft), box-shadow var(--dur-fast) var(--ease-soft);
-}
-
-.store:hover {
-  transform: translateY(-2px);
-}
-
-.store:focus-visible {
-  outline: 2px solid var(--slate-600);
-  outline-offset: 3px;
-}
-
-.storeName {
-  font: var(--weight-bold) var(--text-md) / 1.3 var(--font-display);
-  color: var(--slate-600);
-}
-
-.storeNote {
-  font-size: var(--text-sm);
-  color: var(--text-soft);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .store {
-    transition: none;
-  }
-  .store:hover {
-    transform: none;
-  }
-}
-
-.top {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-}
-
-.answer {
+.lists {
+  list-style: none;
   margin: 0;
-  max-width: 52ch;
-  font: var(--type-body);
-  color: var(--ink-700);
-}
-
-.section {
+  padding: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  text-align: left;
 }
 
-.label {
-  margin: 0;
-  font: var(--type-section);
-  color: var(--slate-600);
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 22px;
+  min-height: 44px;
+  border-radius: var(--radius-xl);
+  background: var(--paper-050);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  transition: transform var(--dur-fast) var(--ease-spring);
 }
 
-.text {
-  margin: 0;
-  font: var(--type-body);
-  color: var(--ink-700);
+.card:hover {
+  transform: translateY(-2px);
 }
 
-.blurb {
-  font: var(--type-body);
-  color: var(--ink-700);
-  white-space: pre-line;
+.card:focus-visible,
+.relatedBook:focus-visible {
+  outline: 2px solid var(--slate-600);
+  outline-offset: 3px;
 }
 
-.blurb p {
-  margin: 0 0 12px;
+.cardTitle {
+  font: var(--weight-bold) var(--text-md) / 1.3 var(--font-display);
+  color: var(--slate-700);
 }
 
-.blurb p:last-child {
-  margin: 0;
+.cardNote {
+  font-size: var(--text-sm);
+  color: var(--text-soft);
 }
 
-/* The Reading Room email's tag pills (filled ochre), since tags are what readers scan for. */
+/* The Reading Room email's tag pills (filled ochre); wrapping rows centred. */
 .tags {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
 }
 
@@ -156,58 +179,29 @@
   color: var(--ink-900);
 }
 
-.lists {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 14px 20px;
-  border-radius: var(--radius-xl);
-  background: var(--surface-card);
-  box-shadow: var(--shadow-card);
-  text-decoration: none;
-}
-
-.list:focus-visible,
-.relatedBook:focus-visible {
-  outline: 2px solid var(--slate-600);
-  outline-offset: 3px;
-}
-
-.listMeta {
-  font: var(--type-label);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-soft);
-}
-
-.listTitle {
-  font: var(--weight-bold) var(--text-md) / 1.3 var(--font-display);
-  color: var(--slate-600);
-}
-
+/* Related books (up to 6): at most 3 per row (3 + 3, not 5 + 1), 2 per row on phones;
+   rows centred, so a short last row sits in the middle. */
 .related {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px 16px;
+  max-width: 400px; /* 3 × 120px + 2 gaps */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px 20px;
+}
+
+.related li {
+  width: 120px;
 }
 
 .relatedBook {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
+  text-align: center;
   text-decoration: none;
 }
 
@@ -220,4 +214,23 @@
   margin-top: -4px;
   font-size: var(--text-xs);
   color: var(--text-soft);
+}
+
+/* Phones: justify blocks of text (user, 2026-10-02), hyphenating to avoid wide gaps. */
+@media (max-width: 700px) {
+  .answer,
+  .text,
+  .blurb {
+    text-align: justify;
+    hyphens: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  .card:hover {
+    transform: none;
+  }
 }

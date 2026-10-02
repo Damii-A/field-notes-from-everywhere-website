@@ -91,92 +91,97 @@ export default async function WhereToReadPage({ params }: Props) {
         // "<" escaped so text can never close the script tag.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
-      <main className={styles.main}>
-        <article className={styles.inner}>
-          <header className={styles.top}>
-            <BookCover title={book.title} author={book.author} src={book.coverUrl} alt={`Cover of ${book.title} by ${book.author}`} width={140} />
-            <div className={styles.heading}>
+      <main>
+        <article>
+          {/* The Reading Room's slate hero band (app/the-reading-room), user, 2026-10-02. */}
+          <header className={styles.hero}>
+            <div className={styles.heroInner}>
+              <BookCover title={book.title} author={book.author} src={book.coverUrl} alt={`Cover of ${book.title} by ${book.author}`} width={140} />
               <h1 className={styles.title}>Where to read {book.title}</h1>
               <p className={styles.author}>by {book.author}</p>
+              <p className={styles.answer}>{answer(book.title, book.author)}</p>
             </div>
-            <p className={styles.answer}>{answer(book.title, book.author)}</p>
           </header>
 
-          <section aria-labelledby="where" className={styles.section}>
-            <h2 id="where" className={styles.label}>Where to buy or borrow it</h2>
-            <ul className={styles.stores}>
-              {STORES.map((s) => (
-                <li key={s.name}>
-                  <a className={styles.store} href={s.url(book)} rel="nofollow noopener">
-                    <span className={styles.storeName}>{s.name}</span>
-                    <span className={styles.storeNote}>{s.note}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
+          <div className={styles.inner}>
+            <section aria-labelledby="where" className={styles.section}>
+              <h2 id="where" className={styles.heading}>Where to buy or borrow {book.title}</h2>
+              <ul className={styles.stores}>
+                {STORES.map((s) => (
+                  <li key={s.name}>
+                    <a className={styles.card} href={s.url(book)} rel="nofollow noopener">
+                      <span className={styles.cardTitle}>{s.name}</span>
+                      <span className={styles.cardNote}>{s.note}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
 
-          {(book.blurb || book.tags.length > 0) && (
-            <section aria-labelledby="about" className={styles.section}>
-              <h2 id="about" className={styles.label}>About the book</h2>
-              {book.tags.length > 0 && (
-                <ul className={styles.tags} aria-label="Tags">
-                  {book.tags.map((t) => (
-                    <li key={t} className={styles.tag}>
-                      {t}
+            {(book.blurb || book.tags.length > 0) && (
+              <section aria-labelledby="about" className={styles.section}>
+                <h2 id="about" className={styles.heading}>About {book.title}</h2>
+                {book.tags.length > 0 && (
+                  <ul className={styles.tags} aria-label="Tags">
+                    {book.tags.map((t) => (
+                      <li key={t} className={styles.tag}>
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {book.blurb && (
+                  <div className={styles.blurb}>
+                    {splitParagraphs(book.blurb).map((p, i) => (
+                      <p key={i}>{p}</p>
+                    ))}
+                  </div>
+                )}
+              </section>
+            )}
+
+            {book.lists.length > 0 && (
+              <section aria-labelledby="lists" className={styles.section}>
+                <h2 id="lists" className={styles.heading}>
+                  If you enjoyed {book.title}, you might also enjoy {book.lists.length === 1 ? "this book list" : "these book lists"}
+                </h2>
+                <p className={styles.text}>
+                  {book.title} made {book.lists.length === 1 ? "one of our book lists" : `${book.lists.length} of our book lists`}, built
+                  from what real readers recommend in book discussions.
+                </p>
+                <ul className={styles.lists}>
+                  {book.lists.map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className={styles.card}>
+                        <span className={styles.kicker}>
+                          {l.rank ? `#${l.rank} of ${l.bookCount} · ` : ""}
+                          {CATEGORIES[l.category].name}
+                        </span>
+                        <span className={styles.cardTitle}>{l.title}</span>
+                      </Link>
                     </li>
                   ))}
                 </ul>
-              )}
-              {book.blurb && (
-                <div className={styles.blurb}>
-                  {splitParagraphs(book.blurb).map((p, i) => (
-                    <p key={i}>{p}</p>
+              </section>
+            )}
+
+            {book.related.length > 0 && (
+              <section aria-labelledby="related" className={styles.section}>
+                <h2 id="related" className={styles.heading}>Readers who recommend {book.title} also recommend</h2>
+                <ul className={styles.related}>
+                  {book.related.map((r) => (
+                    <li key={r.slug}>
+                      <Link href={`/where-to-read/${r.slug}`} className={styles.relatedBook}>
+                        <BookCover title={r.title} author={r.author} src={r.coverUrl} alt={`Cover of ${r.title}`} width={96} />
+                        <span className={styles.relatedTitle}>{r.title}</span>
+                        <span className={styles.relatedAuthor}>{r.author}</span>
+                      </Link>
+                    </li>
                   ))}
-                </div>
-              )}
-            </section>
-          )}
-
-          {book.lists.length > 0 && (
-            <section aria-labelledby="lists" className={styles.section}>
-              <h2 id="lists" className={styles.label}>Why readers recommend it</h2>
-              <p className={styles.text}>
-                {book.title} made {book.lists.length === 1 ? "one of our book lists" : `${book.lists.length} of our book lists`}, built
-                from what real readers recommend in book discussions.
-              </p>
-              <ul className={styles.lists}>
-                {book.lists.map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className={styles.list}>
-                      <span className={styles.listMeta}>
-                        {l.rank ? `#${l.rank} of ${l.bookCount} · ` : ""}
-                        {CATEGORIES[l.category].name}
-                      </span>
-                      <span className={styles.listTitle}>{l.title}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {book.related.length > 0 && (
-            <section aria-labelledby="related" className={styles.section}>
-              <h2 id="related" className={styles.label}>Readers who recommend it also recommend</h2>
-              <ul className={styles.related}>
-                {book.related.map((r) => (
-                  <li key={r.slug}>
-                    <Link href={`/where-to-read/${r.slug}`} className={styles.relatedBook}>
-                      <BookCover title={r.title} author={r.author} src={r.coverUrl} alt={`Cover of ${r.title}`} width={88} />
-                      <span className={styles.relatedTitle}>{r.title}</span>
-                      <span className={styles.relatedAuthor}>{r.author}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+                </ul>
+              </section>
+            )}
+          </div>
         </article>
       </main>
       <Footer />

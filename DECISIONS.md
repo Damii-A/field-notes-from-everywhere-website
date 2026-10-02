@@ -2119,3 +2119,14 @@ new one.
   `npm run goodreads-links` for existing ones; without it, the button does a title-only search.
   Goodreads' bot check blocked this computer after testing (202, empty page), so the 49 existing
   books are not filled yet; the script stops cleanly when blocked and is safe to re-run.
+
+**Update, same day — "Where to read" page restyled (user)**: the Reading Room's visual treatment
+(slate hero band like `/the-reading-room`: cover, H1 in `--clay-100`, "by {Author}" in `--ochre-500`,
+the answer in `--paper-050`; then light sections, `--paper-050` cards on the `--paper-100` page, clay
+mono kickers, ochre tag pills). The H1 has no max-width, so it only wraps when the screen is too
+narrow. Headings are centred and name the book: "Where to buy or borrow {Title}", "About {Title}",
+"If you enjoyed {Title}, you might also enjoy these book lists" (was "Why readers recommend it";
+"these book lists" is my reading of the user's "these book", since that section lists FNFE lists),
+"Readers who recommend {Title} also recommend". Wrapping rows are centred (tags; related books at
+most 3 per row, 2 on phones, so 6 books are 3 + 3, not 5 + 1). Text blocks (answer, blurb, lists
+intro) are justified with hyphenation on phones (≤700px).
