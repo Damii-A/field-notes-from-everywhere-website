@@ -45,7 +45,7 @@ async function query<T>(groq: string, params: Record<string, unknown>, perspecti
 // The "drafts" perspective shows unpublished edits over the published issue —
 // what the editor is looking at when they press the button.
 const ISSUE_QUERY = `*[_type == "readingRoomIssue" && _id == $id][0]{
-  title, subject, previewText, introSentence, themeHeading, themeExplanation, expectHeading, whatToExpect, transitionSentence, kitBroadcastId,
+  title, subject, previewText, aboutThisIssue, closingSentence, signOff, kitBroadcastId,
   "rankedIds": ranking->books[]._ref,
   "books": bookEntries[defined(book)]{
     "id": book._ref, "title": book->title, "author": book->author, "coverUrl": book->coverImage.asset->url,
@@ -66,10 +66,9 @@ type Issue = Partial<Omit<IssueEmail, "books">> & {
 const REQUIRED: [keyof Issue, string][] = [
   ["subject", "Email subject line"],
   ["previewText", "Preview text"],
-  ["introSentence", "Intro sentence"],
-  ["themeExplanation", "Explaining the theme"],
-  ["whatToExpect", "What to expect"],
-  ["transitionSentence", "Transition to the book list"],
+  ["aboutThisIssue", "About this issue"],
+  ["closingSentence", "Closing sentence"],
+  ["signOff", "Sign-off"],
 ];
 
 export async function POST(req: Request) {
@@ -95,12 +94,9 @@ export async function POST(req: Request) {
   if (missing.length > 0) return NextResponse.json({ error: `Fill these in first: ${missing.join(", ")}.` }, { status: 400 });
 
   const content = readingRoomIssueHtml({
-    introSentence: issue.introSentence!,
-    themeHeading: issue.themeHeading?.trim() || "About this theme",
-    themeExplanation: issue.themeExplanation!,
-    expectHeading: issue.expectHeading?.trim() || "What to expect",
-    whatToExpect: issue.whatToExpect!,
-    transitionSentence: issue.transitionSentence!,
+    aboutThisIssue: issue.aboutThisIssue!,
+    closingSentence: issue.closingSentence!,
+    signOff: issue.signOff!,
     books: books.map(({ id, ownBlurb, canonicalBlurb, ...b }) => {
       const pos = issue.rankedIds?.indexOf(id) ?? -1;
       return {

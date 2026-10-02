@@ -2046,3 +2046,12 @@ attributes its visits, and Kit reports clicks per issue; each URL byte is repeat
 tracking link), excerpts max ~220 characters. Test issue body 55.5 KB, ~97 KB by that formula.
 The Studio warning uses the formula (warns past 98). **Capacity**: at ~1.85 KB per book, about 30
 books fit; more books per issue will trip the warning unless blurbs/tags are lighter.
+
+**Update, same day — simpler layout (user)**: the intro sentence, the two boxed sections and the
+transition sentence are replaced by one box, **"About this issue"** (`aboutThisIssue`; heading fixed),
+and a **sign-off** after the books: a closing sentence (`closingSentence`) and the sign-off itself
+(`signOff`, default "Happy reading,
+The FNFE Team", one line per line). Email order: "Hi {first
+name}," → About this issue → books → closing sentence + sign-off. The user's one existing issue
+draft ("Thriller") had its intro and theme text merged into About this issue (intro first, blank
+line, then theme text), old fields removed. 30-book test body 55.2 KB (~97 KB by Kit's formula).

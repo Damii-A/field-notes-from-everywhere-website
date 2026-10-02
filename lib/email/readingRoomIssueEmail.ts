@@ -5,11 +5,11 @@ import { INK, INK_SOFT, RULE, esc, sized } from "./shared";
  * A Reading Room issue's email body, saved to Kit as a draft broadcast
  * (lib/integrations/kit.ts). Kit's "Text only" template wraps it and adds the
  * unsubscribe footer, so this is a body fragment, not a whole document.
- * Order is the user's (DECISIONS.md, 2026-10-02): greeting, intro sentence,
- * the theme and what to expect (each a boxed section with a heading),
- * transition sentence, then every book (cover, ranking position,
- * title, author, tags, blurb, a "Find this book" link — the same book row as the book-list email),
- * on the Reading Room's colours. Tables + inline styles, for email clients.
+ * Order is the user's (DECISIONS.md, 2026-10-02): greeting, an "About this
+ * issue" box, then every book (cover, ranking position, title, author, tags,
+ * a shortened blurb, a "Find this book" link — the book-list email's book row),
+ * then a closing sentence and sign-off, on the Reading Room's colours.
+ * Tables + inline styles, for email clients.
  *
  * Size matters: Gmail clips emails over ~102 KB and an issue has 30+ books.
  * So the font and ink colour are set once on the wrapper (inherited), the
@@ -29,13 +29,10 @@ export interface IssueEmailBook {
 }
 
 export interface IssueEmail {
-  introSentence: string;
-  themeHeading: string;
-  themeExplanation: string;
-  expectHeading: string;
-  whatToExpect: string;
-  transitionSentence: string;
+  aboutThisIssue: string;
   books: IssueEmailBook[];
+  closingSentence: string;
+  signOff: string;
 }
 
 // Short font stacks: an email body in Kit can't load the site's web fonts, so
@@ -113,6 +110,9 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
     })
     .join("");
 
+  // "Happy reading,\nThe FNFE Team": each line of the sign-off on its own line.
+  const signOffLines = issue.signOff.trim().split(/\r?\n/).map(esc).join("<br/>");
+
   // {{ subscriber.first_name }} is Kit's Liquid personalisation; `default`
   // also covers subscribers with an empty name.
   const html = `<style>
@@ -126,14 +126,15 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PAGE_BG};border-radius:12px;">
   <tr><td class="fnfe-issue" style="padding:28px 28px 8px;font-family:${BODY};color:${INK};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr><td style="padding:0 0 10px;">
+      <tr><td style="padding:0 0 4px;">
         <p style="${TEXT}">Hi {{ subscriber.first_name | default: "there" }},</p>
-        ${paragraphs(issue.introSentence, TEXT)}
       </td></tr>
-      ${section(issue.themeHeading, issue.themeExplanation)}
-      ${section(issue.expectHeading, issue.whatToExpect)}
-      <tr><td style="padding:6px 0 10px;">${paragraphs(issue.transitionSentence, TEXT)}</td></tr>
+      ${section("About this issue", issue.aboutThisIssue)}
       ${books}
+      <tr><td style="padding:22px 0 14px;border-top:1px solid ${RULE};">
+        ${paragraphs(issue.closingSentence, TEXT)}
+        <p style="${TEXT}">${signOffLines}</p>
+      </td></tr>
     </table>
   </td></tr>
 </table>`;

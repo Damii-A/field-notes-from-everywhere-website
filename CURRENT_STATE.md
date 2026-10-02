@@ -8,15 +8,15 @@ a ranking + "Fill books from ranking", then **"Create Kit draft"**, which saves 
 **draft** broadcast in Kit (pressing again updates it; nothing is ever sent from the site). Tested
 end to end against real Sanity + Kit; test data deleted from Sanity. **Still to check, by the user**:
 the two buttons in the real Studio (their login), and the email inside Kit's template (Kit preview).
-Same day, after the user's Kit preview: theme / what-to-expect are now boxed sections with editable
-headings, and tags are filled ochre pills (more prominent).
+Same day, after the user's Kit previews: tags are filled ochre pills (more prominent); the email is now
+"Hi {name}," → one "About this issue" box → books → closing sentence + sign-off.
 Later the same day: each book shows "#N most recommended" (from the issue's ranking) and one "Find
 this book →" link to the new `/find-it/<book>` page (Amazon, Bookshop.org, Goodreads, library).
 **Open: email size.** Kit estimated the first version at 133 KB (Kit adds ~48 KB). Publisher blurbs
 are now shortened in the email (full blurb on /find-it); test issue body 59 KB. Waiting on Kit's
 estimate for the "TEST (v5)" draft (v4 read 102 KB; v5 body 55.5 KB, ~97 by the measured formula).
 About 30 books per issue is the current capacity.
-**A test draft is in Kit** (id `26205922`, subject "TEST (v5): 30 thrillers", members-only,
+**A test draft is in Kit** (id `26205922`, subject "TEST (v6): 30 thrillers", members-only,
 never sent) for the user to preview there; delete it afterwards (Kit or API). The user's own two
 Kit drafts ("Subject line", "hello") were not touched.
 

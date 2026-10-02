@@ -187,8 +187,8 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   `sanity/lib/pickBooksFromRanking.ts`) fills `bookEntries` from it — a one-time fill into
   ordinary editable entries, not a live link.
 - **`readingRoomIssue`** — one Reading Room email (added 2026-10-02, see `DECISIONS.md`): `title`
-  (the theme), `subject`, `previewText`, `introSentence`, `themeHeading` + `themeExplanation`, `expectHeading` + `whatToExpect`,
-  `transitionSentence` (the user's layout, in order), `ranking` + `rankingCount` (for "Fill books
+  (the theme), `subject`, `previewText`, `aboutThisIssue` (one boxed section before the books),
+  `closingSentence` + `signOff` (after the books), `ranking` + `rankingCount` (for "Fill books
   from ranking": top N in rank order), `bookEntries[]` (same shape as an article's), and
   `kitBroadcastId` (read-only, set by "Create Kit draft"). Not shown on the site yet; it's the
   record future Past Issues pages can read.

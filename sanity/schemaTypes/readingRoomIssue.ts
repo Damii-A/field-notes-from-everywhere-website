@@ -1,13 +1,11 @@
 import { defineField, defineType } from "sanity";
 import { bookEntry } from "./article";
 
-const PARAGRAPHS_HINT = "Leave a blank line between paragraphs.";
-
 /**
  * One Reading Room issue (the members' Tuesday/Thursday/Saturday email). Its
  * fields follow the user's email layout in order (DECISIONS.md, 2026-10-02):
- * greeting (automatic) → intro sentence → the theme → what to expect → transition
- * sentence → the book list. "Create Kit draft" (sanity/actions/CreateKitDraftAction.tsx)
+ * greeting (automatic) → "About this issue" box → the book list → closing
+ * sentence + sign-off. "Create Kit draft" (sanity/actions/CreateKitDraftAction.tsx)
  * turns it into a draft broadcast in Kit for members; nothing is sent from here.
  * Shares the Publication's book records for now (user's choice, 2026-10-02).
  */
@@ -37,48 +35,12 @@ export default defineType({
       validation: (r) => [r.required(), r.max(140).warning("Inboxes usually show about 90-140 characters of this.")],
     }),
     defineField({
-      name: "introSentence",
-      title: "1. Intro sentence",
-      description: "Comes straight after \"Hi {first name},\" (added automatically; \"Hi there,\" when Kit has no name).",
+      name: "aboutThisIssue",
+      title: "1. About this issue",
+      description:
+        "Everything you want to say before the books: the theme, what readers can expect, anything else. Shown in a box headed \"About this issue\", straight after \"Hi {first name},\" (added automatically; \"Hi there,\" when Kit has no name). Leave a blank line between paragraphs.",
       type: "text",
-      rows: 2,
-      validation: (r) => r.required(),
-    }),
-    defineField({
-      name: "themeHeading",
-      title: "2. Theme section heading",
-      description: "The small heading on the theme box.",
-      type: "string",
-      initialValue: "About this theme",
-    }),
-    defineField({
-      name: "themeExplanation",
-      title: "2. Explaining the theme",
-      description: PARAGRAPHS_HINT,
-      type: "text",
-      rows: 6,
-      validation: (r) => r.required(),
-    }),
-    defineField({
-      name: "expectHeading",
-      title: "3. \"What to expect\" section heading",
-      description: "The small heading on the what-to-expect box.",
-      type: "string",
-      initialValue: "What to expect",
-    }),
-    defineField({
-      name: "whatToExpect",
-      title: "3. What to expect from these books",
-      description: `What readers will find in this list, so they know whether it sounds like their thing. ${PARAGRAPHS_HINT}`,
-      type: "text",
-      rows: 6,
-      validation: (r) => r.required(),
-    }),
-    defineField({
-      name: "transitionSentence",
-      title: "4. Transition to the book list",
-      type: "text",
-      rows: 2,
+      rows: 10,
       validation: (r) => r.required(),
     }),
     defineField({
@@ -99,11 +61,28 @@ export default defineType({
     }),
     defineField({
       name: "bookEntries",
-      title: "5. Book list",
+      title: "2. Book list",
       description: "Shown in this order. Drag to reorder.",
       type: "array",
       of: [bookEntry],
       validation: (r) => [r.required().min(1), r.min(30).warning("The Reading Room promises 30+ books per issue.")],
+    }),
+    defineField({
+      name: "closingSentence",
+      title: "3. Closing sentence",
+      description: "Comes after the last book.",
+      type: "text",
+      rows: 2,
+      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "signOff",
+      title: "4. Sign-off",
+      description: "Each line shows as its own line.",
+      type: "text",
+      rows: 2,
+      initialValue: "Happy reading,\nThe FNFE Team",
+      validation: (r) => r.required(),
     }),
     defineField({
       name: "kitBroadcastId",
