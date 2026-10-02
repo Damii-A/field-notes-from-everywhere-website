@@ -14,8 +14,9 @@ Later the same day: each book shows "#N most recommended" (from the issue's rank
 this book →" link to the new `/find-it/<book>` page (Amazon, Bookshop.org, Goodreads, library).
 **Open: email size.** Kit estimated the first version at 133 KB (Kit adds ~48 KB). Publisher blurbs
 are now shortened in the email (full blurb on /find-it); test issue body 59 KB. Waiting on Kit's
-estimate for the "TEST (v4)" draft; if still over 100 KB, shorten excerpts further or slim links.
-**A test draft is in Kit** (id `26205922`, subject "TEST (v4): 30 thrillers", members-only,
+estimate for the "TEST (v5)" draft (v4 read 102 KB; v5 body 55.5 KB, ~97 by the measured formula).
+About 30 books per issue is the current capacity.
+**A test draft is in Kit** (id `26205922`, subject "TEST (v5): 30 thrillers", members-only,
 never sent) for the user to preview there; delete it afterwards (Kit or API). The user's own two
 Kit drafts ("Subject line", "hello") were not touched.
 

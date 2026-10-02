@@ -2038,3 +2038,11 @@ space between tag pills, making each tag row unbreakable and the email wider tha
 are now `&#32;`). 30-book test issue body: **59 KB** (from 85). The Studio's size warning now uses
 the measured Kit overhead (body + 48 KB > 100 KB). Whether Kit's addition is fixed or grows with the
 body is unknown until Kit's estimate for the new draft is read.
+
+**Update, same day — second Kit reading**: Kit estimated the 59 KB body at 102 KB, so Kit's estimate
+is about body × 1.19 + 31 KB (two readings: 85 → 133, 59 → 102). Further trims, no visible change:
+the /find-it links carry no UTM tags (the page exists only for these emails, so GA already
+attributes its visits, and Kit reports clicks per issue; each URL byte is repeated inside Kit's
+tracking link), excerpts max ~220 characters. Test issue body 55.5 KB, ~97 KB by that formula.
+The Studio warning uses the formula (warns past 98). **Capacity**: at ~1.85 KB per book, about 30
+books fit; more books per issue will trip the warning unless blurbs/tags are lighter.

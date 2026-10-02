@@ -8,7 +8,7 @@
  * than `max`, it's cut at the last sentence end that leaves at least `min`
  * characters, otherwise at the last word before `max`, and "…" is added.
  */
-export function blurbExcerpt(text: string, max = 260, min = 110): string {
+export function blurbExcerpt(text: string, max = 220, min = 100): string {
   const flat = text.replace(/\s+/g, " ").trim();
   if (flat.length <= max) return flat;
 

@@ -98,7 +98,7 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
       const tags = b.tags.map((t) => `<span style="${PILL}">${esc(t).replace(/ /g, "&nbsp;")}</span>`).join("&#32;"); // &#32;: a real space the whitespace-stripping below keeps
       return `
         <tr><td style="padding:22px 0;${i > 0 ? `border-top:1px solid ${RULE}` : ""}">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <table width="100%" cellpadding="0" cellspacing="0"><tr>
             <td class="fc" width="${COVER_WIDTH}" valign="top" style="padding-right:18px">${cover}</td>
             <td class="ft" valign="top" style="${BOOK_TEXT}">
               ${b.rank ? `<p style="${RANK}">#${b.rank} MOST RECOMMENDED</p>` : ""}

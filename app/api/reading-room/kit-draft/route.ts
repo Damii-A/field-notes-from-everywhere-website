@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { blurbExcerpt } from "@/lib/email/excerpt";
 import { readingRoomIssueHtml, type IssueEmail } from "@/lib/email/readingRoomIssueEmail";
-import { withUtm } from "@/lib/email/utm";
 import { KitDraftLockedError, saveReadingRoomDraft } from "@/lib/integrations/kit";
 import { SITE_URL } from "@/lib/siteUrl";
 
@@ -27,11 +26,11 @@ const DATASET =
 const TOKEN = process.env.SANITY_API_TOKEN || process.env.SANITY_API_READ_TOKEN;
 const REQUEST_TTL_SECONDS = 300;
 // Gmail clips emails over ~102 KB ("[Message clipped]"); Kit's editor warns
-// past 100 KB of its own estimate. Kit's template, footer and link tracking add
-// about KIT_OVERHEAD_KB to our body (measured 2026-10-02: Kit estimated 133 KB
-// for an 85 KB body with 30 links), so warn when body + that passes 100.
-const CLIP_WARNING_KB = 100;
-const KIT_OVERHEAD_KB = 48;
+// past 100 KB of its own estimate. Kit's estimate vs our body, measured
+// 2026-10-02 (30-book issue): 85 KB -> 133 KB, 59 KB -> 102 KB, i.e. about
+// body x 1.19 + 31 KB (its template, footer and link tracking). Warn past 98.
+const CLIP_WARNING_KB = 98;
+const kitEstimateKb = (bodyKb: number) => Math.round(bodyKb * 1.19 + 31);
 
 async function query<T>(groq: string, params: Record<string, unknown>, perspective: "raw" | "drafts"): Promise<T> {
   const url = new URL(`https://${PROJECT_ID}.api.sanity.io/v2025-02-19/data/query/${DATASET}`);
@@ -111,9 +110,11 @@ export async function POST(req: Request) {
         blurb: ownBlurb?.trim() ? ownBlurb : blurbExcerpt(canonicalBlurb ?? ""),
         tags: (b.tags ?? []).filter((t): t is string => !!t),
         rank: pos >= 0 ? pos + 1 : undefined,
-        // No utm_content: Kit reports clicks per issue itself, and every byte of
-        // the URL is repeated (base64) inside Kit's tracking link.
-        findUrl: withUtm(`${SITE_URL}/find-it/${encodeURIComponent(id)}`, "reading_room"),
+        // No UTM tags: /find-it only exists for these emails, so its visits in
+        // Google Analytics are Reading Room clicks already, and Kit reports
+        // clicks per issue. Every byte of the URL is repeated inside Kit's
+        // tracking link, which counts against Gmail's clip limit.
+        findUrl: `${SITE_URL}/find-it/${encodeURIComponent(id)}`,
       };
     }),
   });
@@ -126,7 +127,7 @@ export async function POST(req: Request) {
       previewText: issue.previewText!,
       content,
     });
-    const sizeKb = Math.round(Buffer.byteLength(content) / 1000) + KIT_OVERHEAD_KB;
+    const sizeKb = kitEstimateKb(Buffer.byteLength(content) / 1000);
     return NextResponse.json({ ...result, bookCount: books.length, sizeKb, nearClipLimit: sizeKb > CLIP_WARNING_KB });
   } catch (err) {
     if (err instanceof KitDraftLockedError) return NextResponse.json({ error: err.message }, { status: 409 });
