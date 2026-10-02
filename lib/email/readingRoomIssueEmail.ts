@@ -7,7 +7,7 @@ import { INK, INK_SOFT, esc, sized } from "./shared";
  * unsubscribe footer, so this is a body fragment, not a whole document.
  * Order is the user's (DECISIONS.md, 2026-10-02): greeting, an "About this
  * issue" box, then every book (cover, ranking position, title, author, tags,
- * a shortened blurb, a "Full blurb & where to read" link), then a closing
+ * a shortened blurb, a "View full book page" link), then a closing
  * sentence and sign-off. Colours: the Reading Room's own identity (user's
  * pick), with no pure white or black anywhere. Inline styles, for email clients.
  *
@@ -75,11 +75,11 @@ const RANK = `margin:0 0 4px;font:11px ${MONO};letter-spacing:1px;color:${TITLE}
 
 // One link per book to its "Where to read" page: the email shows only the
 // start of the blurb, and four direct store links per book pushed a 30-book
-// issue past Gmail's clip limit (DECISIONS.md, 2026-10-02). The wording says
-// the full blurb is there too (user, 2026-10-02).
+// issue past Gmail's clip limit (DECISIONS.md, 2026-10-02). Wording: the user's
+// "View full book page" (2026-10-02), clearer than earlier "Find this book" labels.
 function pageLink(b: IssueEmailBook): string {
   if (!b.pageUrl) return "";
-  return `<p style="margin:0"><a href="${esc(b.pageUrl)}" style="color:${LINK};font-weight:700;font-size:14px">Full blurb &amp; where to read &rarr;</a></p>`;
+  return `<p style="margin:0"><a href="${esc(b.pageUrl)}" style="color:${LINK};font-weight:700;font-size:14px">View full book page &rarr;</a></p>`;
 }
 
 /** The "About this issue" box: the Reading Room's deep slate panel, cream text, ochre heading. */

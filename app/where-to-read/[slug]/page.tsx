@@ -13,7 +13,7 @@ import { SITE_URL } from "@/lib/siteUrl";
 import styles from "./WhereToRead.module.css";
 
 /**
- * "Where to read {Title}" (DECISIONS.md, 2026-10-02): one page per book, built
+ * A book's "Where to read" page (DECISIONS.md, 2026-10-02): one page per book, built
  * to answer "where to read X" searches, and where Reading Room issues and
  * articles link each book. Leads with a direct answer and the places to get
  * it, then what only FNFE has: the full blurb, which of our reader-
@@ -39,7 +39,7 @@ function pageTitle(title: string, author: string): string {
 
 /** The direct answer. Deliberately general: we don't know each book's formats, prices or library availability. */
 function answer(title: string, author: string): string {
-  return `You can buy ${title} by ${author} in print or as an ebook from Amazon (including Kindle) or Bookshop.org, or borrow it free from your local library through the Libby app, if your library carries it. Links to each are below.`;
+  return `You can buy “${title}” by ${author} in print or as an ebook from Amazon (including Kindle) or Bookshop.org, or borrow it free from your local library through the Libby app, if your library carries it. Links to each are below.`;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -63,6 +63,8 @@ export default async function WhereToReadPage({ params }: Props) {
   if (!book) notFound();
 
   const url = `${SITE_URL}/where-to-read/${book.slug}`;
+  // The book's name in quotation marks wherever it appears on the page (user, 2026-10-02).
+  const quoted = `“${book.title}”`;
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -97,7 +99,7 @@ export default async function WhereToReadPage({ params }: Props) {
           <header className={styles.hero}>
             <div className={styles.heroInner}>
               <BookCover title={book.title} author={book.author} src={book.coverUrl} alt={`Cover of ${book.title} by ${book.author}`} width={140} />
-              <h1 className={styles.title}>Where to read {book.title}</h1>
+              <h1 className={styles.title}>{quoted}</h1>
               <p className={styles.author}>by {book.author}</p>
               <p className={styles.answer}>{answer(book.title, book.author)}</p>
             </div>
@@ -105,11 +107,11 @@ export default async function WhereToReadPage({ params }: Props) {
 
           <div className={styles.inner}>
             <section aria-labelledby="where" className={styles.section}>
-              <h2 id="where" className={styles.heading}>Where to buy or borrow {book.title}</h2>
+              <h2 id="where" className={styles.heading}>Where to Read or Buy {quoted}</h2>
               <ul className={styles.stores}>
                 {STORES.map((s) => (
                   <li key={s.name}>
-                    <a className={styles.card} href={s.url(book)} rel="nofollow noopener">
+                    <a className={styles.card} href={s.url(book)} target="_blank" rel="nofollow noopener">
                       <span className={styles.cardTitle}>{s.name}</span>
                       <span className={styles.cardNote}>{s.note}</span>
                     </a>
@@ -120,7 +122,7 @@ export default async function WhereToReadPage({ params }: Props) {
 
             {(book.blurb || book.tags.length > 0) && (
               <section aria-labelledby="about" className={styles.section}>
-                <h2 id="about" className={styles.heading}>About {book.title}</h2>
+                <h2 id="about" className={styles.heading}>About {quoted}</h2>
                 {book.tags.length > 0 && (
                   <ul className={styles.tags} aria-label="Tags">
                     {book.tags.map((t) => (
@@ -143,16 +145,16 @@ export default async function WhereToReadPage({ params }: Props) {
             {book.lists.length > 0 && (
               <section aria-labelledby="lists" className={styles.section}>
                 <h2 id="lists" className={styles.heading}>
-                  If you enjoyed {book.title}, you might also enjoy {book.lists.length === 1 ? "this book list" : "these book lists"}
+                  {quoted} appeared in {book.lists.length === 1 ? "this book list" : "these book lists"}
                 </h2>
                 <p className={styles.text}>
-                  {book.title} made {book.lists.length === 1 ? "one of our book lists" : `${book.lists.length} of our book lists`}, built
+                  {quoted} made {book.lists.length === 1 ? "one of our book lists" : `${book.lists.length} of our book lists`}, built
                   from what real readers recommend in book discussions.
                 </p>
                 <ul className={styles.lists}>
                   {book.lists.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className={styles.card}>
+                      <Link href={l.href} className={styles.card} target="_blank" rel="noopener">
                         <span className={styles.kicker}>
                           {l.rank ? `#${l.rank} of ${l.bookCount} · ` : ""}
                           {CATEGORIES[l.category].name}
@@ -167,12 +169,11 @@ export default async function WhereToReadPage({ params }: Props) {
 
             {book.related.length > 0 && (
               <section aria-labelledby="related" className={styles.section}>
-                {/* "Books like X" is how people search for this (user-approved, 2026-10-02). */}
-                <h2 id="related" className={styles.heading}>Books like {book.title}</h2>
+                <h2 id="related" className={styles.heading}>If you enjoyed {quoted}, you might also enjoy these books</h2>
                 <ul className={styles.related}>
                   {book.related.map((r) => (
                     <li key={r.slug}>
-                      <Link href={`/where-to-read/${r.slug}`} className={styles.relatedBook}>
+                      <Link href={`/where-to-read/${r.slug}`} className={styles.relatedBook} target="_blank" rel="noopener">
                         <BookCover title={r.title} author={r.author} src={r.coverUrl} alt={`Cover of ${r.title}`} width={96} />
                         <span className={styles.relatedTitle}>{r.title}</span>
                         <span className={styles.relatedAuthor}>{r.author}</span>

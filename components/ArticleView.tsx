@@ -261,7 +261,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {book.slug ? (
                           // The book's "Where to read" page (DECISIONS.md, 2026-10-02); also how
                           // search engines find those pages.
-                          <Link href={`/where-to-read/${book.slug}`} className={styles.whereToRead} style={{ color: style.titleColor }}>
+                          <Link href={`/where-to-read/${book.slug}`} className={styles.whereToRead} style={{ color: style.titleColor }} target="_blank" rel="noopener">
                             Where to read {book.title} &rarr;
                           </Link>
                         ) : null}

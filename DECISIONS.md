@@ -2137,3 +2137,14 @@ one in each list it's in (wrapping round), taken from its lists in turn: neighbo
 ranking are its closest peers, and starting from each book's own position links every featured
 book from others' pages (34 of 34; taking every page's picks from the top of the lists linked only
 the same 17). Each related book (cover, title, author) is one link to its own page; all checked.
+
+**Update, same day — headings, quotes, new tabs, email link wording (user)**: the book page's H1 is now
+just the book's name in quotation marks (“The Silent Patient”); the browser-tab title stays "Where to
+Read {Title} by {Author}" for search. Headings: "Where to Read or Buy “{Title}”", "About “{Title}”",
+"“{Title}” appeared in these book lists" (the FNFE lists section; "this book list" for one), and
+"If you enjoyed “{Title}”, you might also enjoy these books" (the related books; replaces "Books like").
+The title is quoted throughout the page, answer included. Links around the book pages open in a new
+tab (`target="_blank" rel="noopener"`): store buttons, the lists and related books on the page, and
+articles' "Where to read …" links. Header/footer navigation unchanged (my reading of "our links";
+offered to extend). Reading Room email link text: "View full book page →" (user: earlier labels were
+confusing).
