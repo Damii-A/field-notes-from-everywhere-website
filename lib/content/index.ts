@@ -403,6 +403,16 @@ export interface CoverBook {
   coverUrl: string;
 }
 
+/** One book by id, for its /find-it page (Reading Room issue "Find this book" links). Null if it doesn't exist. */
+export async function getBookById(id: string): Promise<{ title: string; author: string; coverUrl?: string } | null> {
+  const raw = await groqFetch<{ title: string; author: string; coverUrl: string | null } | null>(
+    `*[_type == "book" && _id == $id][0]{ title, author, "coverUrl": coverImage.asset->url }`,
+    { id },
+    { tags: ["book"], revalidate: 300 },
+  );
+  return raw ? { title: raw.title, author: raw.author, coverUrl: raw.coverUrl ?? undefined } : null;
+}
+
 /**
  * Real covers of books recommended in published articles (newest articles
  * first, each book once, only books that have a cover) — the Reading Room

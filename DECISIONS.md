@@ -1991,3 +1991,32 @@ looking for when scanning the catalogue"). Now: each of those two parts is a box
 pattern), with the heading editable per issue (`themeHeading` / `expectHeading`, defaults "About this
 theme" / "What to expect"); tags are filled pills (`--ochre-100` fill, `--ochre-600` border, 13px
 semibold, ink text). 30 books: 75 KB. Checked rendered at desktop and phone widths.
+
+## 2026-10-02 — Reading Room issues: "#N most recommended" and a "Find this book" page
+
+**Decision** (user-chosen from a list of reader-experience ideas): each book in an issue shows its
+position in the issue's ranking ("#3 most recommended", small label above the title; omitted for a
+book not in that ranking) and one **"Find this book →"** link to a new page,
+`/find-it/<book id>`, offering **Amazon, Bookshop.org, Goodreads and "Your library"** (the user's
+four picks). The page shows the cover, title and author and four buttons; noindex, not in the
+sitemap, 404 for an unknown book. Store links are title + author searches (books have no ISBN), in
+one place: `lib/books/stores.ts`.
+
+**Why one link to a page, not four links in the email**: four direct links on 30 books pushed the
+test issue to ~100 KB before Kit's own additions, past Gmail's ~102 KB clip limit (and Kit's click
+tracking embeds each destination base64-encoded, so every link costs ~4/3 of its length plus ~60
+bytes). Offered: one link to a choice page (chosen; recommended), two sites only (~98 KB, still
+borderline), or all four with shorter blurbs. Side benefits: an affiliate tag added later in
+`stores.ts` applies to issues already sent; Google Analytics sees the visits
+(`utm_campaign=reading_room`; no `utm_content`, since Kit reports clicks per issue).
+
+**Library link**: Libby's own search URL needs a library already chosen and fails otherwise
+(checked in a browser); OverDrive's search finds the title and its page hands off to Libby ("Find
+this title in Libby"), so "Your library" uses OverDrive. Amazon blocks automated browsers, so its
+link was checked by format only.
+
+**Size**: font stacks shortened in this email (web fonts can't load in a Kit body anyway) and blurb
+styling set once per book. 30 books with full publisher blurbs (~25 KB of text): 84.7 KB body,
+~88 KB with Kit's tracking estimated; the size warning (85 KB) still fires for that test issue.
+Kit's template adds an unmeasured amount, so whether it clips is to be confirmed by a Kit test
+send to a Gmail inbox. Blurb length is the main lever.

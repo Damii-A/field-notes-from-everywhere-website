@@ -1,5 +1,5 @@
 import { splitParagraphs } from "@/lib/content/paragraphs";
-import { BODY, DISPLAY, INK, INK_SOFT, MONO, RULE, esc, sized } from "./shared";
+import { INK, INK_SOFT, RULE, esc, sized } from "./shared";
 
 /**
  * A Reading Room issue's email body, saved to Kit as a draft broadcast
@@ -7,8 +7,8 @@ import { BODY, DISPLAY, INK, INK_SOFT, MONO, RULE, esc, sized } from "./shared";
  * unsubscribe footer, so this is a body fragment, not a whole document.
  * Order is the user's (DECISIONS.md, 2026-10-02): greeting, intro sentence,
  * the theme and what to expect (each a boxed section with a heading),
- * transition sentence, then every book (cover,
- * title, author, tags, blurb — the same book row as the book-list email),
+ * transition sentence, then every book (cover, ranking position,
+ * title, author, tags, blurb, a "Find this book" link — the same book row as the book-list email),
  * on the Reading Room's colours. Tables + inline styles, for email clients.
  *
  * Size matters: Gmail clips emails over ~102 KB and an issue has 30+ books.
@@ -22,6 +22,10 @@ export interface IssueEmailBook {
   blurb?: string;
   coverUrl?: string;
   tags: string[];
+  /** Position in the issue's ranking (1 = most recommended); omitted when the book isn't in it. */
+  rank?: number;
+  /** The book's /find-it page (where to get it). */
+  findUrl: string;
 }
 
 export interface IssueEmail {
@@ -34,6 +38,12 @@ export interface IssueEmail {
   books: IssueEmailBook[];
 }
 
+// Short font stacks: an email body in Kit can't load the site's web fonts, so
+// readers get the fallbacks anyway, and each style here repeats per book.
+const BODY = "Nunito,Arial,sans-serif";
+const DISPLAY = "Comfortaa,Arial,sans-serif";
+const MONO = "'Courier New',monospace";
+
 const PAGE_BG = "#F5F7EE"; // --paper-050, the Reading Room page
 const TITLE = "#3F606B"; // --slate-600
 const SECTION_BG = "#FFFFFF"; // --paper-000
@@ -43,7 +53,9 @@ const COVER_STANDIN = "#D9E4E8"; // --slate-100
 const COVER_WIDTH = 96;
 
 const TEXT = "margin:0 0 14px;font-size:16px;line-height:1.6;";
-const BLURB = `margin:0 0 12px;font-size:15px;line-height:1.6;color:${INK_SOFT};`;
+// Set on the book's text cell (inherited) so each blurb paragraph only carries its margin.
+const BOOK_TEXT = `font-size:15px;line-height:1.6;color:${INK_SOFT};`;
+const BLURB = "margin:0 0 12px;";
 // Tags are a main thing readers scan for (user, 2026-10-02), so they're filled
 // pills, a step larger and bolder than body small print. Plain inline spans (no
 // per-pill margin/display): the row's line-height spaces wrapped rows and a
@@ -51,10 +63,19 @@ const BLURB = `margin:0 0 12px;font-size:15px;line-height:1.6;color:${INK_SOFT};
 const PILL_ROW = `margin:0 0 12px;font-size:13px;font-weight:600;line-height:2.4;color:${INK};`;
 const PILL = `padding:4px 11px;background:${TAG_BG};border:1px solid ${TAG_BORDER};border-radius:99px;white-space:nowrap`;
 
+const LABEL = `font:600 11px/1.4 ${MONO};letter-spacing:1.5px;text-transform:uppercase;color:${TITLE};`;
+
+// One link per book to its /find-it page, which offers the stores: four
+// direct store links per book pushed a 30-book issue past Gmail's clip limit
+// (DECISIONS.md, 2026-10-02).
+function findItLink(b: IssueEmailBook): string {
+  return `<p style="margin:0 0 4px;font-size:14px;"><a href="${esc(b.findUrl)}" style="color:${TITLE};font-weight:700;">Find this book &rarr;</a></p>`;
+}
+
 /** A boxed section with a small heading: the article's "How we made this list" box, in Reading Room colours. */
 function section(heading: string, text: string): string {
   return `<tr><td style="padding:0 0 16px;"><div style="background:${SECTION_BG};border-left:3px solid ${TITLE};border-radius:8px;padding:16px 20px 4px;">
-    <div style="margin:0 0 8px;font:600 11px/1.4 ${MONO};letter-spacing:1.5px;text-transform:uppercase;color:${TITLE};">${esc(heading)}</div>
+    <div style="margin:0 0 8px;${LABEL}">${esc(heading)}</div>
     ${paragraphs(text, TEXT)}
   </div></td></tr>`;
 }
@@ -74,13 +95,15 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
       const tags = b.tags.map((t) => `<span style="${PILL}">${esc(t)}</span>`).join("&#32; ");
       return `
         <tr><td style="padding:24px 0;${i > 0 ? `border-top:1px solid ${RULE};` : ""}">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
             <td class="fnfe-cover" width="${COVER_WIDTH}" valign="top" style="padding:0 18px 0 0;">${cover}</td>
-            <td class="fnfe-text" valign="top">
+            <td class="fnfe-text" valign="top" style="${BOOK_TEXT}">
+              ${b.rank ? `<div style="margin:0 0 6px;${LABEL}">#${b.rank} most recommended</div>` : ""}
               <h2 style="margin:0 0 4px;font:700 20px/1.25 ${DISPLAY};color:${TITLE};">${esc(b.title)}</h2>
-              <p style="margin:0 0 10px;font-size:14px;font-weight:600;">${esc(b.author)}</p>
+              <p style="margin:0 0 10px;font-size:14px;font-weight:600;color:${INK};">${esc(b.author)}</p>
               ${tags ? `<div style="${PILL_ROW}">${tags}</div>` : ""}
               ${paragraphs(b.blurb ?? "", BLURB)}
+              ${findItLink(b)}
             </td>
           </tr></table>
         </td></tr>`;

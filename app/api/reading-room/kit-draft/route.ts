@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { readingRoomIssueHtml, type IssueEmail } from "@/lib/email/readingRoomIssueEmail";
+import { withUtm } from "@/lib/email/utm";
 import { KitDraftLockedError, saveReadingRoomDraft } from "@/lib/integrations/kit";
+import { SITE_URL } from "@/lib/siteUrl";
 
 /**
  * POST /api/reading-room/kit-draft — the server half of the Studio's "Create
@@ -26,6 +28,7 @@ const REQUEST_TTL_SECONDS = 300;
 // Gmail clips emails over ~102 KB ("[Message clipped]"), and Kit's template +
 // footer add to our body; warn the editor with room to spare.
 const CLIP_WARNING_KB = 85;
+const KIT_LINK_BASE_BYTES = 60;
 
 async function query<T>(groq: string, params: Record<string, unknown>, perspective: "raw" | "drafts"): Promise<T> {
   const url = new URL(`https://${PROJECT_ID}.api.sanity.io/v2025-02-19/data/query/${DATASET}`);
@@ -41,8 +44,9 @@ async function query<T>(groq: string, params: Record<string, unknown>, perspecti
 // what the editor is looking at when they press the button.
 const ISSUE_QUERY = `*[_type == "readingRoomIssue" && _id == $id][0]{
   title, subject, previewText, introSentence, themeHeading, themeExplanation, expectHeading, whatToExpect, transitionSentence, kitBroadcastId,
+  "rankedIds": ranking->books[]._ref,
   "books": bookEntries[defined(book)]{
-    "title": book->title, "author": book->author, "coverUrl": book->coverImage.asset->url,
+    "id": book._ref, "title": book->title, "author": book->author, "coverUrl": book->coverImage.asset->url,
     "blurb": coalesce(blurb, book->canonicalBlurb),
     "tags": select(count(tags) > 0 => tags[]->name, book->tags[]->name)
   }
@@ -53,7 +57,8 @@ type Issue = Partial<Omit<IssueEmail, "books">> & {
   subject?: string;
   previewText?: string;
   kitBroadcastId?: number;
-  books: (Omit<IssueEmail["books"][number], "tags"> & { tags: (string | null)[] | null })[] | null;
+  rankedIds?: string[] | null;
+  books: (Omit<IssueEmail["books"][number], "tags" | "rank"> & { id: string; tags: (string | null)[] | null })[] | null;
 };
 
 const REQUIRED: [keyof Issue, string][] = [
@@ -94,7 +99,17 @@ export async function POST(req: Request) {
     expectHeading: issue.expectHeading?.trim() || "What to expect",
     whatToExpect: issue.whatToExpect!,
     transitionSentence: issue.transitionSentence!,
-    books: books.map((b) => ({ ...b, tags: (b.tags ?? []).filter((t): t is string => !!t) })),
+    books: books.map(({ id, ...b }) => {
+      const pos = issue.rankedIds?.indexOf(id) ?? -1;
+      return {
+        ...b,
+        tags: (b.tags ?? []).filter((t): t is string => !!t),
+        rank: pos >= 0 ? pos + 1 : undefined,
+        // No utm_content: Kit reports clicks per issue itself, and every byte of
+        // the URL is repeated (base64) inside Kit's tracking link.
+        findUrl: withUtm(`${SITE_URL}/find-it/${encodeURIComponent(id)}`, "reading_room"),
+      };
+    }),
   });
 
   try {
@@ -105,7 +120,11 @@ export async function POST(req: Request) {
       previewText: issue.previewText!,
       content,
     });
-    const sizeKb = Math.round(Buffer.byteLength(content) / 1000);
+    // Kit swaps each link for a click-tracking link that carries the original
+    // address base64-encoded (~4/3 its length) plus ~60 bytes of its own.
+    const hrefs = content.match(/href="[^"]*"/g) ?? [];
+    const trackingExtra = hrefs.reduce((n, h) => n + KIT_LINK_BASE_BYTES + Math.ceil(h.length / 3), 0);
+    const sizeKb = Math.round((Buffer.byteLength(content) + trackingExtra) / 1000);
     return NextResponse.json({ ...result, bookCount: books.length, sizeKb, nearClipLimit: sizeKb > CLIP_WARNING_KB });
   } catch (err) {
     if (err instanceof KitDraftLockedError) return NextResponse.json({ error: err.message }, { status: 409 });

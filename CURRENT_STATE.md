@@ -10,7 +10,12 @@ end to end against real Sanity + Kit; test data deleted from Sanity. **Still to 
 the two buttons in the real Studio (their login), and the email inside Kit's template (Kit preview).
 Same day, after the user's Kit preview: theme / what-to-expect are now boxed sections with editable
 headings, and tags are filled ochre pills (more prominent).
-**A test draft is in Kit** (id `26205922`, subject "TEST (v2): 30 thrillers", members-only,
+Later the same day: each book shows "#N most recommended" (from the issue's ranking) and one "Find
+this book →" link to the new `/find-it/<book>` page (Amazon, Bookshop.org, Goodreads, library).
+**Open: email size.** A 30-book test issue with full publisher blurbs is ~85 KB before Kit's template;
+Gmail clips at ~102 KB. Needs a Kit test send to a Gmail inbox to see if it clips; blurb length is
+the lever if so.
+**A test draft is in Kit** (id `26205922`, subject "TEST (v3): 30 thrillers", members-only,
 never sent) for the user to preview there; delete it afterwards (Kit or API). The user's own two
 Kit drafts ("Subject line", "hello") were not touched.
 
