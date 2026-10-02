@@ -11,7 +11,39 @@ import { notifyIndexNow } from "@/lib/integrations/indexnow";
  * public pages changed (after responding; a failure is only logged).
  */
 
-type WebhookBody = { _type?: string; slug?: { current?: string }; category?: string; publishedAt?: string };
+type WebhookBody = {
+  _type?: string;
+  slug?: { current?: string };
+  category?: string;
+  publishedAt?: string;
+  bookEntries?: { book?: { _ref?: string } }[];
+};
+
+const PROJECT_ID =
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_STUDIO_PROJECT_ID || process.env.SANITY_API_PROJECT_ID;
+const DATASET =
+  process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || process.env.SANITY_API_DATASET || "production";
+const TOKEN = process.env.SANITY_API_TOKEN || process.env.SANITY_API_READ_TOKEN;
+
+/**
+ * "Where to read" pages a change affects (DECISIONS.md, 2026-10-02): a live
+ * article's books (their pages list the article), or an edited book itself.
+ * The webhook body only has book ids, so their slugs are looked up.
+ */
+async function whereToReadPaths(body: WebhookBody): Promise<string[]> {
+  if (body._type === "book") return body.slug?.current ? [`/where-to-read/${body.slug.current}`] : [];
+  if (body._type !== "article" || changedPaths(body).length === 0) return [];
+  const ids = (body.bookEntries ?? []).map((e) => e.book?._ref).filter((id): id is string => !!id);
+  if (ids.length === 0 || !PROJECT_ID || !TOKEN) return [];
+  const url = new URL(`https://${PROJECT_ID}.api.sanity.io/v2025-02-19/data/query/${DATASET}`);
+  url.searchParams.set("query", `*[_type == "book" && _id in $ids && defined(slug.current)].slug.current`);
+  url.searchParams.set("$ids", JSON.stringify(ids));
+  url.searchParams.set("perspective", "published");
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` }, cache: "no-store" });
+  if (!res.ok) throw new Error(`Sanity book-slug lookup failed: ${res.status}`);
+  const { result } = (await res.json()) as { result: string[] };
+  return result.map((slug) => `/where-to-read/${slug}`);
+}
 
 /** Public pages a change to this document affects, or none. */
 function changedPaths(body: WebhookBody): string[] {
@@ -48,9 +80,13 @@ export async function POST(request: NextRequest) {
   }
 
   const paths = changedPaths(body);
-  after(() =>
-    notifyIndexNow(paths).catch((err) => console.error("[api/webhooks/sanity] IndexNow notify failed:", err)),
-  );
+  after(async () => {
+    try {
+      await notifyIndexNow([...paths, ...(await whereToReadPaths(body))]);
+    } catch (err) {
+      console.error("[api/webhooks/sanity] IndexNow notify failed:", err);
+    }
+  });
 
   return NextResponse.json({ revalidated: true, type: body._type });
 }

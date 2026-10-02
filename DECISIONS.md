@@ -2055,3 +2055,45 @@ The FNFE Team", one line per line). Email order: "Hi {first
 name}," → About this issue → books → closing sentence + sign-off. The user's one existing issue
 draft ("Thriller") had its intro and theme text merged into About this issue (intro first, blank
 line, then theme text), old fields removed. 30-book test body 55.2 KB (~97 KB by Kit's formula).
+
+## 2026-10-02 — "Where to read {Book}" pages replace "Find this book"
+
+**Decision** (user-directed; plan approved): every book has a page at `/where-to-read/<slug>` built
+to answer "where to read {title}" searches, replacing `/find-it/<id>` (which now 308-redirects).
+Order: cover, H1 "Where to read {Title}", "by {Author}", a direct answer paragraph; "Where to buy or
+borrow it" (the four `lib/books/stores.ts` options, `rel="nofollow noopener"`); "About the book"
+(tags as ochre pills, full blurb: an article's own per-list blurb if any, else canonical); "Why
+readers recommend it" (published articles featuring it, ranked lists first with "#N of M"); "Readers
+who recommend it also recommend" (up to 6 books from those lists). Data: `getWhereToReadBook` /
+`getWhereToReadSlugs` (`lib/content/index.ts`).
+
+**Indexing rule** (user's choice): indexed and in the sitemap only when the book is in at least one
+published article (34 of 49 today); otherwise the page works for email readers but is
+`noindex, follow`. A page with only store links and a publisher blurb is thin, duplicate content
+Google treats as low value (doorway/thin-affiliate risk at scale), so FNFE's own context (lists,
+rank, related books) is what makes the page worth ranking. Expectation set with the user: famous
+books are dominated by Amazon/Goodreads/Reddit; realistic wins are less famous books and AI answers.
+
+**No unverified claims**: the answer and store notes say only what's true of any book ("in print or
+as an ebook… if your library carries it"); no prices, formats, Kindle Unlimited or availability.
+
+**SEO plumbing**: title "Where to Read {Title} by {Author}" (or without the author past 60
+characters), description, canonical, cover as share image (`pageMetadata`); the site's first JSON-LD
+(`Book` + `BreadcrumbList`; no `offers`, since prices aren't known); IndexNow from the Sanity webhook
+now also covers a live article's book pages and an edited book's page.
+
+**Links to the pages** (user's choice): every book in Publication articles gets "Where to read
+{Title} →" under its blurb (descriptive anchor text; how Google finds and values the pages). In
+Reading Room emails the link reads **"Full blurb & where to read →"** (user: say the full blurb is
+there), with no UTM tags (Kit counts clicks; shorter tracking links).
+
+**Book slugs**: `book.slug` added (Studio "Web address", generated from title + author, required);
+all 49 books backfilled as `<title>-<author>` (matches their ids minus "book-"; 0 collisions);
+`scripts/import-books.mjs` sets it. Changing a slug breaks old links, as the field description says.
+
+**Verified** (local, real Sanity): featured page 200, indexable, JSON-LD parses, three lists with
+"#1 of 15" first, 6 related; non-featured page `noindex, follow`; unknown slug 404; `/find-it/<id>`
+308 to the new URL; 15 article links resolve; sitemap has 34 book pages; desktop and phone, no
+sideways scroll or console errors. Kit draft from a test issue: 30 links to the new pages, ~97 KB.
+Also confirmed live in Kit: when an issue's linked draft has been deleted in Kit, the button makes a
+new one.

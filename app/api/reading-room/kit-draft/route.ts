@@ -48,7 +48,7 @@ const ISSUE_QUERY = `*[_type == "readingRoomIssue" && _id == $id][0]{
   title, subject, previewText, aboutThisIssue, closingSentence, signOff, kitBroadcastId,
   "rankedIds": ranking->books[]._ref,
   "books": bookEntries[defined(book)]{
-    "id": book._ref, "title": book->title, "author": book->author, "coverUrl": book->coverImage.asset->url,
+    "id": book._ref, "slug": book->slug.current, "title": book->title, "author": book->author, "coverUrl": book->coverImage.asset->url,
     "ownBlurb": blurb, "canonicalBlurb": book->canonicalBlurb,
     "tags": select(count(tags) > 0 => tags[]->name, book->tags[]->name)
   }
@@ -60,7 +60,7 @@ type Issue = Partial<Omit<IssueEmail, "books">> & {
   previewText?: string;
   kitBroadcastId?: number;
   rankedIds?: string[] | null;
-  books: (Omit<IssueEmail["books"][number], "tags" | "rank" | "findUrl" | "blurb"> & { id: string; ownBlurb?: string | null; canonicalBlurb?: string | null; tags: (string | null)[] | null })[] | null;
+  books: (Omit<IssueEmail["books"][number], "tags" | "rank" | "pageUrl" | "blurb"> & { id: string; slug?: string | null; ownBlurb?: string | null; canonicalBlurb?: string | null; tags: (string | null)[] | null })[] | null;
 };
 
 const REQUIRED: [keyof Issue, string][] = [
@@ -97,7 +97,7 @@ export async function POST(req: Request) {
     aboutThisIssue: issue.aboutThisIssue!,
     closingSentence: issue.closingSentence!,
     signOff: issue.signOff!,
-    books: books.map(({ id, ownBlurb, canonicalBlurb, ...b }) => {
+    books: books.map(({ id, slug, ownBlurb, canonicalBlurb, ...b }) => {
       const pos = issue.rankedIds?.indexOf(id) ?? -1;
       return {
         ...b,
@@ -106,11 +106,11 @@ export async function POST(req: Request) {
         blurb: ownBlurb?.trim() ? ownBlurb : blurbExcerpt(canonicalBlurb ?? ""),
         tags: (b.tags ?? []).filter((t): t is string => !!t),
         rank: pos >= 0 ? pos + 1 : undefined,
-        // No UTM tags: /find-it only exists for these emails, so its visits in
-        // Google Analytics are Reading Room clicks already, and Kit reports
-        // clicks per issue. Every byte of the URL is repeated inside Kit's
-        // tracking link, which counts against Gmail's clip limit.
-        findUrl: `${SITE_URL}/find-it/${encodeURIComponent(id)}`,
+        // The book's "Where to read" page (full blurb + where to get it). No UTM
+        // tags: Kit reports clicks per issue, and every byte of the URL is
+        // repeated inside Kit's tracking link, which counts against Gmail's
+        // clip limit. A book with no slug yet gets no link rather than a dead one.
+        pageUrl: slug ? `${SITE_URL}/where-to-read/${slug}` : undefined,
       };
     }),
   });

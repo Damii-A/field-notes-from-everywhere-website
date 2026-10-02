@@ -258,6 +258,13 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {splitParagraphs(book.blurb).map((p, k) => (
                           <p key={k}>{p}</p>
                         ))}
+                        {book.slug ? (
+                          // The book's "Where to read" page (DECISIONS.md, 2026-10-02); also how
+                          // search engines find those pages.
+                          <Link href={`/where-to-read/${book.slug}`} className={styles.whereToRead} style={{ color: style.titleColor }}>
+                            Where to read {book.title} &rarr;
+                          </Link>
+                        ) : null}
                       </div>
                     </div>
                   </div>

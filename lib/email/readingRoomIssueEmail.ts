@@ -7,7 +7,7 @@ import { INK, INK_SOFT, RULE, esc, sized } from "./shared";
  * unsubscribe footer, so this is a body fragment, not a whole document.
  * Order is the user's (DECISIONS.md, 2026-10-02): greeting, an "About this
  * issue" box, then every book (cover, ranking position, title, author, tags,
- * a shortened blurb, a "Find this book" link — the book-list email's book row),
+ * a shortened blurb, a "Full blurb & where to read" link — the book-list email's book row),
  * then a closing sentence and sign-off, on the Reading Room's colours.
  * Tables + inline styles, for email clients.
  *
@@ -24,8 +24,8 @@ export interface IssueEmailBook {
   tags: string[];
   /** Position in the issue's ranking (1 = most recommended); omitted when the book isn't in it. */
   rank?: number;
-  /** The book's /find-it page (where to get it). */
-  findUrl: string;
+  /** The book's /where-to-read page (full blurb, where to get it); no link when missing. */
+  pageUrl?: string;
 }
 
 export interface IssueEmail {
@@ -65,11 +65,13 @@ const LABEL = `font:600 11px/1.4 ${MONO};letter-spacing:1.5px;text-transform:upp
 // the text rather than styled, since it repeats 30+ times.
 const RANK = `margin:0 0 4px;font:11px ${MONO};letter-spacing:1px;color:${TITLE}`;
 
-// One link per book to its /find-it page, which offers the stores: four
-// direct store links per book pushed a 30-book issue past Gmail's clip limit
-// (DECISIONS.md, 2026-10-02).
-function findItLink(b: IssueEmailBook): string {
-  return `<p style="margin:0"><a href="${esc(b.findUrl)}" style="color:${TITLE};font-weight:700;font-size:14px">Find this book &rarr;</a></p>`;
+// One link per book to its "Where to read" page: the email shows only the
+// start of the blurb, and four direct store links per book pushed a 30-book
+// issue past Gmail's clip limit (DECISIONS.md, 2026-10-02). The wording says
+// the full blurb is there too (user, 2026-10-02).
+function pageLink(b: IssueEmailBook): string {
+  if (!b.pageUrl) return "";
+  return `<p style="margin:0"><a href="${esc(b.pageUrl)}" style="color:${TITLE};font-weight:700;font-size:14px">Full blurb &amp; where to read &rarr;</a></p>`;
 }
 
 /** A boxed section with a small heading: the article's "How we made this list" box, in Reading Room colours. */
@@ -103,7 +105,7 @@ export function readingRoomIssueHtml(issue: IssueEmail): string {
               <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:${INK}">${esc(b.author)}</p>
               ${tags ? `<div style="${PILL_ROW}">${tags}</div>` : ""}
               ${paragraphs(b.blurb ?? "", BLURB)}
-              ${findItLink(b)}
+              ${pageLink(b)}
             </td>
           </tr></table>
         </td></tr>`;

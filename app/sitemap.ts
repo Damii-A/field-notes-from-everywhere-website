@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { CATEGORY_LIST, getHubArticles } from "@/lib/content";
+import { CATEGORY_LIST, getHubArticles, getWhereToReadSlugs } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
 
 const STATIC_ROUTES = ["/", "/about", "/contact", "/the-reading-room", "/terms", "/privacy-and-cookies", "/disclosures"];
@@ -19,6 +19,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const a of hub.articles) {
       entries.push({ url: `${SITE_URL}/${cat.slug}/${a.slug}` });
     }
+  }
+
+  // "Where to read" pages, only for books in a published list (the others are noindex).
+  for (const b of await getWhereToReadSlugs()) {
+    entries.push({ url: `${SITE_URL}/where-to-read/${b.slug}`, lastModified: new Date(b.updatedAt) });
   }
 
   return entries;

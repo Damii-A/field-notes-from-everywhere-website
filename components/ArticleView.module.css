@@ -646,3 +646,12 @@
     animation: none;
   }
 }
+
+/* "Where to read …" under each book's blurb (DECISIONS.md, 2026-10-02). */
+.whereToRead {
+  align-self: flex-start;
+  font: var(--weight-bold) var(--text-sm) / 1.4 var(--font-body);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 6px 0;
+}

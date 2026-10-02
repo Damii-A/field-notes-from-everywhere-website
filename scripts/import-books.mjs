@@ -258,6 +258,8 @@ for (const row of validRows) {
       _type: "book",
       title: row.title.trim(),
       author: row.author.trim(),
+      // The book's /where-to-read/<slug> address; same as the id minus "book-", so re-imports keep it.
+      slug: { _type: "slug", current: `${slugify(row.title)}-${slugify(row.author)}` },
       ...(row.blurb ? { canonicalBlurb: row.blurb.trim() } : {}),
       ...(tagRefs.length > 0 ? { tags: tagRefs } : {}),
       ...(coverImage ? { coverImage } : {}),

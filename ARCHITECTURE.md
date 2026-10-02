@@ -120,7 +120,7 @@ what would force adding one (building the logged-in Reading Room product).
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | legal pages (CMS body) | every heading gets an id from its text, e.g. `/terms#refund-policy` (the refund link given to Paddle) |
 | `/contact` | Contact | static, mailto link only |
 | `/llms.txt` | llms.txt (rewrite to `/llms`) | Markdown site overview for AI tools, built from published articles (`app/llms/route.ts`) |
-| `/find-it/[bookId]` | Find this book | where a Reading Room issue's per-book link lands: cover, full blurb (emails show a shortened one) + Amazon / Bookshop.org / Goodreads / library (OverDrive→Libby) searches (`lib/books/stores.ts`); noindex, not in sitemap |
+| `/where-to-read/[slug]` | Where to read {Book} | per-book page for "where to read X" searches: answer, Amazon / Bookshop.org / Goodreads / library (OverDrive→Libby) searches (`lib/books/stores.ts`), full blurb + tags, the published lists featuring it, related books; JSON-LD `Book`; indexed + in sitemap only when the book is in a published article. Linked from every article book and Reading Room issue. `/find-it/[bookId]` 308-redirects here |
 | `/unsubscribe` | Unsubscribe confirm | from email footer links; noindex, not in the design |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | shared legal template | CMS body content |
 | `/studio` | Sanity Studio | embedded, editor-auth'd, not a public route |
@@ -158,7 +158,7 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   something to reference — a small, curated vocabulary for hub-page grouping and a possible
   future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary even
   though a theme and a tag may share a name.
-- **`book`** — canonical book record: `title`, `author`, `coverImage`, `canonicalBlurb`,
+- **`book`** — canonical book record: `title`, `author`, `slug` (its `/where-to-read/<slug>` address, 2026-10-02), `coverImage`, `canonicalBlurb`,
   `tags[]` (→ `tag`). Not used for anything in V1's built pages yet, but cheap to model now
   since Publication articles already reference books, and modeling it as its own document
   avoids re-typing title/author/cover across articles later. (Not expected to be reused by a
@@ -424,7 +424,10 @@ scope" framing in the initialization brief):
   hero image and `type=article`, other pages the default share image
   (`public/images/share-default.png`, the homepage illustration at 1200 × 630). The homepage sets
   its canonical to `/` explicitly (the layout's `"./"` resolves to `/index` there).
-- `sitemap.xml` and `robots.txt` generated from the same Sanity queries that render the hubs.
+- `sitemap.xml` and `robots.txt` generated from the same Sanity queries that render the hubs (plus
+  the indexable "Where to read" book pages).
+- **Structured data**: "Where to read" pages carry JSON-LD (`Book` + `BreadcrumbList`), the site's
+  only JSON-LD so far (2026-10-02).
 - `prefers-reduced-motion` handling for every bespoke animation (stratosphere, article
   progress rail, Reading Room drift/shelf) — the spec explicitly requires this in multiple
   places; treat it as a hard requirement, not a nice-to-have.

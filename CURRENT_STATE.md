@@ -2,6 +2,13 @@
 
 Last updated: 2026-10-02. Full reasoning is in `DECISIONS.md`; this is the short version.
 
+**Done 2026-10-02 — "Where to read {Book}" pages** (DECISIONS.md): `/where-to-read/<slug>` for every
+book (indexed for the 34 in published lists), linked from every article book ("Where to read …") and
+from Reading Room issues ("Full blurb & where to read →"); `/find-it` redirects there. Books now have
+a `slug` ("Web address" in the Studio). **For the user**: press "Update Kit draft" on the Thriller
+issue so its Kit draft (made before this) gets the new links. Optional: check one page in Google's
+Rich Results Test.
+
 **Done 2026-10-02 — Reading Room issues in the Studio → Kit drafts** (DECISIONS.md, same date).
 "Reading Room issues" in the Studio sidebar: subject, preview text, the user's four text sections,
 a ranking + "Fill books from ranking", then **"Create Kit draft"**, which saves a members-only
@@ -16,9 +23,7 @@ this book →" link to the new `/find-it/<book>` page (Amazon, Bookshop.org, Goo
 are now shortened in the email (full blurb on /find-it); test issue body 59 KB. Waiting on Kit's
 estimate for the "TEST (v5)" draft (v4 read 102 KB; v5 body 55.5 KB, ~97 by the measured formula).
 About 30 books per issue is the current capacity.
-**A test draft is in Kit** (id `26205922`, subject "TEST (v6): 30 thrillers", members-only,
-never sent) for the user to preview there; delete it afterwards (Kit or API). The user's own two
-Kit drafts ("Subject line", "hello") were not touched.
+Test drafts in Kit are all deleted; the only Kit draft is the user's own Thriller issue.
 
 **Session ended 2026-09-30.** Everything was committed and pushed; no local servers left running.
 

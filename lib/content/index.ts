@@ -11,10 +11,10 @@ import { pageMetadata } from "@/lib/metadata";
 import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
 import { CATEGORIES } from "./categories";
 import { formatArticleDate } from "./dates";
-import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, ThemeRef } from "./types";
+import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, ThemeRef, WhereToReadBook } from "./types";
 
 export { CATEGORIES, CATEGORY_LIST } from "./categories";
-export type { Article, ArticleSummary, BookEntry, IntroSegment, CategoryDef, CategorySlug, LegalPage, TagRef, ThemeRef } from "./types";
+export type { Article, ArticleSummary, BookEntry, IntroSegment, CategoryDef, CategorySlug, LegalPage, TagRef, ThemeRef, WhereToReadBook } from "./types";
 
 export { HUB_INITIAL_COUNT, HUB_PAGE_INCREMENT } from "./hubPaging";
 
@@ -99,6 +99,7 @@ interface RawBookEntry {
   refBook: {
     title: string;
     author: string;
+    slug: string | null;
     canonicalBlurb?: string;
     coverImage: RawImage | null;
     tags: RawTag[] | null;
@@ -141,6 +142,7 @@ function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | n
     title: raw.refBook.title,
     author: raw.refBook.author,
     blurb: raw.blurb || raw.refBook.canonicalBlurb || "",
+    slug: raw.refBook.slug ?? undefined,
     tags: tags?.map((t) => ({ label: t.label, slug: t.slug })),
     coverImage: raw.refBook.coverImage ? { url: raw.refBook.coverImage.url, alt: raw.refBook.title } : undefined,
   };
@@ -210,6 +212,7 @@ const FULL_ARTICLE_PROJECTION = `{
     "refBook": book->{
       title,
       author,
+      "slug": slug.current,
       canonicalBlurb,
       "coverImage": coverImage{ "url": asset->url },
       "tags": tags[]->{ "label": name, "slug": slug.current }
@@ -403,14 +406,100 @@ export interface CoverBook {
   coverUrl: string;
 }
 
-/** One book by id, for its /find-it page (Reading Room issue "Find this book" links). Null if it doesn't exist. */
-export async function getBookById(id: string): Promise<{ title: string; author: string; coverUrl?: string; blurb?: string } | null> {
-  const raw = await groqFetch<{ title: string; author: string; coverUrl: string | null; blurb: string | null } | null>(
-    `*[_type == "book" && _id == $id][0]{ title, author, "coverUrl": coverImage.asset->url, "blurb": canonicalBlurb }`,
+interface RawWhereToRead {
+  slug: string;
+  title: string;
+  author: string;
+  coverUrl: string | null;
+  canonicalBlurb: string | null;
+  tags: (string | null)[] | null;
+  lists: {
+    title: string;
+    slug: string;
+    category: CategorySlug;
+    entries: { id: string | null; blurb: string | null; book: { slug: string | null; title: string; author: string; coverUrl: string | null } | null }[] | null;
+  }[];
+}
+
+const RELATED_LIMIT = 6;
+
+/**
+ * A book's "Where to read" page data (DECISIONS.md, 2026-10-02): the book, the
+ * published articles featuring it (with its rank on ranked columns), and other
+ * books from those lists. Null for an unknown slug. Every book has a page; only
+ * featured ones (`lists.length > 0`) are indexed — see getWhereToReadSlugs.
+ */
+export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook | null> {
+  const raw = await groqFetch<(RawWhereToRead & { _id: string }) | null>(
+    `*[_type == "book" && slug.current == $slug][0]{
+      _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, canonicalBlurb,
+      "tags": tags[]->name,
+      "lists": *[_type == "article" && ${RELEASED} && references(^._id)] | order(publishedAt desc){
+        title, "slug": slug.current, category,
+        "entries": bookEntries[]{ "id": book._ref, blurb, "book": book->{ "slug": slug.current, title, author, "coverUrl": coverImage.asset->url } }
+      }
+    }`,
+    { slug },
+    { tags: ["book", "article"], revalidate: 300 },
+  );
+  if (!raw) return null;
+
+  const lists = raw.lists.map((a) => {
+    const entries = a.entries ?? [];
+    const pos = entries.findIndex((e) => e.id === raw._id);
+    return {
+      title: a.title,
+      href: articlePath({ category: a.category, slug: a.slug }),
+      category: a.category,
+      rank: CATEGORIES[a.category].ranked && pos >= 0 ? pos + 1 : undefined,
+      bookCount: entries.length,
+      ownBlurb: pos >= 0 ? entries[pos]!.blurb?.trim() || undefined : undefined,
+    };
+  });
+
+  const seen = new Set([raw.slug]);
+  const related: WhereToReadBook["related"] = [];
+  for (const a of raw.lists) {
+    for (const e of a.entries ?? []) {
+      const b = e.book;
+      if (!b?.slug || seen.has(b.slug) || related.length === RELATED_LIMIT) continue;
+      seen.add(b.slug);
+      related.push({ slug: b.slug, title: b.title, author: b.author, coverUrl: b.coverUrl ?? undefined });
+    }
+  }
+
+  return {
+    slug: raw.slug,
+    title: raw.title,
+    author: raw.author,
+    coverUrl: raw.coverUrl ?? undefined,
+    blurb: lists.find((l) => l.ownBlurb)?.ownBlurb ?? raw.canonicalBlurb ?? undefined,
+    tags: (raw.tags ?? []).filter((t): t is string => !!t),
+    // A ranking ("#1 of 15") is the strongest reason to read it, so ranked lists lead; otherwise newest first.
+    lists: [...lists].sort((x, y) => Number(!!y.rank) - Number(!!x.rank)).map((l) => ({ title: l.title, href: l.href, category: l.category, rank: l.rank, bookCount: l.bookCount })),
+    related,
+  };
+}
+
+/** Books featured in at least one published article: the indexable "Where to read" pages, for the sitemap. */
+export async function getWhereToReadSlugs(): Promise<{ slug: string; updatedAt: string }[]> {
+  return groqFetch<{ slug: string; updatedAt: string }[]>(
+    `*[_type == "book" && defined(slug.current) && count(*[_type == "article" && ${RELEASED} && references(^._id)]) > 0]{
+      "slug": slug.current, "updatedAt": _updatedAt
+    }`,
+    {},
+    { tags: ["book", "article"], revalidate: 300 },
+  );
+}
+
+/** One book by id: its slug, for the old /find-it/<id> address to forward to /where-to-read/<slug>. Null if it doesn't exist. */
+export async function getBookById(id: string): Promise<{ slug?: string } | null> {
+  const raw = await groqFetch<{ slug: string | null } | null>(
+    `*[_type == "book" && _id == $id][0]{ "slug": slug.current }`,
     { id },
     { tags: ["book"], revalidate: 300 },
   );
-  return raw ? { title: raw.title, author: raw.author, coverUrl: raw.coverUrl ?? undefined, blurb: raw.blurb ?? undefined } : null;
+  return raw ? { slug: raw.slug ?? undefined } : null;
 }
 
 /**

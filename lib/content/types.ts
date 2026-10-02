@@ -47,12 +47,29 @@ export interface ThemeRef {
   group: CollectionGroup;
 }
 
+/** A book's "Where to read" page (/where-to-read/<slug>): the book plus the published lists featuring it. */
+export interface WhereToReadBook {
+  slug: string;
+  title: string;
+  author: string;
+  coverUrl?: string;
+  /** The blurb to show: a featuring article's own per-list blurb if one exists, else the book's canonical blurb. */
+  blurb?: string;
+  tags: string[];
+  /** Published articles featuring the book, newest first. `rank` only on ranked columns (The Shortlist). */
+  lists: { title: string; href: string; category: CategorySlug; rank?: number; bookCount: number }[];
+  /** Other books from those lists (each has its own page), up to 6. */
+  related: { slug: string; title: string; author: string; coverUrl?: string }[];
+}
+
 export interface BookEntry {
   rank?: number; // derived from array position for ranked (Shortlist) categories — never authored directly, see lib/content/index.ts
   title: string;
   author: string;
   /** Article-specific blurb — pub_article.md §5 ("Blurb"), overrides any canonical book blurb. */
   blurb: string;
+  /** The book's /where-to-read/<slug> page; missing until the book has a slug. */
+  slug?: string;
   tags?: TagRef[];
   /** BookCover accepts a solid "spine" colour when there's no real cover image yet. */
   spine?: string;
