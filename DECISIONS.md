@@ -2305,3 +2305,22 @@ book text wraps early. Reverted. The cause is the 380px `TEXT_MAX` (see the 2026
 fix): it's what makes the text drop below the cover on phones without a media query. Book text max raised to **560px** (user's choice over 700 or
 keeping 380): ~50% longer lines on computers, still a comfortable line length; cover beside text on
 screens wider than ~674px, cover on top below that (phones, small tablets). Checked at 1400/640/390px.
+
+## 2026-10-05 — Reading Room issues: full blurbs again; Gmail clipping accepted and signposted
+
+**Decision** (user): each book shows its **full** blurb again (the issue's own blurb if written, else
+the book's publisher blurb). Reverses the 2026-10-02 shortened-blurb decision: a sentence or two
+didn't give readers enough to want the book, and 30 extra clicks defeats the email's purpose. 30
+books per issue stays the minimum (user: the least that still feels like real choice).
+
+**Cost, measured on the real Thriller issue (30 books, blurbs avg ~830 characters)**: body ~80 KB,
+~127 KB by Kit's estimate (body x 1.19 + 31 KB), past Gmail's ~102 KB clip limit, so Gmail readers
+see about the first 24 books, then "[Message clipped] View entire message". Other apps show it all.
+Kit's open tracking and footer are below the cut in Gmail (opens under-reported; Gmail still shows its
+own Unsubscribe). Options offered: longer excerpts (~450 characters, ~106 KB), or fewer books (~20).
+
+**Signposts so readers know there's more** (user's requirement): every book's label reads "BOOK N OF
+30 · #R MOST RECOMMENDED", so the last visible book shows how many remain; and a line after "About this
+issue": "30 books in this issue. Reading in Gmail? If the email stops early, tap "View entire message"
+at the very bottom to see the rest." The Studio's size warning (which advised shortening blurbs) and
+`lib/email/excerpt.ts` are removed. Checked rendered at 1400/640/390px.

@@ -92,9 +92,9 @@ const BLURB = `margin:0 0 10px;color:${INK_SOFT};`;
 const PILL_ROW = `margin:0 0 10px;font-size:13px;font-weight:600;line-height:2.4;color:${INK};`;
 const PILL = `padding:3px 10px;background:${TAG_BG};border:1px solid ${TAG_BORDER};border-radius:99px;color:${INK}`;
 
-// One link per book to its "Where to read" page: the email shows only the
-// start of the blurb, and four direct store links per book pushed a 30-book
-// issue past Gmail's clip limit (DECISIONS.md, 2026-10-02). Wording: the user's
+// One link per book to its "Where to read" page (where to buy or borrow it,
+// the lists it's in, similar books): four direct store links per book would
+// add a lot of size to an already large email (DECISIONS.md, 2026-10-02). Wording: the user's
 // "View full book page" (2026-10-02), clearer than earlier "Find this book" labels.
 function pageLink(b: IssueEmailBook, c: IssuePalette): string {
   if (!b.pageUrl) return "";
@@ -118,6 +118,11 @@ function paragraphs(text: string, style: string): string {
 export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteName = DEFAULT_ISSUE_PALETTE): string {
   const c = ISSUE_PALETTES[palette];
   const rank = `margin:0 0 4px;font:11px ${MONO};letter-spacing:1px;color:${c.title}`; // capitals written into the text: it repeats 30+ times
+  // Full blurbs push a 30-book issue past Gmail's ~102 KB clip limit, accepted
+  // by the user (2026-10-05), so every book says "Book N of 30" and a note
+  // before the first book says where to tap: wherever Gmail cuts the email,
+  // readers can tell there's more and how to see it.
+  const n = issue.books.length;
   const books = issue.books
     .map((b, i) => {
       const cover = b.coverUrl
@@ -127,7 +132,7 @@ export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteNam
       return `
         <tr><td style="padding:22px 0 8px;${i > 0 ? `border-top:1px solid ${c.divider}` : ""}">
           <div style="${COVER_BOX}">${cover}</div><div style="${BOOK_TEXT}">
-            ${b.rank ? `<p style="${rank}">#${b.rank} MOST RECOMMENDED</p>` : ""}
+            <p style="${rank}">BOOK ${i + 1} OF ${n}${b.rank ? ` &middot; #${b.rank} MOST RECOMMENDED` : ""}</p>
             <h2 style="margin:0 0 2px;font:700 20px/1.25 ${DISPLAY};color:${c.title}">${esc(b.title)}</h2>
             <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:${INK}">${esc(b.author)}</p>
             ${tags ? `<div style="${PILL_ROW}">${tags}</div>` : ""}
@@ -150,6 +155,7 @@ export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteNam
         <p style="${TEXT}">Hi {{ subscriber.first_name | default: "there" }},</p>
       </td></tr>
       ${panel("About this issue", issue.aboutThisIssue, c)}
+      <tr><td style="padding:0 0 4px;"><p style="margin:0;font-size:14px;line-height:1.55;color:${INK_SOFT}">${n} books in this issue. Reading in Gmail? If the email stops early, tap &ldquo;View entire message&rdquo; at the very bottom to see the rest.</p></td></tr>
       ${books}
       <tr><td style="padding:22px 0 14px;border-top:1px solid ${c.divider};">
         ${paragraphs(issue.closingSentence, TEXT)}

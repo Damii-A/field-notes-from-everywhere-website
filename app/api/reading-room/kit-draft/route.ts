@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { blurbExcerpt } from "@/lib/email/excerpt";
 import { readingRoomIssueHtml, type IssueEmail } from "@/lib/email/readingRoomIssueEmail";
 import { KitDraftLockedError, saveReadingRoomDraft } from "@/lib/integrations/kit";
 import { SITE_URL } from "@/lib/siteUrl";
@@ -25,12 +24,10 @@ const DATASET =
   process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || process.env.SANITY_API_DATASET || "production";
 const TOKEN = process.env.SANITY_API_TOKEN || process.env.SANITY_API_READ_TOKEN;
 const REQUEST_TTL_SECONDS = 300;
-// Gmail clips emails over ~102 KB ("[Message clipped]"); Kit's editor warns
-// past 100 KB of its own estimate. Kit's estimate vs our body, measured
-// 2026-10-02 (30-book issue): 85 KB -> 133 KB, 59 KB -> 102 KB, i.e. about
-// body x 1.19 + 31 KB (its template, footer and link tracking). Warn past 98.
-const CLIP_WARNING_KB = 98;
-const kitEstimateKb = (bodyKb: number) => Math.round(bodyKb * 1.19 + 31);
+// Gmail clips emails over ~102 KB ("[Message clipped]"). Full blurbs put a
+// 30-book issue past that (~126 KB by Kit's estimate, about body x 1.19 +
+// 31 KB, measured 2026-10-02); the user accepted it (2026-10-05) and the email
+// itself tells readers how to see the rest, so there's no size warning.
 
 async function query<T>(groq: string, params: Record<string, unknown>, perspective: "raw" | "drafts"): Promise<T> {
   const url = new URL(`https://${PROJECT_ID}.api.sanity.io/v2025-02-19/data/query/${DATASET}`);
@@ -101,9 +98,10 @@ export async function POST(req: Request) {
       const pos = issue.rankedIds?.indexOf(id) ?? -1;
       return {
         ...b,
-        // A blurb written for this issue is used as written; the book's own
-        // (publisher) blurb is shortened, with the full text on its /find-it page.
-        blurb: ownBlurb?.trim() ? ownBlurb : blurbExcerpt(canonicalBlurb ?? ""),
+        // A blurb written for this issue, else the book's own (publisher) blurb,
+        // in full: readers need enough to decide (user, 2026-10-05; it was cut
+        // to a sentence or two before, to stay under Gmail's clip limit).
+        blurb: ownBlurb?.trim() ? ownBlurb : (canonicalBlurb ?? ""),
         tags: (b.tags ?? []).filter((t): t is string => !!t),
         rank: pos >= 0 ? pos + 1 : undefined,
         // The book's "Where to read" page (full blurb + where to get it). No UTM
@@ -123,8 +121,7 @@ export async function POST(req: Request) {
       previewText: issue.previewText!,
       content,
     });
-    const sizeKb = kitEstimateKb(Buffer.byteLength(content) / 1000);
-    return NextResponse.json({ ...result, bookCount: books.length, sizeKb, nearClipLimit: sizeKb > CLIP_WARNING_KB });
+    return NextResponse.json({ ...result, bookCount: books.length });
   } catch (err) {
     if (err instanceof KitDraftLockedError) return NextResponse.json({ error: err.message }, { status: 409 });
     console.error("[kit-draft]", err);
