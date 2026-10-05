@@ -6,8 +6,8 @@ Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short
 1. **Tuesday 2026-10-06, ~14:00 UTC**: the new weekly-newsletter cron's first run. Nothing has been
    published since 2026-09-27, so hello@ should get "No newsletter this week". If it doesn't arrive,
    check the cron (Vercel logs).
-2. **User**: press "Update Kit draft" on the Thriller Reading Room issue, then send a Kit test to
-   Gmail. That draft predates today and still has the old layout, hello@ sender and old links.
+2. ~~**User**: press "Update Kit draft" on the Thriller Reading Room issue~~ — done by the user
+   (confirmed 2026-10-06).
 3. **Next build item**: the Paddle checkout branding (below).
 
 **Live 2026-10-05 — Reading Room issue email redesign** (DECISIONS.md, several entries that day):
