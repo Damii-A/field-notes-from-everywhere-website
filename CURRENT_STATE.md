@@ -29,8 +29,11 @@ Test drafts in Kit are all deleted; the only Kit draft is the user's own Thrille
 **Session ended 2026-09-30.** Everything was committed and pushed; no local servers left running.
 
 **Next dated item: Wednesday 2026-10-07, 14:00 UTC (10am Eastern)** — the first weekly newsletter
-(see "Next steps" item 3 below). Afterwards: confirm it sent, show the user its stats, and remove
-the one-off `FIRST_SEND` guard in `app/api/cron/weekly-recap/route.ts`.
+(see "Next steps" item 3 below). **Expected to skip** (checked 2026-10-05): no article has been
+published since 2026-09-27, and the user chose to let it skip rather than publish one first. The
+first real send is the Wednesday after the next published article. After 2026-10-07 the one-off
+`FIRST_SEND` guard in `app/api/cron/weekly-recap/route.ts` does nothing and can be removed; when
+the first newsletter does send, confirm it (Resend → Broadcasts) and show the user its stats.
 
 Done 2026-09-30 (each has a DECISIONS.md entry):
 - **Weekly newsletter moved from Sundays to Wednesdays**, first send 2026-10-07 (user's choice not
