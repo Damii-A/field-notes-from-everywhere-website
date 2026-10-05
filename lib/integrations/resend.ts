@@ -7,11 +7,9 @@
  * except the weekly recap broadcast.
  */
 import { Resend } from "resend";
-import { articlePath, type Article, type FeedArticle } from "@/lib/content";
-import { SITE_URL } from "@/lib/siteUrl";
+import type { Article } from "@/lib/content";
 import { unsubscribeHeaders, unsubscribePageUrl } from "@/lib/unsubscribe";
 import { bookListEmailHtml, bookListEmailSubject, bookListEmailText } from "@/lib/email/bookListEmail";
-import { withUtm } from "@/lib/email/utm";
 import { WELCOME_EMAIL_SUBJECT, welcomeEmailHtml, welcomeEmailText } from "@/lib/email/welcomeEmail";
 import { READING_ROOM_WELCOME_SUBJECT, readingRoomWelcomeHtml, readingRoomWelcomeText } from "@/lib/email/readingRoomWelcomeEmail";
 
@@ -23,6 +21,8 @@ export class ResendNotConfiguredError extends Error {
 }
 
 const FROM_ADDRESS = "Field Notes From Everywhere <hello@fieldnotesfromeverywhere.com>";
+/** The site's own inbox (Zoho), for notices meant for the user. */
+const CONTACT_ADDRESS = "hello@fieldnotesfromeverywhere.com";
 
 /** Footer on every free-list email: why they're getting it, and a way out (see lib/unsubscribe.ts). */
 function unsubscribeFooterHtml(email: string): string {
@@ -216,66 +216,73 @@ export async function triggerReadingRoomTrialEvent(email: string, name: string):
   if (error) throw new Error(`Resend event send failed: ${error.message}`);
 }
 
-const COVER_WIDTH = 90;
-
-/** One article's block: heading (linked), summary, first-3-covers row — per the format specified 2026-09-22. */
-function articleBlockHtml(a: FeedArticle, weekKey: string): string {
-  const url = withUtm(`${SITE_URL}${articlePath(a)}`, "weekly_newsletter", weekKey);
-  const coversHtml = a.books
-    .map((b) =>
-      b.coverImage
-        ? `<td style="padding:0 6px 0 0;"><img src="${escapeHtml(b.coverImage.url)}" alt="${escapeHtml(b.coverImage.alt)}" width="${COVER_WIDTH}" style="display:block;width:${COVER_WIDTH}px;height:auto;border-radius:4px;" /></td>`
-        : `<td style="padding:0 6px 0 0;"><div style="width:${COVER_WIDTH}px;height:${Math.round(COVER_WIDTH * 1.5)}px;background:#d8d0c4;border-radius:4px;color:#3a352c;font-size:11px;line-height:1.3;padding:6px;box-sizing:border-box;">${escapeHtml(b.title)}</div></td>`,
-    )
-    .join("");
-
-  return `
-    <tr><td style="padding:20px 0 0;">
-      <a href="${escapeHtml(url)}" style="font-size:18px;font-weight:700;color:#1a1a1a;text-decoration:none;">${escapeHtml(a.title)}</a>
-      <p style="margin:6px 0 12px;font-size:15px;line-height:1.5;color:#3a352c;">${escapeHtml(a.description)}</p>
-      ${coversHtml ? `<table role="presentation" cellpadding="0" cellspacing="0"><tr>${coversHtml}</tr></table>` : ""}
-    </td></tr>`;
-}
-
 /**
- * Sends the weekly newsletter (a digest of the week's articles) as a Resend
- * **Broadcast** to the whole-list segment, so each issue gets its own
- * delivered / open / click / unsubscribe stats in Resend's Broadcasts page
- * (DECISIONS.md, 2026-09-27, "Email analytics"; previously one batch email per
- * recipient, which Resend can only report on account-wide). Resend fills in
- * each contact's first name and a per-recipient unsubscribe link (which sets
- * the same `unsubscribed` flag as our own /unsubscribe), and skips
- * unsubscribed contacts itself.
- *
- * Vercel Cron can run the same schedule more than once, so an issue is named
- * after its date and not sent again if a Broadcast with that name exists.
+ * Saves the weekly newsletter (built in the Studio, see
+ * sanity/schemaTypes/weeklyNewsletter.ts) as a **draft** Resend Broadcast to
+ * the whole-list segment; the user sends or schedules it in Resend. Nothing is
+ * sent from here (DECISIONS.md, 2026-10-05). Updates the existing draft when
+ * `existingId` is still a draft; refuses if that one was already sent or
+ * scheduled (pressing again must never lead to a second send); makes a new one
+ * if it was deleted. A Broadcast gets its own delivered / open / click /
+ * unsubscribe stats in Resend (DECISIONS.md, 2026-09-27, "Email analytics").
  */
-export async function sendWeeklyNewsletter(articles: FeedArticle[], weekKey: string): Promise<{ sent: boolean; broadcastId?: string }> {
+export class NewsletterAlreadySentError extends Error {}
+
+export async function saveNewsletterDraft(opts: { existingId?: string; name: string; subject: string; previewText?: string; html: string; text: string }): Promise<{ id: string; created: boolean }> {
   const apiKey = process.env.RESEND_API_KEY;
   const segmentId = process.env.RESEND_EMAIL_LIST_SEGMENT_ID;
   if (!apiKey || !segmentId) throw new ResendNotConfiguredError();
+  const resend = new Resend(apiKey);
+  const content = { name: opts.name, subject: opts.subject, previewText: opts.previewText || undefined, html: opts.html, text: opts.text };
+
+  if (opts.existingId) {
+    const { data: existing } = await resend.broadcasts.get(opts.existingId);
+    if (existing && existing.status !== "draft") {
+      throw new NewsletterAlreadySentError("This newsletter has already been sent or scheduled in Resend, so it wasn't changed.");
+    }
+    if (existing) {
+      const { error } = await resend.broadcasts.update(opts.existingId, { ...content, segmentId, from: FROM_ADDRESS });
+      if (error) throw new Error(`Resend update-broadcast failed: ${error.message}`);
+      return { id: opts.existingId, created: false };
+    }
+  }
+  const { data, error } = await resend.broadcasts.create({ ...content, segmentId, from: FROM_ADDRESS, send: false });
+  if (error || !data) throw new Error(`Resend create-broadcast failed: ${error?.message}`);
+  return { id: data.id, created: true };
+}
+
+/**
+ * Tells the user (at the site's own inbox) it's time for this week's
+ * newsletter, with a link that opens it in the Studio already filled in, or
+ * that nothing was published this week. One per week: the idempotency key
+ * stops a repeated cron run emailing twice.
+ */
+export async function sendNewsletterDraftNotice(weekKey: string, outcome: { studioUrl: string; articleCount: number } | { empty: true }): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
 
   const resend = new Resend(apiKey);
-  const name = `Weekly newsletter ${weekKey}`;
-  const { data: existing, error: listError } = await resend.broadcasts.list({ limit: 100 });
-  if (listError) throw new Error(`Resend list-broadcasts failed: ${listError.message}`);
-  if (existing?.data.some((b) => b.name === name)) return { sent: false };
-
-  const subject = `Field Notes From Everywhere: ${articles.length} new reading list${articles.length === 1 ? "" : "s"}`;
-  const home = withUtm(SITE_URL, "weekly_newsletter", weekKey);
-  const html = `
-    <p>Hi {{{contact.first_name|there}}},</p>
-    <p>Here's what we've published this week on Field Notes From Everywhere.</p>
-    <table role="presentation" cellpadding="0" cellspacing="0" width="100%">${articles.map((a) => articleBlockHtml(a, weekKey)).join("")}</table>
-    <p style="margin-top:28px;">
-      <a href="${escapeHtml(home)}" style="display:inline-block;padding:12px 24px;background:#1a1a1a;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;">Go to the site</a>
-    </p>
-    <p>— Field Notes From Everywhere</p>
-    <p style="margin-top:32px;padding-top:16px;border-top:1px solid #e3e0ce;font-family:'Nunito',Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#736858;">You're getting this because you joined the Field Notes From Everywhere email list. <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#736858;">Unsubscribe</a></p>`;
-
-  const { data, error } = await resend.broadcasts.create({ name, segmentId, from: FROM_ADDRESS, subject, html, send: true });
-  if (error) throw new Error(`Resend weekly-newsletter broadcast failed: ${error.message}`);
-  return { sent: true, broadcastId: data?.id };
+  const link = (href: string, label: string) => `<a href="${escapeHtml(href)}" style="color:#8F5F3C;">${label}</a>`;
+  let subject: string;
+  let lines: string[];
+  if ("studioUrl" in outcome) {
+    const n = outcome.articleCount;
+    subject = "This week's newsletter is ready to edit";
+    lines = [
+      `${link(outcome.studioUrl, "Open this week's newsletter in the Studio")}. It opens already filled in with the ${n} article${n === 1 ? "" : "s"} published in the past 7 days. (Open it once: each click starts a new newsletter.)`,
+      `Edit anything you like, publish it, then press <strong>Create Resend draft</strong> (in the menu next to Publish). It then waits in ${link("https://resend.com/broadcasts", "Resend &rarr; Broadcasts")} for you to send or schedule for Wednesday 10am Eastern. Nothing goes out until you do.`,
+    ];
+  } else {
+    subject = "No newsletter this week";
+    lines = ["Nothing was published on the site in the past 7 days, so there's no newsletter to make this week."];
+  }
+  const html = lines.map((t) => `<p style="margin:0 0 14px;font:16px/1.6 Nunito,Arial,sans-serif;color:#302B24;">${t}</p>`).join("");
+  const text = lines.map((l) => l.replace(/<a href="([^"]+)"[^>]*>([^<]+)<\/a>/g, "$2 ($1)").replace(/<[^>]+>/g, "").replace("&rarr;", "→")).join("\n\n");
+  const { error } = await resend.emails.send(
+    { from: FROM_ADDRESS, to: CONTACT_ADDRESS, subject, html, text, tags: [{ name: "email_type", value: "newsletter_draft_notice" }] },
+    { idempotencyKey: `newsletter-draft-notice/${weekKey}` },
+  );
+  if (error) throw new Error(`Resend send failed: ${error.message}`);
 }
 
 function escapeHtml(s: string): string {

@@ -2237,3 +2237,41 @@ Re-tagging an existing member on each renewal is harmless.
 (set up with four events). The sandbox API key can't read notification settings (forbidden), and
 live Paddle API calls go through the user, so the user ticked it in the dashboard the same day
 (**Events → Notifications** in Paddle's sidebar now; Developer tools is gone).
+
+## 2026-10-05 — Weekly newsletter: edited in the Studio, saved to Resend as a draft, digest design
+
+**Decision** (user-directed): the weekly newsletter is no longer sent automatically. Every **Tuesday**
+at 14:00 UTC (10am Eastern in summer) the cron emails the user (hello@) a link that opens a new
+**Weekly newsletter** in the Studio, already filled in with up to 10 articles from the past 7 days
+(subject, intro, each article + an editable summary, sign-off). The user edits it, publishes, presses
+**"Create Resend draft"**, and sends or schedules it in Resend (Broadcasts) for Wednesday 10am. The
+site never sends it. A week with nothing new gets a "no newsletter this week" note. Supersedes the
+automatic Wednesday send (2026-09-30 entry) and the one-off `FIRST_SEND` guard (removed).
+
+**Why the Studio, not Resend's editor**: first built as a draft Broadcast created by the cron, but
+the user couldn't edit it in Resend (API-made HTML broadcasts open as code). The Studio is where the
+user already edits Reading Room issues; same pattern (request-document auth, button updates the same
+draft, refuses once sent or scheduled so pressing again can never cause a second send).
+
+**Why a pre-filled "new" link rather than the server creating the document**: the server would need
+Sanity write access. The local `SANITY_API_TOKEN` turned out to be **read-only** now (it could write
+on 2026-10-02; probably replaced since) and whether Vercel has a write token is unknown. The schema's
+async `initialValue` builds the pre-filled newsletter with the user's own Studio login, so no write
+key is needed anywhere. Trade-off: each click on the link starts a new newsletter (the email says to
+open it once).
+
+**Digest design** (user's requests: "Some recommendations from this article", a "Read this article"
+button per article, "feel like a digest", covers one size, one row): logo + "Weekly newsletter ·
+{date}", greeting + intro, then a card per article in its column's colours (the book-list email's
+`COLOURS`: image, column pill, title, summary, the label, 3 covers cropped to the same 84 x 126 by
+Sanity's image API (`fit=crop`) with titles, the button), then sign-off + unsubscribe; no page
+background (as the newsletter welcome). Sign-off now defaults to "Happy reading, The FNFE Team" (was
+"— Field Notes From Everywhere"), matching the other emails; editable. Fits 360px phones without
+sideways scroll.
+
+**Verified** (local, real Sanity read + real Resend): the pre-fill query returns the expected articles;
+the route's article projection resolves title, live status, hero and 3 books for all three published
+articles; a Resend draft was created, updated in place (subject/preview changed, same id), and a new
+one made after deleting it; all test drafts deleted; fake and wrong-type request ids refused (401);
+rendered at 760/390/360px. **Not verified**: the Studio link and both buttons in the real Studio
+(user's login; the local token can't create the request document), and the Tuesday cron run itself.

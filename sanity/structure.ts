@@ -52,6 +52,9 @@ export const structure: StructureResolver = (S) =>
             ),
         ),
       S.documentTypeListItem("readingRoomIssue").title("Reading Room issues"),
+      S.listItem()
+        .title("Weekly newsletters")
+        .child(S.documentTypeList("weeklyNewsletter").title("Weekly newsletters").defaultOrdering([{ field: "sendDate", direction: "desc" }])),
       S.divider(),
       S.documentTypeListItem("theme").title("Themes"),
       S.documentTypeListItem("book").title("Books"),

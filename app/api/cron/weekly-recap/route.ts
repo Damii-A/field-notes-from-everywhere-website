@@ -1,19 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getFeedArticles } from "@/lib/content";
-import { sendWeeklyNewsletter } from "@/lib/integrations/resend";
+import { sendNewsletterDraftNotice } from "@/lib/integrations/resend";
+import { sanityQuery } from "@/lib/sanity/serverApi";
+import { SITE_URL } from "@/lib/siteUrl";
 
-const RECAP_HIGHLIGHT_COUNT = 10; // publishing volume can exceed 20/week — a digest, not a full listing
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-// One-off: the switch from Sundays to Wednesdays deployed on Wednesday 2026-09-30,
-// and the user chose 2026-10-07 as the first send. Remove after that run.
-const FIRST_SEND = Date.parse("2026-10-07T00:00:00Z");
+const DAY_MS = 24 * 60 * 60 * 1000;
+const WEEK_MS = 7 * DAY_MS;
 
 /**
- * Weekly newsletter (the "weekly recap") — triggered by Vercel Cron on Wednesdays
- * at 14:00 UTC (see vercel.json). Sends up to `RECAP_HIGHLIGHT_COUNT` of the articles
- * published in the past 7 days, as a Resend Broadcast to everyone on the free
- * email list (see `sendWeeklyNewsletter`). A week with nothing new sends
- * nothing: the email promises a roundup of that week's lists.
+ * Weekly newsletter — triggered by Vercel Cron on Tuesdays at 14:00 UTC (see
+ * vercel.json). Emails the user a link that opens a new `weeklyNewsletter` in
+ * the Studio, already filled in with the past 7 days' articles (the schema's
+ * initialValue does that with the user's own Studio login, so this server
+ * needs no write access). The user edits it, presses "Create Resend draft" and
+ * sends or schedules it in Resend for Wednesday; nothing is sent to readers
+ * from here (DECISIONS.md, 2026-10-05). A week with nothing new gets a "no
+ * newsletter this week" note instead.
  */
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
@@ -22,19 +23,18 @@ export async function GET(request: NextRequest) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  if (Date.now() < FIRST_SEND) {
-    return NextResponse.json({ sent: false, reason: "first Wednesday send is 2026-10-07" });
+  // Keyed to the Wednesday it's meant for (the day after this run).
+  const sendDate = new Date(Date.now() + DAY_MS).toISOString().slice(0, 10);
+  const count = await sanityQuery<number>(
+    `count(*[_type == "article" && publishedAt <= now() && dateTime(publishedAt) >= dateTime($since)])`,
+    { since: new Date(Date.now() - WEEK_MS).toISOString() },
+    "published",
+  );
+
+  if (count === 0) {
+    await sendNewsletterDraftNotice(sendDate, { empty: true });
+    return NextResponse.json({ notified: true, articleCount: 0 });
   }
-
-  const since = Date.now() - WEEK_MS;
-  const articles = (await getFeedArticles(RECAP_HIGHLIGHT_COUNT)).filter((a) => new Date(a.publishedAt).getTime() >= since);
-
-  if (articles.length === 0) {
-    return NextResponse.json({ sent: false, reason: "no articles published in the past 7 days" });
-  }
-
-  const weekKey = new Date().toISOString().slice(0, 10);
-  const result = await sendWeeklyNewsletter(articles, weekKey);
-
-  return NextResponse.json({ ...result, articleCount: articles.length, reason: result.sent ? undefined : "already sent this week" });
+  await sendNewsletterDraftNotice(sendDate, { studioUrl: `${SITE_URL}/studio/intent/create/type=weeklyNewsletter`, articleCount: Math.min(count, 10) });
+  return NextResponse.json({ notified: true, articleCount: count });
 }

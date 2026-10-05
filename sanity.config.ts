@@ -12,6 +12,7 @@ import { schemaTypes } from "./sanity/schemaTypes";
 import { structure } from "./sanity/structure";
 import { FillFromRankingAction } from "./sanity/actions/FillFromRankingAction";
 import { CreateKitDraftAction } from "./sanity/actions/CreateKitDraftAction";
+import { CreateResendDraftAction } from "./sanity/actions/CreateResendDraftAction";
 
 const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
@@ -77,12 +78,15 @@ export default defineConfig({
     newDocumentOptions: (prev, { creationContext }) =>
       creationContext.type === "global" ? prev.filter((item) => item.templateId !== "siteSettings" && item.templateId !== "article-by-category") : prev,
     // "Fill books from ranking" on articles and Reading Room issues — DECISIONS.md, 2026-09-23;
-    // "Create Kit draft" on issues — DECISIONS.md, 2026-10-02.
+    // "Create Kit draft" on issues — DECISIONS.md, 2026-10-02;
+    // "Create Resend draft" on weekly newsletters — DECISIONS.md, 2026-10-05.
     actions: (prev, { schemaType }) =>
       schemaType === "article"
         ? [...prev, FillFromRankingAction]
         : schemaType === "readingRoomIssue"
           ? [...prev, FillFromRankingAction, CreateKitDraftAction]
-          : prev,
+          : schemaType === "weeklyNewsletter"
+            ? [...prev, CreateResendDraftAction]
+            : prev,
   },
 });

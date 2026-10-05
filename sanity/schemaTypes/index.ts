@@ -4,7 +4,8 @@ import book from "./book";
 import ranking from "./ranking";
 import article from "./article";
 import readingRoomIssue from "./readingRoomIssue";
+import weeklyNewsletter from "./weeklyNewsletter";
 import legalPage from "./legalPage";
 import siteSettings from "./siteSettings";
 
-export const schemaTypes = [tag, theme, book, ranking, article, readingRoomIssue, legalPage, siteSettings];
+export const schemaTypes = [tag, theme, book, ranking, article, readingRoomIssue, weeklyNewsletter, legalPage, siteSettings];

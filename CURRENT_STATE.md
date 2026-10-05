@@ -2,6 +2,13 @@
 
 Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short version.
 
+**Built 2026-10-05 — weekly newsletter edited in the Studio** (DECISIONS.md): no more automatic
+send. Tuesdays 10am Eastern the user gets an email with a link that opens a pre-filled "Weekly
+newsletter" in the Studio; they edit, publish, press "Create Resend draft", then send/schedule it in
+Resend for Wednesday 10am. New digest design (cards per article, 3 same-size covers, "Read this
+article"). **First real use, user to check**: the Studio link opens a filled-in newsletter, and the
+button makes a Resend draft. The local `SANITY_API_TOKEN` is now read-only (it wrote on 2026-10-02).
+
 **Built 2026-10-05 — welcome email for footer newsletter signups** (DECISIONS.md): new-to-the-list
 footer signups get the user's welcome email straight away (Wednesday wording adjusts to the signup
 day). Subject "Welcome to the FNFE newsletter", preview "Hi! You're now on our newsletter list.", no
@@ -44,12 +51,10 @@ Test drafts in Kit are all deleted; the only Kit draft is the user's own Thrille
 
 **Session ended 2026-09-30.** Everything was committed and pushed; no local servers left running.
 
-**Next dated item: Wednesday 2026-10-07, 14:00 UTC (10am Eastern)** — the first weekly newsletter
-(see "Next steps" item 3 below). **Expected to skip** (checked 2026-10-05): no article has been
-published since 2026-09-27, and the user chose to let it skip rather than publish one first. The
-first real send is the Wednesday after the next published article. After 2026-10-07 the one-off
-`FIRST_SEND` guard in `app/api/cron/weekly-recap/route.ts` does nothing and can be removed; when
-the first newsletter does send, confirm it (Resend → Broadcasts) and show the user its stats.
+**Next dated item: Tuesday 2026-10-06, 14:00 UTC** — the first run of the new Tuesday cron. With
+nothing published since 2026-09-27 it should email hello@ "No newsletter this week" (confirms the
+cron works). The `FIRST_SEND` guard is gone. When the first newsletter does go out, show the user
+its stats (Resend → Broadcasts).
 
 Done 2026-09-30 (each has a DECISIONS.md entry):
 - **Weekly newsletter moved from Sundays to Wednesdays**, first send 2026-10-07 (user's choice not

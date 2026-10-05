@@ -125,6 +125,7 @@ what would force adding one (building the logged-in Reading Room product).
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | shared legal template | CMS body content |
 | `/studio` | Sanity Studio | embedded, editor-auth'd, not a public route |
 | `/api/reading-room/kit-draft` | (POST only) | Studio "Create Kit draft" button → Kit draft broadcast; accepts only a fresh Studio-written request id (§9) |
+| `/api/newsletter/resend-draft` | (POST only) | Studio "Create Resend draft" button on weekly newsletters → draft Resend Broadcast; same request-id auth (§9) |
 
 Slugs are kebab-case URL-safe versions of the `.dc.html` filenames. Hub sections 5–12
 ("Browse our Collections" / Genre…Experience) and the Recent-Articles carousel are in the
@@ -192,6 +193,11 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   from ranking": top N in rank order), `bookEntries[]` (same shape as an article's), and
   `kitBroadcastId` (read-only, set by "Create Kit draft"). Not shown on the site yet; it's the
   record future Past Issues pages can read.
+- **`weeklyNewsletter`** — one weekly newsletter (added 2026-10-05, see `DECISIONS.md`): `sendDate`
+  (the Wednesday), `subject`, `previewText`, `intro`, `articles[]` (`{ article: reference, summary }`,
+  summary falling back to the article's meta description), `signOff`, `resendBroadcastId`
+  (read-only, set by "Create Resend draft"). New ones start pre-filled from the past week's
+  articles (async `initialValue`).
 - **`legalPage`** — `title`, `slug` (terms / privacy-and-cookies / disclosures), `body`
   (rich text). Matches `utility_pages.md` §2.1 exactly ("CMS-managed body content").
 - **`siteSettings`** singleton — the contact email, social links (Pinterest/Reddit URLs, read
@@ -290,17 +296,21 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
     for the old mandatory-Audience model (contacts are global, belong to any number of
     Segments) — created via `resend.segments.create()` directly against the API, not
     manually in the dashboard.
-  - The **weekly newsletter** (weekly Publication recap) — a **Vercel Cron job**
-    (`vercel.json`, `GET /api/cron/weekly-recap`, Wednesdays 14:00 UTC, i.e. 10am US Eastern in
-    summer, 9am in winter) takes up to 10 articles published
-    in the past 7 days (`getFeedArticles`, the same function `/rss` uses; nothing new = no
-    email) and sends them as a Resend **Broadcast** to "Email list (everyone)"
-    (`sendWeeklyNewsletter`), so each issue has its own stats in Resend. Resend personalises
+  - The **weekly newsletter** (weekly Publication recap; edited by the user since 2026-10-05, see
+    `DECISIONS.md`) — a **Vercel Cron job** (`vercel.json`, `GET /api/cron/weekly-recap`, Tuesdays
+    14:00 UTC, i.e. 10am US Eastern in summer, 9am in winter) emails the user (hello@) a Studio link
+    that opens a new `weeklyNewsletter` (§6) pre-filled with up to 10 articles from the past 7 days
+    (the schema's async `initialValue`, run with the user's own Studio login; the server has no
+    Sanity write access), or a "no newsletter this week" note. The user edits it, then the
+    Studio's **"Create Resend draft"** button (`sanity/actions/CreateResendDraftAction.tsx` →
+    `POST /api/newsletter/resend-draft`, same short-lived request-document auth as the Kit draft
+    route) renders the digest (`lib/email/weeklyNewsletterEmail.ts`) and saves it as a **draft**
+    Resend **Broadcast** to "Email list (everyone)" (`saveNewsletterDraft`; updates the same draft
+    while it's still a draft, refuses once sent/scheduled). The user sends or schedules it in
+    Resend; the site never sends it. Each issue has its own stats in Resend. Resend personalises
     the greeting (`{{{contact.first_name|there}}}`), adds a per-recipient unsubscribe link
-    (`{{{RESEND_UNSUBSCRIBE_URL}}}`) and skips unsubscribed contacts. Named "Weekly newsletter
-    YYYY-MM-DD"; a repeat cron run skips if that name exists.
-    Secured by `CRON_SECRET`, an internal shared secret (Vercel's documented cron-auth
-    pattern), not a third-party credential.
+    (`{{{RESEND_UNSUBSCRIBE_URL}}}`) and skips unsubscribed contacts. The cron is secured by
+    `CRON_SECRET`, an internal shared secret (Vercel's documented cron-auth pattern).
   - The **welcome email** (2026-10-05) — sent by `/api/subscribe` (after replying) to footer
     "newsletter" signups who are new to the list (`isNewToList`/`sendWelcomeEmail`,
     `lib/integrations/resend.ts`; layout `lib/email/welcomeEmail.ts`). Not sent to "send this list"

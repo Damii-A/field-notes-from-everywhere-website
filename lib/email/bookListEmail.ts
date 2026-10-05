@@ -15,7 +15,7 @@ import { withUtm } from "./utm";
  */
 
 // methodBg: the "How we made this list" box, one shade off the page colour (as on the site).
-const COLOURS: Record<CategorySlug, { pageBg: string; methodBg: string; title: string; tagBorder: string; methodBorder: string; button: string; buttonText: string }> = {
+export const COLOURS: Record<CategorySlug, { pageBg: string; methodBg: string; title: string; tagBorder: string; methodBorder: string; button: string; buttonText: string }> = {
   "the-shortlist": { pageBg: "#E5EAD8", methodBg: "#F5F7EE", title: "#657455", tagBorder: "#B4C09E", methodBorder: "#8B9C71", button: "#657455", buttonText: "#F5F7EE" },
   "what-to-read-when": { pageBg: "#ECEEDF", methodBg: "#F5F7EE", title: "#8F5F3C", tagBorder: "#CFAB8D", methodBorder: "#B98E6B", button: "#8F5F3C", buttonText: "#F5F7EE" },
   "book-club-book-picks": { pageBg: "#F5F7EE", methodBg: "#ECEEDF", title: "#3F606B", tagBorder: "#8FC4D2", methodBorder: "#5C9FB2", button: "#3F606B", buttonText: "#F5F7EE" },
