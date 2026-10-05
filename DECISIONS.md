@@ -2233,6 +2233,7 @@ once would have stayed untagged, and missed every issue, after paying. No member
 changes, and webhooks can arrive late or out of order; the current status can't undo a newer change.
 Re-tagging an existing member on each renewal is harmless.
 
-**Needs the user**: `subscription.updated` must be ticked on the live notification destination in
-Paddle (Developer tools → Notifications), which was set up with four events. The sandbox API key
-can't read notification settings (forbidden), and live Paddle API calls go through the user.
+**Paddle setting**: `subscription.updated` had to be added to the live notification destination
+(set up with four events). The sandbox API key can't read notification settings (forbidden), and
+live Paddle API calls go through the user, so the user ticked it in the dashboard the same day
+(**Events → Notifications** in Paddle's sidebar now; Developer tools is gone).
