@@ -65,7 +65,7 @@ export default defineType({
       description: "Shown in this order. Drag to reorder.",
       type: "array",
       of: [bookEntry],
-      validation: (r) => [r.required().min(1), r.min(30).warning("The Reading Room promises 30+ books per issue.")],
+      validation: (r) => [r.required().min(1), r.min(30).warning("The Reading Room promises 30 books per issue.")],
     }),
     defineField({
       name: "closingSentence",

@@ -2384,3 +2384,13 @@ summary fills from Paddle and updates with the buyer's country; a sandbox test-c
 "You're in!" with the email shown and the frame removed; production build clean. The sandbox
 notification destination points at the live site, whose webhook rejects sandbox signatures, so these
 test purchases changed nothing in Kit/Resend.
+
+## 2026-10-06 — Reading Room copy says "30 book recommendations", not "30+"
+
+**Decision** (user-directed): every Reading Room mention of the book count now says 30, not 30+: the
+Reading Room page (meta description, heading, join section, and "At least 30 of them" → "30 of them",
+the same claim in words), About (schedule sentence and ad), the article Reading Room banner and floating
+ad, the subscribe page's order summary, `/llms.txt`, the book-list email's P.S., and the Studio's
+issue warning. Matches the issue emails ("BOOK N OF 30") and the user's 30-books-per-issue minimum
+(2026-10-05). Sanity content (Terms, Disclosures, Privacy, Site Settings) has no book count, so it
+needed no change. `rr_landing.md`/`homepage.md` are verbatim mirrors and not edited.

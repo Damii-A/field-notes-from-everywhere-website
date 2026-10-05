@@ -10,7 +10,7 @@ import styles from "./ReadingRoom.module.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "The Reading Room",
-  description: "30+ themed book recommendations, every Tuesday, Thursday and Saturday. $7/month, cancel anytime.",
+  description: "30 themed book recommendations, every Tuesday, Thursday and Saturday. $7/month, cancel anytime.",
   path: "/the-reading-room",
 });
 
@@ -24,7 +24,7 @@ const PITCH: { label: string; body: React.ReactNode[] }[] = [
       "And of course, in true FNFE spirit, we’re not just cobbling together a list of five random recommendations.",
       "For every theme, we go through multiple independent reader discussions, which can mean hundreds or even thousands of individual recommendations. Then we look at how often readers recommended each book across all of those discussions.",
       <>
-        The books readers keep putting forward are the ones that make the catalogue. At least 30 of them, every single time.{" "}
+        The books readers keep putting forward are the ones that make the catalogue. 30 of them, every single time.{" "}
         <Link href="/about#how-we-find-the-books">See exactly how we find the books</Link>
       </>,
     ],
@@ -82,7 +82,7 @@ export default async function ReadingRoomPage() {
         <div className={styles.sectionInner}>
           {/* The full pitch here, the short teaser on the homepage: swapped by the user, 2026-09-27 (DECISIONS.md). */}
           <div style={{ display: "flex", flexDirection: "column", gap: "clamp(24px,3vw,36px)" }}>
-            <h2 className={styles.sectionHeading}>30+ themed book recommendations, every Tuesday, Thursday and Saturday.</h2>
+            <h2 className={styles.sectionHeading}>30 themed book recommendations, every Tuesday, Thursday and Saturday.</h2>
             {PITCH.map((block) => (
               <div key={block.label} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 <h3 className={styles.kicker} style={{ margin: 0 }}>{block.label}</h3>
@@ -127,7 +127,7 @@ export default async function ReadingRoomPage() {
         <div className={styles.trialInner}>
           <h2 className={styles.trialHeading}>Sound like your kind of thing?</h2>
           <p className={styles.trialBody}>
-            Join today and get a new themed catalogue of 30+ book recommendations in your inbox every
+            Join today and get a new themed catalogue of 30 book recommendations in your inbox every
             Tuesday, Thursday and Saturday.
           </p>
           <Link href="/the-reading-room/subscribe" className={styles.trialCta}>

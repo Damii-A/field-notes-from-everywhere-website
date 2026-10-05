@@ -131,7 +131,7 @@ export function ReadingRoomCheckout() {
         <div className={styles.product}>
           <p className={styles.productName}>{item?.product.name ?? "The Reading Room"}</p>
           <p className={styles.productDesc}>
-            A themed catalogue of 30+ book recommendations, every Tuesday, Thursday and Saturday.
+            A themed catalogue of 30 book recommendations, every Tuesday, Thursday and Saturday.
           </p>
         </div>
         <dl className={styles.totals} aria-live="polite">

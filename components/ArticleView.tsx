@@ -300,7 +300,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
               <span className={styles.rrBannerLabel} style={{ color: style.rrBannerLabelColor }}>
                 The Reading Room by FNFE
               </span>
-              <span className={styles.rrBannerHeadline}>Get 30+ book recommendations, delivered to your inbox three times a week.</span>
+              <span className={styles.rrBannerHeadline}>Get 30 book recommendations, delivered to your inbox three times a week.</span>
               <span className={styles.rrBannerFine} style={{ color: style.rrBannerFineColor }}>
                 $7/month. Cancel anytime.
               </span>
@@ -336,7 +336,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                 <span className={styles.floatAdLabel} style={{ color: style.floatAdLabelColor }}>
                   The Reading Room
                 </span>
-                <span className={styles.floatAdHeadline}>Get 30+ book recommendations, delivered to your inbox three times a week.</span>
+                <span className={styles.floatAdHeadline}>Get 30 book recommendations, delivered to your inbox three times a week.</span>
                 <p className={styles.floatAdFine}>Just $7/month. Cancel anytime.</p>
                 <Link href="/the-reading-room" className={styles.floatAdCta}>
                   Take a look

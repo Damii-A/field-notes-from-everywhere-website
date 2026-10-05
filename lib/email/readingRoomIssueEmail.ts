@@ -11,7 +11,7 @@ import { INK, INK_SOFT, esc, sized } from "./shared";
  * sentence and sign-off. Colours: ISSUE_PALETTES (brand tokens, no pure white or
  * black). Inline styles, for email clients.
  *
- * Size matters: Gmail clips emails over ~102 KB and an issue has 30+ books.
+ * Size matters: Gmail clips emails over ~102 KB and an issue has 30 books.
  * So the font and ink colour are set once on the wrapper (inherited), the
  * repeated styles are kept short, and layout whitespace is stripped.
  */
@@ -122,7 +122,7 @@ function paragraphs(text: string, style: string): string {
 
 export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteName = DEFAULT_ISSUE_PALETTE): string {
   const c = ISSUE_PALETTES[palette];
-  const rank = `margin:0 0 4px;font:800 12px ${BODY};letter-spacing:0.8px;color:${c.title}`; // capitals written into the text: it repeats 30+ times
+  const rank = `margin:0 0 4px;font:800 12px ${BODY};letter-spacing:0.8px;color:${c.title}`; // capitals written into the text: it repeats 30 times
   // Full blurbs push a 30-book issue past Gmail's ~102 KB clip limit, accepted
   // by the user (2026-10-05), so every book says "Book N of 30" and a note
   // before the first book says where to tap: wherever Gmail cuts the email,
