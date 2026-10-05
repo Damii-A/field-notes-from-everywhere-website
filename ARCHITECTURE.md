@@ -375,7 +375,7 @@ checkout); there is no trial signup while the trial is paused.
 Paddle is entered **only at the moment someone becomes an actual paying subscriber** — not
 during the free trial (see §9 and `DECISIONS.md`). Concretely:
 
-- **Paddle Billing** (current product), **inline checkout** via Paddle.js (since 2026-10-06, was
+- **Paddle Billing** (current product), **inline checkout** via Paddle.js (since 2026-10-05, was
   the overlay): Paddle's payment frame is embedded in `/the-reading-room/subscribe`
   (`components/ReadingRoomCheckout.tsx`) beside an order summary built from Paddle.js
   `checkout.loaded`/`checkout.updated` events (item, subtotal, tax, total, renewal amount, refund

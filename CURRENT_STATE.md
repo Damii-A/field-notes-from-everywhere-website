@@ -1,14 +1,14 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-06. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-05 (evening). Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Session ended 2026-10-05.** Everything committed and pushed; no local servers running. Pick up here:
+**Session ended 2026-10-05 (evening, second session).** Everything committed and pushed; no local servers running. Pick up here:
 1. **Tuesday 2026-10-06, ~14:00 UTC**: the new weekly-newsletter cron's first run. Nothing has been
    published since 2026-09-27, so hello@ should get "No newsletter this week". If it doesn't arrive,
    check the cron (Vercel logs).
 2. ~~**User**: press "Update Kit draft" on the Thriller Reading Room issue~~ — done by the user
-   (confirmed 2026-10-06).
-3. **Paddle checkout embedded in the subscribe page — done and live 2026-10-06** (DECISIONS.md):
+   (confirmed 2026-10-05).
+3. **Paddle checkout embedded in the subscribe page — done and live 2026-10-05** (DECISIONS.md):
    Paddle's form sits inside `/the-reading-room/subscribe` beside our order summary; the user set the
    form's styling in Paddle (slate button #2C464F / hover #3F606B, off-white #F5F7EE; checked live).
    Focus outline also set to #2C464F by the user (checked live).
@@ -24,12 +24,7 @@ indented, justified block with a line down the left; book text up to 560px wide 
 full width and left-aligned (a 600px centred version was tried and reverted). The Studio's size
 warning is gone.
 
-**NEXT ACTION ITEM (user, 2026-10-05; the email edits are done)**: the
-Paddle checkout looks awkwardly branded, unlike the Reading Room, so a buyer may feel they've been sent
-to another site and distrust it. Make the checkout match the Reading Room's branding. To investigate
-first: Paddle's own checkout branding settings (dashboard) and Paddle.js options (theme, overlay vs
-inline checkout embedded in `/the-reading-room/subscribe` with our own design around it). Read Paddle's
-current docs before proposing; the user approves the approach before building.
+(Superseded: the Paddle checkout branding item is done, see item 3 above.)
 
 **Live 2026-10-05 — Reading Room emails from bookrecs@** (DECISIONS.md): Kit issue drafts and the
 member welcome email send from bookrecs@fieldnotesfromeverywhere.com; hello@ is admin/support. The

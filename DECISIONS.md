@@ -2335,7 +2335,7 @@ divider colour (user's pick over a first-line indent or a plain indent). Thrille
 Kit's estimate. Blurb text is also justified (user), with
 `hyphens:auto` where the email app supports it, to avoid wide gaps on phone-width lines.
 
-## 2026-10-06 — Reading Room checkout stays a Paddle pop-up; branded from Paddle's dashboard (superseded same day, below)
+## 2026-10-05 — Reading Room checkout stays a Paddle pop-up; branded from Paddle's dashboard (superseded same day, below)
 
 **Decision** (user's choice): the checkout stays Paddle's overlay (pop-up) checkout, opened from
 `/the-reading-room/subscribe`. Branding is done in Paddle's dashboard (Checkout → Checkout settings,
@@ -2344,7 +2344,7 @@ the Reading Room's panel colour (dark enough for light button text; `--ochre-500
 button's colour, would be too pale for it).
 
 **Context**: the user found the checkout's default look unlike the Reading Room, so a buyer may feel
-sent to another site. Paddle's current docs (read 2026-10-06): the overlay takes only a logo and a
+sent to another site. Paddle's current docs (read 2026-10-05): the overlay takes only a logo and a
 brand colour; inline checkout embeds the form in our page with ~50 dashboard style settings (system
 fonts only, not our web fonts), but requires us to show the item, billing frequency, subtotal, tax,
 total and a refund-policy link beside it, built from Paddle.js `checkout.loaded`/`checkout.updated`
@@ -2355,7 +2355,7 @@ for now). If revisited: `displayMode: "inline"`, `frameTarget`, `frameInitialHei
 `frameStyle` (min-width 286px+), an order summary from `event.data.items`/`totals`/
 `recurring_totals`, and the Styling tab under Checkout → Checkout configuration.
 
-## 2026-10-06 — Reading Room checkout embedded in the subscribe page (Paddle inline checkout)
+## 2026-10-05 — Reading Room checkout embedded in the subscribe page (Paddle inline checkout)
 
 **Decision** (user-directed, same day, superseding the entry above): the user couldn't find a logo
 setting for the pop-up, so Paddle's payment form is now embedded in `/the-reading-room/subscribe`
@@ -2385,7 +2385,7 @@ summary fills from Paddle and updates with the buyer's country; a sandbox test-c
 notification destination points at the live site, whose webhook rejects sandbox signatures, so these
 test purchases changed nothing in Kit/Resend.
 
-## 2026-10-06 — Reading Room copy says "30 book recommendations", not "30+"
+## 2026-10-05 — Reading Room copy says "30 book recommendations", not "30+"
 
 **Decision** (user-directed): every Reading Room mention of the book count now says 30, not 30+: the
 Reading Room page (meta description, heading, join section, and "At least 30 of them" → "30 of them",

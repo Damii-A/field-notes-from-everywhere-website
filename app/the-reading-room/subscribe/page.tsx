@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 /**
  * The single destination every "Join The Reading Room" CTA points to. Paddle's payment form is
- * embedded here (inline checkout, DECISIONS.md 2026-10-06) rather than opened as a Paddle pop-up,
+ * embedded here (inline checkout, DECISIONS.md 2026-10-05) rather than opened as a Paddle pop-up,
  * so paying feels like part of the Reading Room. Reached by someone who's already decided to pay,
  * so it doesn't re-explain what The Reading Room is. (While the free trial is paused,
  * DECISIONS.md 2026-09-27, this is the only way in.)

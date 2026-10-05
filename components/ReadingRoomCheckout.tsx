@@ -35,7 +35,7 @@ function money(amount: number | undefined, currency: string) {
 }
 
 /**
- * Paddle's inline checkout, embedded in /the-reading-room/subscribe (DECISIONS.md 2026-10-06),
+ * Paddle's inline checkout, embedded in /the-reading-room/subscribe (DECISIONS.md 2026-10-05),
  * with the order summary Paddle requires beside it: what's being bought, how often it renews and
  * for how much, subtotal, tax and total, and a link to the refund policy. Card details only ever
  * go into Paddle's own frame.
