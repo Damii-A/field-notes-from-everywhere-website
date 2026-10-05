@@ -2,6 +2,13 @@
 
 Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short version.
 
+**NEXT ACTION ITEM (user, 2026-10-05; start once the current round of email edits is done)**: the
+Paddle checkout looks awkwardly branded, unlike the Reading Room, so a buyer may feel they've been sent
+to another site and distrust it. Make the checkout match the Reading Room's branding. To investigate
+first: Paddle's own checkout branding settings (dashboard) and Paddle.js options (theme, overlay vs
+inline checkout embedded in `/the-reading-room/subscribe` with our own design around it). Read Paddle's
+current docs before proposing; the user approves the approach before building.
+
 **Live 2026-10-05 — Reading Room emails from bookrecs@** (DECISIONS.md): Kit issue drafts and the
 member welcome email send from bookrecs@fieldnotesfromeverywhere.com; hello@ is admin/support. The
 user's existing Thriller draft in Kit keeps hello@ until they press "Update Kit draft".
