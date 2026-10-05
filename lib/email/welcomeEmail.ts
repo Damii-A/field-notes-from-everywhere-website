@@ -9,7 +9,7 @@ import { withUtm } from "./utm";
  * book-list email's P.P.S.
  */
 
-export const WELCOME_EMAIL_SUBJECT = "You're signed up for the FNFE newsletter";
+export const WELCOME_EMAIL_SUBJECT = "Welcome to the FNFE newsletter";
 
 /**
  * When their first newsletter is due. The cron sends Wednesdays 14:00 UTC

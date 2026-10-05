@@ -2167,8 +2167,7 @@ form and is **new to the list** gets a welcome email straight away, sent by the 
 Resend like the book-list email (`lib/email/welcomeEmail.ts`, `sendWelcomeEmail`). Layout: ghost
 logo + wordmark, "Hi {first name}," ("Hi there,"), the user's three lines, "The FNFE Team", the
 usual unsubscribe footer + one-click headers, no background colour (user, after a test send; the
-reader's email app shows its own). Subject: "You're signed up for the
-FNFE newsletter" (mine; the user gave none). Tagged `email_type=welcome`; the logo link carries
+reader's email app shows its own). Subject: "Welcome to the FNFE newsletter" (user's pick). Tagged `email_type=welcome`; the logo link carries
 `utm_campaign=welcome`.
 
 **Who gets it**: footer signups only (user's choice). "Send this list to me" signups already hear
