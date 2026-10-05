@@ -332,13 +332,15 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
     exit into a single "you're a member now" email whenever conversion actually happens, or
     continue a post-trial conversion-focused series if it hasn't — content/timing configured
     in Resend's dashboard, not this app.
-- **Reading Room issues** (2026-10-02): written in the Studio (`readingRoomIssue`, §6); its Issues and the member welcome are sent from **bookrecs@** (hello@ is admin/support; 2026-10-05).
+- **Reading Room issues** (2026-10-02): written in the Studio (`readingRoomIssue`, §6); its
   "Create Kit draft" button (`sanity/actions/CreateKitDraftAction.tsx`) calls
   `/api/reading-room/kit-draft`, which renders the email (`lib/email/readingRoomIssueEmail.ts`, a
   body fragment for Kit's "Text only" template) and creates or updates a **draft** broadcast for
   the member tag (`saveReadingRoomDraft`). The user sends or schedules it in Kit; the site never
   sends. Auth: the button first writes a `kitDraftRequest.<random>` document with the editor's
   Studio session; the route only accepts an id that exists and is under 5 minutes old.
+  Sender: issue drafts and the member welcome email come from **bookrecs@** (`READING_ROOM_SENDER`
+  / `READING_ROOM_FROM`); hello@ is admin/support (2026-10-05).
 - **Kit** holds only confirmed, converted Reading Room members (`KIT_READING_ROOM_TAG_ID`,
   "membership" in the user's words) — added exclusively by the future Paddle webhook (§10) at
   the moment of actual conversion, never at trial-start. It sends nothing automated (both its
