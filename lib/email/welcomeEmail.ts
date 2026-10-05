@@ -9,8 +9,6 @@ import { withUtm } from "./utm";
  * book-list email's P.P.S.
  */
 
-const PAGE_BG = "#ECEEDF"; // --paper-100, the site's page colour (--surface-page)
-
 export const WELCOME_EMAIL_SUBJECT = "You're signed up for the FNFE newsletter";
 
 /**
@@ -48,8 +46,8 @@ export function welcomeEmailHtml(name: string, footerHtml: string, now: Date = n
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Nunito:wght@400;600&display=swap" rel="stylesheet"/>
 <title>${esc(WELCOME_EMAIL_SUBJECT)}</title></head>
-<body style="margin:0;padding:0;background:${PAGE_BG};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PAGE_BG};"><tr><td align="center" style="padding:28px 12px;">
+<body style="margin:0;padding:0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="padding:28px 12px;">
   <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">
     <tr><td align="center" style="padding:0 0 20px;">
       <a href="${esc(home)}" style="text-decoration:none;">

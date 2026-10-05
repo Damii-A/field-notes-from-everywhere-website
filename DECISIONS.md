@@ -2166,7 +2166,8 @@ headings and titles, `--clay-700` links, `--sage-500` dividers, ochre tags). Now
 form and is **new to the list** gets a welcome email straight away, sent by the site through
 Resend like the book-list email (`lib/email/welcomeEmail.ts`, `sendWelcomeEmail`). Layout: ghost
 logo + wordmark, "Hi {first name}," ("Hi there,"), the user's three lines, "The FNFE Team", the
-usual unsubscribe footer + one-click headers, on `--paper-100`. Subject: "You're signed up for the
+usual unsubscribe footer + one-click headers, no background colour (user, after a test send; the
+reader's email app shows its own). Subject: "You're signed up for the
 FNFE newsletter" (mine; the user gave none). Tagged `email_type=welcome`; the logo link carries
 `utm_campaign=welcome`.
 
