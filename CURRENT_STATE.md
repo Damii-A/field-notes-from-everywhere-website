@@ -2,7 +2,23 @@
 
 Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**NEXT ACTION ITEM (user, 2026-10-05; start once the current round of email edits is done)**: the
+**Session ended 2026-10-05.** Everything committed and pushed; no local servers running. Pick up here:
+1. **Tuesday 2026-10-06, ~14:00 UTC**: the new weekly-newsletter cron's first run. Nothing has been
+   published since 2026-09-27, so hello@ should get "No newsletter this week". If it doesn't arrive,
+   check the cron (Vercel logs).
+2. **User**: press "Update Kit draft" on the Thriller Reading Room issue, then send a Kit test to
+   Gmail. That draft predates today and still has the old layout, hello@ sender and old links.
+3. **Next build item**: the Paddle checkout branding (below).
+
+**Live 2026-10-05 — Reading Room issue email redesign** (DECISIONS.md, several entries that day):
+**full blurbs** again (no more excerpts), so a 30-book issue (~130 KB by Kit's estimate) is clipped by
+Gmail, accepted by the user; every book's label reads "BOOK N OF 30 · #R MOST RECOMMENDED" (bold); an
+ochre box after "About this issue" tells Gmail readers to tap "View entire message"; blurbs are an
+indented, justified block with a line down the left; book text up to 560px wide (was 380). Email stays
+full width and left-aligned (a 600px centred version was tried and reverted). The Studio's size
+warning is gone.
+
+**NEXT ACTION ITEM (user, 2026-10-05; the email edits are done)**: the
 Paddle checkout looks awkwardly branded, unlike the Reading Room, so a buyer may feel they've been sent
 to another site and distrust it. Make the checkout match the Reading Room's branding. To investigate
 first: Paddle's own checkout branding settings (dashboard) and Paddle.js options (theme, overlay vs
