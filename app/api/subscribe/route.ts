@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { addToSegment, sendBookListEmail, ResendNotConfiguredError } from "@/lib/integrations/resend";
+import { NextResponse, after } from "next/server";
+import { addToSegment, sendBookListEmail, sendWelcomeEmail, ResendNotConfiguredError } from "@/lib/integrations/resend";
 import { getArticleBySlug } from "@/lib/content";
 import type { CategorySlug } from "@/lib/content";
 
@@ -42,10 +42,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid source" }, { status: 400 });
   }
 
+  let newToList = false;
   try {
     const segmentId = source === "send-list" ? process.env.RESEND_SEND_LIST_SEGMENT_ID : process.env.RESEND_NEWSLETTER_SEGMENT_ID;
     if (!segmentId) throw new ResendNotConfiguredError();
-    await addToSegment(email, name, segmentId);
+    ({ newToList } = await addToSegment(email, name, segmentId));
   } catch (err) {
     console.error("[api/subscribe] Resend subscribe failed:", err);
     return NextResponse.json(
@@ -74,6 +75,18 @@ export async function POST(request: Request) {
         { status: 207 },
       );
     }
+  }
+
+  // Footer signups new to the list get a welcome email, sent after the reply
+  // so the form doesn't wait on it; a failure is logged, the signup stands.
+  if (source === "newsletter" && newToList) {
+    after(async () => {
+      try {
+        await sendWelcomeEmail(email, name);
+      } catch (err) {
+        console.error("[api/subscribe] welcome email failed:", err);
+      }
+    });
   }
 
   return NextResponse.json({ subscribed: true, listEmailSent: source === "send-list" });

@@ -12,6 +12,7 @@ import { SITE_URL } from "@/lib/siteUrl";
 import { unsubscribeHeaders, unsubscribePageUrl } from "@/lib/unsubscribe";
 import { bookListEmailHtml, bookListEmailSubject, bookListEmailText } from "@/lib/email/bookListEmail";
 import { withUtm } from "@/lib/email/utm";
+import { WELCOME_EMAIL_SUBJECT, welcomeEmailHtml, welcomeEmailText } from "@/lib/email/welcomeEmail";
 
 export class ResendNotConfiguredError extends Error {
   constructor() {
@@ -50,6 +51,24 @@ export async function sendBookListEmail(to: string, name: string, article: Artic
   if (error) throw new Error(`Resend send failed: ${error.message}`);
 }
 
+/** The welcome email for new footer newsletter signups; its layout lives in lib/email/welcomeEmail.ts. */
+export async function sendWelcomeEmail(to: string, name: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
+
+  const resend = new Resend(apiKey);
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
+    to,
+    subject: WELCOME_EMAIL_SUBJECT,
+    html: welcomeEmailHtml(name, unsubscribeFooterHtml(to)),
+    text: welcomeEmailText(name, unsubscribePageUrl(to)),
+    headers: unsubscribeHeaders(to),
+    tags: [{ name: "email_type", value: "welcome" }],
+  });
+  if (error) throw new Error(`Resend send failed: ${error.message}`);
+}
+
 /** Resend's own event name for automations — matches whatever trigger is configured on the Reading Room trial automation in Resend's dashboard. */
 export const READING_ROOM_TRIAL_EVENT = "reading_room_trial_started";
 
@@ -65,7 +84,7 @@ async function upsertContact(resend: Resend, email: string, firstName: string): 
  * free-list source attribution (`RESEND_NEWSLETTER_SEGMENT_ID` /
  * `RESEND_SEND_LIST_SEGMENT_ID`).
  */
-export async function addToSegment(email: string, firstName: string, segmentId: string): Promise<void> {
+export async function addToSegment(email: string, firstName: string, segmentId: string): Promise<{ newToList: boolean }> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new ResendNotConfiguredError();
   // The whole-list segment the weekly newsletter Broadcast is sent to. If it's
@@ -75,6 +94,7 @@ export async function addToSegment(email: string, firstName: string, segmentId: 
   if (!emailListSegmentId) console.error("[resend] RESEND_EMAIL_LIST_SEGMENT_ID is not set; contact not added to the newsletter list.");
 
   const resend = new Resend(apiKey);
+  const newToList = await isNewToList(resend, email, emailListSegmentId);
   await upsertContact(resend, email, firstName);
   for (const id of emailListSegmentId ? [segmentId, emailListSegmentId] : [segmentId]) {
     const { error } = await resend.contacts.segments.add({ email, segmentId: id });
@@ -85,6 +105,25 @@ export async function addToSegment(email: string, firstName: string, segmentId: 
   // existing contact untouched; the weekly recap greets by this name).
   const { error: resubError } = await resend.contacts.update({ email, unsubscribed: false, firstName });
   if (resubError) throw new Error(`Resend re-subscribe failed: ${resubError.message}`);
+  return { newToList };
+}
+
+/**
+ * True when this signup puts them on the newsletter list: no contact yet, an
+ * unsubscribed one, or one not in the whole-list segment (e.g. a Reading Room
+ * member the Paddle webhook created). contacts.create() answers the same for
+ * new and existing contacts, so this has to be checked first. If the check
+ * itself fails, assume not new: a missed welcome beats a repeated one.
+ */
+async function isNewToList(resend: Resend, email: string, emailListSegmentId: string | undefined): Promise<boolean> {
+  const { data: contact, error } = await resend.contacts.get(email);
+  if (error) return /not.?found/i.test(error.message);
+  if (!contact) return true;
+  if (contact.unsubscribed) return true;
+  if (!emailListSegmentId) return false;
+  const { data: segments, error: segError } = await resend.contacts.segments.list({ email });
+  if (segError || !segments) return false;
+  return !segments.data.some((s) => s.id === emailListSegmentId);
 }
 
 /** Marks a contact unsubscribed (the weekly recap skips them — see `listSegmentContacts`). Used by /api/unsubscribe. */

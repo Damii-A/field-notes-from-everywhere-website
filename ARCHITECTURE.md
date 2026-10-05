@@ -301,6 +301,10 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
     YYYY-MM-DD"; a repeat cron run skips if that name exists.
     Secured by `CRON_SECRET`, an internal shared secret (Vercel's documented cron-auth
     pattern), not a third-party credential.
+  - The **welcome email** (2026-10-05) — sent by `/api/subscribe` (after replying) to footer
+    "newsletter" signups who are new to the list (`isNewToList`/`sendWelcomeEmail`,
+    `lib/integrations/resend.ts`; layout `lib/email/welcomeEmail.ts`). Not sent to "send this list"
+    signups.
   - The **one-off "send this list to me" email** (`pub_article.md` §6.4) — the reader gets
     the specific book list from the specific article they were reading, immediately, as a
     transactional send (`sendBookListEmail`) — not something a marketing ESP templates well.

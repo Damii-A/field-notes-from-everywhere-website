@@ -2159,3 +2159,34 @@ light-box palettes (clay, sage, slate) shown to the user side by side with their
 
 **Palette chosen (user, same day): B, "sage"** (`--sage-100` background, `--paper-050` box, `--sage-700`
 headings and titles, `--clay-700` links, `--sage-500` dividers, ochre tags). Now `DEFAULT_ISSUE_PALETTE`.
+
+## 2026-10-05 — Welcome email for footer newsletter signups
+
+**Decision** (user-directed; user's copy): someone who signs up through the footer "Join the list"
+form and is **new to the list** gets a welcome email straight away, sent by the site through
+Resend like the book-list email (`lib/email/welcomeEmail.ts`, `sendWelcomeEmail`). Layout: ghost
+logo + wordmark, "Hi {first name}," ("Hi there,"), the user's three lines, "The FNFE Team", the
+usual unsubscribe footer + one-click headers, on `--paper-100`. Subject: "You're signed up for the
+FNFE newsletter" (mine; the user gave none). Tagged `email_type=welcome`; the logo link carries
+`utm_campaign=welcome`.
+
+**Who gets it**: footer signups only (user's choice). "Send this list to me" signups already hear
+about the newsletter in the book-list email's P.P.S., and a second email straight after felt like a
+lot. "New to the list" = no Resend contact yet, an unsubscribed one, or one not in "Email list
+(everyone)" (e.g. a Reading Room member the Paddle webhook created); checked *before* the contact
+is created, since `contacts.create()` answers identically for new and existing contacts (tested).
+If that check fails, no welcome (a missed welcome beats a repeated one). Sent with `after()` so the
+form doesn't wait; a send failure is logged and the signup still succeeds.
+
+**Copy changes from the user's draft** (both chosen by the user): "Saturday" → Wednesday (the
+newsletter's actual day since 2026-09-30); "the most popular things we've recently published" →
+"the latest book lists we've published" (the newsletter picks by date; there's no popularity data).
+The start wording follows the signup day in US Eastern: Sun-Tue "Starting this Wednesday", Wednesday
+before the 14:00 UTC send "Starting today" / "See you later today!", Wednesday after the send and
+Thu-Sat "Starting next Wednesday"; otherwise "See you Wednesday!". Known gap, accepted: in a week
+with no new articles the newsletter skips, so "this Wednesday" can be early.
+
+**Verified**: wording checked for every day of a week and both sides of the send time; rendered at
+760px and 390px (no sideways scroll); on a local server against the real Resend account, a new
+footer signup of Resend's test address sent one welcome (greeting, wording, UTM, unsubscribe link
+present) and a repeat signup sent none; test contact deleted. Production build clean.

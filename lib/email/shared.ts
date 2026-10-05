@@ -20,3 +20,9 @@ export function esc(s: string): string {
 export function sized(url: string, width: number): string {
   return url.includes("cdn.sanity.io") ? `${url}${url.includes("?") ? "&" : "?"}w=${width}` : url;
 }
+
+/** "dami" → "Dami"; leaves the rest of what the reader typed alone. */
+export function firstName(name: string): string {
+  const n = name.trim().split(/\s+/)[0] ?? "";
+  return n ? n.charAt(0).toUpperCase() + n.slice(1) : "";
+}

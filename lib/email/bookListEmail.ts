@@ -2,7 +2,7 @@ import { articlePath, type Article, type CategorySlug } from "@/lib/content";
 import { CATEGORIES } from "@/lib/content/categories";
 import { splitParagraphs } from "@/lib/content/paragraphs";
 import { SITE_URL } from "@/lib/siteUrl";
-import { BODY, DISPLAY, INK, INK_MUTED, INK_SOFT, MONO, RULE, esc, sized } from "./shared";
+import { BODY, DISPLAY, INK, INK_MUTED, INK_SOFT, MONO, RULE, esc, firstName, sized } from "./shared";
 import { withUtm } from "./utm";
 
 /**
@@ -22,12 +22,6 @@ const COLOURS: Record<CategorySlug, { pageBg: string; methodBg: string; title: s
 };
 
 const COVER_WIDTH = 96;
-
-/** "dami" → "Dami"; leaves the rest of what the reader typed alone. */
-function firstName(name: string): string {
-  const n = name.trim().split(/\s+/)[0] ?? "";
-  return n ? n.charAt(0).toUpperCase() + n.slice(1) : "";
-}
 
 export function bookListEmailSubject(article: Article): string {
   return `Your book list: ${article.title}`;
