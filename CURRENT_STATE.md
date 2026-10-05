@@ -11,7 +11,7 @@ Last updated: 2026-10-06. Full reasoning is in `DECISIONS.md`; this is the short
 3. **Paddle checkout embedded in the subscribe page — done and live 2026-10-06** (DECISIONS.md):
    Paddle's form sits inside `/the-reading-room/subscribe` beside our order summary; the user set the
    form's styling in Paddle (slate button #2C464F / hover #3F606B, off-white #F5F7EE; checked live).
-   Optional: Paddle's focus outline is still its default blue (Styling → focus colour #2C464F).
+   Focus outline also set to #2C464F by the user (checked live).
    **When the first real member pays**, check they saw the "You're in!" message (sandbox-tested only),
    alongside the existing Kit tag + welcome email checks. Reading Room copy now says "30 book
    recommendations", not "30+" (DECISIONS.md).
