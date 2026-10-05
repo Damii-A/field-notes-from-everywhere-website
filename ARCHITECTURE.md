@@ -367,7 +367,8 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
   against a single Price: $7/month, no trial configured on the Paddle side, since the free
   period already happened (if at all) entirely inside Kit before Paddle was ever involved.
 - `/api/webhooks/paddle` verifies Paddle's webhook signature and handles subscription
-  lifecycle events (activated, past-due, canceled) by calling the Kit API to tag/untag the
+  lifecycle events (activated, past-due, canceled, and updated, which re-syncs to the
+  subscription's current status, e.g. a recovered payment) by calling the Kit API to tag/untag the
   customer's email accordingly — this is the entire mechanism by which Kit knows someone is
   now a *paying* Reading Room subscriber rather than a trialing one, since there is no app
   database or subscriber table in V1.

@@ -11,9 +11,9 @@ import { sendReadingRoomWelcomeEmail, setReadingRoomMemberProperty } from "@/lib
  *
  * Subscription events carry a `customerId`, not an email directly — resolved
  * via `paddle.customers.get(customerId)` below. `trialing`/`activated` tag
- * the subscriber; `canceled`/`past_due` untag them (no separate dunning
- * handling in V1 — a past-due subscriber simply drops out of the member tag
- * until/unless Paddle recovers the payment and fires `activated` again).
+ * the subscriber; `canceled`/`past_due` untag them; `updated` re-syncs to the
+ * subscription's current status, which is how a recovered past-due payment
+ * gets the member tag back (Paddle fires `updated`, not `activated`, then).
  *
  * Also updates the same status as a Resend contact property
  * (`reading_room_member`) — this is the conversion signal the Reading Room
@@ -73,6 +73,21 @@ export async function POST(request: Request) {
       const customer = await paddle.customers.get(event.data.customerId);
       await setReadingRoomTag(customer.email, false);
       await setReadingRoomMemberProperty(customer.email, false);
+      break;
+    }
+    case EventName.SubscriptionUpdated: {
+      // Paddle's way of saying a past-due payment was recovered ("the
+      // subscription returns to active and subscription.updated occurs",
+      // developer.paddle.com, subscription.past_due), and it also fires on
+      // renewals, pauses and other changes. Sync membership to the
+      // subscription's *current* status (fetched, not taken from the payload,
+      // so a late or out-of-order delivery can't undo a newer change).
+      // Re-tagging an existing member is harmless. No welcome email here.
+      const subscription = await paddle.subscriptions.get(event.data.id);
+      const member = subscription.status === "active" || subscription.status === "trialing";
+      const customer = await paddle.customers.get(subscription.customerId);
+      await setReadingRoomTag(customer.email, member, member ? (customer.name ?? undefined) : undefined);
+      await setReadingRoomMemberProperty(customer.email, member, member ? (customer.name ?? undefined) : undefined);
       break;
     }
     default:

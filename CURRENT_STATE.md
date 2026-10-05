@@ -12,9 +12,11 @@ when a subscription activates; user's copy, sage colours. **Live since 2026-10-0
 test copy). Not yet seen through a real Paddle event (needs a
 real purchase; replaying the user's old test purchase would re-tag them as a member): **when the first
 real member pays, check Resend shows a "Welcome to The Reading Room!" email to them**, alongside the
-Kit member-tag check. **To look into next**: whether a member whose payment fails (untagged on
-`subscription.past_due`) is re-tagged when Paddle later recovers the payment; the webhook only tags
-on `activated`/`trialing`.
+Kit member-tag check. **Fixed same day**: a member whose payment fails is untagged and, until now, was never re-tagged
+when Paddle recovered the payment (Paddle fires `subscription.updated` then). The webhook now handles
+`updated` (DECISIONS.md). **Waiting on the user**: tick `subscription.updated` on the live Paddle
+notification destination (Developer tools → Notifications → the fieldnotesfromeverywhere.com webhook
+→ Edit); until then the fix can't receive anything.
 
 **Done 2026-10-02 — "Where to read {Book}" pages** (DECISIONS.md): `/where-to-read/<slug>` for every
 book (indexed for the 34 in published lists), linked from every article book ("Where to read …") and

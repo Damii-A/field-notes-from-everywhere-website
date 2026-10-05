@@ -2215,3 +2215,24 @@ hours) stops retries or repeat deliveries sending a second copy (tested: two sen
 one email). A member who cancels and later subscribes again gets a new subscription id and so a new
 welcome. No unsubscribe link: it's about a paid membership, and the free list's unsubscribe wouldn't
 stop Kit's issues.
+
+## 2026-10-05 — Paddle webhook handles `subscription.updated` (recovered payments re-tag members)
+
+**Decision**: the Paddle webhook now also handles `subscription.updated`: it fetches the
+subscription's current status from Paddle and sets the Kit member tag and Resend property to match
+(active/trialing = member; past due/paused/canceled = not). No welcome email on this event.
+
+**Context** (bug, found while building the member welcome email): a failed payment fires
+`subscription.past_due`, which untags the member. Paddle's docs (subscription.past_due page): if the
+payment later succeeds, "the subscription returns to `active` and `subscription.updated` occurs", not
+`subscription.activated`. The webhook only re-tagged on `activated`, so a member whose card failed
+once would have stayed untagged, and missed every issue, after paying. No member had been affected
+(no real members yet).
+
+**Why fetch the status instead of reading the payload**: `updated` also fires on renewals and other
+changes, and webhooks can arrive late or out of order; the current status can't undo a newer change.
+Re-tagging an existing member on each renewal is harmless.
+
+**Needs the user**: `subscription.updated` must be ticked on the live notification destination in
+Paddle (Developer tools → Notifications), which was set up with four events. The sandbox API key
+can't read notification settings (forbidden), and live Paddle API calls go through the user.
