@@ -2,7 +2,7 @@
 
 Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Built 2026-10-05 — weekly newsletter edited in the Studio** (DECISIONS.md): no more automatic
+**Built 2026-10-05, live same day — weekly newsletter edited in the Studio** (DECISIONS.md): no more automatic
 send. Tuesdays 10am Eastern the user gets an email with a link that opens a pre-filled "Weekly
 newsletter" in the Studio; they edit, publish, press "Create Resend draft", then send/schedule it in
 Resend for Wednesday 10am. New digest design (cards per article, 3 same-size covers, "Read this
