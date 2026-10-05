@@ -305,6 +305,9 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
     "newsletter" signups who are new to the list (`isNewToList`/`sendWelcomeEmail`,
     `lib/integrations/resend.ts`; layout `lib/email/welcomeEmail.ts`). Not sent to "send this list"
     signups.
+  - The **Reading Room welcome email** (2026-10-05) — sent by the Paddle webhook on
+    `subscription.activated` (`sendReadingRoomWelcomeEmail`; layout
+    `lib/email/readingRoomWelcomeEmail.ts`), one per subscription via an idempotency key.
   - The **one-off "send this list to me" email** (`pub_article.md` §6.4) — the reader gets
     the specific book list from the specific article they were reading, immediately, as a
     transactional send (`sendBookListEmail`) — not something a marketing ESP templates well.

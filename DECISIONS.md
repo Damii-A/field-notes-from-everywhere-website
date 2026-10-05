@@ -2191,3 +2191,27 @@ with no new articles the newsletter skips, so "this Wednesday" can be early.
 760px and 390px (no sideways scroll); on a local server against the real Resend account, a new
 footer signup of Resend's test address sent one welcome (greeting, wording, UTM, unsubscribe link
 present) and a repeat signup sent none; test contact deleted. Production build clean.
+
+## 2026-10-05 — Welcome email for new Reading Room members
+
+**Decision** (user-directed; user's copy): when Paddle sends `subscription.activated`, the webhook
+(`app/api/webhooks/paddle/route.ts`), after tagging in Kit and setting the Resend property, sends
+the member a welcome email through Resend (`sendReadingRoomWelcomeEmail`,
+`lib/email/readingRoomWelcomeEmail.ts`). Subject "Welcome to The Reading Room!", preview "A quick
+hello, and a few things to know before your first issue arrives.", in the Reading Room issues'
+sage palette (user's pick over matching the plain newsletter welcome). Tagged
+`email_type=reading_room_welcome`.
+
+**Copy choices (user, when asked)**: signed "Dami / Founder, Field Notes From Everywhere": the
+user's first name, an exception they confirmed to the brand-name-only rule for public pages and
+emails (no legal name or location). Issues "at 10am Eastern Time (US)". The contact address is
+hello@fieldnotesfromeverywhere.com, which is also the sender (and Kit's issue sender, checked), so
+replies reach the user.
+
+**Mechanics**: Paddle's customer name is often empty (checkout may not ask), so the greeting falls
+back to "Hi there,". The welcome is last in the handler and throws on failure, so Paddle retries;
+an idempotency key per subscription (`reading-room-welcome/<subscription id>`, Resend keeps it 24
+hours) stops retries or repeat deliveries sending a second copy (tested: two sends with one key →
+one email). A member who cancels and later subscribes again gets a new subscription id and so a new
+welcome. No unsubscribe link: it's about a paid membership, and the free list's unsubscribe wouldn't
+stop Kit's issues.

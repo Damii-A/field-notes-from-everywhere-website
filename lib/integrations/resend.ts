@@ -13,6 +13,7 @@ import { unsubscribeHeaders, unsubscribePageUrl } from "@/lib/unsubscribe";
 import { bookListEmailHtml, bookListEmailSubject, bookListEmailText } from "@/lib/email/bookListEmail";
 import { withUtm } from "@/lib/email/utm";
 import { WELCOME_EMAIL_SUBJECT, welcomeEmailHtml, welcomeEmailText } from "@/lib/email/welcomeEmail";
+import { READING_ROOM_WELCOME_SUBJECT, readingRoomWelcomeHtml, readingRoomWelcomeText } from "@/lib/email/readingRoomWelcomeEmail";
 
 export class ResendNotConfiguredError extends Error {
   constructor() {
@@ -66,6 +67,31 @@ export async function sendWelcomeEmail(to: string, name: string): Promise<void> 
     headers: unsubscribeHeaders(to),
     tags: [{ name: "email_type", value: "welcome" }],
   });
+  if (error) throw new Error(`Resend send failed: ${error.message}`);
+}
+
+/**
+ * The welcome email for a new Reading Room member (layout in
+ * lib/email/readingRoomWelcomeEmail.ts), sent by the Paddle webhook. The
+ * idempotency key (one per subscription) stops Paddle's retries or repeat
+ * deliveries sending it twice (Resend keeps keys for 24 hours).
+ */
+export async function sendReadingRoomWelcomeEmail(to: string, name: string, subscriptionId: string): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new ResendNotConfiguredError();
+
+  const resend = new Resend(apiKey);
+  const { error } = await resend.emails.send(
+    {
+      from: FROM_ADDRESS,
+      to,
+      subject: READING_ROOM_WELCOME_SUBJECT,
+      html: readingRoomWelcomeHtml(name),
+      text: readingRoomWelcomeText(name),
+      tags: [{ name: "email_type", value: "reading_room_welcome" }],
+    },
+    { idempotencyKey: `reading-room-welcome/${subscriptionId}` },
+  );
   if (error) throw new Error(`Resend send failed: ${error.message}`);
 }
 

@@ -7,6 +7,10 @@ footer signups get the user's welcome email straight away (Wednesday wording adj
 day). Subject "Welcome to the FNFE newsletter", preview "Hi! You're now on our newsletter list.", no
 background colour (all the user's picks after test sends to their inbox). Live since 2026-10-05.
 
+**Built 2026-10-05 — Reading Room member welcome email** (DECISIONS.md): sent by the Paddle webhook
+when a subscription activates; user's copy, sage colours. **Committed locally, not pushed (= not
+live) until the user approves the test copy sent to their inbox.**
+
 **Done 2026-10-02 — "Where to read {Book}" pages** (DECISIONS.md): `/where-to-read/<slug>` for every
 book (indexed for the 34 in published lists), linked from every article book ("Where to read …") and
 from Reading Room issues ("Full blurb & where to read →"); `/find-it` redirects there. Books now have

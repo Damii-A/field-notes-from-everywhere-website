@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Paddle, EventName, Environment } from "@paddle/paddle-node-sdk";
 import { setReadingRoomTag } from "@/lib/integrations/kit";
-import { setReadingRoomMemberProperty } from "@/lib/integrations/resend";
+import { sendReadingRoomWelcomeEmail, setReadingRoomMemberProperty } from "@/lib/integrations/resend";
 
 /**
  * Paddle → this app. Syncs subscription lifecycle into Kit's Reading Room
@@ -60,6 +60,12 @@ export async function POST(request: Request) {
       const customer = await paddle.customers.get(event.data.customerId);
       await setReadingRoomTag(customer.email, true, customer.name ?? undefined);
       await setReadingRoomMemberProperty(customer.email, true, customer.name ?? undefined);
+      // New members get the welcome email (DECISIONS.md, 2026-10-05). Last, so
+      // a failure above retries first; a failure here throws so Paddle retries,
+      // and the per-subscription idempotency key stops a second copy.
+      if (event.eventType === EventName.SubscriptionActivated) {
+        await sendReadingRoomWelcomeEmail(customer.email, customer.name ?? "", event.data.id);
+      }
       break;
     }
     case EventName.SubscriptionCanceled:
