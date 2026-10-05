@@ -2298,8 +2298,8 @@ member replies to issues land in the usual inbox. **Verified**: a test Kit draft
 `saveReadingRoomDraft` came back with `email_address` bookrecs@ (members-only, unscheduled), then
 deleted. Kit drafts made before this keep the old sender until "Update Kit draft" is pressed.
 
-**Fix, same day — issue email capped at 600px** (user's desktop Gmail screenshot): Kit's "Text only"
-template sets no width, so the issue stretched across the whole window (the "About this issue" box full
-width, each book's text in a narrow column with empty space beside it). The outer table is now
-`max-width:600px`, centred. Checked rendered at 1400px and 390px. Existing Kit drafts get it when
-"Update Kit draft" is pressed.
+**Same day — 600px centred cap tried and reverted**: after a desktop Gmail screenshot (book text
+wrapping in a narrow column with empty space beside it) I capped the issue at 600px, centred. That
+misread the request: the user wants the email to stay full width and left-aligned, and asked why the
+book text wraps early. Reverted. The cause is the 380px `TEXT_MAX` (see the 2026-10-02 phone-layout
+fix): it's what makes the text drop below the cover on phones without a media query.
