@@ -2297,3 +2297,9 @@ Address) and, as recommended, as an alias of the existing Zoho mailbox so Kit's 
 member replies to issues land in the usual inbox. **Verified**: a test Kit draft made through
 `saveReadingRoomDraft` came back with `email_address` bookrecs@ (members-only, unscheduled), then
 deleted. Kit drafts made before this keep the old sender until "Update Kit draft" is pressed.
+
+**Fix, same day — issue email capped at 600px** (user's desktop Gmail screenshot): Kit's "Text only"
+template sets no width, so the issue stretched across the whole window (the "About this issue" box full
+width, each book's text in a narrow column with empty space beside it). The outer table is now
+`max-width:600px`, centred. Checked rendered at 1400px and 390px. Existing Kit drafts get it when
+"Update Kit draft" is pressed.

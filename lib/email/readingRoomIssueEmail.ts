@@ -142,7 +142,10 @@ export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteNam
 
   // {{ subscriber.first_name }} is Kit's Liquid personalisation; `default`
   // also covers subscribers with an empty name.
-  const html = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${c.page};border-radius:12px;">
+  // Capped at 600px and centred: Kit's "Text only" template sets no width, so on
+  // a wide screen (desktop Gmail) the email stretched across the whole window,
+  // the box full width beside narrow book text (user, 2026-10-05).
+  const html = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;margin:0 auto;background:${c.page};border-radius:12px;">
   <tr><td style="padding:24px 20px 8px;font-family:${BODY};color:${INK};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr><td style="padding:0 0 4px;">
