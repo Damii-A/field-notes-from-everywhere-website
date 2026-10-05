@@ -24,6 +24,8 @@ export class ResendNotConfiguredError extends Error {
 const FROM_ADDRESS = "Field Notes From Everywhere <hello@fieldnotesfromeverywhere.com>";
 /** The site's own inbox (Zoho), for notices meant for the user. */
 const CONTACT_ADDRESS = "hello@fieldnotesfromeverywhere.com";
+/** Reading Room emails come from their own address; hello@ stays for admin and support (user, 2026-10-05). */
+const READING_ROOM_FROM = "Field Notes From Everywhere <bookrecs@fieldnotesfromeverywhere.com>";
 
 /** Footer on every free-list email: why they're getting it, and a way out (see lib/unsubscribe.ts). */
 function unsubscribeFooterHtml(email: string): string {
@@ -84,7 +86,9 @@ export async function sendReadingRoomWelcomeEmail(to: string, name: string, subs
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send(
     {
-      from: FROM_ADDRESS,
+      from: READING_ROOM_FROM,
+      // The email tells members they can reach the founder at hello@, so replies go there.
+      replyTo: CONTACT_ADDRESS,
       to,
       subject: READING_ROOM_WELCOME_SUBJECT,
       html: readingRoomWelcomeHtml(name),

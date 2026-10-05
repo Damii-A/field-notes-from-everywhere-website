@@ -79,6 +79,9 @@ interface KitBroadcast {
  * long as it's still a draft (a scheduled or sent one throws
  * KitDraftLockedError; a deleted one is recreated). DECISIONS.md, 2026-10-02.
  */
+/** Reading Room issues come from their own address; hello@ is for admin and support (user, 2026-10-05). Must be a confirmed sending address in Kit. */
+export const READING_ROOM_SENDER = "bookrecs@fieldnotesfromeverywhere.com";
+
 export async function saveReadingRoomDraft(input: {
   existingId?: number;
   description: string;
@@ -94,6 +97,7 @@ export async function saveReadingRoomDraft(input: {
     preview_text: input.previewText,
     description: input.description,
     content: input.content,
+    email_address: READING_ROOM_SENDER,
     public: false,
     send_at: null,
     subscriber_filter: [{ all: [{ type: "tag", ids: [tagId] }] }],
