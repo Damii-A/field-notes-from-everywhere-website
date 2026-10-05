@@ -115,7 +115,8 @@ what would force adding one (building the logged-in Reading Room product).
 | `/what-to-read-when/[slug]` | article | unranked |
 | `/book-club-book-picks` | hub | same hub template, sky identity |
 | `/book-club-book-picks/[slug]` | article | unranked, paired presentation |
-| `/the-reading-room` | RR landing page | "Join The Reading Room" → `/the-reading-room/subscribe` (Paddle checkout overlay); trial paused |
+| `/the-reading-room` | RR landing page | "Join The Reading Room" → `/the-reading-room/subscribe`; trial paused |
+| `/the-reading-room/subscribe` | Subscribe (checkout) | Paddle inline checkout embedded beside our order summary (`components/ReadingRoomCheckout.tsx`); "You're in" state on completion; noindex |
 | `/about` | About | `#how-we-find-the-books` anchor, linked from every article's methodology box |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | legal pages (CMS body) | every heading gets an id from its text, e.g. `/terms#refund-policy` (the refund link given to Paddle) |
 | `/contact` | Contact | static, mailto link only |
@@ -374,8 +375,14 @@ checkout); there is no trial signup while the trial is paused.
 Paddle is entered **only at the moment someone becomes an actual paying subscriber** — not
 during the free trial (see §9 and `DECISIONS.md`). Concretely:
 
-- **Paddle Billing** (current product), overlay checkout via Paddle.js, triggered from
-  wherever a trialing (or trial-skipping) reader chooses to actually subscribe — configured
+- **Paddle Billing** (current product), **inline checkout** via Paddle.js (since 2026-10-06, was
+  the overlay): Paddle's payment frame is embedded in `/the-reading-room/subscribe`
+  (`components/ReadingRoomCheckout.tsx`) beside an order summary built from Paddle.js
+  `checkout.loaded`/`checkout.updated` events (item, subtotal, tax, total, renewal amount, refund
+  link — required by Paddle for inline checkout). Tax is by location: included in the $7 in some
+  countries, added on top in others (e.g. US), so the summary always shows Paddle's figures. The
+  frame's own look (fonts, colours, buttons) is set in Paddle's dashboard (Checkout → Checkout
+  configuration → Styling), not in code. Every "Join The Reading Room" CTA leads there — configured
   against a single Price: $7/month, no trial configured on the Paddle side, since the free
   period already happened (if at all) entirely inside Kit before Paddle was ever involved.
 - `/api/webhooks/paddle` verifies Paddle's webhook signature and handles subscription

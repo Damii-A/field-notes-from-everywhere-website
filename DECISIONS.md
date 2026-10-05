@@ -2335,7 +2335,7 @@ divider colour (user's pick over a first-line indent or a plain indent). Thrille
 Kit's estimate. Blurb text is also justified (user), with
 `hyphens:auto` where the email app supports it, to avoid wide gaps on phone-width lines.
 
-## 2026-10-06 — Reading Room checkout stays a Paddle pop-up; branded from Paddle's dashboard
+## 2026-10-06 — Reading Room checkout stays a Paddle pop-up; branded from Paddle's dashboard (superseded same day, below)
 
 **Decision** (user's choice): the checkout stays Paddle's overlay (pop-up) checkout, opened from
 `/the-reading-room/subscribe`. Branding is done in Paddle's dashboard (Checkout → Checkout settings,
@@ -2354,3 +2354,33 @@ events.
 for now). If revisited: `displayMode: "inline"`, `frameTarget`, `frameInitialHeight: "450"`,
 `frameStyle` (min-width 286px+), an order summary from `event.data.items`/`totals`/
 `recurring_totals`, and the Styling tab under Checkout → Checkout configuration.
+
+## 2026-10-06 — Reading Room checkout embedded in the subscribe page (Paddle inline checkout)
+
+**Decision** (user-directed, same day, superseding the entry above): the user couldn't find a logo
+setting for the pop-up, so Paddle's payment form is now embedded in `/the-reading-room/subscribe`
+(`components/ReadingRoomCheckout.tsx`, `displayMode: "inline"`). Layout: the Reading Room page's slate
+band ("Join The Reading Room" / "by Field Notes From Everywhere"), then on `--paper-100` two
+`--paper-050` cards: "Your order" (product name from Paddle, the catalogue line, subtotal, tax, total
+due today, "Then $X every month, until you cancel", tax note, refund-policy link to
+`/terms#refund-policy`, back link) and Paddle's frame; stacked (summary first) at ≤820px. The old
+"Subscribe now" button and pop-up are gone (`ReadingRoomCheckoutButton.tsx` deleted), so a buyer goes
+from "Join The Reading Room" straight to the form (user's choice over a separate page after the
+subscribe page). On `checkout.completed` the frame closes and the page shows "You're in!" (the email
+Paddle collected, and a pointer to the welcome email the webhook sends).
+
+**Why the summary is there**: Paddle requires it for inline checkout (what's bought, recurrence and
+renewal total, subtotal/tax/total with currency, the full frame incl. footer, refund policy). Totals
+come from Paddle.js events in major units (6.51, not 651). Tax is by location: a Nigerian address
+showed $6.51 + $0.49 = $7.00; a US (10001) address $7.00 + $0.62 = $7.62. Site copy still says
+"$7/month", which matches Paddle's price.
+
+**Not in code**: the frame's styling (font, colours, buttons, borders), set by the user in Paddle's
+dashboard (Checkout → Checkout configuration → Styling); Paddle's frame can only use its default Lato or
+system fonts. The pop-up brand colour set earlier the same day no longer shows anywhere.
+
+**Verified** (local, Paddle sandbox, Chromium): form loads at 1280 and 390 wide, no sideways scroll;
+summary fills from Paddle and updates with the buyer's country; a sandbox test-card purchase reached
+"You're in!" with the email shown and the frame removed; production build clean. The sandbox
+notification destination points at the live site, whose webhook rejects sandbox signatures, so these
+test purchases changed nothing in Kit/Resend.

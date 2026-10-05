@@ -8,7 +8,11 @@ Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short
    check the cron (Vercel logs).
 2. ~~**User**: press "Update Kit draft" on the Thriller Reading Room issue~~ — done by the user
    (confirmed 2026-10-06).
-3. **Paddle checkout branding**: user chose to keep the pop-up (DECISIONS.md 2026-10-06); user sets brand colour #2C464F + logo in Paddle (Checkout → Checkout settings → Overlay), then a look at the live pop-up.
+3. **Paddle checkout embedded in the subscribe page — built 2026-10-06** (DECISIONS.md, last entry):
+   Paddle's form now sits inside `/the-reading-room/subscribe` beside our order summary. Next: the
+   user sets the form's styling in Paddle (Checkout → Checkout configuration → Styling) to match the
+   Reading Room; then check the live page. When the first real member pays, also check the "You're
+   in!" message showed (sandbox-tested only).
 
 **Live 2026-10-05 — Reading Room issue email redesign** (DECISIONS.md, several entries that day):
 **full blurbs** again (no more excerpts), so a 30-book issue (~130 KB by Kit's estimate) is clipped by
