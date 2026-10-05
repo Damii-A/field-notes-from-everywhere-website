@@ -11,6 +11,7 @@ import type { Article } from "@/lib/content";
 import { unsubscribeHeaders, unsubscribePageUrl } from "@/lib/unsubscribe";
 import { bookListEmailHtml, bookListEmailSubject, bookListEmailText } from "@/lib/email/bookListEmail";
 import { WELCOME_EMAIL_SUBJECT, welcomeEmailHtml, welcomeEmailText } from "@/lib/email/welcomeEmail";
+import { NEWSLETTER_STEPS } from "@/sanity/components/NewsletterHowTo";
 import { READING_ROOM_WELCOME_SUBJECT, readingRoomWelcomeHtml, readingRoomWelcomeText } from "@/lib/email/readingRoomWelcomeEmail";
 
 export class ResendNotConfiguredError extends Error {
@@ -269,8 +270,10 @@ export async function sendNewsletterDraftNotice(weekKey: string, outcome: { stud
     const n = outcome.articleCount;
     subject = "This week's newsletter is ready to edit";
     lines = [
-      `${link(outcome.studioUrl, "Open this week's newsletter in the Studio")}. It opens already filled in with the ${n} article${n === 1 ? "" : "s"} published in the past 7 days. (Open it once: each click starts a new newsletter.)`,
-      `Edit anything you like, publish it, then press <strong>Create Resend draft</strong> (in the menu next to Publish). It then waits in ${link("https://resend.com/broadcasts", "Resend &rarr; Broadcasts")} for you to send or schedule for Wednesday 10am Eastern. Nothing goes out until you do.`,
+      `This week's newsletter is ready, filled in with the ${n} article${n === 1 ? "" : "s"} published in the past 7 days. Here's what to do:`,
+      `<strong>1.</strong> ${link(outcome.studioUrl, "Open this week's newsletter in the Studio")}. Click this once: each click starts a new newsletter.`,
+      ...NEWSLETTER_STEPS.map((step, i) => `<strong>${i + 2}.</strong> ${escapeHtml(step)}`),
+      "Nothing is sent to readers until you send it in Resend.",
     ];
   } else {
     subject = "No newsletter this week";

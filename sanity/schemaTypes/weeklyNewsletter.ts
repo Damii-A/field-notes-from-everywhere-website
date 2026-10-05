@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { NewsletterHowTo } from "../components/NewsletterHowTo";
 
 /**
  * One weekly newsletter (the free list's Wednesday email). The Tuesday cron
@@ -50,6 +51,13 @@ export default defineType({
     };
   },
   fields: [
+    defineField({
+      name: "howTo",
+      title: "How to send this newsletter",
+      type: "string",
+      readOnly: true,
+      components: { input: NewsletterHowTo },
+    }),
     defineField({
       name: "sendDate",
       title: "Send date",

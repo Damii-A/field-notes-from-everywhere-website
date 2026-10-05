@@ -2275,3 +2275,8 @@ articles; a Resend draft was created, updated in place (subject/preview changed,
 one made after deleting it; all test drafts deleted; fake and wrong-type request ids refused (401);
 rendered at 760/390/360px. **Not verified**: the Studio link and both buttons in the real Studio
 (user's login; the local token can't create the request document), and the Tuesday cron run itself.
+
+**Update, same day — the weekly steps are written down where the user works** (user asked for a
+place to keep them): a "How to send this newsletter" box at the top of every Weekly newsletter in the
+Studio (`sanity/components/NewsletterHowTo.tsx`, display-only field `howTo`), and the same numbered
+steps in the Tuesday email (both read `NEWSLETTER_STEPS`, so they can't drift apart).
