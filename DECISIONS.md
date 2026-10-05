@@ -2332,4 +2332,5 @@ sometimes on a book cover with no text under it. If that happens, scroll to the 
 and tap "View entire message" to see all 30 books." The book label is bold body font, 12px (bold
 Courier stayed thin). Blurbs are an indented block with a 3px line down the left in the palette's
 divider colour (user's pick over a first-line indent or a plain indent). Thriller issue ~130 KB by
-Kit's estimate.
+Kit's estimate. Blurb text is also justified (user), with
+`hyphens:auto` where the email app supports it, to avoid wide gaps on phone-width lines.

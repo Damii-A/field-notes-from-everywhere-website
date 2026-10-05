@@ -84,7 +84,9 @@ const TEXT_MAX = 560;
 const TEXT = `margin:0 0 14px;font-size:16px;line-height:1.6;color:${INK};`;
 const COVER_BOX = `display:inline-block;vertical-align:top;width:${COVER_WIDTH}px;margin:0 18px 14px 0`;
 const BOOK_TEXT = `display:inline-block;vertical-align:top;width:100%;max-width:${TEXT_MAX}px;font-size:15px;line-height:1.6`;
-const BLURB = `margin:0 0 10px;color:${INK_SOFT};`;
+// Justified (user, 2026-10-05); hyphenation, where the app supports it, keeps
+// narrow phone lines from opening wide gaps (as the site's justified text does).
+const BLURB = `margin:0 0 10px;color:${INK_SOFT};text-align:justify;hyphens:auto;-webkit-hyphens:auto;`;
 // The blurb as an indented block with a line down its left (user, 2026-10-05),
 // so it reads as its own section under the title and tags. Colour per palette.
 const blurbBlock = (c: IssuePalette) => `margin:4px 0 12px;padding:0 0 0 14px;border-left:3px solid ${c.divider}`;
