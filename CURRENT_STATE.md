@@ -8,7 +8,7 @@ Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short
    check the cron (Vercel logs).
 2. ~~**User**: press "Update Kit draft" on the Thriller Reading Room issue~~ — done by the user
    (confirmed 2026-10-06).
-3. **Next build item**: the Paddle checkout branding (below).
+3. **Paddle checkout branding**: user chose to keep the pop-up (DECISIONS.md 2026-10-06); user sets brand colour #2C464F + logo in Paddle (Checkout → Checkout settings → Overlay), then a look at the live pop-up.
 
 **Live 2026-10-05 — Reading Room issue email redesign** (DECISIONS.md, several entries that day):
 **full blurbs** again (no more excerpts), so a 30-book issue (~130 KB by Kit's estimate) is clipped by

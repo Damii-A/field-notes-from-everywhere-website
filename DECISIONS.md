@@ -2334,3 +2334,23 @@ Courier stayed thin). Blurbs are an indented block with a 3px line down the left
 divider colour (user's pick over a first-line indent or a plain indent). Thriller issue ~130 KB by
 Kit's estimate. Blurb text is also justified (user), with
 `hyphens:auto` where the email app supports it, to avoid wide gaps on phone-width lines.
+
+## 2026-10-06 — Reading Room checkout stays a Paddle pop-up; branded from Paddle's dashboard
+
+**Decision** (user's choice): the checkout stays Paddle's overlay (pop-up) checkout, opened from
+`/the-reading-room/subscribe`. Branding is done in Paddle's dashboard (Checkout → Checkout settings,
+"Overlay" tab: brand colour; plus the logo), not in code. Recommended colour: `--slate-700` #2C464F,
+the Reading Room's panel colour (dark enough for light button text; `--ochre-500`, the subscribe
+button's colour, would be too pale for it).
+
+**Context**: the user found the checkout's default look unlike the Reading Room, so a buyer may feel
+sent to another site. Paddle's current docs (read 2026-10-06): the overlay takes only a logo and a
+brand colour; inline checkout embeds the form in our page with ~50 dashboard style settings (system
+fonts only, not our web fonts), but requires us to show the item, billing frequency, subtotal, tax,
+total and a refund-policy link beside it, built from Paddle.js `checkout.loaded`/`checkout.updated`
+events.
+
+**Alternatives considered**: inline checkout on the subscribe page (recommended; declined by the user
+for now). If revisited: `displayMode: "inline"`, `frameTarget`, `frameInitialHeight: "450"`,
+`frameStyle` (min-width 286px+), an order summary from `event.data.items`/`totals`/
+`recurring_totals`, and the Styling tab under Checkout → Checkout configuration.
