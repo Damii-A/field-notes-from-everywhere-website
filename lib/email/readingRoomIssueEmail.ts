@@ -72,11 +72,12 @@ const TAG_BG = "#F6E7C8"; // --ochre-100
 const TAG_BORDER = "#BC9143"; // --ochre-600
 const COVER_STANDIN = "#D9E4E8"; // --slate-100
 const COVER_WIDTH = 96;
-// The text block's widest; cover + gap + this = 494px. Narrower than that (any
-// phone), the text block wraps below the cover and takes the full width: the
+// The text block's widest (560px, user, 2026-10-05; was 380, which wrapped the
+// text early on computers); cover + gap + this = 674px. Narrower than that
+// (phones, small tablets), the text block wraps below the cover and takes the full width: the
 // stacked layout the user prefers on phones, without a media query (some email
 // apps ignore those, which is how phones briefly got two columns).
-const TEXT_MAX = 380;
+const TEXT_MAX = 560;
 
 
 // Every text style carries its own colour (see ISSUE_PALETTES).

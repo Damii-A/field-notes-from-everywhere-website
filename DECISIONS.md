@@ -2302,4 +2302,6 @@ deleted. Kit drafts made before this keep the old sender until "Update Kit draft
 wrapping in a narrow column with empty space beside it) I capped the issue at 600px, centred. That
 misread the request: the user wants the email to stay full width and left-aligned, and asked why the
 book text wraps early. Reverted. The cause is the 380px `TEXT_MAX` (see the 2026-10-02 phone-layout
-fix): it's what makes the text drop below the cover on phones without a media query.
+fix): it's what makes the text drop below the cover on phones without a media query. Book text max raised to **560px** (user's choice over 700 or
+keeping 380): ~50% longer lines on computers, still a comfortable line length; cover beside text on
+screens wider than ~674px, cover on top below that (phones, small tablets). Checked at 1400/640/390px.
