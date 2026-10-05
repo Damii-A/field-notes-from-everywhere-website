@@ -9,7 +9,12 @@ background colour (all the user's picks after test sends to their inbox). Live s
 
 **Built 2026-10-05 — Reading Room member welcome email** (DECISIONS.md): sent by the Paddle webhook
 when a subscription activates; user's copy, sage colours. **Committed locally, not pushed (= not
-live) until the user approves the test copy sent to their inbox.**
+Live since 2026-10-05 (approved after a test copy).** Not yet seen through a real Paddle event (needs a
+real purchase; replaying the user's old test purchase would re-tag them as a member): **when the first
+real member pays, check Resend shows a "Welcome to The Reading Room!" email to them**, alongside the
+Kit member-tag check. **To look into next**: whether a member whose payment fails (untagged on
+`subscription.past_due`) is re-tagged when Paddle later recovers the payment; the webhook only tags
+on `activated`/`trialing`.
 
 **Done 2026-10-02 — "Where to read {Book}" pages** (DECISIONS.md): `/where-to-read/<slug>` for every
 book (indexed for the 34 in published lists), linked from every article book ("Where to read …") and
