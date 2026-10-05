@@ -11,6 +11,9 @@ import { withUtm } from "./utm";
 
 export const WELCOME_EMAIL_SUBJECT = "Welcome to the FNFE newsletter";
 
+/** The inbox preview line (user's wording). */
+export const WELCOME_EMAIL_PREVIEW = "Hi! You’re now on our newsletter list.";
+
 /**
  * When their first newsletter is due. The cron sends Wednesdays 14:00 UTC
  * (vercel.json); the weekday is read in US Eastern, the site's timezone.
@@ -47,6 +50,7 @@ export function welcomeEmailHtml(name: string, footerHtml: string, now: Date = n
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Nunito:wght@400;600&display=swap" rel="stylesheet"/>
 <title>${esc(WELCOME_EMAIL_SUBJECT)}</title></head>
 <body style="margin:0;padding:0;">
+<div style="display:none;max-height:0;overflow:hidden;">${esc(WELCOME_EMAIL_PREVIEW)}${"&#847;&zwnj;&nbsp;".repeat(60)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="padding:28px 12px;">
   <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">
     <tr><td align="center" style="padding:0 0 20px;">
