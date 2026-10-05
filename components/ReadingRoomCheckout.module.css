@@ -46,14 +46,14 @@
 }
 
 .productName {
-  font: var(--weight-bold) clamp(20px, 2.2vw, 24px) / 1.2 var(--font-display);
+  font: var(--weight-bold) var(--text-md) / 1.3 var(--font-display);
   color: var(--slate-700);
   margin: 0;
 }
 
 .productDesc {
-  font: var(--type-body);
-  color: var(--ink-700);
+  font: var(--type-small);
+  color: var(--text-soft);
   margin: 0;
 }
 
@@ -70,8 +70,8 @@
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  font: var(--type-body);
-  color: var(--ink-700);
+  font: var(--type-small);
+  color: var(--text-soft);
 }
 
 .row dt,
@@ -84,16 +84,18 @@
 }
 
 .totalRow {
-  padding-top: 10px;
+  margin-top: 4px;
+  padding-top: 12px;
   border-top: 1px solid var(--sky-200);
-  font: var(--weight-bold) var(--text-md) / 1.3 var(--font-display);
+  font: var(--weight-bold) clamp(22px, 2.4vw, 26px) / 1.2 var(--font-display);
   color: var(--slate-700);
 }
 
+/* Follows straight on from the total, so it sits tight under it. */
 .renewal {
-  font: var(--weight-bold) var(--text-md) / 1.4 var(--font-display);
-  color: var(--clay-700);
-  margin: 0;
+  font: var(--type-small);
+  color: var(--ink-700);
+  margin: -8px 0 0;
 }
 
 .small {
