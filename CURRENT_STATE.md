@@ -1,6 +1,6 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-06. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **Session ended 2026-10-05.** Everything committed and pushed; no local servers running. Pick up here:
 1. **Tuesday 2026-10-06, ~14:00 UTC**: the new weekly-newsletter cron's first run. Nothing has been
@@ -8,11 +8,13 @@ Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short
    check the cron (Vercel logs).
 2. ~~**User**: press "Update Kit draft" on the Thriller Reading Room issue~~ — done by the user
    (confirmed 2026-10-06).
-3. **Paddle checkout embedded in the subscribe page — built 2026-10-06** (DECISIONS.md, last entry):
-   Paddle's form now sits inside `/the-reading-room/subscribe` beside our order summary. Next: the
-   user sets the form's styling in Paddle (Checkout → Checkout configuration → Styling) to match the
-   Reading Room; then check the live page. When the first real member pays, also check the "You're
-   in!" message showed (sandbox-tested only).
+3. **Paddle checkout embedded in the subscribe page — done and live 2026-10-06** (DECISIONS.md):
+   Paddle's form sits inside `/the-reading-room/subscribe` beside our order summary; the user set the
+   form's styling in Paddle (slate button #2C464F / hover #3F606B, off-white #F5F7EE; checked live).
+   Optional: Paddle's focus outline is still its default blue (Styling → focus colour #2C464F).
+   **When the first real member pays**, check they saw the "You're in!" message (sandbox-tested only),
+   alongside the existing Kit tag + welcome email checks. Reading Room copy now says "30 book
+   recommendations", not "30+" (DECISIONS.md).
 
 **Live 2026-10-05 — Reading Room issue email redesign** (DECISIONS.md, several entries that day):
 **full blurbs** again (no more excerpts), so a 30-book issue (~130 KB by Kit's estimate) is clipped by
