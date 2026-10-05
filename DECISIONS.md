@@ -2280,3 +2280,20 @@ rendered at 760/390/360px. **Not verified**: the Studio link and both buttons in
 place to keep them): a "How to send this newsletter" box at the top of every Weekly newsletter in the
 Studio (`sanity/components/NewsletterHowTo.tsx`, display-only field `howTo`), and the same numbered
 steps in the Tuesday email (both read `NEWSLETTER_STEPS`, so they can't drift apart).
+
+## 2026-10-05 — Reading Room emails come from bookrecs@; hello@ is for admin and support
+
+**Decision** (user-directed): Reading Room emails are sent from
+**bookrecs@fieldnotesfromeverywhere.com** ("Field Notes From Everywhere"); hello@ stays the admin /
+customer-support address. Scope (user's choice): Reading Room only, i.e. the member issues (Kit
+drafts made by "Create Kit draft" set `email_address`, `READING_ROOM_SENDER` in
+`lib/integrations/kit.ts`) and the member welcome email (Resend, `READING_ROOM_FROM`). The free
+emails (weekly newsletter, "send this list", newsletter welcome) and the user's own notices stay on
+hello@. The member welcome's replies go to hello@ (`replyTo`), since its copy says members can reach
+the founder there. Kit's account default sender stays hello@.
+
+**Setup by the user**: bookrecs@ added as a sending address in Kit (Settings → Email → Add From
+Address) and, as recommended, as an alias of the existing Zoho mailbox so Kit's confirmation and
+member replies to issues land in the usual inbox. **Verified**: a test Kit draft made through
+`saveReadingRoomDraft` came back with `email_address` bookrecs@ (members-only, unscheduled), then
+deleted. Kit drafts made before this keep the old sender until "Update Kit draft" is pressed.

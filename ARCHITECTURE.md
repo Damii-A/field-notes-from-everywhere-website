@@ -332,7 +332,7 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
     exit into a single "you're a member now" email whenever conversion actually happens, or
     continue a post-trial conversion-focused series if it hasn't — content/timing configured
     in Resend's dashboard, not this app.
-- **Reading Room issues** (2026-10-02): written in the Studio (`readingRoomIssue`, §6); its
+- **Reading Room issues** (2026-10-02): written in the Studio (`readingRoomIssue`, §6); its Issues and the member welcome are sent from **bookrecs@** (hello@ is admin/support; 2026-10-05).
   "Create Kit draft" button (`sanity/actions/CreateKitDraftAction.tsx`) calls
   `/api/reading-room/kit-draft`, which renders the email (`lib/email/readingRoomIssueEmail.ts`, a
   body fragment for Kit's "Text only" template) and creates or updates a **draft** broadcast for

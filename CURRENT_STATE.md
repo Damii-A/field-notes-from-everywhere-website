@@ -2,6 +2,10 @@
 
 Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short version.
 
+**Live 2026-10-05 — Reading Room emails from bookrecs@** (DECISIONS.md): Kit issue drafts and the
+member welcome email send from bookrecs@fieldnotesfromeverywhere.com; hello@ is admin/support. The
+user's existing Thriller draft in Kit keeps hello@ until they press "Update Kit draft".
+
 **Built 2026-10-05, live same day — weekly newsletter edited in the Studio** (DECISIONS.md): no more automatic
 send. Tuesdays 10am Eastern the user gets an email with a link that opens a pre-filled "Weekly
 newsletter" in the Studio; they edit, publish, press "Create Resend draft", then send/schedule it in
