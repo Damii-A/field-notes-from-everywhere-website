@@ -4,8 +4,8 @@ Last updated: 2026-10-05. Full reasoning is in `DECISIONS.md`; this is the short
 
 **Built 2026-10-05 — welcome email for footer newsletter signups** (DECISIONS.md): new-to-the-list
 footer signups get the user's welcome email straight away (Wednesday wording adjusts to the signup
-day). Verified locally against real Resend. **Committed locally, not pushed (= not live) until the
-user approves how it looks.**
+day). Subject "Welcome to the FNFE newsletter", preview "Hi! You're now on our newsletter list.", no
+background colour (all the user's picks after test sends to their inbox). Live since 2026-10-05.
 
 **Done 2026-10-02 — "Where to read {Book}" pages** (DECISIONS.md): `/where-to-read/<slug>` for every
 book (indexed for the 34 in published lists), linked from every article book ("Where to read …") and
