@@ -2324,3 +2324,12 @@ own Unsubscribe). Options offered: longer excerpts (~450 characters, ~106 KB), o
 issue": "30 books in this issue. Reading in Gmail? If the email stops early, tap "View entire message"
 at the very bottom to see the rest." The Studio's size warning (which advised shortening blurbs) and
 `lib/email/excerpt.ts` are removed. Checked rendered at 1400/640/390px.
+
+**Update, same day (user, after a Gmail test: the old one-line note was unclear and easy to miss; the
+cut landed on a cover with no text)**: the note is now its own ochre box (tag-pill colours) headed
+"SEEING FEWER THAN 30 BOOKS?": "Gmail shortens long emails, so the list can stop partway through,
+sometimes on a book cover with no text under it. If that happens, scroll to the very end of the email
+and tap "View entire message" to see all 30 books." The book label is bold body font, 12px (bold
+Courier stayed thin). Blurbs are an indented block with a 3px line down the left in the palette's
+divider colour (user's pick over a first-line indent or a plain indent). Thriller issue ~130 KB by
+Kit's estimate.

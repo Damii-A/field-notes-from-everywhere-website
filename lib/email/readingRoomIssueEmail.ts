@@ -85,6 +85,9 @@ const TEXT = `margin:0 0 14px;font-size:16px;line-height:1.6;color:${INK};`;
 const COVER_BOX = `display:inline-block;vertical-align:top;width:${COVER_WIDTH}px;margin:0 18px 14px 0`;
 const BOOK_TEXT = `display:inline-block;vertical-align:top;width:100%;max-width:${TEXT_MAX}px;font-size:15px;line-height:1.6`;
 const BLURB = `margin:0 0 10px;color:${INK_SOFT};`;
+// The blurb as an indented block with a line down its left (user, 2026-10-05),
+// so it reads as its own section under the title and tags. Colour per palette.
+const blurbBlock = (c: IssuePalette) => `margin:4px 0 12px;padding:0 0 0 14px;border-left:3px solid ${c.divider}`;
 // Tags are a main thing readers scan for (user, 2026-10-02), so they're filled
 // pills, a step larger and bolder than body small print. Plain inline spans (no
 // per-pill margin/display): the row's line-height spaces wrapped rows and a
@@ -117,12 +120,15 @@ function paragraphs(text: string, style: string): string {
 
 export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteName = DEFAULT_ISSUE_PALETTE): string {
   const c = ISSUE_PALETTES[palette];
-  const rank = `margin:0 0 4px;font:11px ${MONO};letter-spacing:1px;color:${c.title}`; // capitals written into the text: it repeats 30+ times
+  const rank = `margin:0 0 4px;font:800 12px ${BODY};letter-spacing:0.8px;color:${c.title}`; // capitals written into the text: it repeats 30+ times
   // Full blurbs push a 30-book issue past Gmail's ~102 KB clip limit, accepted
   // by the user (2026-10-05), so every book says "Book N of 30" and a note
   // before the first book says where to tap: wherever Gmail cuts the email,
-  // readers can tell there's more and how to see it.
+  // readers can tell there's more and how to see it. The note is its own ochre
+// box and the label bold in the body font (bold Courier stayed thin), after the
+// user found both too easy to miss.
   const n = issue.books.length;
+  const BLURB_BLOCK = blurbBlock(c);
   const books = issue.books
     .map((b, i) => {
       const cover = b.coverUrl
@@ -136,7 +142,7 @@ export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteNam
             <h2 style="margin:0 0 2px;font:700 20px/1.25 ${DISPLAY};color:${c.title}">${esc(b.title)}</h2>
             <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:${INK}">${esc(b.author)}</p>
             ${tags ? `<div style="${PILL_ROW}">${tags}</div>` : ""}
-            ${paragraphs(b.blurb ?? "", BLURB)}
+            ${b.blurb?.trim() ? `<div style="${BLURB_BLOCK}">${paragraphs(b.blurb, BLURB)}</div>` : ""}
             ${pageLink(b, c)}
           </div>
         </td></tr>`;
@@ -155,7 +161,10 @@ export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteNam
         <p style="${TEXT}">Hi {{ subscriber.first_name | default: "there" }},</p>
       </td></tr>
       ${panel("About this issue", issue.aboutThisIssue, c)}
-      <tr><td style="padding:0 0 4px;"><p style="margin:0;font-size:14px;line-height:1.55;color:${INK_SOFT}">${n} books in this issue. Reading in Gmail? If the email stops early, tap &ldquo;View entire message&rdquo; at the very bottom to see the rest.</p></td></tr>
+      <tr><td style="padding:0 0 6px;"><div style="background:${TAG_BG};border:1px solid ${TAG_BORDER};border-radius:10px;padding:16px 20px;">
+        <p style="margin:0 0 8px;font:700 12px/1.4 ${MONO};letter-spacing:1.5px;color:${INK}">SEEING FEWER THAN ${n} BOOKS?</p>
+        <p style="margin:0;font-size:15px;line-height:1.6;color:${INK}">Gmail shortens long emails, so the list can stop partway through, sometimes on a book cover with no text under it. If that happens, scroll to the very end of the email and tap <strong>&ldquo;View entire message&rdquo;</strong> to see all ${n} books.</p>
+      </div></td></tr>
       ${books}
       <tr><td style="padding:22px 0 14px;border-top:1px solid ${c.divider};">
         ${paragraphs(issue.closingSentence, TEXT)}
