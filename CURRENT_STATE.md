@@ -2,7 +2,7 @@
 
 Last updated: 2026-10-06. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**Session ended 2026-10-05 (evening, second session).** Everything committed and pushed; no local servers running. Pick up here:
+**Session ended 2026-10-06.** Everything committed and pushed; no local servers running. Pick up here:
 1. **Tuesday 2026-10-06, ~14:00 UTC**: the new weekly-newsletter cron's first run. Nothing has been
    published since 2026-09-27, so hello@ should get "No newsletter this week". If it doesn't arrive,
    check the cron (Vercel logs).
@@ -18,7 +18,10 @@ Last updated: 2026-10-06. Full reasoning is in `DECISIONS.md`; this is the short
 4. **First name at checkout — built 2026-10-06** (DECISIONS.md): the subscribe page asks for a first
    name before Paddle's form and sends it to Paddle; the webhook passes it to Kit, Resend and the
    welcome email. **Next real purchase**: check Kit shows the member's first name (sandbox couldn't
-   test the webhook end).
+   test the webhook end). The name step is just "First name" + Continue (hint line removed by the user).
+5. **Open, ask the user**: they made their own test Reading Room subscription before the first-name fix
+   (2026-10-05/06). Not yet answered: was it a real $7 live payment, and do they want it cancelled, or
+   their first name added to their Kit subscriber (it has none, since the fix came after)?
 
 **Live 2026-10-05 — Reading Room issue email redesign** (DECISIONS.md, several entries that day):
 **full blurbs** again (no more excerpts), so a 30-book issue (~130 KB by Kit's estimate) is clipped by
