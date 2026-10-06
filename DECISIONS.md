@@ -1528,6 +1528,13 @@ full-screen dark menu; an attached lighter drawer.
   card column 280px, same gap) instead of two equal halves, which left a wide gap; stacked ≤720px.
 - **Book-list email background** (2026-09-27): no white card; the email sits on the article's
   category colour like the article page, with the methodology box one shade off it.
+- **Reading Room email screenshots** (2026-10-06): the two "Screenshot of a Reading Room catalogue
+  email" placeholders now show the user's own framed images (transparent PNGs with their own
+  borders): homepage teaser `public/images/reading-room-email-books.png` (books 4-6 of the Thriller
+  issue, 280px wide), `/the-reading-room` `public/images/reading-room-email-collage.png` (a collage
+  of the issue, up to 400px). Shown whole at their own shapes, with no white card behind them (the
+  design's 4:5 card would have cropped their frames). User's choice of placement and framing;
+  offered first: a screenshot rendered from the real issue.
 
 ---
 

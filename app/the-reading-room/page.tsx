@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
+import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -95,11 +96,15 @@ export default async function ReadingRoomPage() {
             ))}
           </div>
           <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
-            <div className={styles.mockFrame}>
-              <div className={styles.mockInner}>
-                <ImagePlaceholder label="Screenshot of a Reading Room catalogue email" />
-              </div>
-            </div>
+            {/* The user's own framed collage (2026-10-06): shown whole, at its own shape, with no card behind it (its frame is part of the image). */}
+            <Image
+              src="/images/reading-room-email-collage.png"
+              alt="Glimpses of a Reading Room email: the About this issue note and ranked thriller picks with their covers, tags and blurbs"
+              width={1393}
+              height={1407}
+              sizes="(max-width: 440px) calc(100vw - 32px), 400px"
+              className={styles.screenshot}
+            />
           </div>
         </div>
       </section>

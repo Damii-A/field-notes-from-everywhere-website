@@ -132,21 +132,10 @@
   text-underline-offset: 3px;
 }
 
-.mockFrame {
+.screenshot {
   width: 100%;
   max-width: 400px;
-  background: var(--surface-card);
-  border-radius: var(--radius-2xl);
-  padding: clamp(16px, 2vw, 24px);
-  box-shadow: var(--shadow-raised);
-}
-
-.mockInner {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4/5;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+  height: auto;
 }
 
 .shelfSection {

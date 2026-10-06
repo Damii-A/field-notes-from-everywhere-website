@@ -367,11 +367,15 @@ export default async function HomePage() {
           }}
         >
           <div style={{ display: "flex", justifyContent: "center", alignSelf: "center", order: 2 }}>
-            <div style={{ width: "100%", maxWidth: 280, background: "var(--surface-card)", borderRadius: "var(--radius-2xl)", padding: "clamp(16px,2vw,24px)", boxShadow: "var(--shadow-raised)" }}>
-              <div style={{ position: "relative", width: "100%", aspectRatio: "4/5", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
-                <ImagePlaceholder label="Screenshot of a Reading Room catalogue email" />
-              </div>
-            </div>
+            {/* The user's own framed screenshot (2026-10-06): shown whole, at its own shape, with no card behind it (its frame is part of the image). */}
+            <Image
+              src="/images/reading-room-email-books.png"
+              alt="A Reading Room email: books 4 to 6 of a 30-book thriller issue, each with its cover, rank, tags and blurb"
+              width={1021}
+              height={1469}
+              sizes="280px"
+              style={{ width: "100%", maxWidth: 280, height: "auto" }}
+            />
           </div>
           {/* Short teaser here, the full pitch on /the-reading-room: swapped with the landing page by the user, 2026-09-27 (DECISIONS.md). */}
           <div style={{ display: "flex", flexDirection: "column", gap: 20, textAlign: "left", alignSelf: "start" }}>
