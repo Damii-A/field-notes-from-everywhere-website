@@ -19,9 +19,11 @@ Last updated: 2026-10-06. Full reasoning is in `DECISIONS.md`; this is the short
    name before Paddle's form and sends it to Paddle; the webhook passes it to Kit, Resend and the
    welcome email. **Next real purchase**: check Kit shows the member's first name (sandbox couldn't
    test the webhook end). The name step is just "First name" + Continue (hint line removed by the user).
-5. **Open, ask the user**: they made their own test Reading Room subscription before the first-name fix
-   (2026-10-05/06). Not yet answered: was it a real $7 live payment, and do they want it cancelled, or
-   their first name added to their Kit subscriber (it has none, since the fix came after)?
+5. ~~**Open, ask the user**: their own test subscription~~ — **resolved 2026-10-06**: the user is keeping
+   it (lululope@yahoo.com, the only member-tagged subscriber in Kit, tagged 2026-10-05 21:31 UTC). First
+   name "Dami" set via the APIs on the Kit subscriber (id 4306601425) and the Resend contact; both read
+   back correctly. The Resend contact also shows `reading_room_member: 1`, so the live webhook did tag and
+   flag this real purchase.
 
 **Live 2026-10-05 — Reading Room issue email redesign** (DECISIONS.md, several entries that day):
 **full blurbs** again (no more excerpts), so a 30-book issue (~130 KB by Kit's estimate) is clipped by
