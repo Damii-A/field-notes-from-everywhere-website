@@ -14,7 +14,8 @@ built in the Claude Design project, is:
 - a **public marketing/editorial website**: homepage, three Publication category hubs, an
   article template shared by all three categories, an About page with a linkable methodology
   section, Contact, and three legal pages;
-- a **Reading Room landing page** that sells a $7/month subscription with a 7-day free trial;
+- a **Reading Room landing page** that sells a $7/month subscription (the 7-day free trial is
+  paused since 2026-09-27, see `DECISIONS.md`), with Paddle's checkout embedded in a subscribe page;
 - **two email-capture points** inside Publication articles that join a free mailing list;
 - **no logged-in product** — the full subscriber experience (passwordless login, a Books
   catalogue, a Past Issues archive) is specified in `docs/design-specs/rr_subscriber.md` but
@@ -55,20 +56,20 @@ system; it does not redefine the product.
             ▼                               ▼
    ┌─────────────────┐  ┌───────────────────┐  ┌──────────────────┐
    │  Sanity (CMS)    │  │  Kit               │  │  Paddle Billing  │
-   │  content +       │  │  (email)           │  │  (subscriptions) │
-   │  taxonomy        │  │  free list, RR     │  │  $7/mo, no trial │
-   │                  │  │  trial tracking +  │  │  object — entered│
-   │                  │  │  delivery, sales   │  │  only at actual  │
-   │                  │  │  sequences         │  │  sign-up         │
+   │  content +       │  │  confirmed RR      │  │  (subscriptions) │
+   │  taxonomy        │  │  members only;     │  │  $7/mo, no trial │
+   │                  │  │  member issues     │  │  object          │
+   │                  │  │  (Resend sends     │  │                  │
+   │                  │  │  everything else)  │  │                  │
    └─────────────────┘  └───────────────────┘  └──────────────────┘
                                   ▲                      │
                                   └──── webhook syncs ────┘
                                  (converted/canceled → Kit tag)
 ```
 
-The 7-day free trial itself is tracked entirely in Kit, not Paddle — see `DECISIONS.md`
-("Reading Room's free trial is tracked in Kit, not as a Paddle trial"). Paddle only enters the
-picture once someone actually decides to become a paying subscriber.
+Resend (not shown) sends every email except member issues and holds the free list — see §9.
+Paddle only enters the picture once someone actually decides to become a paying subscriber; the
+free trial, when it returns, runs in Resend with no Paddle trial object (see `DECISIONS.md`).
 
 No application database. Sanity is the content system of record, Kit is the email-list
 system of record, Paddle is the billing system of record. Nothing in V1 needs state that
@@ -123,7 +124,6 @@ what would force adding one (building the logged-in Reading Room product).
 | `/llms.txt` | llms.txt (rewrite to `/llms`) | Markdown site overview for AI tools, built from published articles (`app/llms/route.ts`) |
 | `/where-to-read/[slug]` | Where to read {Book} | per-book page for "where to read X" searches: answer, Amazon / Bookshop.org / Goodreads / library (OverDrive→Libby) searches (`lib/books/stores.ts`), full blurb + tags, the published lists featuring it, related books; JSON-LD `Book`; indexed + in sitemap only when the book is in a published article. Linked from every article book and Reading Room issue. `/find-it/[bookId]` 308-redirects here |
 | `/unsubscribe` | Unsubscribe confirm | from email footer links; noindex, not in the design |
-| `/terms`, `/privacy-and-cookies`, `/disclosures` | shared legal template | CMS body content |
 | `/studio` | Sanity Studio | embedded, editor-auth'd, not a public route |
 | `/api/reading-room/kit-draft` | (POST only) | Studio "Create Kit draft" button → Kit draft broadcast; accepts only a fresh Studio-written request id (§9) |
 | `/api/newsletter/resend-draft` | (POST only) | Studio "Create Resend draft" button on weekly newsletters → draft Resend Broadcast; same request-id auth (§9) |
@@ -161,9 +161,8 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary even
   though a theme and a tag may share a name.
 - **`book`** — canonical book record: `title`, `author`, `slug` (its `/where-to-read/<slug>` address, 2026-10-02), `coverImage`, `canonicalBlurb`,
-  `tags[]` (→ `tag`). Not used for anything in V1's built pages yet, but cheap to model now
-  since Publication articles already reference books, and modeling it as its own document
-  avoids re-typing title/author/cover across articles later. (Not expected to be reused by a
+  `tags[]` (→ `tag`), `goodreadsUrl`. Referenced by articles, rankings and Reading Room issues, and
+  the source of the "Where to read" pages. (Not expected to be reused by a
   future Reading Room Books catalogue — see `tag`, above.)
 - **`article`** — `title`, `slug`, `metaDescription` (search/link-preview summary, also the
   hub lead card, RSS and recap summary; falls back to `methodologySentence` when empty),
@@ -207,9 +206,9 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   code deploy. Each field falls back to a default in `getSiteSettings` when the document or
   the field is empty (the real social URLs live there as defaults).
 
-Not modeled in V1 (documented backlog, matches the cuts in
-`DESIGN_PROJECT_BUILD_NOTES.md`): `readingRoomIssue` (Past Issues / individual issue pages),
-subscriber accounts, and the "recommendation count"/engagement-ranking data model implied by
+Not built in V1 (documented backlog, matches the cuts in
+`DESIGN_PROJECT_BUILD_NOTES.md`): Past Issues / individual issue pages (the `readingRoomIssue`
+records they'd read already exist), subscriber accounts, and the "recommendation count"/engagement-ranking data model implied by
 `pub_hub.md`'s "strongest-performing articles" language for choosing *which* articles surface
 within each of the eight collection sections. The association itself — which groupings an
 article belongs to — *is* modeled (`article.themes`, above), captured at authoring
@@ -343,7 +342,7 @@ was no remaining reason for Kit to be a passive middleman holding lists it never
   Sender: issue drafts and the member welcome email come from **bookrecs@** (`READING_ROOM_SENDER`
   / `READING_ROOM_FROM`); hello@ is admin/support (2026-10-05).
 - **Kit** holds only confirmed, converted Reading Room members (`KIT_READING_ROOM_TAG_ID`,
-  "membership" in the user's words) — added exclusively by the future Paddle webhook (§10) at
+  "membership" in the user's words) — added exclusively by the Paddle webhook (§10) at
   the moment of actual conversion, never at trial-start. It sends nothing automated (both its
   Automations and RSS-to-email are Creator-plan-only), but it *is* still the intended sender
   for the ongoing Reading Room member catalogue once someone's converted — manual broadcasts
@@ -368,7 +367,8 @@ or `weekly_newsletter`, `utm_content` = article slug / issue date) for Google An
 `/api/subscribe` validates the email and name, adds the contact to the right Resend Segment,
 and (for the "send this list" flow only) sends the transactional book-list email. Every
 Reading Room CTA ("Join The Reading Room") links to `/the-reading-room/subscribe` (Paddle
-checkout); there is no trial signup while the trial is paused.
+checkout); there is no trial signup while the trial is paused. Checkout asks for a first name
+first and passes it to Paddle as custom data, which the webhook gives to Kit and Resend.
 
 ## 10. Paddle (billing)
 
@@ -383,15 +383,15 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
   countries, added on top in others (e.g. US), so the summary always shows Paddle's figures. The
   frame's own look (fonts, colours, buttons) is set in Paddle's dashboard (Checkout → Checkout
   configuration → Styling), not in code. Every "Join The Reading Room" CTA leads there — configured
-  against a single Price: $7/month, no trial configured on the Paddle side, since the free
-  period already happened (if at all) entirely inside Kit before Paddle was ever involved.
+  against a single Price: $7/month, with no Paddle-side trial (the free trial, paused, is an
+  email-only Resend journey, never a Paddle object).
 - `/api/webhooks/paddle` verifies Paddle's webhook signature and handles subscription
   lifecycle events (activated, past-due, canceled, and updated, which re-syncs to the
   subscription's current status, e.g. a recovered payment) by calling the Kit API to tag/untag the
   customer's email accordingly — this is the entire mechanism by which Kit knows someone is
-  now a *paying* Reading Room subscriber rather than a trialing one, since there is no app
-  database or subscriber table in V1.
-- No card data ever touches our server — Paddle's hosted/overlay checkout handles PCI scope
+  now a paying Reading Room member, since there is no app database or subscriber table in V1.
+  On `activated` it also sends the member welcome email (§9).
+- No card data ever touches our server — Paddle's embedded (iframe) checkout handles PCI scope
   entirely.
 - Paddle's own transactional emails (receipts, failed-payment notices) go straight from
   Paddle to the customer — this app and Kit are never involved in those.
@@ -416,11 +416,11 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` | Sanity client config |
-| `SANITY_API_TOKEN` | server-side write access (Studio auth, revalidation) |
+| `SANITY_API_TOKEN` | server-side Sanity API access for scripts and preview-secret checks (the local one is read-only since ~2026-10-02; the site's reads don't need write access) |
 | `SANITY_WEBHOOK_SECRET` | verifies Sanity → `/api/webhooks/sanity` calls |
 | `KIT_API_KEY` | Kit (ConvertKit) API access — holds only confirmed Reading Room members (see §9) |
 | `KIT_READING_ROOM_TAG_ID` | confirmed Reading Room member tag — applied only by the Paddle webhook at actual conversion, removed on cancellation |
-| `RESEND_API_KEY` | Resend API access — transactional email, the free-list contacts, the weekly recap, and the Reading Room trial's Automations sequence (see §9) |
+| `RESEND_API_KEY` | Resend API access — transactional and welcome emails, the free-list contacts, weekly newsletter drafts, the member property (see §9) |
 | `RESEND_NEWSLETTER_SEGMENT_ID` / `RESEND_SEND_LIST_SEGMENT_ID` | source-attribution segments for the two free-list entry points |
 | `RESEND_EMAIL_LIST_SEGMENT_ID` | "Email list (everyone)", the segment the weekly newsletter Broadcast goes to (not a secret) |
 | `CRON_SECRET` | internal shared secret verifying Vercel Cron → `/api/cron/weekly-recap` calls — generated locally, not a third-party credential |
@@ -474,16 +474,14 @@ Scoped to actual risk (Operating Manual §29), not applied uniformly:
 - **Integration tests**: `/api/subscribe`, `/api/webhooks/paddle`, `/api/webhooks/sanity`
   against mocked Kit/Paddle/Sanity.
 - **End-to-end**: the two flows where failure has real business consequence — Reading Room
-  trial signup (landing page → Paddle checkout → webhook → Kit tag), and the free-list
-  email-capture flow.
+  checkout (subscribe page → Paddle checkout → webhook → Kit tag + welcome email), and the
+  free-list email-capture flow.
 - **Manual/visual QA**: every editorial page, at desktop/tablet/mobile, in both reduced- and
   full-motion — this is an editorial/design-led product and automated tests won't catch a
   broken layout or a motion regression.
 
 ## 15. Open implementation questions (not yet resolved — see `CURRENT_STATE.md`)
 
-- Exact behavior if Paddle cannot do a truly card-free 7-day trial (copy says "no credit
-  card required").
 - Whether the eight "Browse our Collections" hub/Reading-Room sections and the Reading Room
   subscriber product get built in a later phase — tracked as backlog, not scheduled.
 - Final list/tag naming inside Kit and Price/Product naming inside Paddle depend on the
