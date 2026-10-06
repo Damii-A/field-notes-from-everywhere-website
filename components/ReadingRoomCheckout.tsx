@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { Paddle, PaddleEventData, CheckoutEventsData } from "@paddle/paddle-js";
 import styles from "./ReadingRoomCheckout.module.css";
@@ -39,6 +39,11 @@ function money(amount: number | undefined, currency: string) {
  * with the order summary Paddle requires beside it: what's being bought, how often it renews and
  * for how much, subtotal, tax and total, and a link to the refund policy. Card details only ever
  * go into Paddle's own frame.
+ *
+ * First name: Paddle's form doesn't ask for one, so the payment box starts with a first-name step
+ * (user's choice, DECISIONS.md 2026-10-06). Paddle's form loads hidden behind it (so the summary
+ * already shows the figures), and on Continue the name is attached to the checkout as custom data,
+ * which Paddle copies onto the subscription for the webhook to read.
  */
 export function ReadingRoomCheckout() {
   const configured = Boolean(CLIENT_TOKEN && PRICE_ID);
@@ -46,6 +51,9 @@ export function ReadingRoomCheckout() {
   const [status, setStatus] = useState<"loading" | "ready" | "error" | "complete">("loading");
   // Paddle's checkout.completed data doesn't always carry the email; keep the last one it gave.
   const [email, setEmail] = useState<string | null>(null);
+  const [step, setStep] = useState<"name" | "pay">("name");
+  const [firstName, setFirstName] = useState("");
+  const paddleRef = useRef<Paddle | undefined>(undefined);
 
   useEffect(() => {
     if (!configured) return;
@@ -78,6 +86,7 @@ export function ReadingRoomCheckout() {
         if (cancelled) return;
         if (!p) throw new Error("Paddle.js did not load");
         paddle = p;
+        paddleRef.current = p;
         p.Checkout.open({
           items: [{ priceId: PRICE_ID!, quantity: 1 }],
           settings: {
@@ -97,9 +106,19 @@ export function ReadingRoomCheckout() {
     return () => {
       cancelled = true;
       listener = null;
+      paddleRef.current = undefined;
       paddle?.Checkout.close();
     };
   }, [configured]);
+
+  function continueToPayment(e: React.FormEvent) {
+    e.preventDefault();
+    const name = firstName.trim().replace(/\s+/g, " ").slice(0, 50);
+    if (!name) return;
+    setFirstName(name);
+    paddleRef.current?.Checkout.updateCheckout({ customData: { first_name: name } });
+    setStep("pay");
+  }
 
   if (status === "complete") {
     return (
@@ -172,8 +191,38 @@ export function ReadingRoomCheckout() {
           </p>
         ) : (
           <>
-            {status === "loading" ? <p className={styles.message}>Loading the payment form…</p> : null}
-            <div className={FRAME_CLASS} />
+            {step === "name" ? (
+              <form className={styles.nameStep} onSubmit={continueToPayment}>
+                <label htmlFor="rr-first-name" className={styles.nameLabel}>
+                  First name
+                </label>
+                <input
+                  id="rr-first-name"
+                  className={styles.nameInput}
+                  type="text"
+                  autoComplete="given-name"
+                  required
+                  maxLength={50}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <p className={styles.nameHint}>So your issues can greet you by name.</p>
+                <button type="submit" className={styles.nameButton} disabled={status !== "ready"}>
+                  {status === "ready" ? "Continue »" : "Loading…"}
+                </button>
+              </form>
+            ) : (
+              <p className={styles.payingAs}>
+                Joining as <strong>{firstName}</strong> ·{" "}
+                <button type="button" className={styles.changeName} onClick={() => setStep("name")}>
+                  change
+                </button>
+              </p>
+            )}
+            {/* Loaded from the start but only shown on the payment step (see the component comment). */}
+            <div className={step === "pay" ? undefined : styles.frameHidden} aria-hidden={step !== "pay"}>
+              <div className={FRAME_CLASS} />
+            </div>
           </>
         )}
       </section>

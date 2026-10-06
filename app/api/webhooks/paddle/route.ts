@@ -19,7 +19,17 @@ import { sendReadingRoomWelcomeEmail, setReadingRoomMemberProperty } from "@/lib
  * (`reading_room_member`) — this is the conversion signal the Reading Room
  * trial automation's post-trial branch reads (see ARCHITECTURE.md §9); until
  * this was added, nothing ever told Resend that a conversion had happened.
+ *
+ * First name: Paddle's checkout never asks for one (customer.name stays empty),
+ * so the subscribe page asks first and sends it as the checkout's custom data,
+ * which Paddle copies onto the subscription (DECISIONS.md 2026-10-06).
  */
+function memberFirstName(customData: object | null, customerName: string | null): string | undefined {
+  const fromPage = (customData as { first_name?: unknown } | null)?.first_name;
+  const name = typeof fromPage === "string" && fromPage.trim() ? fromPage : customerName;
+  return name?.trim().slice(0, 50) || undefined;
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.PADDLE_API_KEY;
   const webhookSecret = process.env.PADDLE_WEBHOOK_SECRET;
@@ -58,13 +68,14 @@ export async function POST(request: Request) {
     case EventName.SubscriptionTrialing:
     case EventName.SubscriptionActivated: {
       const customer = await paddle.customers.get(event.data.customerId);
-      await setReadingRoomTag(customer.email, true, customer.name ?? undefined);
-      await setReadingRoomMemberProperty(customer.email, true, customer.name ?? undefined);
+      const firstName = memberFirstName(event.data.customData, customer.name);
+      await setReadingRoomTag(customer.email, true, firstName);
+      await setReadingRoomMemberProperty(customer.email, true, firstName);
       // New members get the welcome email (DECISIONS.md, 2026-10-05). Last, so
       // a failure above retries first; a failure here throws so Paddle retries,
       // and the per-subscription idempotency key stops a second copy.
       if (event.eventType === EventName.SubscriptionActivated) {
-        await sendReadingRoomWelcomeEmail(customer.email, customer.name ?? "", event.data.id);
+        await sendReadingRoomWelcomeEmail(customer.email, firstName ?? "", event.data.id);
       }
       break;
     }
@@ -86,8 +97,9 @@ export async function POST(request: Request) {
       const subscription = await paddle.subscriptions.get(event.data.id);
       const member = subscription.status === "active" || subscription.status === "trialing";
       const customer = await paddle.customers.get(subscription.customerId);
-      await setReadingRoomTag(customer.email, member, member ? (customer.name ?? undefined) : undefined);
-      await setReadingRoomMemberProperty(customer.email, member, member ? (customer.name ?? undefined) : undefined);
+      const firstName = member ? memberFirstName(subscription.customData, customer.name) : undefined;
+      await setReadingRoomTag(customer.email, member, firstName);
+      await setReadingRoomMemberProperty(customer.email, member, firstName);
       break;
     }
     default:

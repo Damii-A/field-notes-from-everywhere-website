@@ -28,7 +28,6 @@
 
 .formCard {
   padding: clamp(12px, 2vw, 24px);
-  min-height: 480px;
 }
 
 .kicker {
@@ -120,6 +119,88 @@
   padding: 12px;
 }
 
+/* First-name step, styled to match Paddle's form as set in its dashboard (slate button #2C464F,
+   hover #3F606B, off-white #F5F7EE, focus #2C464F) so the two steps read as one form. */
+.nameStep {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* Paddle's frame insets its fields 10px; match it so both steps line up. */
+  padding: 24px 10px;
+}
+
+.nameLabel {
+  font: var(--type-body);
+  color: var(--ink-900);
+}
+
+.nameInput {
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--sky-200);
+  border-radius: var(--radius-sm);
+  background: var(--paper-050);
+  font: var(--type-body);
+  color: var(--ink-900);
+}
+
+.nameInput:focus {
+  outline: none;
+  border-color: var(--slate-700);
+  box-shadow: 0 0 0 1px var(--slate-700);
+}
+
+.nameHint {
+  font: var(--type-small);
+  color: var(--text-soft);
+  margin: 0;
+}
+
+.nameButton {
+  margin-top: 14px;
+  height: 48px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--slate-700);
+  color: var(--paper-050);
+  font: var(--weight-bold) var(--text-md) / 1 var(--font-body);
+  cursor: pointer;
+}
+
+.nameButton:hover:not(:disabled) {
+  background: var(--slate-600);
+}
+
+.nameButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.payingAs {
+  font: var(--type-small);
+  color: var(--ink-700);
+  margin: 0;
+  padding: 4px 10px 0;
+}
+
+.changeName {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--text-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* Keeps Paddle's frame loaded (and its totals flowing to the summary) without showing it. */
+.frameHidden {
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+}
+
 .done {
   max-width: 600px;
   margin: 0 auto;
@@ -156,7 +237,4 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .formCard {
-    min-height: 0;
-  }
 }

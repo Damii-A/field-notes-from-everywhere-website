@@ -2394,3 +2394,30 @@ ad, the subscribe page's order summary, `/llms.txt`, the book-list email's P.S.,
 issue warning. Matches the issue emails ("BOOK N OF 30") and the user's 30-books-per-issue minimum
 (2026-10-05). Sanity content (Terms, Disclosures, Privacy, Site Settings) has no book count, so it
 needed no change. `rr_landing.md`/`homepage.md` are verbatim mirrors and not edited.
+
+## 2026-10-06 — Reading Room checkout asks for a first name first; sent to Paddle as custom data
+
+**Decision** (user-chosen: "name first, then payment" over an optional field above Paddle's form): the
+subscribe page's payment box starts with a required "First name" field and Continue; Paddle's form is
+shown after, with "Joining as {name} · change" above it. The name is attached to the open checkout with
+`Paddle.Checkout.updateCheckout({ customData: { first_name } })`; Paddle copies a transaction's custom data
+onto the subscription it creates (developer.paddle.com, "Work with custom data"). The webhook
+(`memberFirstName` in `app/api/webhooks/paddle/route.ts`) reads `customData.first_name` on
+activated/trialing/updated, falling back to Paddle's customer name, and passes it to Kit (`first_name`,
+the issues' "Hi {name},"), the Resend contact and the member welcome email.
+
+**Context**: found by the user's own test subscription: Paddle's inline checkout asks only for email,
+country, postcode and card (the cardholder name isn't stored as the customer's name), and the webhook used
+`customer.name`, so members got "Hi there," and no Kit first name.
+
+**Mechanics**: Paddle's form loads hidden (`visibility: hidden; height: 0`) during the name step, so the
+order summary already has Paddle's figures and the payment step opens instantly. The name is trimmed,
+spaces collapsed, max 50 characters. The name step is styled like the dashboard styling of Paddle's form
+and inset 10px to line up with its fields (measured within 1px at 1280 and 390 wide).
+
+**Verified** (local, Paddle sandbox): Continue on an empty box shows the browser's "Please fill out this
+field."; after Continue, Paddle's own `checkout.updated` event carries `custom_data: {"first_name":"Ada"}`;
+a sandbox test-card purchase reached "You're in!". **Not verified**: the webhook reading it from a real
+subscription (sandbox webhooks go to the live site, which rejects their signature, and the sandbox API key
+can't read subscriptions), so the first real purchase after this is the end-to-end check: Kit shows the
+member's first name.

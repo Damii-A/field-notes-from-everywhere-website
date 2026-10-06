@@ -1,6 +1,6 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-05 (evening). Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-06. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **Session ended 2026-10-05 (evening, second session).** Everything committed and pushed; no local servers running. Pick up here:
 1. **Tuesday 2026-10-06, ~14:00 UTC**: the new weekly-newsletter cron's first run. Nothing has been
@@ -15,6 +15,10 @@ Last updated: 2026-10-05 (evening). Full reasoning is in `DECISIONS.md`; this is
    **When the first real member pays**, check they saw the "You're in!" message (sandbox-tested only),
    alongside the existing Kit tag + welcome email checks. Reading Room copy now says "30 book
    recommendations", not "30+" (DECISIONS.md).
+4. **First name at checkout — built 2026-10-06** (DECISIONS.md): the subscribe page asks for a first
+   name before Paddle's form and sends it to Paddle; the webhook passes it to Kit, Resend and the
+   welcome email. **Next real purchase**: check Kit shows the member's first name (sandbox couldn't
+   test the webhook end).
 
 **Live 2026-10-05 — Reading Room issue email redesign** (DECISIONS.md, several entries that day):
 **full blurbs** again (no more excerpts), so a 30-book issue (~130 KB by Kit's estimate) is clipped by
