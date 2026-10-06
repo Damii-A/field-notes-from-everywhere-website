@@ -206,7 +206,6 @@ export function ReadingRoomCheckout() {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
-                <p className={styles.nameHint}>So your issues can greet you by name.</p>
                 <button type="submit" className={styles.nameButton} disabled={status !== "ready"}>
                   {status === "ready" ? "Continue »" : "Loading…"}
                 </button>

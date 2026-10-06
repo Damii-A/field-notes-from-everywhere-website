@@ -150,12 +150,6 @@
   box-shadow: 0 0 0 1px var(--slate-700);
 }
 
-.nameHint {
-  font: var(--type-small);
-  color: var(--text-soft);
-  margin: 0;
-}
-
 .nameButton {
   margin-top: 14px;
   height: 48px;
