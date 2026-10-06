@@ -6,6 +6,12 @@ Trimmed 2026-10-06: the session-by-session history that used to sit here (much o
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
 This file now holds only what's true today, what's open, and facts a new session needs.
 
+**Session ended 2026-10-06 (second session).** Everything committed and pushed; no local servers
+running. Done this session: this file trimmed and `ARCHITECTURE.md`'s stale lines fixed; the two
+Reading Room email-screenshot placeholders (homepage teaser, `/the-reading-room`) replaced with the
+user's own framed images, live and checked (DECISIONS.md, visual tweaks list). Item 1 below was
+still pending at session end.
+
 ## Pick up here
 
 1. **Tuesday 2026-10-06, ~14:00 UTC**: the weekly-newsletter cron's first run. Nothing has been
