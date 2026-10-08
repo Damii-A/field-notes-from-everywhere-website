@@ -2439,9 +2439,8 @@ Saturday schedule (2026-09-30 entry). Reason (user): three issues a week takes t
 "every Tuesday"): homepage teaser, About (schedule sentence + ad), `/the-reading-room` (meta description,
 heading, "What you get", join section), the article Reading Room banner and floating ad, the subscribe
 page's order summary, `/llms.txt`, the book-list email's P.S., and the member welcome email ("New Reading
-Room issues go out every Tuesday at 10am Eastern Time (US)."). Its next line ("your first issue should
-be landing in your inbox pretty soon") was left as written; with a weekly send, "soon" can mean up to
-six days. `rr_landing.md`/`homepage.md` are verbatim mirrors and not edited.
+Room issues go out every Tuesday at 10am Eastern Time (US)."). Its next line now reads "your first issue
+should be landing in a couple of days" (user's wording, was "landing in your inbox pretty soon"). `rr_landing.md`/`homepage.md` are verbatim mirrors and not edited.
 
 **Outside the code (the user's to change)**: the live Terms and Disclosures in Sanity say "sent three
 times a week" (the local Sanity token is read-only); Paddle's product description. The Thriller issue

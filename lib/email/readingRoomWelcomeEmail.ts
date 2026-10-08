@@ -23,7 +23,7 @@ const BLOCKS: Block[] = [
   { text: "My name is Dami, and I’m the founder behind Field Notes From Everywhere. I just wanted to quickly pop in to say thank you for trusting us with your book recommendations and do a little bit of housekeeping before your first issue arrives." },
   { text: "A few things to know:" },
   { text: "1. New Reading Room issues go out every Tuesday at 10am Eastern Time (US).", heading: true },
-  { text: "Depending on when you signed up, your first issue should be landing in your inbox pretty soon." },
+  { text: "Depending on when you signed up, your first issue should be landing in a couple of days." },
   { text: "2. Keep an eye on your other inbox folders.", heading: true },
   { text: "We do our best to make sure every Reading Room issue lands in your primary inbox, but unfortunately, that doesn’t always happen. If you don’t see your next issue there, please check your other folders and your spam." },
   { text: "And if you do find us in spam, please mark the email as safe so future issues have a better chance of landing in the right place." },
