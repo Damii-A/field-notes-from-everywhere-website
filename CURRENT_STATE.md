@@ -6,11 +6,14 @@ Trimmed 2026-10-06: the session-by-session history that used to sit here (much o
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
 This file now holds only what's true today, what's open, and facts a new session needs.
 
-**Session ended 2026-10-06 (second session).** Everything committed and pushed; no local servers
-running. Done this session: this file trimmed and `ARCHITECTURE.md`'s stale lines fixed; the two
-Reading Room email-screenshot placeholders (homepage teaser, `/the-reading-room`) replaced with the
-user's own framed images, live and checked (DECISIONS.md, visual tweaks list). Item 1 below was
-still pending at session end.
+**Session ended 2026-10-08.** Everything committed and pushed; no local servers running. Done this
+session: Reading Room switched to weekly (below); the first Tuesday cron run confirmed. Also made, outside
+the repo, 15 Reddit gallery slides of the Thriller Shortlist (#15 → #1, 1080 × 1350, Reading Room sage
+style, full blurbs) in the user's Downloads ("Reddit thriller slides"); the generator script was in this
+session's temporary scratchpad only. The post was auto-removed by a subreddit's title rule (needs book
+title + author); the user has messaged the mods and is waiting. Offered, not done: replace the blurry
+Dragon Tattoo cover on the site with the sharper same-design Open Library cover (id 9274740, 340 × 500)
+used on the slide.
 
 **2026-10-08: The Reading Room is now weekly, every Tuesday** (user; DECISIONS.md). All site and
 email copy changed in code; Terms and Disclosures (Sanity) now say "sent once a week", Last updated
