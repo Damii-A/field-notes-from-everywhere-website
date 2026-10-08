@@ -14,9 +14,8 @@ still pending at session end.
 
 ## Pick up here
 
-1. **Tuesday 2026-10-06, ~14:00 UTC**: the weekly-newsletter cron's first run. Nothing has been
-   published since 2026-09-27, so hello@ should get "No newsletter this week". If it doesn't arrive,
-   check the cron (Vercel logs). This is also the first real check of `CRON_SECRET` on Vercel.
+1. ~~Tuesday cron's first run~~ **Done 2026-10-06**: the user received "No newsletter this week"
+   at hello@ (confirmed 2026-10-08), so the Vercel cron and `CRON_SECRET` work in production.
 2. **First week an article is published**: the Tuesday email's Studio link should open a filled-in
    Weekly newsletter, and "Create Resend draft" should make a Resend draft (neither seen for real
    yet: Studio login is the user's). After the first send, show the user its stats (Resend →
