@@ -14,13 +14,13 @@ still pending at session end.
 
 **2026-10-08: The Reading Room is now weekly, every Tuesday** (user; DECISIONS.md). All site and
 email copy changed in code; Terms and Disclosures (Sanity) now say "sent once a week", Last updated
-2026-10-08 (edited by the user in the Studio, checked live). Still open:
+2026-10-08 (edited by the user in the Studio, checked live). Also:
 - The Thriller issue already went out (Kit broadcast 26208411, sent 2026-10-06 14:09 UTC to the one
   member, the user) ending "back in your inbox on Thursday"; nothing to resend. Future issues: the
   closing sentence is typed per issue in the Studio, so just don't name another day.
 - The paused trial's Resend templates (welcome + 7 placeholder issues) still say "daily" / "a day for
   the next 7 days". The automation is stopped, so nothing sends; rewrite them when the trial is rebuilt.
-- **Paddle product description** (dashboard): check it describes the weekly Tuesday issue.
+- Paddle product description updated by the user 2026-10-08 (user-confirmed; not checked by me).
 
 ## Pick up here
 
