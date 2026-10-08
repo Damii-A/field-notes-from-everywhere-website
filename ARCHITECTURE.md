@@ -416,7 +416,7 @@ during the free trial (see §9 and `DECISIONS.md`). Concretely:
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` | Sanity client config |
-| `SANITY_API_TOKEN` | server-side Sanity API access for scripts and preview-secret checks (the local one is read-only since ~2026-10-02; the site's reads don't need write access) |
+| `SANITY_API_TOKEN` | server-side Sanity API access for scripts and preview-secret checks (the local one has write access again since 2026-10-08, an Editor key; Vercel's is unchanged and the site's reads don't need write access) |
 | `SANITY_WEBHOOK_SECRET` | verifies Sanity → `/api/webhooks/sanity` calls |
 | `KIT_API_KEY` | Kit (ConvertKit) API access — holds only confirmed Reading Room members (see §9) |
 | `KIT_READING_ROOM_TAG_ID` | confirmed Reading Room member tag — applied only by the Paddle webhook at actual conversion, removed on cancellation |

@@ -2442,8 +2442,9 @@ page's order summary, `/llms.txt`, the book-list email's P.S., and the member we
 Room issues go out every Tuesday at 10am Eastern Time (US)."). Its next line now reads "your first issue
 should be landing in a couple of days" (user's wording, was "landing in your inbox pretty soon"). `rr_landing.md`/`homepage.md` are verbatim mirrors and not edited.
 
-**Outside the code (the user's to change)**: the live Terms and Disclosures in Sanity say "sent three
-times a week" (the local Sanity token is read-only); Paddle's product description. The Thriller issue
+**Outside the code**: the live Terms and Disclosures in Sanity now say "sent once a week" (Last updated
+2026-10-08; edited by the user in the Studio, checked live); Paddle's product description is the user's
+to check. The Thriller issue
 (sent 2026-10-06 to the one member, the user) closed "We'll be back in your inbox on Thursday"; already
 sent, nothing to fix. The stopped trial automation's Resend templates still say "daily"; left for the
 trial rebuild. The legal wording was chosen in

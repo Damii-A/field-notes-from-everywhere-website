@@ -13,9 +13,8 @@ user's own framed images, live and checked (DECISIONS.md, visual tweaks list). I
 still pending at session end.
 
 **2026-10-08: The Reading Room is now weekly, every Tuesday** (user; DECISIONS.md). All site and
-email copy changed in code. Still to change by the user (my Sanity token is read-only):
-- **Terms** (Sanity): "sent three times a week" → "sent once a week"; update "Last updated".
-- **Disclosures** (Sanity): same change; update "Last updated".
+email copy changed in code; Terms and Disclosures (Sanity) now say "sent once a week", Last updated
+2026-10-08 (edited by the user in the Studio, checked live). Still open:
 - The Thriller issue already went out (Kit broadcast 26208411, sent 2026-10-06 14:09 UTC to the one
   member, the user) ending "back in your inbox on Thursday"; nothing to resend. Future issues: the
   closing sentence is typed per issue in the Studio, so just don't name another day.
@@ -87,7 +86,7 @@ Namecheap; details in `ARCHITECTURE.md` §11.
 - The user's Thriller Reading Room issue (Kit draft updated by the user 2026-10-05).
 - Publish webhook → `/api/webhooks/sanity` (revalidate + IndexNow). The plan allows 2 webhooks;
   1 is used.
-- The local `SANITY_API_TOKEN` is **read-only** (it could write until about 2026-10-02).
+- The local `SANITY_API_TOKEN` is a new **Editor** (write) key since 2026-10-08 (dry-run write test passed). Writes to live content via scripts are still blocked by Claude Code's auto-mode safety check; the user makes those edits in the Studio unless they add a permission rule.
 - Publishing an article whose date has passed: update its date first, or it shows the old date.
 - More books: `npm run import-books -- <file.csv> [--ranking "Name"]`; Goodreads links:
   `npm run goodreads-links`. The original Thriller CSV in Downloads has old title casing (fixed in
