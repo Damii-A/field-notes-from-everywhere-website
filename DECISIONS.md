@@ -2444,8 +2444,10 @@ be landing in your inbox pretty soon") was left as written; with a weekly send, 
 six days. `rr_landing.md`/`homepage.md` are verbatim mirrors and not edited.
 
 **Outside the code (the user's to change)**: the live Terms and Disclosures in Sanity say "sent three
-times a week" (the local Sanity token is read-only); the user's Thriller issue draft closes "We'll be
-back in your inbox on Thursday"; Paddle's product description. The legal wording was chosen in
+times a week" (the local Sanity token is read-only); Paddle's product description. The Thriller issue
+(sent 2026-10-06 to the one member, the user) closed "We'll be back in your inbox on Thursday"; already
+sent, nothing to fix. The stopped trial automation's Resend templates still say "daily"; left for the
+trial rebuild. The legal wording was chosen in
 2026-09-30 to avoid naming days, so "sent once a week" keeps that property.
 
 **Future implications**: the paused free trial was to use the first 7 real issues as samples; at one a

@@ -16,8 +16,11 @@ still pending at session end.
 email copy changed in code. Still to change by the user (my Sanity token is read-only):
 - **Terms** (Sanity): "sent three times a week" → "sent once a week"; update "Last updated".
 - **Disclosures** (Sanity): same change; update "Last updated".
-- **Thriller issue draft** (Studio): closing sentence says "back in your inbox on Thursday"; then
-  press "Update Kit draft".
+- The Thriller issue already went out (Kit broadcast 26208411, sent 2026-10-06 14:09 UTC to the one
+  member, the user) ending "back in your inbox on Thursday"; nothing to resend. Future issues: the
+  closing sentence is typed per issue in the Studio, so just don't name another day.
+- The paused trial's Resend templates (welcome + 7 placeholder issues) still say "daily" / "a day for
+  the next 7 days". The automation is stopped, so nothing sends; rewrite them when the trial is rebuilt.
 - **Paddle product description** (dashboard): check it describes the weekly Tuesday issue.
 
 ## Pick up here
