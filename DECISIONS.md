@@ -2428,3 +2428,27 @@ a sandbox test-card purchase reached "You're in!". **Not verified**: the webhook
 subscription (sandbox webhooks go to the live site, which rejects their signature, and the sandbox API key
 can't read subscriptions), so the first real purchase after this is the end-to-end check: Kit shows the
 member's first name.
+
+## 2026-10-08 — The Reading Room becomes weekly, every Tuesday
+
+**Decision** (user-directed): one Reading Room issue a week, sent **every Tuesday** (10am Eastern, as
+before). Still 30 books per issue and $7/month (neither was changed). Supersedes the Tuesday/Thursday/
+Saturday schedule (2026-09-30 entry). Reason (user): three issues a week takes too much time.
+
+**What changed in code**: every schedule mention now says "every Tuesday" ("three times a week" →
+"every Tuesday"): homepage teaser, About (schedule sentence + ad), `/the-reading-room` (meta description,
+heading, "What you get", join section), the article Reading Room banner and floating ad, the subscribe
+page's order summary, `/llms.txt`, the book-list email's P.S., and the member welcome email ("New Reading
+Room issues go out every Tuesday at 10am Eastern Time (US)."). Its next line ("your first issue should
+be landing in your inbox pretty soon") was left as written; with a weekly send, "soon" can mean up to
+six days. `rr_landing.md`/`homepage.md` are verbatim mirrors and not edited.
+
+**Outside the code (the user's to change)**: the live Terms and Disclosures in Sanity say "sent three
+times a week" (the local Sanity token is read-only); the user's Thriller issue draft closes "We'll be
+back in your inbox on Thursday"; Paddle's product description. The legal wording was chosen in
+2026-09-30 to avoid naming days, so "sent once a week" keeps that property.
+
+**Future implications**: the paused free trial was to use the first 7 real issues as samples; at one a
+week that's ~7 weeks of issues, and a 7-day trial would contain one issue, so the trial's design needs
+rethinking when it's rebuilt. The free weekly newsletter (Wednesdays) is unchanged, and the Tuesday
+cron email that prompts the user to prepare it now falls on the same day as the Reading Room send.

@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 import { bookEntry } from "./article";
 
 /**
- * One Reading Room issue (the members' Tuesday/Thursday/Saturday email). Its
+ * One Reading Room issue (the members' weekly Tuesday email). Its
  * fields follow the user's email layout in order (DECISIONS.md, 2026-10-02):
  * greeting (automatic) → "About this issue" box → the book list → closing
  * sentence + sign-off. "Create Kit draft" (sanity/actions/CreateKitDraftAction.tsx)

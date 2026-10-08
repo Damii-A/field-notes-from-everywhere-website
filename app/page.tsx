@@ -380,7 +380,7 @@ export default async function HomePage() {
           {/* Short teaser here, the full pitch on /the-reading-room: swapped with the landing page by the user, 2026-09-27 (DECISIONS.md). */}
           <div style={{ display: "flex", flexDirection: "column", gap: 20, textAlign: "left", alignSelf: "start" }}>
             <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
-              Every Tuesday, Thursday and Saturday, we send out a catalogue of themed book recommendations.
+              Every Tuesday, we send out a catalogue of themed book recommendations.
             </p>
             <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
               The books in these catalogues are sourced from hundreds of reader recommendations, which are analyzed to

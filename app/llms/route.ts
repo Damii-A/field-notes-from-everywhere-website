@@ -34,7 +34,7 @@ export async function GET() {
     ...columns.flatMap((c) => [c, ""]),
     "## The Reading Room",
     "",
-    `- [The Reading Room](${SITE_URL}/the-reading-room): 30 themed book recommendations, every Tuesday, Thursday and Saturday. $7/month, cancel anytime.`,
+    `- [The Reading Room](${SITE_URL}/the-reading-room): 30 themed book recommendations, every Tuesday. $7/month, cancel anytime.`,
     "",
     "## Optional",
     "",

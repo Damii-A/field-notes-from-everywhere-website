@@ -1,6 +1,6 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-06. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-08. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
@@ -11,6 +11,14 @@ running. Done this session: this file trimmed and `ARCHITECTURE.md`'s stale line
 Reading Room email-screenshot placeholders (homepage teaser, `/the-reading-room`) replaced with the
 user's own framed images, live and checked (DECISIONS.md, visual tweaks list). Item 1 below was
 still pending at session end.
+
+**2026-10-08: The Reading Room is now weekly, every Tuesday** (user; DECISIONS.md). All site and
+email copy changed in code. Still to change by the user (my Sanity token is read-only):
+- **Terms** (Sanity): "sent three times a week" → "sent once a week"; update "Last updated".
+- **Disclosures** (Sanity): same change; update "Last updated".
+- **Thriller issue draft** (Studio): closing sentence says "back in your inbox on Thursday"; then
+  press "Update Kit draft".
+- **Paddle product description** (dashboard): check it describes the weekly Tuesday issue.
 
 ## Pick up here
 
@@ -33,8 +41,6 @@ real and kept; it's the only member-tagged subscriber in Kit (tagged 2026-10-05)
 
 ## Open, raise one at a time (nothing blocking)
 
-- Paddle's product description (user's dashboard) may still describe daily emails (they described
-  Mon-Sat + Sunday recap at verification; now Tue/Thu/Sat, 30 books).
 - Cancelling the old WordPress hosting, if the account still exists (provider unknown).
 - The column hub pages' own descriptions (`lib/content/categories.ts`, also used by llms.txt and
   search results) still differ from the homepage column copy (offered, not chosen).
@@ -57,7 +63,7 @@ training crawlers in robots.txt (declined twice).
 
 Paused 2026-09-27 (user). Every Reading Room CTA says "Join The Reading Room" and goes to
 `/the-reading-room/subscribe`. It comes back **after the first 7 real issues have gone to paying
-members**, using them as sample issues; at three issues a week its length/sample needs rethinking.
+members**, using them as sample issues; at one issue a week (since 2026-10-08) its length/sample needs rethinking.
 Rebuild steps: `DECISIONS.md`, "Reading Room free trial paused". The Resend automation "Reading Room
 Trial Sequence" (`01a0c97d-1c72-72fd-b8b3-39b58340aacc`) is **stopped**; its welcome template
 (`0306e7f0-66de-44bf-a65e-a60e89532431`) and 7 issue templates ("Reading Room - Issue N

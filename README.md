@@ -1,7 +1,7 @@
 # Field Notes From Everywhere
 
 Book-recommendation editorial website: a free Publication (three editorial columns) and The
-Reading Room, a paid daily-newsletter product.
+Reading Room, a paid weekly newsletter (Tuesdays).
 
 No application code exists yet — this repository currently holds project setup and
 engineering documentation from initialization. Start here:
