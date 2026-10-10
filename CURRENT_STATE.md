@@ -1,19 +1,24 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-08. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-10. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
 This file now holds only what's true today, what's open, and facts a new session needs.
 
-**Session ended 2026-10-08.** Everything committed and pushed; no local servers running. Done this
-session: Reading Room switched to weekly (below); the first Tuesday cron run confirmed. Also made, outside
-the repo, 15 Reddit gallery slides of the Thriller Shortlist (#15 → #1, 1080 × 1350, Reading Room sage
-style, full blurbs) in the user's Downloads ("Reddit thriller slides"); the generator script was in this
-session's temporary scratchpad only. The post was auto-removed by a subreddit's title rule (needs book
-title + author); the user has messaged the mods and is waiting. Offered, not done: replace the blurry
-Dragon Tattoo cover on the site with the sharper same-design Open Library cover (id 9274740, 340 × 500)
-used on the slide.
+**Session 2026-10-09/10: book covers.** 15 book covers replaced in Sanity (user-approved; checked
+live 2026-10-10): the 9 low-resolution ones (Dark Places, Kill for Me Kill for You, Nightwatching,
+Orphan X, Shutter Island, The Fourth Monkey, The Girl with the Dragon Tattoo, The Likeness, What Lies
+Between Us) and 6 that showed the wrong image (I Let You Go: back cover; The Plot: audiobook CD; Eye
+of the Needle: Polish edition; Rebecca: 4-book omnibus; Gone Girl: library copy; And Then There Were
+None: plain binding). Sources: Goodreads full-size images (its `/book/auto_complete?format=json`
+feed works when book pages hit the bot check; strip `._SY75_` from `imageUrl`) or Open Library.
+Old assets remain in Sanity's media library. Also made, outside the repo, a folder of all 49 covers
+for Pinterest pins in the user's Downloads ("FNFE book covers", largest good version of each, many
+1000-3700px tall; some differ in design from the site's, where the site's was smaller).
+- The local `SANITY_API_TOKEN` returned "Session is expired" (401) on 2026-10-10, a day after it
+  wrote the covers. Public reads still work without it; scripts that write need a new key in
+  `.env.local` (the user enters it there, never in chat). The live site is unaffected (own key).
 
 **2026-10-08: The Reading Room is now weekly, every Tuesday** (user; DECISIONS.md). All site and
 email copy changed in code; Terms and Disclosures (Sanity) now say "sent once a week", Last updated
@@ -50,9 +55,9 @@ real and kept; it's the only member-tagged subscriber in Kit (tagged 2026-10-05)
 - The column hub pages' own descriptions (`lib/content/categories.ts`, also used by llms.txt and
   search results) still differ from the homepage column copy (offered, not chosen).
 - Optional: accurate sitemap `lastmod`; JSON-LD beyond the book pages (offered, not chosen).
-- 9 low-resolution covers (under 300px wide; user said "later"): Dark Places, Kill For Me Kill For
-  You, Nightwatching, Orphan X, Shutter Island, The Fourth Monkey, The Girl with the Dragon Tattoo,
-  The Likeness, What Lies Between Us.
+- Covers: The Family Upstairs is square (318 × 318, cropped); a full 1838 × 2775 cover is in the
+  Pinterest folder (offered, not done). Still under 300px wide but the best front covers found:
+  I Let You Go, Nightwatching, Rebecca (267/265/267px).
 - Largest-contentful-paint 2.6-3.3s on mobile vs the 2.5s target (homepage hero image). Remaining
   levers, not done: ~300ms render-blocking CSS; the homepage preloads 7 font files.
 - A check on the user's own phone and a tablet (the phone share-sheet button is already verified).
@@ -89,7 +94,7 @@ Namecheap; details in `ARCHITECTURE.md` §11.
 - The user's Thriller Reading Room issue (Kit draft updated by the user 2026-10-05).
 - Publish webhook → `/api/webhooks/sanity` (revalidate + IndexNow). The plan allows 2 webhooks;
   1 is used.
-- The local `SANITY_API_TOKEN` is a new **Editor** (write) key since 2026-10-08 (dry-run write test passed). Writes to live content via scripts are still blocked by Claude Code's auto-mode safety check; the user makes those edits in the Studio unless they add a permission rule.
+- The local `SANITY_API_TOKEN` (Editor key from 2026-10-08) expired 2026-10-10, see above. Writes to live content via scripts trigger Claude Code's auto-mode safety check; they go ahead only with the user's explicit approval in that session.
 - Publishing an article whose date has passed: update its date first, or it shows the old date.
 - More books: `npm run import-books -- <file.csv> [--ranking "Name"]`; Goodreads links:
   `npm run goodreads-links`. The original Thriller CSV in Downloads has old title casing (fixed in
