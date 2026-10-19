@@ -24,6 +24,8 @@ export const metadata: Metadata = {
   // Fallback share tags for pages that don't set their own (e.g. the 404 page).
   openGraph: { siteName: SITE_NAME, locale: "en_US", type: "website", images: [DEFAULT_SHARE_IMAGE] },
   twitter: { card: "summary_large_image", images: [DEFAULT_SHARE_IMAGE] },
+  // Pinterest domain claim (p:domain_verify); keep it, Pinterest re-checks it.
+  verification: { other: { "p:domain_verify": "4f4580f07c6a21824d6fd3715887daf0" } },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
