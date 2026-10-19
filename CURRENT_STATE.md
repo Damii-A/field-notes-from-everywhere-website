@@ -118,7 +118,7 @@ the user's approval or a dashboard check by the user. Sandbox webhooks go to the
 rejects their signature, so sandbox purchases never touch Kit/Resend.
 
 **Pinterest**: domain-claim tag `p:domain_verify` in `app/layout.tsx` metadata (added and checked live
-2026-10-19); keep it, Pinterest re-checks it.
+2026-10-19); domain claimed in Pinterest 2026-10-19 (user-confirmed). Keep the tag: Pinterest re-checks it.
 
 **Analytics and search**: Google Analytics 4 (`G-4DSKEJTSC5`, consent banner for EEA/UK/CH),
 Google Search Console and Bing Webmaster Tools (sitemap processed, 13+ URLs), IndexNow on publish.
