@@ -1,6 +1,6 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-10. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-19. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
@@ -116,6 +116,9 @@ checkout's look is set in Paddle's dashboard (slate #2C464F button, focus outlin
 auto-mode classifier blocks scripts that read the live Paddle key, so live Paddle API checks need
 the user's approval or a dashboard check by the user. Sandbox webhooks go to the live site, which
 rejects their signature, so sandbox purchases never touch Kit/Resend.
+
+**Pinterest**: domain-claim tag `p:domain_verify` in `app/layout.tsx` metadata (added and checked live
+2026-10-19); keep it, Pinterest re-checks it.
 
 **Analytics and search**: Google Analytics 4 (`G-4DSKEJTSC5`, consent banner for EEA/UK/CH),
 Google Search Console and Bing Webmaster Tools (sitemap processed, 13+ URLs), IndexNow on publish.
