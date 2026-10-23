@@ -1,10 +1,21 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-19. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-23. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
 This file now holds only what's true today, what's open, and facts a new session needs.
+
+**2026-10-23: The Reading Room is paused as a product** (user; DECISIONS.md). The business now
+focuses on the Publication and the free weekly newsletter; The Reading Room may relaunch later. Every
+spot that promoted it (homepage, article banner and floating card, About) now opens a free-newsletter
+signup popup; the menu pill, footer link, book-list email P.S., llms.txt and sitemap entries are gone;
+`/the-reading-room` shows a "taking a break" note (noindex) and `/subscribe` redirects there. All its
+code is kept, switched off. Still to do, one at a time, all the user's:
+1. Cancel their own $7 subscription in Paddle (the only member; the webhook will untag them in Kit).
+2. Legal pages in Sanity: Disclosures says "Today, our income comes from The Reading Room" (now
+   untrue); Terms and Privacy describe it as an offer. Edit in the Studio, or give me a new Sanity key
+   in `.env.local` and approve the write.
 
 **Session 2026-10-09/10: book covers.** 15 book covers replaced in Sanity (user-approved; checked
 live 2026-10-10): the 9 low-resolution ones (Dark Places, Kill for Me Kill for You, Nightwatching,
@@ -38,16 +49,11 @@ email copy changed in code; Terms and Disclosures (Sanity) now say "sent once a 
    Weekly newsletter, and "Create Resend draft" should make a Resend draft (neither seen for real
    yet: Studio login is the user's). After the first send, show the user its stats (Resend →
    Broadcasts).
-3. **When the first real member pays** (only sandbox-tested so far), check:
-   - they saw the "You're in!" message on the subscribe page;
-   - Kit shows them with the member tag **and their first name** (checkout asks for it since
-     2026-10-06; the webhook end couldn't be tested in sandbox);
-   - Resend shows a "Welcome to The Reading Room!" email to them.
-4. Not yet seen with a real event: a recovered failed payment re-tagging a member
-   (`subscription.updated`, handled since 2026-10-05).
+3. **If The Reading Room relaunches**: the first real member's checkout, Kit tag + first name and
+   welcome email, and a recovered payment re-tagging a member, were never seen with real events.
 
 The user's own subscription (lululope@yahoo.com, Kit subscriber 4306601425, first name "Dami") is
-real and kept; it's the only member-tagged subscriber in Kit (tagged 2026-10-05).
+real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be cancelled (above).
 
 ## Open, raise one at a time (nothing blocking)
 
@@ -69,9 +75,10 @@ real and kept; it's the only member-tagged subscriber in Kit (tagged 2026-10-05)
 Settled, don't offer again: merging near-duplicate book tags (declined 2026-09-29); blocking AI
 training crawlers in robots.txt (declined twice).
 
-## Paused: the Reading Room free trial
+## Paused: The Reading Room (whole product, 2026-10-23) and its free trial (2026-09-27)
 
-Paused 2026-09-27 (user). Every Reading Room CTA says "Join The Reading Room" and goes to
+The product pause is above and in DECISIONS.md. The older trial notes below apply only to a relaunch.
+Trial paused 2026-09-27 (user). Every Reading Room CTA says "Join The Reading Room" and goes to
 `/the-reading-room/subscribe`. It comes back **after the first 7 real issues have gone to paying
 members**, using them as sample issues; at one issue a week (since 2026-10-08) its length/sample needs rethinking.
 Rebuild steps: `DECISIONS.md`, "Reading Room free trial paused". The Resend automation "Reading Room

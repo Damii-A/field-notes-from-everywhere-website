@@ -11,6 +11,11 @@ FNFE is a book-recommendation editorial publication with a free content hub (the
 "Publication") and a paid newsletter product ("The Reading Room", weekly on Tuesdays since 2026-10-08). V1, as actually
 built in the Claude Design project, is:
 
+> **Since 2026-10-23 The Reading Room is paused as a product** (user; `DECISIONS.md`): its landing
+> page shows a "taking a break" note, its checkout redirects there, and every spot that promoted it
+> opens a free-newsletter signup popup (`components/NewsletterSignupButton.tsx`). Everything below
+> about The Reading Room describes the kept, switched-off system, ready for a relaunch.
+
 - a **public marketing/editorial website**: homepage, three Publication category hubs, an
   article template shared by all three categories, an About page with a linkable methodology
   section, Contact, and three legal pages;
@@ -109,15 +114,15 @@ what would force adding one (building the logged-in Reading Room product).
 
 | Route | Page | Notes |
 | --- | --- | --- |
-| `/` | Home | reader-request stratosphere, three column showcases, Reading Room intro |
+| `/` | Home | reader-request stratosphere, three column showcases, free-newsletter signup card (was the Reading Room intro until 2026-10-23) |
 | `/the-shortlist` | Shortlist hub | category identity, latest article, "All articles" + See more |
 | `/the-shortlist/[slug]` | Shortlist article | ranked, numbered book list |
 | `/what-to-read-when` | hub | same hub template, clay identity |
 | `/what-to-read-when/[slug]` | article | unranked |
 | `/book-club-book-picks` | hub | same hub template, sky identity |
 | `/book-club-book-picks/[slug]` | article | unranked, paired presentation |
-| `/the-reading-room` | RR landing page | "Join The Reading Room" → `/the-reading-room/subscribe`; trial paused |
-| `/the-reading-room/subscribe` | Subscribe (checkout) | Paddle inline checkout embedded beside our order summary (`components/ReadingRoomCheckout.tsx`); "You're in" state on completion; noindex |
+| `/the-reading-room` | "Taking a break" note | paused 2026-10-23: hero + newsletter signup, noindex; the landing page is kept in `ReadingRoomLanding.tsx` |
+| `/the-reading-room/subscribe` | Subscribe (checkout) | **paused: 307-redirects to `/the-reading-room`** (`next.config.mjs`). Paddle inline checkout embedded beside our order summary (`components/ReadingRoomCheckout.tsx`); "You're in" state on completion; noindex |
 | `/about` | About | `#how-we-find-the-books` anchor, linked from every article's methodology box |
 | `/terms`, `/privacy-and-cookies`, `/disclosures` | legal pages (CMS body) | every heading gets an id from its text, e.g. `/terms#refund-policy` (the refund link given to Paddle) |
 | `/contact` | Contact | static, mailto link only |
@@ -365,8 +370,10 @@ tags (`lib/email/utm.ts`: `utm_source=fnfe_email`, `utm_medium=email`, `utm_camp
 or `weekly_newsletter`, `utm_content` = article slug / issue date) for Google Analytics.
 
 `/api/subscribe` validates the email and name, adds the contact to the right Resend Segment,
-and (for the "send this list" flow only) sends the transactional book-list email. Every
-Reading Room CTA ("Join The Reading Room") links to `/the-reading-room/subscribe` (Paddle
+and (for the "send this list" flow only) sends the transactional book-list email. Newsletter
+signups come from the footer form and, since 2026-10-23, the `NewsletterSignupButton` popup in the
+old Reading Room promo spots. While The Reading Room is paused there are no Reading Room CTAs; before
+that, every Reading Room CTA ("Join The Reading Room") links to `/the-reading-room/subscribe` (Paddle
 checkout); there is no trial signup while the trial is paused. Checkout asks for a first name
 first and passes it to Paddle as custom data, which the webhook gives to Kit and Resend.
 

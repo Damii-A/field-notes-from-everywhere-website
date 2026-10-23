@@ -32,6 +32,11 @@ const nextConfig = {
   // /feed.xml is the public-facing URL (what Kit's RSS automation should
   // use), rewritten to the actual route at app/rss/route.ts — see that
   // file's comment for why it isn't just named app/feed.xml/route.ts.
+  // The Reading Room is paused (user, 2026-10-23; DECISIONS.md): its checkout
+  // page is kept but unreachable. Temporary (307), since it's coming back.
+  async redirects() {
+    return [{ source: "/the-reading-room/subscribe", destination: "/the-reading-room", permanent: false }];
+  },
   async rewrites() {
     return [
       { source: "/feed.xml", destination: "/rss" },

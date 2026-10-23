@@ -31,7 +31,6 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
   const c = COLOURS[article.category];
   const url = withUtm(`${SITE_URL}${articlePath(article)}`, "book_list", article.slug);
   const home = withUtm(SITE_URL, "book_list", article.slug);
-  const readingRoom = withUtm(`${SITE_URL}/the-reading-room`, "book_list", article.slug);
   const hi = firstName(name);
 
   const books = article.books
@@ -93,8 +92,7 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr><td style="padding:0 0 24px;">
           <p style="margin:0 0 14px;font:16px/1.6 ${BODY};color:${INK};">${hi ? `Hi ${esc(hi)},` : "Hi there,"}</p>
-          <p style="margin:0 0 14px;font:16px/1.6 ${BODY};color:${INK};">Here&rsquo;s the list you asked for. Enjoy!</p>
-          <p style="margin:0;font:15px/1.6 ${BODY};color:${INK_SOFT};"><strong>P.S.</strong> In case you didn&rsquo;t know, we have a fun little community called The Reading Room. We send members a themed book list of 30 recommendations every Tuesday. Feel free to <a href="${esc(readingRoom)}" style="color:${c.title};">check it out here</a>.</p>
+          <p style="margin:0;font:16px/1.6 ${BODY};color:${INK};">Here&rsquo;s the list you asked for. Enjoy!</p>
         </td></tr>
         ${hero}
         <tr><td style="padding:0 0 8px;">
@@ -134,8 +132,6 @@ export function bookListEmailText(article: Article, name: string, unsubscribeUrl
   return `${hi ? `Hi ${hi},` : "Hi there,"}
 
 Here's the list you asked for. Enjoy!
-
-P.S. In case you didn't know, we have a fun little community called The Reading Room. We send members a themed book list of 30 recommendations every Tuesday. Feel free to check it out here: ${withUtm(`${SITE_URL}/the-reading-room`, "book_list", article.slug)}
 
 ${article.title}
 ${article.methodologySentence}

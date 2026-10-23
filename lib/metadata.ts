@@ -8,7 +8,7 @@ import type { Metadata } from "next";
  */
 export const SITE_NAME = "Field Notes From Everywhere";
 export const SITE_DESCRIPTION =
-  "Book recommendations, backed by real reader discussions. The Field Notes From Everywhere Publication and The Reading Room.";
+  "Book recommendations, backed by real reader discussions. The Field Notes From Everywhere Publication and its free weekly newsletter.";
 
 type ShareImage = { url: string; width?: number; height?: number; alt?: string };
 

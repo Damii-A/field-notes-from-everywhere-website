@@ -28,9 +28,6 @@ export async function Footer() {
               {cat.name}
             </Link>
           ))}
-          <Link href="/the-reading-room" className={styles.exploreLink}>
-            The Reading Room
-          </Link>
         </div>
         <div className={styles.column}>
           <span className={styles.columnLabel}>Field Notes From Everywhere</span>

@@ -69,10 +69,6 @@ export function Header({ active }: HeaderProps) {
             {cat.name}
           </Link>
         ))}
-        <span className={styles.divider} aria-hidden="true" />
-        <Link href="/the-reading-room" onClick={() => setOpen(false)} className={styles.readingRoomPill}>
-          The Reading Room
-        </Link>
       </nav>
     </header>
     {/* Phones only (hidden by CSS elsewhere): dims the page under the open menu card; tapping it closes the menu. */}

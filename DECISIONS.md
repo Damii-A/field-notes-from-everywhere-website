@@ -2454,3 +2454,47 @@ trial rebuild. The legal wording was chosen in
 week that's ~7 weeks of issues, and a 7-day trial would contain one issue, so the trial's design needs
 rethinking when it's rebuilt. The free weekly newsletter (Wednesdays) is unchanged, and the Tuesday
 cron email that prompts the user to prepare it now falls on the same day as the Reading Room send.
+
+## 2026-10-23 — The Reading Room is paused as a product; the site promotes the free newsletter instead
+
+**Decision** (user-directed): The Reading Room is taken off the site "for now" so the business can
+focus on the Publication (the blog) and the free weekly newsletter; it may relaunch later. Reason
+(user): too busy to give it the time a weekly paid issue needs, especially if growth is slow. This
+is a product-direction change against the design project (which shows The Reading Room throughout);
+recorded here as the user's direction, not a design change. The paused free trial (2026-09-27) is
+now moot until a relaunch.
+
+**User's choices** (asked 2026-10-23): (1) every spot that promoted The Reading Room now promotes the
+free newsletter, keeping its own look (recommended; the alternative was removing them); (2) the old
+`/the-reading-room` address shows a short "taking a break" note with a newsletter signup (the user's
+choice over a temporary redirect to the homepage, which was recommended).
+
+**What changed in code**:
+- New `components/NewsletterSignupButton.tsx`: a button that opens a first-name + email popup posting
+  `source: "newsletter"` to `/api/subscribe` (same path as the footer form, so new signups get the
+  welcome email). Popup styles moved out of `ArticleView.module.css` into `components/Popup.module.css`,
+  shared with the article "send this list" popup (no visual change to that one). Escape closes it.
+- Homepage: the sage strip now pitches the newsletter ("Get a weekly roundup of our latest book
+  lists…"); "Introducing…", The Reading Room title, teaser text and email screenshot are gone; the
+  "Sound like your kind of thing?" card stays, its button "Join the newsletter" opens the popup.
+- Article end banner and floating rail card: "The FNFE newsletter" / "Get a weekly roundup of our
+  latest book lists, delivered to your inbox." / "It's free. Unsubscribe any time." / "Join the list".
+- About: medium 2 is now "The FNFE newsletter" (free, weekly roundup) with the same inner promo card;
+  "powers … every Reading Room newsletter" → "powers every FNFE reading list"; "in a Reading Room
+  issue" → "in our emails".
+- Header menu pill and footer link removed (the phone menu card loses its trailing hairline and the
+  space the pill used). Book-list email P.S. about The Reading Room removed. `/llms.txt` section and
+  the sitemap entry removed. Site description: "…Publication and its free weekly newsletter."
+- `/the-reading-room` shows the paused note in the landing page's own hero (drifting covers),
+  `noindex, follow`. `/the-reading-room/subscribe` 307-redirects there (`next.config.mjs`).
+
+**Kept, switched off (for a relaunch)**: the landing page as `app/the-reading-room/ReadingRoomLanding.tsx`
+(its header comment says how to restore it), the subscribe/checkout page and `ReadingRoomCheckout`,
+the Paddle webhook (still live, so cancelling the user's own subscription untags them in Kit), the
+Studio's Reading Room issues and "Create Kit draft", the member welcome email, the Paddle product, the
+Kit tag, and the header pill's CSS. To relaunch, reverse the bullets above (this commit's diff is the
+checklist) and decide what replaces the newsletter promos.
+
+**Outside the code (the user's, not done here)**: cancel the user's own $7 subscription in Paddle (the
+only member); the live legal pages in Sanity still describe The Reading Room. Disclosures' "Today, our
+income comes from The Reading Room" is no longer true; Terms and Privacy describe it as an offer.

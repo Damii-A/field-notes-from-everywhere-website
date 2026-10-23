@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Stratosphere } from "@/components/Stratosphere";
+import { NewsletterSignupButton } from "@/components/NewsletterSignupButton";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
 import { getHomeShowcase } from "@/lib/content";
 import styles from "./Home.module.css";
@@ -285,7 +286,8 @@ export default async function HomePage() {
       <section
         style={{
           background: "var(--sage-700)",
-          // A slim transitional strip into The Reading Room, not a full section (user, 2026-09-27).
+          // A slim strip, then the signup card below. Promoted The Reading Room until it was paused
+          // (user, 2026-10-23; DECISIONS.md): now the free newsletter.
           padding: "clamp(24px,3vw,40px) var(--gutter-screen)",
           textAlign: "center",
           display: "flex",
@@ -307,92 +309,12 @@ export default async function HomePage() {
           And if your TBR can handle even more...
         </h2>
         <p style={{ font: "var(--type-quote)", color: "var(--paper-050)", margin: 0, maxWidth: "58ch" }}>
-          We&rsquo;ll bring all the top recommendations straight to you. Again, and again, and again.
-        </p>
-        <p
-          style={{
-            font: "var(--weight-bold) clamp(23px,2.6vw,34px)/1.1 var(--font-display)",
-            letterSpacing: "var(--tracking-tight)",
-            color: "var(--ochre-100)",
-            margin: 0,
-            maxWidth: "58ch",
-          }}
-        >
-          Introducing...
+          Get a weekly roundup of our latest book lists, delivered straight to your inbox.
         </p>
       </section>
 
-      <section style={{ background: "var(--clay-200)", padding: "clamp(32px,4vw,56px) 0 clamp(64px,8vw,110px)" }}>
-        <div
-          style={{
-            maxWidth: "var(--max-content)",
-            margin: "0 auto",
-            padding: "0 var(--gutter-screen)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            gap: 14,
-          }}
-        >
-          <Link
-            href="/the-reading-room"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 6,
-              font: "var(--weight-bold) clamp(28px,3.4vw,44px)/1.1 var(--font-display)",
-              letterSpacing: "var(--tracking-tight)",
-              color: "var(--clay-700)",
-              maxWidth: "26ch",
-              textWrap: "pretty",
-            }}
-          >
-            <span>The Reading Room</span>
-            <span style={{ font: "var(--weight-regular) clamp(17px,1.7vw,21px)/1.2 var(--font-display)", letterSpacing: "var(--tracking-normal)", color: "var(--clay-text)" }}>
-              by Field Notes From Everywhere
-            </span>
-          </Link>
-          <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.7vw,21px)", lineHeight: 1.6, color: "var(--ink-700)", margin: 0, maxWidth: "62ch", textWrap: "balance" }}>
-            Curated book recommendations, right in your inbox.
-          </p>
-        </div>
-
-        <div
-          className={styles.rrTeaser}
-          style={{
-            maxWidth: "var(--max-content)",
-            margin: "clamp(20px,2.4vw,32px) auto 0",
-            padding: "0 var(--gutter-screen)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "center", alignSelf: "center", order: 2 }}>
-            {/* The user's own framed screenshot (2026-10-06): shown whole, at its own shape, with no card behind it (its frame is part of the image). */}
-            <Image
-              src="/images/reading-room-email-books.png"
-              alt="A Reading Room email: books 4 to 6 of a 30-book thriller issue, each with its cover, rank, tags and blurb"
-              width={1021}
-              height={1469}
-              sizes="280px"
-              style={{ width: "100%", maxWidth: 280, height: "auto" }}
-            />
-          </div>
-          {/* Short teaser here, the full pitch on /the-reading-room: swapped with the landing page by the user, 2026-09-27 (DECISIONS.md). */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 20, textAlign: "left", alignSelf: "start" }}>
-            <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
-              Every Tuesday, we send out a catalogue of themed book recommendations.
-            </p>
-            <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
-              The books in these catalogues are sourced from hundreds of reader recommendations, which are analyzed to
-              uncover the top picks by real readers.
-            </p>
-            <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.5vw,19px)", lineHeight: 1.62, color: "var(--ink-700)", margin: 0, textWrap: "pretty" }}>
-              Oh and it&rsquo;s just $7/month.
-            </p>
-          </div>
-        </div>
-
-        <div style={{ maxWidth: "var(--max-content)", margin: "clamp(64px,8vw,112px) auto 0", padding: "0 var(--gutter-screen)" }}>
+      <section style={{ background: "var(--clay-200)", padding: "clamp(40px,5vw,72px) 0 clamp(64px,8vw,110px)" }}>
+        <div style={{ maxWidth: "var(--max-content)", margin: "0 auto", padding: "0 var(--gutter-screen)" }}>
           <div
             style={{
               background: "var(--sage-100)",
@@ -418,14 +340,14 @@ export default async function HomePage() {
             >
               Sound like your kind of thing?
             </h3>
-            <Link
-              href="/the-reading-room"
+            <NewsletterSignupButton
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 height: 54,
-                padding: "0 34px",
+                padding: "0 clamp(24px,4vw,34px)",
                 marginTop: 8,
+                whiteSpace: "nowrap",
                 borderRadius: "var(--radius-pill)",
                 background: "var(--accent-primary)",
                 color: "var(--text-inverse)",
@@ -434,8 +356,9 @@ export default async function HomePage() {
                 boxShadow: "var(--shadow-pill-primary)",
               }}
             >
-              Take a look
-            </Link>
+              Join the newsletter
+            </NewsletterSignupButton>
+            <p style={{ font: "var(--type-small)", color: "var(--ink-700)", margin: 0 }}>It&rsquo;s free. Unsubscribe any time.</p>
           </div>
         </div>
       </section>

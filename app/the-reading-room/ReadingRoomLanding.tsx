@@ -1,0 +1,155 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
+import Image from "next/image";
+import Link from "next/link";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { BookCover } from "@/components/ds/BookCover";
+import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { getRecommendedCovers, getSiteSettings } from "@/lib/content";
+import styles from "./ReadingRoom.module.css";
+
+/*
+ * The Reading Room's landing page, kept as built while The Reading Room is
+ * paused (user, 2026-10-23; DECISIONS.md). page.tsx shows a "taking a break"
+ * note instead. To relaunch, page.tsx becomes
+ *   export { ReadingRoomLanding as default, landingMetadata as metadata } from "./ReadingRoomLanding";
+ * (and the nav/footer links and promos come back; see that DECISIONS.md entry).
+ */
+export const landingMetadata: Metadata = pageMetadata({
+  title: "The Reading Room",
+  description: "30 themed book recommendations, every Tuesday. $7/month, cancel anytime.",
+  path: "/the-reading-room",
+});
+
+/* "The research" is drawn from the About page's "How we find the books" (user's request). */
+const PITCH: { label: string; body: React.ReactNode[] }[] = [
+  { label: "What you get", body: ["Reading Room subscribers get a themed newsletter every Tuesday, sharing the most-recommended books for one specific interest."] },
+  { label: "The themes", body: ["Think “dark romance”, “emotionally devastating”, “found family”, you name it. We’re basically working our way through as many reader interests as we can."] },
+  {
+    label: "The research",
+    body: [
+      "And of course, in true FNFE spirit, we’re not just cobbling together a list of five random recommendations.",
+      "For every theme, we go through multiple independent reader discussions, which can mean hundreds or even thousands of individual recommendations. Then we look at how often readers recommended each book across all of those discussions.",
+      <>
+        The books readers keep putting forward are the ones that make the catalogue. 30 of them, every single time.{" "}
+        <Link href="/about#how-we-find-the-books">See exactly how we find the books</Link>
+      </>,
+    ],
+  },
+];
+
+const SPINES = ["var(--slate-600)", "var(--clay-600)", "var(--sky-600)", "var(--sage-600)", "var(--clay-700)", "var(--sky-700)"];
+
+const TITLES: [string, string][] = [
+  ["11/22/63", "Stephen King"],
+  ["61 Hours", "Lee Child"],
+  ["A Boy and His Dog at the End of the World", "C. A. Fletcher"],
+  ["A Child Called It", "Dave Pelzer"],
+  ["A Crown for Cold Silver", "Alex Marshall"],
+  ["A Deadly Education", "Naomi Novik"],
+  ["A Drink Before The War", "Dennis Lehane"],
+  ["A Feast of Snakes", "Harry Crews"],
+  ["A Fine Balance", "Rohinton Mistry"],
+  ["A Flicker in the Dark", "Stacy Willingham"],
+  ["A Good Girl's Guide to Murder", "Holly Jackson"],
+  ["A Great Deliverance", "Elizabeth George"],
+];
+
+export async function ReadingRoomLanding() {
+  const [settings, covers] = await Promise.all([getSiteSettings(), getRecommendedCovers(24)]);
+  // Real covers from published articles (user, 2026-09-27); the placeholder titles only until enough exist.
+  const books = covers.length >= 8 ? covers.map((c) => ({ title: c.title, author: c.author, src: c.coverUrl })) : TITLES.map(([title, author]) => ({ title, author, src: undefined }));
+  const doubled = [...books, ...books]; // two copies, so the drifting rows loop seamlessly
+
+  return (
+    <>
+      <Header />
+
+      <section className={styles.hero}>
+        <div className={styles.driftLayer} aria-hidden="true">
+          <div className={styles.driftTrack}>
+            {doubled.map((b, i) => (
+              <BookCover key={i} title={b.title} author={b.author} src={b.src} spine={SPINES[i % SPINES.length]} width={104} ratio={1.5} bookmark={false} />
+            ))}
+          </div>
+        </div>
+        <div className={styles.heroScrim} aria-hidden="true" />
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>The Reading Room</h1>
+          <p className={styles.heroByline}>by Field Notes From Everywhere</p>
+          {/* The design's "Try it free" + "Subscribe" pair: the free trial is paused
+              (DECISIONS.md 2026-09-27), so one button straight to the payment page. */}
+          <Link href="/the-reading-room/subscribe" className={styles.heroCta}>
+            Join The Reading Room
+          </Link>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionInner}>
+          {/* The full pitch here, the short teaser on the homepage: swapped by the user, 2026-09-27 (DECISIONS.md). */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "clamp(24px,3vw,36px)" }}>
+            <h2 className={styles.sectionHeading}>30 themed book recommendations, every Tuesday.</h2>
+            {PITCH.map((block) => (
+              <div key={block.label} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <h3 className={styles.kicker} style={{ margin: 0 }}>{block.label}</h3>
+                {block.body.map((para, i) => (
+                  <p key={i} className={styles.sectionBody}>
+                    {para}
+                  </p>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
+            {/* The user's own framed collage (2026-10-06): shown whole, at its own shape, with no card behind it (its frame is part of the image). */}
+            <Image
+              src="/images/reading-room-email-collage.png"
+              alt="Glimpses of a Reading Room email: the About this issue note and ranked thriller picks with their covers, tags and blurbs"
+              width={1393}
+              height={1407}
+              sizes="(max-width: 440px) calc(100vw - 32px), 400px"
+              className={styles.screenshot}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.shelfSection}>
+        <div className={styles.shelfInner}>
+          <span className={styles.shelfLabel}>A few of the books we&rsquo;ve recommended so far</span>
+          <div className={styles.shelfMask}>
+            <div className={styles.shelfTrack}>
+              {doubled.map((b, i) =>
+                b.src ? (
+                  <BookCover key={i} title={b.title} author={b.author} src={b.src} alt={`${b.title} by ${b.author}`} width={136} ratio={1.5} bookmark={false} />
+                ) : (
+                  <div key={i} style={{ position: "relative", flex: "0 0 auto", width: 136, aspectRatio: "2/3", borderRadius: "4px 10px 10px 4px", overflow: "hidden", boxShadow: "var(--shadow-cover)" }}>
+                    <ImagePlaceholder label={b.title} />
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="join" className={styles.trialSection}>
+        <div className={styles.trialInner}>
+          <h2 className={styles.trialHeading}>Sound like your kind of thing?</h2>
+          <p className={styles.trialBody}>
+            Join today and get a new themed catalogue of 30 book recommendations in your inbox every
+            Tuesday.
+          </p>
+          <Link href="/the-reading-room/subscribe" className={styles.trialCta}>
+            Join The Reading Room
+          </Link>
+          <p className={styles.trialNote}>{settings.readingRoomPriceCopy}</p>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+}

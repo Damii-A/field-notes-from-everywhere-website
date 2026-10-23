@@ -3,6 +3,7 @@ import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { NewsletterSignupButton } from "@/components/NewsletterSignupButton";
 import { getSiteSettings } from "@/lib/content";
 
 export const metadata: Metadata = pageMetadata({
@@ -150,19 +151,16 @@ export default async function AboutPage() {
             >
               <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
                 <span style={{ font: "var(--weight-bold) clamp(22px,2.6vw,30px)/1 var(--font-display)", color: "var(--ochre-500)" }}>2</span>
-                <Link
-                  href="/the-reading-room"
-                  style={{ font: "var(--weight-bold) var(--text-lg)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--paper-050)" }}
-                >
-                  The Reading Room
-                </Link>
+                {/* Was The Reading Room until it was paused (user, 2026-10-23; DECISIONS.md). */}
+                <span style={{ font: "var(--weight-bold) var(--text-lg)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--paper-050)" }}>
+                  The FNFE newsletter
+                </span>
               </div>
-              <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>This is our paid offer.</p>
+              <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>This is our free email newsletter.</p>
               <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>
-                Every Tuesday, we send members an email catalogue of 30 book recommendations around a
-                specific reader theme.
+                Once a week, we send you a roundup of the latest book lists we&rsquo;ve published, so you can catch up
+                on anything you might have missed.
               </p>
-              <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>This could be a genre, trope, mood, reader experience, etc.</p>
               <div
                 style={{
                   marginTop: 10,
@@ -178,7 +176,7 @@ export default async function AboutPage() {
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: "44ch" }}>
                   <span style={{ font: "var(--type-label)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--clay-text)" }}>
-                    The Reading Room by FNFE
+                    The FNFE newsletter
                   </span>
                   <span
                     style={{
@@ -188,12 +186,11 @@ export default async function AboutPage() {
                       textWrap: "pretty",
                     }}
                   >
-                    Get 30 book recommendations, delivered to your inbox every Tuesday.
+                    Get a weekly roundup of our latest book lists, delivered to your inbox.
                   </span>
-                  <span style={{ font: "var(--type-small)", color: "var(--ink-700)" }}>{settings.readingRoomPriceCopy}</span>
+                  <span style={{ font: "var(--type-small)", color: "var(--ink-700)" }}>It&rsquo;s free. Unsubscribe any time.</span>
                 </div>
-                <Link
-                  href="/the-reading-room"
+                <NewsletterSignupButton
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -206,8 +203,8 @@ export default async function AboutPage() {
                     letterSpacing: "var(--tracking-display)",
                   }}
                 >
-                  Take a look
-                </Link>
+                  Join the list
+                </NewsletterSignupButton>
               </div>
             </div>
           </div>
@@ -288,7 +285,7 @@ export default async function AboutPage() {
             <p style={{ font: "var(--type-body)", color: "var(--ink-700)", margin: 0 }}>
               Once all of that research is brought together, we finally have enough evidence to put the top books into
               our internal book recommendation database for that specific theme or reader request. And this database
-              is what powers the FNFE publication and every Reading Room newsletter.
+              is what powers every FNFE reading list.
             </p>
             <div style={{ borderTop: "1px solid var(--border-hairline)", paddingTop: 22 }}>
               <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0 }}>
@@ -345,7 +342,7 @@ export default async function AboutPage() {
                 those results.
               </p>
               <p style={{ font: "var(--type-body)", color: "var(--ink-700)", margin: 0 }}>
-                Any paid book promotions, whether on our website or in a Reading Room issue, will always be clearly
+                Any paid book promotions, whether on our website or in our emails, will always be clearly
                 labelled as an advertisement or sponsorship.
               </p>
             </div>

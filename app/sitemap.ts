@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { CATEGORY_LIST, getHubArticles, getWhereToReadSlugs } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
 
-const STATIC_ROUTES = ["/", "/about", "/contact", "/the-reading-room", "/terms", "/privacy-and-cookies", "/disclosures"];
+const STATIC_ROUTES = ["/", "/about", "/contact", "/terms", "/privacy-and-cookies", "/disclosures"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = STATIC_ROUTES.map((path) => ({

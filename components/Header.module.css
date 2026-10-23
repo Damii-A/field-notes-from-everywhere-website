@@ -59,6 +59,8 @@
   border-bottom-color: var(--accent-primary);
 }
 
+/* .divider and .readingRoomPill are unused while The Reading Room is paused
+   (2026-10-23, DECISIONS.md); kept so its menu pill can come back as it was. */
 .divider {
   width: 1px;
   height: 22px;
@@ -177,6 +179,14 @@
     border-bottom-color: var(--border-soft);
     text-decoration: underline 2px var(--accent-primary);
     text-underline-offset: 7px;
+  }
+  /* With the Reading Room pill gone (paused 2026-10-23), the last column
+     link ends the card: no hairline under it, and no room left for the pill. */
+  .nav > .navLink:last-child {
+    border-bottom: none;
+  }
+  .nav {
+    padding-bottom: 6px;
   }
   .readingRoomPill {
     align-self: flex-start;

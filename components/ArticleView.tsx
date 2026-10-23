@@ -7,11 +7,15 @@ import { Icon } from "./ds/Icon";
 import { BookCover } from "./ds/BookCover";
 import { ImagePlaceholder } from "./ImagePlaceholder";
 import { ShareButtons } from "./ShareButtons";
+import { NewsletterSignupButton } from "./NewsletterSignupButton";
 import styles from "./ArticleView.module.css";
+import popupStyles from "./Popup.module.css";
 import type { Article, CategorySlug } from "@/lib/content";
 import { formatArticleDate } from "@/lib/content/dates";
 import { splitParagraphs } from "@/lib/content/paragraphs";
 import { CATEGORIES } from "@/lib/content/categories"; // not "@/lib/content": that pulls server-only fetching into this client component
+
+const NEWSLETTER_PITCH = "Get a weekly roundup of our latest book lists, delivered to your inbox.";
 
 const CATEGORY_LABEL: Record<CategorySlug, string> = {
   "the-shortlist": "The Shortlist",
@@ -295,19 +299,20 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
 
           <ShareButtons url={shareUrl} title={article.title} image={article.heroImage?.url} layout="row" heading="Share this list" className={styles.endShare} />
 
+          {/* Promoted The Reading Room until it was paused (user, 2026-10-23; DECISIONS.md): now the free newsletter. */}
           <aside className={styles.rrBanner} style={{ background: style.rrBannerBg }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: "44ch" }}>
               <span className={styles.rrBannerLabel} style={{ color: style.rrBannerLabelColor }}>
-                The Reading Room by FNFE
+                The FNFE newsletter
               </span>
-              <span className={styles.rrBannerHeadline}>Get 30 book recommendations, delivered to your inbox every Tuesday.</span>
+              <span className={styles.rrBannerHeadline}>{NEWSLETTER_PITCH}</span>
               <span className={styles.rrBannerFine} style={{ color: style.rrBannerFineColor }}>
-                $7/month. Cancel anytime.
+                It&rsquo;s free. Unsubscribe any time.
               </span>
             </div>
-            <Link href="/the-reading-room" className={styles.rrBannerCta} style={{ background: style.rrBannerCtaBg, color: style.rrBannerCtaColor }}>
-              Take a look
-            </Link>
+            <NewsletterSignupButton className={styles.rrBannerCta} style={{ background: style.rrBannerCtaBg, color: style.rrBannerCtaColor }}>
+              Join the list
+            </NewsletterSignupButton>
           </aside>
 
           {article.whatToReadNext.length > 0 ? (
@@ -334,13 +339,11 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
             {showFloatAd ? (
               <aside className={styles.floatAd} style={{ border: `1px solid ${style.floatAdBorder}` }}>
                 <span className={styles.floatAdLabel} style={{ color: style.floatAdLabelColor }}>
-                  The Reading Room
+                  The FNFE newsletter
                 </span>
-                <span className={styles.floatAdHeadline}>Get 30 book recommendations, delivered to your inbox every Tuesday.</span>
-                <p className={styles.floatAdFine}>Just $7/month. Cancel anytime.</p>
-                <Link href="/the-reading-room" className={styles.floatAdCta}>
-                  Take a look
-                </Link>
+                <span className={styles.floatAdHeadline}>{NEWSLETTER_PITCH}</span>
+                <p className={styles.floatAdFine}>It&rsquo;s free. Unsubscribe any time.</p>
+                <NewsletterSignupButton className={styles.floatAdCta}>Join the list</NewsletterSignupButton>
               </aside>
             ) : null}
           </aside>
@@ -490,27 +493,27 @@ function SendListPopup({
 
   return (
     <>
-      <div onClick={onClose} aria-hidden="true" className={styles.overlay} />
-      <div className={styles.popup}>
-        <div className={styles.popupHeader}>
-          <span className={styles.popupHeading} role={status === "sent" ? "status" : undefined}>
+      <div onClick={onClose} aria-hidden="true" className={popupStyles.overlay} />
+      <div className={popupStyles.popup}>
+        <div className={popupStyles.popupHeader}>
+          <span className={popupStyles.popupHeading} role={status === "sent" ? "status" : undefined}>
             {status === "sent" ? "Your list is on its way!" : "Want us to send this book list to your email?"}
           </span>
-          <button type="button" onClick={onClose} aria-label="Close" className={styles.popupClose}>
+          <button type="button" onClick={onClose} aria-label="Close" className={popupStyles.popupClose}>
             <Icon name="x" size={18} />
           </button>
         </div>
         {status === "sent" ? (
-          <p className={styles.popupBody}>
+          <p className={popupStyles.popupBody}>
             Check your inbox for all {bookCount} books. You&rsquo;re also on the free Field Notes From Everywhere email
             list now. Welcome!
           </p>
         ) : (
           <form onSubmit={handleSubmit}>
-            <p className={styles.popupBody}>
+            <p className={popupStyles.popupBody}>
               Enter your email below and we&rsquo;ll send you a list with all {bookCount} recommendations.
             </p>
-            <div className={styles.popupForm}>
+            <div className={popupStyles.popupForm}>
               <input
                 type="text"
                 required
@@ -519,7 +522,7 @@ function SendListPopup({
                 aria-label="First name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className={styles.popupInput}
+                className={popupStyles.popupInput}
               />
               <input
                 type="email"
@@ -529,18 +532,18 @@ function SendListPopup({
                 aria-label="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={styles.popupInput}
+                className={popupStyles.popupInput}
               />
-              <button type="submit" disabled={status === "sending"} className={styles.popupSubmit} style={{ background: accent }}>
+              <button type="submit" disabled={status === "sending"} className={popupStyles.popupSubmit} style={{ background: accent }}>
                 {status === "sending" ? "Sending…" : "Send it"}
               </button>
             </div>
             {status === "error" ? (
-              <p className={styles.popupBody} style={{ color: "var(--status-critical)" }}>
+              <p className={popupStyles.popupBody} style={{ color: "var(--status-critical)" }}>
                 {errorMessage}
               </p>
             ) : null}
-            <p className={`${styles.popupBody} ${styles.popupFine}`}>
+            <p className={`${popupStyles.popupBody} ${popupStyles.popupFine}`}>
               You&rsquo;ll also join the free Field Notes From Everywhere Publication email list. Unsubscribe any
               time.
             </p>
