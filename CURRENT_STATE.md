@@ -11,7 +11,10 @@ focuses on the Publication and the free weekly newsletter; The Reading Room may 
 spot that promoted it (homepage, article banner and floating card, About) now opens a free-newsletter
 signup popup; the menu pill, footer link, book-list email P.S., llms.txt and sitemap entries are gone;
 `/the-reading-room` shows a "taking a break" note (noindex) and `/subscribe` redirects there. All its
-code is kept, switched off. Still to do, one at a time, all the user's:
+code is kept, switched off. Checked live 2026-10-23 (commit e7ef2eb): the redirect, the noindex, the
+new promos on the homepage, About and an article, and no Reading Room in the sitemap or llms.txt. Not
+tested: a real signup through the new popup (same `/api/subscribe` call as the footer form; skipped to
+keep test contacts off the real list). **Start the next session here.** Still to do, one at a time, all the user's:
 1. Cancel their own $7 subscription in Paddle (the only member; the webhook will untag them in Kit).
 2. Legal pages in Sanity: Disclosures says "Today, our income comes from The Reading Room" (now
    untrue); Terms and Privacy describe it as an offer. Edit in the Studio, or give me a new Sanity key
