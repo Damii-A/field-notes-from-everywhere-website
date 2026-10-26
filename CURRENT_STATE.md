@@ -1,10 +1,17 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-23. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-26. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
 This file now holds only what's true today, what's open, and facts a new session needs.
+
+**2026-10-26: Publication formats** (user; DECISIONS.md "Five article formats…"). Articles come in five
+formats (top X; books like {book}; book club; tag/trope qualifier; seasonal), placed in the existing
+three columns. Column descriptions rewritten (user-approved) and now shared by the homepage and hubs.
+**Next, one at a time**: Studio tooling for picking books per format (tag-based picking for "books like"
+and qualifier lists), then the open points listed in that DECISIONS entry (tag clean-up, methodology
+wording, list length, overlap).
 
 **2026-10-23: The Reading Room is paused as a product** (user; DECISIONS.md). The business now
 focuses on the Publication and the free weekly newsletter; The Reading Room may relaunch later. Every
@@ -61,8 +68,6 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 ## Open, raise one at a time (nothing blocking)
 
 - Cancelling the old WordPress hosting, if the account still exists (provider unknown).
-- The column hub pages' own descriptions (`lib/content/categories.ts`, also used by llms.txt and
-  search results) still differ from the homepage column copy (offered, not chosen).
 - Optional: accurate sitemap `lastmod`; JSON-LD beyond the book pages (offered, not chosen).
 - Covers: The Family Upstairs is square (318 × 318, cropped); a full 1838 × 2775 cover is in the
   Pinterest folder (offered, not done). Still under 300px wide but the best front covers found:

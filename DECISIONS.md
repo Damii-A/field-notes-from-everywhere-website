@@ -2498,3 +2498,47 @@ checklist) and decide what replaces the newsletter promos.
 **Outside the code (the user's, not done here)**: cancel the user's own $7 subscription in Paddle (the
 only member); the live legal pages in Sanity still describe The Reading Room. Disclosures' "Today, our
 income comes from The Reading Room" is no longer true; Terms and Privacy describe it as an offer.
+
+## 2026-10-26 — Five article formats inside the three columns; column descriptions rewritten to match
+
+**Decision** (user-directed, talked through 2026-10-26): Publication articles are still built from a
+researched ranking (e.g. "Dark fantasy"), but in five formats, placed in the existing three columns
+(no new column, no renames, no web-address changes):
+
+| # | Format (user's examples) | How books are picked | Column |
+| --- | --- | --- | --- |
+| 1 | "22 best dark fantasy books to read (according to N real reader recommendations)" | the ranking's top X, ranked | The Shortlist |
+| 2 | "11 books like {book}" / "for fans of {book}" | ranking books sharing core tags with that book | What to Read When |
+| 3 | "The 12 best dark fantasy book club books" | hand-picked by the user from the ranking, using tags and reviews | Book Club Book Picks |
+| 4 | "12 dark fantasy books {with a trope / that take you on an emotional rollercoaster}" | ranking books sharing chosen tags | What to Read When |
+| 5 | Seasonal: "dark romance books for Halloween", "thrillers for cozy winter nights" | hand-picked from a ranking for a season/occasion | What to Read When |
+
+**Why the columns stay**: the user's concern was that the column *descriptions* didn't fit the new
+content, not the split itself. The names hold up ("What to Read When" reads naturally as when you want a
+twist / when it's Halloween / when you've finished {book}); renaming would change every article's web
+address (column slug in the URL) and the menu; a 4th column (e.g. for "books like X") would need a new
+hub and colour identity the design project doesn't have. Offered: fit into the 3 columns (recommended),
+a 4th column for "books like X", or replacing columns with formats. Revisit a 4th column if "books like
+X" becomes the main traffic source; only those articles would move.
+
+**Column descriptions** (the user approved my drafts): one text per column in `lib/content/categories.ts`,
+now also read by the homepage boxes (which previously had their own differing copy; resolves that open
+item). Used by the hub pages, their meta descriptions and `/llms.txt`. Book Club Book Picks no longer
+claims readers recommended the books for book clubs ("we start with the books real readers recommend
+most for a genre or theme, then pick out the ones that give a group the most to talk about"), since
+format 3 selection is editorial.
+
+**Not yet decided** (raised with the user, to settle one at a time):
+- Studio tooling per format: "Fill books from ranking" only knows the per-column rules (Shortlist top N;
+  What to Read When / Book Club = top 5 + books not in sibling articles). Formats 2 and 4 need tag-based
+  picking; 3 and 5 are hand-picked. The current sibling-exclusion rule assumes one article per column per
+  ranking, which no longer holds.
+- Tags drive selection for formats 2 and 4, so near-duplicate tags (94 tags on 49 books) would cause
+  misses. Merging was declined 2026-09-29 when tags were only labels; worth reconsidering now.
+- Honest methodology sentences: for formats 2, 4 and 5 readers recommended the books for the ranking's
+  theme, not for "fans of {book}" / the trope / the season; the "How we made this list" box must say so.
+- List length: `pub_article.md` §5 says under 20 books; the user's format 1 example has 22.
+- Overlap between several lists from one ranking (possible search cannibalisation).
+- Seasonal lists: publish weeks ahead (scheduling exists); reuse one evergreen address each year rather
+  than a new dated page.
+- "Books like X" articles could be linked from the matching "Where to read" book page.
