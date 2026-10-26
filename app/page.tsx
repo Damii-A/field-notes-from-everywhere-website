@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Stratosphere } from "@/components/Stratosphere";
 import { NewsletterSignupButton } from "@/components/NewsletterSignupButton";
 import { ImagePlaceholder } from "@/components/ImagePlaceholder";
-import { CATEGORIES, getHomeShowcase } from "@/lib/content";
+import { getHomeShowcase } from "@/lib/content";
 import styles from "./Home.module.css";
 
 // The layout's canonical "./" resolves to "/index" on the root page, a duplicate
@@ -150,7 +150,9 @@ export default async function HomePage() {
                 The Shortlist
               </Link>
               <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
-                {CATEGORIES["the-shortlist"].description}
+                Our shortlists are ranked collections of books built around a specific theme, trope, or reader request.
+                We analyse real reader discussions to uncover the books recommended most often, then distill those
+                recommendations into ranked lists.
               </p>
             </div>
           </div>
@@ -186,7 +188,9 @@ export default async function HomePage() {
                 What to Read When
               </Link>
               <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
-                {CATEGORIES["what-to-read-when"].description}
+                This is where you&rsquo;ll find book lists for specific reading cravings. Whether you want something
+                deliciously messy, genuinely terrifying, or simply impossible to put down, we probably have (or are
+                currently working on) a list to match.
               </p>
             </div>
           </div>
@@ -221,7 +225,9 @@ export default async function HomePage() {
                 Book Club Book Picks
               </Link>
               <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
-                {CATEGORIES["book-club-book-picks"].description}
+                This is the column for readers looking for book recommendations for shared reading experiences. These
+                book lists are built from our analysis of real reader recommendations for the specific experience
+                we&rsquo;re curating for.
               </p>
             </div>
           </div>

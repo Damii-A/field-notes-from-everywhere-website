@@ -8,8 +8,9 @@ This file now holds only what's true today, what's open, and facts a new session
 
 **2026-10-26: Publication formats** (user; DECISIONS.md "Five article formats…"). Articles come in five
 formats (top X; books like {book}; book club; tag/trope qualifier; seasonal), placed in the existing
-three columns. Column descriptions rewritten (user-approved) and now shared by the homepage and hubs.
-**Next, one at a time**: Studio tooling for picking books per format (tag-based picking for "books like"
+three columns. The homepage and hub-page column descriptions are two deliberately different sets of the
+user's copy (restored after I wrongly merged them); small per-set edits for the new formats are being
+agreed with the user. **Next, one at a time**: Studio tooling for picking books per format (tag-based picking for "books like"
 and qualifier lists), then the open points listed in that DECISIONS entry (tag clean-up, methodology
 wording, list length, overlap).
 
@@ -80,7 +81,8 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 - Before joining an **ad network**: a Google-certified consent platform for EEA/UK/Swiss visitors,
   and a privacy-policy update naming it.
 
-Settled, don't offer again: merging near-duplicate book tags (declined 2026-09-29); blocking AI
+Settled, don't offer again: merging the homepage and hub-page column descriptions (deliberately
+different, user 2026-10-26); merging near-duplicate book tags (declined 2026-09-29); blocking AI
 training crawlers in robots.txt (declined twice).
 
 ## Paused: The Reading Room (whole product, 2026-10-23) and its free trial (2026-09-27)

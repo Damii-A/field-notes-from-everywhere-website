@@ -2521,12 +2521,13 @@ hub and colour identity the design project doesn't have. Offered: fit into the 3
 a 4th column for "books like X", or replacing columns with formats. Revisit a 4th column if "books like
 X" becomes the main traffic source; only those articles would move.
 
-**Column descriptions** (the user approved my drafts): one text per column in `lib/content/categories.ts`,
-now also read by the homepage boxes (which previously had their own differing copy; resolves that open
-item). Used by the hub pages, their meta descriptions and `/llms.txt`. Book Club Book Picks no longer
-claims readers recommended the books for book clubs ("we start with the books real readers recommend
-most for a genre or theme, then pick out the ones that give a group the most to talk about"), since
-format 3 selection is editorial.
+**Column descriptions — two deliberately different sets, both the user's own copy**: the homepage
+column boxes (`app/page.tsx`) and the hub pages (`lib/content/categories.ts`, also their meta
+descriptions and `/llms.txt`) say different things on purpose. Don't merge them. My first pass
+replaced both with one fresh rewrite (commit e343e80); the user preferred their originals ("all they
+needed were slight tweaks or additions") and pointed out the two sets are intentionally different, so
+both were restored the same day. Any wording changes for the new formats are small, user-approved
+edits to each set separately.
 
 **Not yet decided** (raised with the user, to settle one at a time):
 - Studio tooling per format: "Fill books from ranking" only knows the per-column rules (Shortlist top N;
