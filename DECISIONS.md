@@ -2545,6 +2545,12 @@ other four descriptions are unchanged (the homepage Book Club text kept as is).
 - Seasonal lists: publish weeks ahead (scheduling exists); reuse one evergreen address each year rather
   than a new dated page.
 - "Books like X" articles could be linked from the matching "Where to read" book page.
+- Cross-genre tag lists (e.g. "books with plot twist endings" from any ranking): discussed 2026-10-26,
+  left for now (user agreed). Possible by hand today (book entries can reference any book). When one comes
+  up, decide: research the tag as its own ranking (fits About's "we research every theme independently"),
+  or label it as a curated cross-genre list in its methodology sentence. If they become regular, add an
+  "all books" mode to the Choose books picker. Tag wording inconsistencies (Plot Twist / Plot Twist Ending)
+  would make a library-wide tag filter incomplete.
 
 ## 2026-10-26 — Every format except the Shortlist is hand-picked: "Choose books from ranking"
 
