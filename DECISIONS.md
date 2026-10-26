@@ -2538,8 +2538,7 @@ other four descriptions are unchanged (the homepage Book Club text kept as is).
   ranking, which no longer holds.
 - Tags drive selection for formats 2 and 4, so near-duplicate tags (94 tags on 49 books) would cause
   misses. Merging was declined 2026-09-29 when tags were only labels; worth reconsidering now.
-- Honest methodology sentences: for formats 2, 4 and 5 readers recommended the books for the ranking's
-  theme, not for "fans of {book}" / the trope / the season; the "How we made this list" box must say so.
+- ~~Honest methodology sentences~~ — settled same day: Format field + draft-sentence patterns (entry below).
 - List length: `pub_article.md` §5 says under 20 books; the user's format 1 example has 22.
 - Overlap between several lists from one ranking (possible search cannibalisation).
 - Seasonal lists: publish weeks ahead (scheduling exists); reuse one evergreen address each year rather
@@ -2589,3 +2588,45 @@ browser harness: initial ticks match the article, filter "Unreliable Narrator" �
 unticking then saving gave kept override entry + untouched outside-ranking entry + new books in rank
 order, no console errors; type check, lint and production build clean. **Not verified**: the button
 inside the real Studio (the user's own login), so the user's first use is its check.
+
+## 2026-10-26 — Article "Format" field (What to Read When) and draft methodology sentences
+
+**Decision** (user, asked): What to Read When articles get a required **Format** field (*Books like…*,
+*Trope or feeling*, *Seasonal*; `article.format`, hidden on the other columns, which each hold one
+format). The user raised it: methodology patterns per format can't work if nothing records an article's
+format. Offered: What to Read When only (chosen, recommended), every article, or no field.
+
+**Draft sentence button** (user's choice over help text only): "Write draft sentence" above the
+methodology box (`sanity/components/MethodologyInput.tsx`, wording in `sanity/lib/methodologyPattern.ts`)
+fills the pattern for the article's column/format. Filled automatically: the book count (the article's
+entries) and the ranking's size; the theme comes from the ranking name but stays **[bracketed]** for the
+editor to phrase ("[thriller]" → "thrillers"). The editor fills every [bracketed] part; the field's
+validation **refuses to publish** while any remain.
+
+Patterns (the Shortlist and Book Club ones are the user's own live sentences; the What to Read When ones
+were approved one by one by the user; the user kept Book Club's unchanged rather than adding a reason):
+- **The Shortlist**: "To create this article, we analysed [number] reader recommendations. The books on
+  this list were the most frequently recommended."
+- **Book Club Book Picks**: "To create this article, we analysed [number] book recommendations from real
+  reader discussions. We pulled the {N} books on this list from a larger list of the top {ranking size}
+  most-recommended books in those discussions."
+- **What to Read When**, all formats: "To create this article, we analysed [number] reader
+  recommendations for [theme]. We pulled the {N} books on this list from a larger list of the top
+  {ranking size} most-recommended books, " then:
+  - *Books like…*: "picking the ones that have the most in common with [book title]."
+  - *Trope or feeling*: "picking the ones [with a small-town setting / most likely to …]."
+  - *Seasonal*: "picking the ones we think are perfect for [season or occasion]." ("we think": the
+    seasonal fit is the editor's pick, not the research.)
+
+**Why these words**: the research is reader recommendations for the ranking's theme, not for "books like
+{book}", a trope or a season, so the sentence names the theme and says how the books were picked
+(pub_article.md §4: claims must not exceed the evidence). The recommendation count isn't stored anywhere
+(rankings hold only book order), so it stays a typed [number].
+
+**Existing articles**: published sentences have no brackets, so nothing new blocks them. The published
+What to Read When article ("These 17 Thrillers…") has no format yet, so the Studio will ask for one the
+next time it's edited (it's a trope/feeling list).
+
+**Verified**: pattern output for every column/format and with no ranking/books; placeholder detection;
+`sanity schema validate` 0 errors/0 warnings; type check, lint, production build. **Not verified**: the
+field and button in the real Studio (user's login).

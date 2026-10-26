@@ -1,5 +1,7 @@
 import { defineField, defineType, type RuleDef, type ValidationContext } from "sanity";
 import { TITLE_MAX_CHARS, keywordWarning, portableTextPlain, slugShapeWarnings, suggestedFocusKeyword } from "../lib/seoChecks";
+import { WTRW_FORMATS, hasPlaceholders } from "../lib/methodologyPattern";
+import { MethodologyInput } from "../components/MethodologyInput";
 
 interface SeoDoc {
   _id?: string;
@@ -149,6 +151,19 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: "format",
+      title: "Format",
+      description:
+        "What kind of What to Read When list this is. It decides the \"How we made this list\" draft sentence (DECISIONS.md, 2026-10-26). The other two columns each have one format, so they don't need this.",
+      type: "string",
+      options: { list: WTRW_FORMATS.map((f) => ({ value: f.value, title: f.title })), layout: "radio" },
+      hidden: ({ document }) => document?.category !== "what-to-read-when",
+      validation: (r) =>
+        r.custom((value, context) =>
+          (context.document as SeoDoc | undefined)?.category === "what-to-read-when" && !value ? "Choose this article's format." : true,
+        ),
+    }),
+    defineField({
       name: "themes",
       title: "Themes (genre, mood, trope, etc.)",
       description:
@@ -182,10 +197,15 @@ export default defineType({
     defineField({
       name: "methodologySentence",
       title: "Methodology sentence",
-      description: 'The one sentence shown in the "How we made this list" box — pub_article.md §4.',
+      description:
+        'The one sentence shown in the "How we made this list" box — pub_article.md §4. "Write draft sentence" fills in the pattern for this column/format; replace every [bracketed] part before publishing.',
       type: "text",
       rows: 2,
-      validation: (r) => r.required(),
+      components: { input: MethodologyInput },
+      validation: (r) => [
+        r.required(),
+        r.custom((value: string | undefined) => (hasPlaceholders(value) ? "Fill in the [bracketed] parts before publishing." : true)),
+      ],
     }),
     defineField({
       name: "introText",

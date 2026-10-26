@@ -13,8 +13,11 @@ user's copy (restored after I wrongly merged them); What to Read When got one us
 each set (seasons, "books like"); the rest are unchanged. Tags stay as they are; every format except the Shortlist is hand-picked with the new Studio button
 **"Choose books from ranking"** (tick boxes, tag filter, "Also in" notes; DECISIONS.md 2026-10-26).
 Not yet seen in the real Studio (user's login): the user's first use is its check. **Next, one at a
-time**: the remaining open points in the "Five article formats" DECISIONS entry (methodology wording
-for formats 2/4/5, list length over 20, seasonal addresses).
+time**: the remaining open points in the "Five article formats" DECISIONS entry (list length over 20,
+seasonal addresses). Done 2026-10-26: a required **Format** field on What to Read When articles and a
+"Write draft sentence" button for the methodology box (patterns approved by the user; publishing is
+blocked while [bracketed] parts remain). The live What to Read When article needs its format set (trope
+or feeling) next time it's edited. None of the new Studio pieces have been seen in the real Studio yet.
 
 **2026-10-23: The Reading Room is paused as a product** (user; DECISIONS.md). The business now
 focuses on the Publication and the free weekly newsletter; The Reading Room may relaunch later. Every

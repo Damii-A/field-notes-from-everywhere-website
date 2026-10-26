@@ -172,7 +172,9 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
 - **`article`** — `title`, `slug`, `metaDescription` (search/link-preview summary, also the
   hub lead card, RSS and recap summary; falls back to `methodologySentence` when empty),
   `focusKeyword` (Shortlist only; drives Studio SEO warnings, `sanity/lib/seoChecks.ts`),
-  `category` (enum), `themes[]` (references to `theme` —
+  `category` (enum), `format` (What to Read When only, required: books-like / trope-or-feeling /
+  seasonal; drives the "Write draft sentence" pattern on `methodologySentence`, which refuses to
+  publish with [bracketed] parts left — `sanity/lib/methodologyPattern.ts`, 2026-10-26), `themes[]` (references to `theme` —
   which of the 8 "Browse Our Collections" groupings this whole article belongs to, added
   2026-09-23; not yet read by any page, see below), `author`, `publishedAt`, `heroImage`,
   `methodologySentence` (the one sentence in the "How we made this list" box), `introText`
