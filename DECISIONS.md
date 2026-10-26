@@ -2526,8 +2526,10 @@ column boxes (`app/page.tsx`) and the hub pages (`lib/content/categories.ts`, al
 descriptions and `/llms.txt`) say different things on purpose. Don't merge them. My first pass
 replaced both with one fresh rewrite (commit e343e80); the user preferred their originals ("all they
 needed were slight tweaks or additions") and pointed out the two sets are intentionally different, so
-both were restored the same day. Any wording changes for the new formats are small, user-approved
-edits to each set separately.
+both were restored the same day. Then, approved one by one by the user, only What to Read When changed:
+homepage box adds "perfect for a cozy winter night, or just like that book you couldn't stop thinking
+about"; hub page "mood, craving or feeling" → "mood, craving, feeling, season or favourite book". The
+other four descriptions are unchanged (the homepage Book Club text kept as is).
 
 **Not yet decided** (raised with the user, to settle one at a time):
 - Studio tooling per format: "Fill books from ranking" only knows the per-column rules (Shortlist top N;

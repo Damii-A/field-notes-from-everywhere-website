@@ -13,7 +13,7 @@ export const CATEGORIES: Record<CategorySlug, CategoryDef> = {
     slug: "what-to-read-when",
     name: "What to Read When",
     description:
-      "What to Read When is a collection of book lists built around the kind of reading experience you’re looking for. Each article starts with a particular mood, craving or feeling and brings together books that fit it.",
+      "What to Read When is a collection of book lists built around the kind of reading experience you’re looking for. Each article starts with a particular mood, craving, feeling, season or favourite book and brings together books that fit it.",
     ranked: false,
     identity: { pageBg: "var(--oat-200)", accent: "var(--clay-700)" },
   },

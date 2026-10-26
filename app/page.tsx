@@ -189,8 +189,9 @@ export default async function HomePage() {
               </Link>
               <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
                 This is where you&rsquo;ll find book lists for specific reading cravings. Whether you want something
-                deliciously messy, genuinely terrifying, or simply impossible to put down, we probably have (or are
-                currently working on) a list to match.
+                deliciously messy, genuinely terrifying, simply impossible to put down, perfect for a cozy winter night,
+                or just like that book you couldn&rsquo;t stop thinking about, we probably have (or are currently
+                working on) a list to match.
               </p>
             </div>
           </div>
