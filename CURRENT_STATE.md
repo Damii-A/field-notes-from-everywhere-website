@@ -10,9 +10,11 @@ This file now holds only what's true today, what's open, and facts a new session
 formats (top X; books like {book}; book club; tag/trope qualifier; seasonal), placed in the existing
 three columns. The homepage and hub-page column descriptions are two deliberately different sets of the
 user's copy (restored after I wrongly merged them); What to Read When got one user-approved addition in
-each set (seasons, "books like"); the rest are unchanged. **Next, one at a time**: Studio tooling for picking books per format (tag-based picking for "books like"
-and qualifier lists), then the open points listed in that DECISIONS entry (tag clean-up, methodology
-wording, list length, overlap).
+each set (seasons, "books like"); the rest are unchanged. Tags stay as they are; every format except the Shortlist is hand-picked with the new Studio button
+**"Choose books from ranking"** (tick boxes, tag filter, "Also in" notes; DECISIONS.md 2026-10-26).
+Not yet seen in the real Studio (user's login): the user's first use is its check. **Next, one at a
+time**: the remaining open points in the "Five article formats" DECISIONS entry (methodology wording
+for formats 2/4/5, list length over 20, seasonal addresses).
 
 **2026-10-23: The Reading Room is paused as a product** (user; DECISIONS.md). The business now
 focuses on the Publication and the free weekly newsletter; The Reading Room may relaunch later. Every

@@ -228,16 +228,16 @@ export default defineType({
       name: "ranking",
       title: "Ranking",
       description:
-        "Which theme ranking this article's books come from. Set this and \"How many books\", then use \"Fill books from ranking\" (in the menu next to the Publish button) to fill the book list automatically.",
+        "Which theme ranking this article's books come from. The Shortlist: set this and \"How many books\", then use \"Fill books from ranking\" (in the menu next to the Publish button) to add the top books automatically. What to Read When / Book Club Book Picks: set this, then use \"Choose books from ranking\" (same menu) to tick the books you want.",
       type: "reference",
       to: [{ type: "ranking" }],
     }),
     defineField({
       name: "rankingCount",
       title: "How many books",
-      description:
-        "The total number of books in this article. The Shortlist: the ranking's top books in order (10 = ranks 1-10). What to Read When / Book Club Book Picks: the ranking's top 5 plus the rest from further down, skipping books already used by this theme's other articles (12 = the top 5 + 7 more).",
+      description: "How many of the ranking's top books \"Fill books from ranking\" adds, in rank order (10 = ranks 1-10).",
       type: "number",
+      hidden: ({ document }) => document?.category !== "the-shortlist",
       validation: (r) => r.integer().min(1),
     }),
     defineField({

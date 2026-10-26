@@ -188,10 +188,14 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   derived-from-order rule as `article.bookEntries`. A book can appear in many rankings at
   different positions. This is the site's research data, stored independently of any article;
   no page reads it yet (added 2026-09-23 — see `DECISIONS.md`). Articles reference one via
-  `article.ranking` + `article.rankingCount`, and the Studio's "Fill books from ranking"
-  document action (`sanity/actions/FillFromRankingAction.tsx`, rules in
-  `sanity/lib/pickBooksFromRanking.ts`) fills `bookEntries` from it — a one-time fill into
-  ordinary editable entries, not a live link.
+  `article.ranking`. Shortlist articles (and Reading Room issues) use the Studio's "Fill books
+  from ranking" action (`sanity/actions/FillFromRankingAction.tsx`, `pickTopBooks` in
+  `sanity/lib/pickBooksFromRanking.ts`): the top `rankingCount` books in rank order. What to Read
+  When and Book Club Book Picks articles are hand-picked with "Choose books from ranking"
+  (`sanity/actions/ChooseBooksAction.tsx`, list UI in `sanity/components/RankingBookPicker.tsx`,
+  2026-10-26): the ranking in rank order with covers and tags, a tag filter, an "Also in" note
+  for books other articles from the ranking use; saving keeps existing entries and their
+  overrides. Either way it's a one-time fill into ordinary editable entries, not a live link.
 - **`readingRoomIssue`** — one Reading Room email (added 2026-10-02, see `DECISIONS.md`): `title`
   (the theme), `subject`, `previewText`, `aboutThisIssue` (one boxed section before the books),
   `closingSentence` + `signOff` (after the books), `ranking` + `rankingCount` (for "Fill books

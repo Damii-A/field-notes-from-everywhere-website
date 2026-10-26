@@ -2545,3 +2545,41 @@ other four descriptions are unchanged (the homepage Book Club text kept as is).
 - Seasonal lists: publish weeks ahead (scheduling exists); reuse one evergreen address each year rather
   than a new dated page.
 - "Books like X" articles could be linked from the matching "Where to read" book page.
+
+## 2026-10-26 — Every format except the Shortlist is hand-picked: "Choose books from ranking"
+
+**Decision** (user-directed): tags stay exactly as they are (display unchanged, no clean-up), and
+apart from the ranked format (The Shortlist, format 1, still "Fill books from ranking": top N in
+rank order) the user chooses books by hand. New Studio action **"Choose books from ranking"** on What
+to Read When and Book Club Book Picks articles (`sanity/actions/ChooseBooksAction.tsx`, list in
+`sanity/components/RankingBookPicker.tsx`): every book in the article's ranking in rank order (rank,
+cover, title, author, tags) with a tick box; already-chosen books start ticked. User's choices (asked):
+books used by other articles from the same ranking are **marked** ("Also in: {article titles}") but
+still selectable (recommended; alternatives: no mark, or hide them), and a **tag filter** (recommended)
+shows books with any of the chosen tags. Tags on only one book sit behind a "+ N more tags" button
+(chosen tags stay visible).
+
+**Why not tag matching**: checked on the real data first. 64 of 93 tags are on a single book (3-5 tags
+per book), and near-duplicates split matches (Toxic couple / Toxic Marriage / Troubled Marriage /
+Abusive Marriage / Bad partner; Plot Twist / Plot Twist Ending; FBI Profiler / FBI Profiler MC…).
+"Books like Gone Girl" found 9 books, almost all via "Unreliable Narrator" only (Behind Closed Doors
+missed: "Toxic Marriage" vs "Toxic couple"); "books like The Silent Patient" found 3. Offered: tidy and
+standardise tags (recommended), a second hidden "matching tags" field, or picking by hand. The user
+chose by hand, keeping tag display as is.
+
+**Saving**: existing entries are kept in their order with their blurb/tag overrides unless unticked;
+newly ticked books are appended in rank order; entries for books outside the ranking are left alone.
+Reorder by dragging as before.
+
+**Replaced**: the "top 5 + books not in this theme's sibling articles, shuffled" rule for What to Read
+When / Book Club Book Picks (2026-09-23 "Fill books from ranking" entry). It assumed one article per
+column per ranking, which no longer holds. "Fill books from ranking" now appears only on Shortlist
+articles and Reading Room issues; "How many books" is shown only on Shortlist articles. Published
+articles are unaffected (fills were always one-time copies).
+
+**Verified**: the action's query run against the live dataset (Thriller ranking: 49 books with covers
+and tags; the 3 existing articles found for "Also in"); the list rendered with that real data in a
+browser harness: initial ticks match the article, filter "Unreliable Narrator" → 10 books, ticking and
+unticking then saving gave kept override entry + untouched outside-ranking entry + new books in rank
+order, no console errors; type check, lint and production build clean. **Not verified**: the button
+inside the real Studio (the user's own login), so the user's first use is its check.

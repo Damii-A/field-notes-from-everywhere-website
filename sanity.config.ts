@@ -11,6 +11,7 @@ import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemaTypes";
 import { structure } from "./sanity/structure";
 import { FillFromRankingAction } from "./sanity/actions/FillFromRankingAction";
+import { ChooseBooksAction } from "./sanity/actions/ChooseBooksAction";
 import { CreateKitDraftAction } from "./sanity/actions/CreateKitDraftAction";
 import { CreateResendDraftAction } from "./sanity/actions/CreateResendDraftAction";
 
@@ -77,12 +78,13 @@ export default defineConfig({
     // duplicated from outside the pinned entry in the sidebar.
     newDocumentOptions: (prev, { creationContext }) =>
       creationContext.type === "global" ? prev.filter((item) => item.templateId !== "siteSettings" && item.templateId !== "article-by-category") : prev,
-    // "Fill books from ranking" on articles and Reading Room issues — DECISIONS.md, 2026-09-23;
+    // "Fill books from ranking" on Shortlist articles and Reading Room issues — DECISIONS.md, 2026-09-23;
+    // "Choose books from ranking" on the other two columns' articles — DECISIONS.md, 2026-10-26;
     // "Create Kit draft" on issues — DECISIONS.md, 2026-10-02;
     // "Create Resend draft" on weekly newsletters — DECISIONS.md, 2026-10-05.
     actions: (prev, { schemaType }) =>
       schemaType === "article"
-        ? [...prev, FillFromRankingAction]
+        ? [...prev, FillFromRankingAction, ChooseBooksAction]
         : schemaType === "readingRoomIssue"
           ? [...prev, FillFromRankingAction, CreateKitDraftAction]
           : schemaType === "weeklyNewsletter"
