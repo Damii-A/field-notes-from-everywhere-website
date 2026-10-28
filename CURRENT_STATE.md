@@ -14,19 +14,16 @@ or GitHub CLIs installed (not needed). Old Sanity keys ("Claude Write token (Rob
 Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is can't be told from
 Sanity's list, and deleting it would break the site's content fetches.
 
-**First, the internal tool's open items** (its CURRENT_STATE.md "Start here", end of 2026-10-28): the
-edit session is closed (done; the user then invalidated Dragon Tattoo's Dark Fantasy recommendation
-themselves); the rebuilt "+ tag" menu (done 2026-10-28: works, checked on a database copy); the tool's
-duplicate scan (done 2026-10-28: ~4x faster, same suggestions). Never click-test against the
-tool's live data. Then the next feature is "Send to website" (design in the paragraph below).
-
-**Start the next session here (as of 2026-10-28; nothing blocking).** Dated: (1) after ~2026-11-05,
-check the user's Kit member tag is gone (paused subscription, below); (2) before 2026-12-14, keep a
-reference copy of the Claude Design project (above). Otherwise the user's next step is writing the
-next article with the new Studio tools; offer the remaining open points one at a time.
-The user is also adding tags to the existing books (research), using the new **Tags tab on
-rankings** (2026-10-28; DECISIONS.md) to see which tag-focused lists have enough books. If they bring
-an "extra tags" sheet for existing books, merge tags by script; don't re-import the original CSV.
+**Start the next session here (as of end of 2026-10-28; nothing blocking).** The internal tool's "Send to
+website" is built (steps 1-4 below) but has **never sent for real**. Next: (1) the user finishes filling in the
+Thriller books' details in the tool; (2) the user's first real "Send to Studio" of Thriller from the tool's
+ranking page, then check the Studio, an article and a "Where to read" page together; (3) step 5: make the
+Studio's book fields view-only. Full list and the send's rules: the tool's CURRENT_STATE.md "Start here" and
+DECISIONS.md (2026-10-28). Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused
+subscription, below); (b) before 2026-12-14, keep a reference copy of the Claude Design project (above).
+Otherwise the user's next website step is writing the next article with the Studio tools; offer remaining
+open points one at a time. If the user brings an "extra tags" sheet for existing books, the tool is now
+where book tags are edited (not a website re-import).
 
 **2026-10-28: tool ↔ website plan (in progress).** The internal tool (`../Field Notes From Everywhere
 Internal Tool`, its own repo and docs) becomes the one place for book research; a manual "Send to
