@@ -1,6 +1,18 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-26. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-28. Full reasoning is in `DECISIONS.md`; this is the short version.
+
+**2026-10-28: access check.** Working: GitHub push, live site, Resend, Kit, Sanity read **and write**
+(new local Editor key "Claude Code local", made by the user; the old one returned "Session not found",
+i.e. deleted), and the Claude Design project via `DesignSync` (user ran `/design-login`). **Standalone
+Claude Design closes by 2026-12-14** (it moves into Claude): before then, decide how to keep a reference
+copy of the "Full FNFE Website" project, since it's governing source #1. Not working, left on purpose
+(user agreed): the Sanity MCP connector (Claude Code's OAuth builds a broken
+`mcp.sanity.io.well-known` URL; the server itself answers fine; the API key covers everything); the
+sandbox `PADDLE_API_KEY` (403 on every endpoint; only matters for a Reading Room relaunch); no Vercel
+or GitHub CLIs installed (not needed). Old Sanity keys ("Claude Write token (Robot)", "Claude's Field
+Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is can't be told from
+Sanity's list, and deleting it would break the site's content fetches.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
@@ -30,8 +42,8 @@ tested: a real signup through the new popup (same `/api/subscribe` call as the f
 keep test contacts off the real list). **Start the next session here.** Still to do, one at a time, all the user's:
 1. Cancel their own $7 subscription in Paddle (the only member; the webhook will untag them in Kit).
 2. Legal pages in Sanity: Disclosures says "Today, our income comes from The Reading Room" (now
-   untrue); Terms and Privacy describe it as an offer. Edit in the Studio, or give me a new Sanity key
-   in `.env.local` and approve the write.
+   untrue); Terms and Privacy describe it as an offer. Edit in the Studio, or I draft the changes
+   (local Sanity key works again since 2026-10-28) and the user approves the write.
 
 **Session 2026-10-09/10: book covers.** 15 book covers replaced in Sanity (user-approved; checked
 live 2026-10-10): the 9 low-resolution ones (Dark Places, Kill for Me Kill for You, Nightwatching,
@@ -43,9 +55,8 @@ feed works when book pages hit the bot check; strip `._SY75_` from `imageUrl`) o
 Old assets remain in Sanity's media library. Also made, outside the repo, a folder of all 49 covers
 for Pinterest pins in the user's Downloads ("FNFE book covers", largest good version of each, many
 1000-3700px tall; some differ in design from the site's, where the site's was smaller).
-- The local `SANITY_API_TOKEN` returned "Session is expired" (401) on 2026-10-10, a day after it
-  wrote the covers. Public reads still work without it; scripts that write need a new key in
-  `.env.local` (the user enters it there, never in chat). The live site is unaffected (own key).
+- The local `SANITY_API_TOKEN` returned "Session is expired" (401) on 2026-10-10; replaced
+  2026-10-28 (see top). The user enters keys in `.env.local`, never in chat.
 
 **2026-10-08: The Reading Room is now weekly, every Tuesday** (user; DECISIONS.md). All site and
 email copy changed in code; Terms and Disclosures (Sanity) now say "sent once a week", Last updated
@@ -116,7 +127,7 @@ Namecheap; details in `ARCHITECTURE.md` §11.
 - The user's Thriller Reading Room issue (Kit draft updated by the user 2026-10-05).
 - Publish webhook → `/api/webhooks/sanity` (revalidate + IndexNow). The plan allows 2 webhooks;
   1 is used.
-- The local `SANITY_API_TOKEN` (Editor key from 2026-10-08) expired 2026-10-10, see above. Writes to live content via scripts trigger Claude Code's auto-mode safety check; they go ahead only with the user's explicit approval in that session.
+- The local `SANITY_API_TOKEN` is an Editor key ("Claude Code local", 2026-10-28). Writes to live content via scripts trigger Claude Code's auto-mode safety check; they go ahead only with the user's explicit approval in that session.
 - Publishing an article whose date has passed: update its date first, or it shows the old date.
 - More books: `npm run import-books -- <file.csv> [--ranking "Name"]`; Goodreads links:
   `npm run goodreads-links`. The original Thriller CSV in Downloads has old title casing (fixed in
