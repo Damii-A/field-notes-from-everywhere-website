@@ -15,7 +15,10 @@ Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is c
 Sanity's list, and deleting it would break the site's content fetches.
 
 **Start the next session here (as of end of 2026-10-28; nothing blocking).** The internal tool's "Send to
-website" is built (steps 1-4 below) but has **never sent for real**. Next: (1) the user finishes filling in the
+website" is built (steps 1-4 below) but has **never sent for real**. **First (user's instruction): check
+that the notes and the code agree in both repos before any new work** — see the tool's CURRENT_STATE.md
+"Start here" item 0 for the known mismatches (here: the I Am Pilgrim question below is settled, International
+Manhunt). Next: (1) the user finishes filling in the
 Thriller books' details in the tool; (2) the user's first real "Send to Studio" of Thriller from the tool's
 ranking page, then check the Studio, an article and a "Where to read" page together; (3) step 5: make the
 Studio's book fields view-only. Full list and the send's rules: the tool's CURRENT_STATE.md "Start here" and
