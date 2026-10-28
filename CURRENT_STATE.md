@@ -45,9 +45,12 @@ keep test contacts off the real list). **Start the next session here.** Still to
    expected. **After ~2026-11-05, check the Kit member tag is gone**: a real pause has never been seen by
    the webhook (`subscription.updated` → status `paused` → untag; `subscription.paused` isn't a
    subscribed event). If the tag is still there, check Paddle's notification log for what was sent.
-2. Legal pages in Sanity: Disclosures says "Today, our income comes from The Reading Room" (now
-   untrue); Terms and Privacy describe it as an offer. Edit in the Studio, or I draft the changes
-   (local Sanity key works again since 2026-10-28) and the user approves the write.
+2. Legal pages in Sanity: **drafts saved 2026-10-28, awaiting the user's Publish in the Studio**
+   (user-approved minimal edits; RR sections kept, since the user's paused subscription and Paddle's
+   review still need them, with a "taking a break, not open to new members" note). Disclosures:
+   "Right now, FNFE doesn't earn any money." (was "Today, our income comes from The Reading Room").
+   Privacy: short-version bullet no longer mentions subscribing. All three dated 2026-10-28. After
+   publishing, check the live pages show the new text.
 
 **Session 2026-10-09/10: book covers.** 15 book covers replaced in Sanity (user-approved; checked
 live 2026-10-10): the 9 low-resolution ones (Dark Places, Kill for Me Kill for You, Nightwatching,
