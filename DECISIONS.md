@@ -2539,7 +2539,7 @@ other four descriptions are unchanged (the homepage Book Club text kept as is).
 - Tags drive selection for formats 2 and 4, so near-duplicate tags (94 tags on 49 books) would cause
   misses. Merging was declined 2026-09-29 when tags were only labels; worth reconsidering now.
 - ~~Honest methodology sentences~~ — settled same day: Format field + draft-sentence patterns (entry below).
-- List length: `pub_article.md` §5 says under 20 books; the user's format 1 example has 22.
+- ~~List length~~ — settled 2026-10-28: varies by format, no cap (entry below).
 - Overlap between several lists from one ranking (possible search cannibalisation).
 - Seasonal lists: publish weeks ahead (scheduling exists); reuse one evergreen address each year rather
   than a new dated page.
@@ -2630,3 +2630,17 @@ next time it's edited (it's a trope/feeling list).
 **Verified**: pattern output for every column/format and with no ranking/books; placeholder detection;
 `sanity schema validate` 0 errors/0 warnings; type check, lint, production build. **Not verified**: the
 field and button in the real Studio (user's login).
+
+## 2026-10-28 — List length varies by format; no fixed cap
+
+**Decision** (user): article lists have no fixed length. Each list is as long as its format calls for:
+tag-focused lists (formats 2 and 4) may be shorter, other formats longer. This departs from
+`pub_article.md` §5 ("Publication recommendation lists should remain under 20 books"), which is not
+edited (verbatim mirror); this entry is the record. Settles the "List length" point in the "Five
+article formats" entry.
+
+**Practical ceiling, measured** (local render of the "send this list to me" email from real books,
+blurbs and covers): ~2.8 KB per book; 20 books 63 KB, 25 77 KB, 30 90 KB, 35 104 KB. Gmail clips past
+~102 KB, and Resend's click tracking lengthens every link, so **about 30 books** is where the emailed
+copy starts getting clipped in Gmail (the reader sees "View entire message"). The article page has no
+limit. Nothing in the Studio enforces or warns about length (none existed before either).
