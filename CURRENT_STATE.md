@@ -45,8 +45,8 @@ tag pills beside the book's tags; unticked books come off the ranking on a resen
 carries every valid recommendation as its count. **Build steps**: (1) website side **done 2026-10-28**
 (commit 57a5893; DECISIONS.md "Website side of Send to website"): ranking pills, read-only tool fields,
 count in "Write draft sentence"; checked live: the three articles and a book page read the same as
-before, except The Risk's pills now say "Thriller · Dark Romance" (was the reverse). (2) next: the
-tool's Send button + preview (read-only); (3) user creates the tool's Sanity key; (4) the send itself,
+before, except The Risk's pills now say "Thriller · Dark Romance" (was the reverse). (2) the tool's
+Send button + preview (read-only) **done 2026-10-28**, checked on a database copy; (3) next: user creates the tool's Sanity key; (4) the send itself,
 tested on a copy first; (5) Studio book fields view-only. Details: the send (preview first; books + rankings only, never
 articles; removes the primary tag "Thriller" from the 49 books and "Dark Romance" from The Risk;
 ask the user Global vs International Manhunt for I Am Pilgrim), then "Tick all shown" in "Choose
