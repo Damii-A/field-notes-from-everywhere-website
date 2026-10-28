@@ -14,6 +14,12 @@ or GitHub CLIs installed (not needed). Old Sanity keys ("Claude Write token (Rob
 Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is can't be told from
 Sanity's list, and deleting it would break the site's content fetches.
 
+**First, the internal tool's open items** (its CURRENT_STATE.md "Start here", end of 2026-10-28): the
+user must press **Cancel** on the open Edit session of tool discussion 84 (my browser test misclicked
+and invalidated Dragon Tattoo's Dark Fantasy recommendation; Cancel restores it); verify the rebuilt
+"+ tag" menu on a database copy; speed up the tool's duplicate scan. Never click-test against the
+tool's live data. Then the next feature is "Send to website" (design in the paragraph below).
+
 **Start the next session here (as of 2026-10-28; nothing blocking).** Dated: (1) after ~2026-11-05,
 check the user's Kit member tag is gone (paused subscription, below); (2) before 2026-12-14, keep a
 reference copy of the Claude Design project (above). Otherwise the user's next step is writing the
