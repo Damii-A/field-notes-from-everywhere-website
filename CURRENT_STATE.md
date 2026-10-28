@@ -16,8 +16,8 @@ Sanity's list, and deleting it would break the site's content fetches.
 
 **First, the internal tool's open items** (its CURRENT_STATE.md "Start here", end of 2026-10-28): the
 edit session is closed (done; the user then invalidated Dragon Tattoo's Dark Fantasy recommendation
-themselves); the rebuilt "+ tag" menu (done 2026-10-28: works, checked on a database copy); speed
-up the tool's duplicate scan. Never click-test against the
+themselves); the rebuilt "+ tag" menu (done 2026-10-28: works, checked on a database copy); the tool's
+duplicate scan (done 2026-10-28: ~4x faster, same suggestions). Never click-test against the
 tool's live data. Then the next feature is "Send to website" (design in the paragraph below).
 
 **Start the next session here (as of 2026-10-28; nothing blocking).** Dated: (1) after ~2026-11-05,
