@@ -22,6 +22,19 @@ The user is also adding tags to the existing books (research), using the new **T
 rankings** (2026-10-28; DECISIONS.md) to see which tag-focused lists have enough books. If they bring
 an "extra tags" sheet for existing books, merge tags by script; don't re-import the original CSV.
 
+**2026-10-28: tool ↔ website plan (in progress).** The internal tool (`../Field Notes From Everywhere
+Internal Tool`, its own repo and docs) becomes the one place for book research; a manual "Send to
+website" will update Sanity rankings and books from it. Agreed tag model: primary tags belong to
+rankings, never stored as book tags (each Sanity ranking linked to its tool primary tag, with the real
+recommendation count; books get a separate "Recommended by readers in" list); book tags = reader +
+the user's research tags, one set per book. Done 2026-10-28 in the tool: research tags separated from
+reader evidence + the 2026-09-23 import repaired (tool DECISIONS.md). Next: research-tag editing in
+the tool, then the send (preview first; books + rankings only, never articles), a one-time catch-up
+of the website's metadata fixes into the tool (9 titles, 3 authors, 2 blurbs, 49 covers, 49 Goodreads
+links differ), and "Tick all shown" in "Choose books from ranking". Still to ask the user: book
+details edited only in the tool afterwards (recommended) or in either place. Website keeps its own
+blurb for existing books unless ticked in the preview (user's choice).
+
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
 This file now holds only what's true today, what's open, and facts a new session needs.
