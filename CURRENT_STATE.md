@@ -38,7 +38,11 @@ reader evidence + the 2026-09-23 import repaired; research tags editable in the 
 books merged + stronger duplicate check; pre-change backups kept a year; the website's book fixes
 copied into the tool (49 Thriller books now identical in both). **Book details and book tags are
 edited only in the tool from now on** (user, 2026-10-28); the Studio's book fields should become
-view-only when the send is built. Next: the send (preview first; books + rankings only, never
+view-only when the send is built. **Send design agreed so far (2026-10-28, tool's DECISIONS.md
+"Send to website: design agreed so far")**: sent from a ranking's tag page with ticked books, live
+straight away after a preview; "Recommended by readers in" = website rankings only, shown as ordinary
+tag pills beside the book's tags. Still open there: unticked books on a resend, showing the count,
+the tool's Sanity key. Next: the send (preview first; books + rankings only, never
 articles; removes the primary tag "Thriller" from the 49 books and "Dark Romance" from The Risk;
 ask the user Global vs International Manhunt for I Am Pilgrim), then "Tick all shown" in "Choose
 books from ranking". All tool details: the tool's DECISIONS.md, 2026-10-28 entries.
