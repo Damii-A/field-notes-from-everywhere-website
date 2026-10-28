@@ -14,6 +14,11 @@ or GitHub CLIs installed (not needed). Old Sanity keys ("Claude Write token (Rob
 Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is can't be told from
 Sanity's list, and deleting it would break the site's content fetches.
 
+**Start the next session here (as of 2026-10-28; nothing blocking).** Dated: (1) after ~2026-11-05,
+check the user's Kit member tag is gone (paused subscription, below); (2) before 2026-12-14, keep a
+reference copy of the Claude Design project (above). Otherwise the user's next step is writing the
+next article with the new Studio tools; offer the remaining open points one at a time.
+
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
 This file now holds only what's true today, what's open, and facts a new session needs.
@@ -24,13 +29,16 @@ three columns. The homepage and hub-page column descriptions are two deliberatel
 user's copy (restored after I wrongly merged them); What to Read When got one user-approved addition in
 each set (seasons, "books like"); the rest are unchanged. Tags stay as they are; every format except the Shortlist is hand-picked with the new Studio button
 **"Choose books from ranking"** (tick boxes, tag filter, "Also in" notes; DECISIONS.md 2026-10-26).
-Not yet seen in the real Studio (user's login): the user's first use is its check. **Next, one at a
-time**: the remaining open points in the "Five article formats" DECISIONS entry. Settled 2026-10-28: list
-length varies by format (~30 books is where the emailed copy clips in Gmail); seasonal articles keep
-one evergreen address, refreshed yearly; **Publish now asks about the date** on articles dated before
-today (today's date or keep it; `PublishWithDateCheck.tsx`), checked by the user in the real Studio. Done 2026-10-26: a required **Format** field on What to Read When articles and a
-"Write draft sentence" button for the methodology box (patterns approved by the user; publishing is
-blocked while [bracketed] parts remain). The live What to Read When article's format is set (trope or feeling, 2026-10-28). None of the new Studio pieces have been seen in the real Studio yet.
+Done 2026-10-26: a required **Format** field on What to Read When articles and a "Write draft
+sentence" button for the methodology box (patterns approved by the user; publishing is blocked while
+[bracketed] parts remain). Settled 2026-10-28: list length varies by format (~30 books is where the
+emailed copy clips in Gmail); seasonal articles keep one evergreen address, refreshed yearly; **Publish
+asks about the date** on articles dated before today (`PublishWithDateCheck.tsx`). Seen working in the
+real Studio (2026-10-28): the Format field (live What to Read When article set to trope or feeling)
+and the Publish date dialog. **Not yet used for real**: "Choose books from ranking" and "Write draft
+sentence"; the user's next article is their check. Still open in the "Five article formats" entry,
+none urgent: overlap between several lists from one ranking (search cannibalisation), and linking
+"books like X" articles from the matching "Where to read" page.
 
 **2026-10-23: The Reading Room is paused as a product** (user; DECISIONS.md). The business now
 focuses on the Publication and the free weekly newsletter; The Reading Room may relaunch later. Every
@@ -40,7 +48,7 @@ signup popup; the menu pill, footer link, book-list email P.S., llms.txt and sit
 code is kept, switched off. Checked live 2026-10-23 (commit e7ef2eb): the redirect, the noindex, the
 new promos on the homepage, About and an article, and no Reading Room in the sitemap or llms.txt. Not
 tested: a real signup through the new popup (same `/api/subscribe` call as the footer form; skipped to
-keep test contacts off the real list). **Start the next session here.** Still to do, one at a time, all the user's:
+keep test contacts off the real list). Follow-ups from the pause:
 1. ~~Cancel their own $7 subscription~~ The user **paused** it instead (by 2026-10-28; Paddle said the
    pause is scheduled, i.e. from the next billing date, ~2026-11-05). Still Kit-tagged on 2026-10-28, as
    expected. **After ~2026-11-05, check the Kit member tag is gone**: a real pause has never been seen by
