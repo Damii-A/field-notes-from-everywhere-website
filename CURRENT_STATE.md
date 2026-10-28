@@ -40,7 +40,11 @@ code is kept, switched off. Checked live 2026-10-23 (commit e7ef2eb): the redire
 new promos on the homepage, About and an article, and no Reading Room in the sitemap or llms.txt. Not
 tested: a real signup through the new popup (same `/api/subscribe` call as the footer form; skipped to
 keep test contacts off the real list). **Start the next session here.** Still to do, one at a time, all the user's:
-1. Cancel their own $7 subscription in Paddle (the only member; the webhook will untag them in Kit).
+1. ~~Cancel their own $7 subscription~~ The user **paused** it instead (by 2026-10-28; Paddle said the
+   pause is scheduled, i.e. from the next billing date, ~2026-11-05). Still Kit-tagged on 2026-10-28, as
+   expected. **After ~2026-11-05, check the Kit member tag is gone**: a real pause has never been seen by
+   the webhook (`subscription.updated` → status `paused` → untag; `subscription.paused` isn't a
+   subscribed event). If the tag is still there, check Paddle's notification log for what was sent.
 2. Legal pages in Sanity: Disclosures says "Today, our income comes from The Reading Room" (now
    untrue); Terms and Privacy describe it as an offer. Edit in the Studio, or I draft the changes
    (local Sanity key works again since 2026-10-28) and the user approves the write.
