@@ -28,10 +28,9 @@ Not yet seen in the real Studio (user's login): the user's first use is its chec
 time**: the remaining open points in the "Five article formats" DECISIONS entry. Settled 2026-10-28: list
 length varies by format (~30 books is where the emailed copy clips in Gmail); seasonal articles keep
 one evergreen address, refreshed yearly; **Publish now asks about the date** on articles dated before
-today (today's date or keep it; `PublishWithDateCheck.tsx`), not yet seen in the real Studio. Done 2026-10-26: a required **Format** field on What to Read When articles and a
+today (today's date or keep it; `PublishWithDateCheck.tsx`), checked by the user in the real Studio. Done 2026-10-26: a required **Format** field on What to Read When articles and a
 "Write draft sentence" button for the methodology box (patterns approved by the user; publishing is
-blocked while [bracketed] parts remain). The live What to Read When article needs its format set (trope
-or feeling) next time it's edited. None of the new Studio pieces have been seen in the real Studio yet.
+blocked while [bracketed] parts remain). The live What to Read When article's format is set (trope or feeling, 2026-10-28). None of the new Studio pieces have been seen in the real Studio yet.
 
 **2026-10-23: The Reading Room is paused as a product** (user; DECISIONS.md). The business now
 focuses on the Publication and the free weekly newsletter; The Reading Room may relaunch later. Every

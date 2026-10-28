@@ -2676,6 +2676,8 @@ every typo fix, and would overwrite deliberate dates. Options offered: ask each 
 recommended), always use today's date, a "set to today" button by the field, leave it. Also fixes the
 known gap that a draft started days earlier went live with its old date unless changed by hand.
 
-**Verified**: type check, lint on the new files, production build. **Not verified**: the button in
-the real Studio (the user's own login), so the user's first use is its check. (`npm run lint` still
+**Verified**: type check, lint on the new files, production build; and by the user in the real Studio
+(2026-10-28): the dialog appeared on the September What to Read When article, "keep" republished it
+with its date unchanged (checked in Sanity). A Studio tab opened before a deploy keeps the old code
+until reloaded (the first try showed no dialog for that reason). (`npm run lint` still
 reports one existing error in Next.js's generated `next-env.d.ts`, unrelated and untouched.)
