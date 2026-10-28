@@ -41,8 +41,13 @@ edited only in the tool from now on** (user, 2026-10-28); the Studio's book fiel
 view-only when the send is built. **Send design agreed so far (2026-10-28, tool's DECISIONS.md
 "Send to website: design agreed so far")**: sent from a ranking's tag page with ticked books, live
 straight away after a preview; "Recommended by readers in" = website rankings only, shown as ordinary
-tag pills beside the book's tags. Still open there: unticked books on a resend, showing the count,
-the tool's Sanity key. Next: the send (preview first; books + rankings only, never
+tag pills beside the book's tags; unticked books come off the ranking on a resend; the ranking
+carries every valid recommendation as its count. **Build steps**: (1) website side **done 2026-10-28**
+(commit 57a5893; DECISIONS.md "Website side of Send to website"): ranking pills, read-only tool fields,
+count in "Write draft sentence"; checked live: the three articles and a book page read the same as
+before, except The Risk's pills now say "Thriller · Dark Romance" (was the reverse). (2) next: the
+tool's Send button + preview (read-only); (3) user creates the tool's Sanity key; (4) the send itself,
+tested on a copy first; (5) Studio book fields view-only. Details: the send (preview first; books + rankings only, never
 articles; removes the primary tag "Thriller" from the 49 books and "Dark Romance" from The Risk;
 ask the user Global vs International Manhunt for I Am Pilgrim), then "Tick all shown" in "Choose
 books from ranking". All tool details: the tool's DECISIONS.md, 2026-10-28 entries.
