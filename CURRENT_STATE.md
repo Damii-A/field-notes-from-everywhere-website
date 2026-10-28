@@ -47,8 +47,9 @@ carries every valid recommendation as its count. **Build steps**: (1) website si
 count in "Write draft sentence"; checked live: the three articles and a book page read the same as
 before, except The Risk's pills now say "Thriller · Dark Romance" (was the reverse). (2) the tool's
 Send button + preview (read-only) **done 2026-10-28**, checked on a database copy; (3) **done 2026-10-28**: the tool uses this repo's
-Editor key "Claude Code local" (shared; deleting it stops both); (4) next: the send itself,
-tested on a copy first; (5) Studio book fields view-only. Details: the send (preview first; books + rankings only, never
+Editor key "Claude Code local" (shared; deleting it stops both); (4) the send **built 2026-10-28** (backup first,
+undo script, checked with Sanity's dry run against live content; **never sent for real**: the user's first
+Thriller send is the check, then look at the Studio, an article and a book page); (5) next: Studio book fields view-only. Details: the send (preview first; books + rankings only, never
 articles; removes the primary tag "Thriller" from the 49 books and "Dark Romance" from The Risk;
 ask the user Global vs International Manhunt for I Am Pilgrim), then "Tick all shown" in "Choose
 books from ranking". All tool details: the tool's DECISIONS.md, 2026-10-28 entries.
