@@ -33,6 +33,14 @@ export default defineType({
     defineField({ name: "coverImage", title: "Cover image", type: "image", options: { hotspot: true } }),
     defineField({ name: "canonicalBlurb", title: "Canonical blurb", type: "text", rows: 3 }),
     defineField({ name: "tags", title: "Tags", type: "array", of: [{ type: "reference", to: [{ type: "tag" }] }] }),
+    defineField({
+      name: "toolBookId",
+      title: "Internal tool book ID",
+      description:
+        "Set by \"Send to website\" in the internal tool: which tool book this is, so a resend updates this book instead of making a copy. Empty for books never sent.",
+      type: "number",
+      readOnly: true,
+    }),
   ],
   preview: { select: { title: "title", subtitle: "author", media: "coverImage" } },
 });

@@ -22,6 +22,11 @@ export interface PatternInput {
   rankingName: string | null;
   /** How many books the ranking holds; null when no ranking is set. */
   rankingSize: number | null;
+  /**
+   * Every valid reader recommendation behind the ranking, sent from the internal tool
+   * (DECISIONS.md, 2026-10-28); null until the ranking has been sent, so [number] stays to fill in.
+   */
+  recommendationCount?: number | null;
   /** How many books the article currently has. */
   bookCount: number;
 }
@@ -33,21 +38,22 @@ export function hasPlaceholders(text: string | undefined): boolean {
 
 /** The draft sentence for this article, or a reason it can't be drafted yet. */
 export function methodologyPattern(input: PatternInput): { sentence: string } | { problem: string } {
+  const recs = input.recommendationCount ? input.recommendationCount.toLocaleString("en-US") : "[number]";
   const n = input.bookCount > 0 ? String(input.bookCount) : "[number of books]";
   const top = input.rankingSize ? String(input.rankingSize) : "[ranking size]";
   // Bracketed even when known: only the editor knows the natural phrasing ("thriller" → "thrillers").
   const theme = `[${input.rankingName ? input.rankingName.trim().toLowerCase() : "theme"}]`;
-  const opening = `To create this article, we analysed [number] reader recommendations for ${theme}.`;
+  const opening = `To create this article, we analysed ${recs} reader recommendations for ${theme}.`;
   const pulled = `We pulled the ${n} books on this list from a larger list of the top ${top} most-recommended books`;
 
   switch (input.category) {
     case "the-shortlist":
       return {
-        sentence: "To create this article, we analysed [number] reader recommendations. The books on this list were the most frequently recommended.",
+        sentence: `To create this article, we analysed ${recs} reader recommendations. The books on this list were the most frequently recommended.`,
       };
     case "book-club-book-picks":
       return {
-        sentence: `To create this article, we analysed [number] book recommendations from real reader discussions. We pulled the ${n} books on this list from a larger list of the top ${top} most-recommended books in those discussions.`,
+        sentence: `To create this article, we analysed ${recs} book recommendations from real reader discussions. We pulled the ${n} books on this list from a larger list of the top ${top} most-recommended books in those discussions.`,
       };
     case "what-to-read-when":
       switch (input.format) {

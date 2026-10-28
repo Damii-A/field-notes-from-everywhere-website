@@ -8,8 +8,10 @@ import { defineField, defineType } from "sanity";
  * to store or keep in sync. A book can appear in any number of rankings, at a
  * different position in each; the `book` record itself stays shared.
  *
- * Not read by the site yet — this preserves the ranking so lists can be built
- * from it, rather than it existing only in a spreadsheet.
+ * Filled by "Send to website" in the internal tool (DECISIONS.md, 2026-10-28). The
+ * site shows each ranking a book is in as a tag pill beside the book's own tags
+ * ("Recommended by readers in", worked out from these documents, never stored on
+ * the book).
  */
 export default defineType({
   name: "ranking",
@@ -31,6 +33,21 @@ export default defineType({
       type: "array",
       of: [{ type: "reference", to: [{ type: "book" }] }],
       validation: (r) => r.unique(),
+    }),
+    defineField({
+      name: "recommendationCount",
+      title: "Reader recommendations analysed",
+      description:
+        "Every valid reader recommendation behind this ranking, set by \"Send to website\" in the internal tool. \"Write draft sentence\" uses it for the number of recommendations.",
+      type: "number",
+      readOnly: true,
+    }),
+    defineField({
+      name: "toolTagId",
+      title: "Internal tool ranking ID",
+      description: "Set by \"Send to website\": which ranking (tag page) in the internal tool this is.",
+      type: "number",
+      readOnly: true,
     }),
   ],
   preview: {

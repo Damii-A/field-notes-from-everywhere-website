@@ -22,9 +22,12 @@ export function MethodologyInput(props: TextInputProps) {
     setNote(null);
     try {
       const r = ranking?._ref
-        ? await client.fetch<{ name: string | null; size: number | null } | null>(`*[_id == $id][0]{ name, "size": count(books) }`, { id: ranking._ref })
+        ? await client.fetch<{ name: string | null; size: number | null; recommendationCount: number | null } | null>(
+            `*[_id == $id][0]{ name, "size": count(books), recommendationCount }`,
+            { id: ranking._ref },
+          )
         : null;
-      const result = methodologyPattern({ category, format, rankingName: r?.name ?? null, rankingSize: r?.size ?? null, bookCount: entries?.length ?? 0 });
+      const result = methodologyPattern({ category, format, rankingName: r?.name ?? null, rankingSize: r?.size ?? null, recommendationCount: r?.recommendationCount ?? null, bookCount: entries?.length ?? 0 });
       if ("problem" in result) {
         setNote(result.problem);
         return;

@@ -46,7 +46,7 @@ export function ChooseBooksAction(props: DocumentActionProps) {
       const data = await client.fetch<PickerData>(
         `{
           "rankingName": *[_id == $rankingId][0].name,
-          "books": *[_id == $rankingId][0].books[]->{ _id, title, author, "cover": coverImage.asset->url, "tags": tags[]->name },
+          "books": *[_id == $rankingId][0].books[]->{ _id, title, author, "cover": coverImage.asset->url, "tags": array::unique(*[_type == "ranking" && references(^._id)].name + coalesce(tags[]->name, [])) },
           "others": *[_type == "article" && ranking._ref == $rankingId && !(_id in [$id, $draftId])]{ _id, title, "books": bookEntries[].book._ref }
         }`,
         { rankingId, id, draftId: `drafts.${id}` },

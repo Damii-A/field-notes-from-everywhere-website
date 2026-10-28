@@ -2704,3 +2704,28 @@ re-import of the original CSV, which would revert title fixes and reset the rank
 Narrator opens its 10 books in rank order, A–Z + search "plot" lists Murder Plot / Plot Twist / Plot
 Twist Ending, no-match message, no console errors, no sideways scroll at 390px; type check, lint,
 production build. **Not verified**: the tab in the real Studio (user's login).
+
+## 2026-10-28 — Website side of "Send to website": ranking pills and the tool's fields
+
+**Decision** (design agreed with the user 2026-10-28; full design in the internal tool's DECISIONS.md, "Send
+to website: design agreed so far"): the internal tool will send a ranking (ticked books, the tool's order,
+live straight away after a preview). Website side, built first:
+- **Ranking pills**: a book's "Recommended by readers in" is the website rankings that include it, shown
+  as ordinary tag pills before its own tags wherever tags show (article entries, "Where to read", the
+  book-list email, the Studio's "Choose books from ranking" list and the ranking Tags tab). Worked out by
+  query from the rankings each time, not stored on the book: only rankings that exist on the website appear
+  (user), and a book taken off a ranking loses that pill with nothing to keep in step. A name already in
+  the book's tags isn't repeated, so the 49 Thriller books (which still carry a typed "Thriller" tag until
+  the first send removes it) look exactly as before. A per-article tag choice still replaces the whole set.
+- **New read-only fields**, written only by the tool: `book.toolBookId` (so a resend updates the same book,
+  never matched by title), `ranking.toolTagId`, `ranking.recommendationCount` (every valid recommendation
+  behind the ranking; user's choice over the ticked books' share).
+- **"Write draft sentence"** fills the recommendation count (e.g. "2,181") when the ranking has one;
+  [number] stays to fill in otherwise.
+
+**Verified**: the new queries against live content (Gone Girl → Thriller + its tags; a book with no tags
+keeps its ranking pill); draft sentences with and without a count; type check, lint, `sanity schema
+validate` 0/0, production build. The Studio fields themselves: user's login. Ranking edits refresh pages
+through the `ranking` cache tag if the publish webhook covers rankings (its filter can't be read with the
+current key), else within the 5-minute refresh.
+

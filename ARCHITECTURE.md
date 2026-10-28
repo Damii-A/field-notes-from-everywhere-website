@@ -166,8 +166,14 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary even
   though a theme and a tag may share a name.
 - **`book`** — canonical book record: `title`, `author`, `slug` (its `/where-to-read/<slug>` address, 2026-10-02), `coverImage`, `canonicalBlurb`,
-  `tags[]` (→ `tag`), `goodreadsUrl`. Referenced by articles, rankings and Reading Room issues, and
-  the source of the "Where to read" pages. (Not expected to be reused by a
+  `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId` (read-only, set by the internal tool's "Send to
+  website", 2026-10-28). Referenced by articles, rankings and Reading Room issues, and
+  the source of the "Where to read" pages. **Ranking pills**: wherever a book's tags show (article
+  entries, "Where to read", the book-list email, the Studio's book picker and ranking Tags tab), the
+  names of the website rankings that include it come first, then its own tags, without repeating a
+  name (`BOOK_RANKINGS` / `withRankingPills`, `lib/content/index.ts`). Worked out from the rankings on
+  every read, never stored on the book. A per-article tag choice (`bookEntries[].tags`) still replaces
+  the whole set. (Not expected to be reused by a
   future Reading Room Books catalogue — see `tag`, above.)
 - **`article`** — `title`, `slug`, `metaDescription` (search/link-preview summary, also the
   hub lead card, RSS and recap summary; falls back to `methodologySentence` when empty),
@@ -188,8 +194,10 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
 - **`ranking`** — a reader-recommendation ranking for one theme (`name`, e.g. "Thriller";
   `slug`; `books[]`: ordered, unique references to `book`). Rank is array position, same
   derived-from-order rule as `article.bookEntries`. A book can appear in many rankings at
-  different positions. This is the site's research data, stored independently of any article;
-  no page reads it yet (added 2026-09-23 — see `DECISIONS.md`). Articles reference one via
+  different positions, plus `recommendationCount` and `toolTagId` (read-only, set by the internal
+  tool's "Send to website"; the count fills "Write draft sentence"'s number). This is the site's
+  research data, stored independently of any article (added 2026-09-23 — see `DECISIONS.md`); pages
+  read it only for the ranking pills (see `book`). Articles reference one via
   `article.ranking`. Shortlist articles (and Reading Room issues) use the Studio's "Fill books
   from ranking" action (`sanity/actions/FillFromRankingAction.tsx`, `pickTopBooks` in
   `sanity/lib/pickBooksFromRanking.ts`): the top `rankingCount` books in rank order. What to Read

@@ -103,6 +103,7 @@ interface RawBookEntry {
     canonicalBlurb?: string;
     coverImage: RawImage | null;
     tags: RawTag[] | null;
+    rankings: RawTag[] | null;
   } | null;
 }
 
@@ -127,6 +128,26 @@ function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
 }
 
 /**
+ * Every website ranking that includes the book, as GROQ inside a book projection: shown as tag
+ * pills beside the book's own tags ("Recommended by readers in", DECISIONS.md 2026-10-28). Worked
+ * out from the rankings each time, never stored on the book, so a book taken off a ranking loses
+ * its pill and only rankings that exist on the website appear.
+ */
+const BOOK_RANKINGS = `*[_type == "ranking" && references(^._id)] | order(name asc)`;
+
+/** The book's ranking pills first, then its own tags, without repeating a name (e.g. a "Thriller" tag left from before). */
+export function withRankingPills<T>(rankings: T[], tags: T[], name: (t: T) => string): T[] | undefined {
+  const seen = new Set<string>();
+  const all = [...rankings, ...tags].filter((t) => {
+    const key = name(t).trim().toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  return all.length > 0 ? all : undefined;
+}
+
+/**
  * `rank` is never stored in Sanity — it's the book's position within the
  * article's `bookEntries` array (the order the author drags entries into),
  * only surfaced for categories that actually display ranks (The Shortlist).
@@ -136,7 +157,10 @@ function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
  */
 function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | null {
   if (!raw.refBook) return null; // dangling reference — skip rather than crash on bad CMS data
-  const tags = raw.tagOverrides && raw.tagOverrides.length > 0 ? raw.tagOverrides : raw.refBook.tags ?? undefined;
+  const tags =
+    raw.tagOverrides && raw.tagOverrides.length > 0
+      ? raw.tagOverrides
+      : withRankingPills(raw.refBook.rankings ?? [], raw.refBook.tags ?? [], (t) => t.label);
   return {
     rank,
     title: raw.refBook.title,
@@ -215,7 +239,8 @@ const FULL_ARTICLE_PROJECTION = `{
       "slug": slug.current,
       canonicalBlurb,
       "coverImage": coverImage{ "url": asset->url },
-      "tags": tags[]->{ "label": name, "slug": slug.current }
+      "tags": tags[]->{ "label": name, "slug": slug.current },
+      "rankings": ${BOOK_RANKINGS}{ "label": name, "slug": slug.current }
     }
   },
   "whatToReadNext": whatToReadNext[@->publishedAt <= now() || $includeScheduled]->${SUMMARY_PROJECTION}
@@ -225,7 +250,7 @@ export async function getLatestArticle(category: CategorySlug): Promise<Article 
   const raw = await groqFetch<RawArticle | null>(
     `*[_type == "article" && category == $category && ${RELEASED}] | order(publishedAt desc)[0]${FULL_ARTICLE_PROJECTION}`,
     { category },
-    { tags: ["article", "book", "tag"], revalidate: 300 },
+    { tags: ["article", "book", "tag", "ranking"], revalidate: 300 },
   );
   return raw ? toArticle(raw) : null;
 }
@@ -260,7 +285,7 @@ export async function getArticleBySlug(category: CategorySlug, slug: string): Pr
   const raw = await groqFetch<RawArticle | null>(
     `*[_type == "article" && category == $category && slug.current == $slug && ${RELEASED}][0]${FULL_ARTICLE_PROJECTION}`,
     { category, slug },
-    { tags: ["article", "book", "tag"], revalidate: 300 },
+    { tags: ["article", "book", "tag", "ranking"], revalidate: 300 },
   );
   return raw ? toArticle(raw) : null;
 }
@@ -414,6 +439,7 @@ interface RawWhereToRead {
   goodreadsUrl: string | null;
   canonicalBlurb: string | null;
   tags: (string | null)[] | null;
+  rankings: (string | null)[] | null;
   lists: {
     title: string;
     slug: string;
@@ -435,13 +461,14 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
     `*[_type == "book" && slug.current == $slug][0]{
       _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, goodreadsUrl, canonicalBlurb,
       "tags": tags[]->name,
+      "rankings": ${BOOK_RANKINGS}.name,
       "lists": *[_type == "article" && ${RELEASED} && references(^._id)] | order(publishedAt desc){
         title, "slug": slug.current, category,
         "entries": bookEntries[]{ "id": book._ref, blurb, "book": book->{ "slug": slug.current, title, author, "coverUrl": coverImage.asset->url } }
       }
     }`,
     { slug },
-    { tags: ["book", "article"], revalidate: 300 },
+    { tags: ["book", "article", "ranking"], revalidate: 300 },
   );
   if (!raw) return null;
 
@@ -485,7 +512,11 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
     coverUrl: raw.coverUrl ?? undefined,
     goodreadsUrl: raw.goodreadsUrl ?? undefined,
     blurb: lists.find((l) => l.ownBlurb)?.ownBlurb ?? raw.canonicalBlurb ?? undefined,
-    tags: (raw.tags ?? []).filter((t): t is string => !!t),
+    tags: withRankingPills(
+      (raw.rankings ?? []).filter((t): t is string => !!t),
+      (raw.tags ?? []).filter((t): t is string => !!t),
+      (t) => t,
+    ) ?? [],
     // A ranking ("#1 of 15") is the strongest reason to read it, so ranked lists lead; otherwise newest first.
     lists: [...lists].sort((x, y) => Number(!!y.rank) - Number(!!x.rank)).map((l) => ({ title: l.title, href: l.href, category: l.category, rank: l.rank, bookCount: l.bookCount })),
     related,

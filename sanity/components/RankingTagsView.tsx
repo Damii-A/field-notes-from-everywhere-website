@@ -20,7 +20,7 @@ export function RankingTagsView({ document }: { document: { displayed: { books?:
     const ids = key ? key.split(",") : [];
     client
       .fetch<RankingBook[]>(
-        `*[_id in $ids]{ _id, title, author, "cover": coverImage.asset->url, "tags": tags[]->name }`,
+        `*[_id in $ids]{ _id, title, author, "cover": coverImage.asset->url, "tags": array::unique(*[_type == "ranking" && references(^._id)].name + coalesce(tags[]->name, [])) }`,
         { ids },
         { perspective: "published" },
       )
