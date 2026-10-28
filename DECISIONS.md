@@ -2541,8 +2541,7 @@ other four descriptions are unchanged (the homepage Book Club text kept as is).
 - ~~Honest methodology sentences~~ — settled same day: Format field + draft-sentence patterns (entry below).
 - ~~List length~~ — settled 2026-10-28: varies by format, no cap (entry below).
 - Overlap between several lists from one ranking (possible search cannibalisation).
-- Seasonal lists: publish weeks ahead (scheduling exists); reuse one evergreen address each year rather
-  than a new dated page.
+- ~~Seasonal lists~~ — settled 2026-10-28: one evergreen address, refreshed yearly (entry below).
 - "Books like X" articles could be linked from the matching "Where to read" book page.
 - Cross-genre tag lists (e.g. "books with plot twist endings" from any ranking): discussed 2026-10-26,
   left for now (user agreed). Possible by hand today (book entries can reference any book). When one comes
@@ -2644,3 +2643,39 @@ blurbs and covers): ~2.8 KB per book; 20 books 63 KB, 25 77 KB, 30 90 KB, 35 104
 ~102 KB, and Resend's click tracking lengthens every link, so **about 30 books** is where the emailed
 copy starts getting clipped in Gmail (the reader sees "View entire message"). The article page has no
 limit. Nothing in the Studio enforces or warns about length (none existed before either).
+
+## 2026-10-28 — Seasonal articles keep one permanent address, refreshed each year
+
+**Decision** (user's proposal, my recommendation): a seasonal article (format 5, e.g. "dark romance
+books for Halloween") has one evergreen web address with no year in it, refreshed each year by
+editing the same article: keep the books that still earn their place, swap or add others, update the
+published date, publish (or schedule) a few weeks before the season. A year may go in the title, not
+the slug (the Studio already warns about numbers in slugs). A genuinely different list ("cozy" vs
+"scary" Halloween reads) is a new article, not a new year. Settles "Seasonal lists" in the "Five
+article formats" entry.
+
+**Why**: links, shares and search trust accumulate on one page; a new page per year starts from zero
+and competes with last year's for the same search (cannibalisation); old Pinterest pins keep pointing
+at the current list. **Alternative considered** (raised by the user): a new page each year, building a
+library readers can return to. Rejected: readers want this season's list, last year's books stay in
+the ranking and on their "Where to read" pages, and an edited-not-rewritten page grows into that
+library at one address.
+
+## 2026-10-28 — Publish asks about the date on articles dated before today
+
+**Decision** (user, from four options): on articles, the Studio's Publish button
+(`sanity/actions/PublishWithDateCheck.tsx`, wrapping Sanity's own Publish in `sanity.config.ts`) asks
+"Update the published date?" when the article's date would show an earlier day than today (US
+Eastern): **Publish with today's date** (sets `publishedAt` to now minus a minute, waits until the
+draft shows it, then runs the normal publish) or **Publish and keep {date}**. Future (scheduled) and
+same-day dates publish straight away, as before. Closing the dialog publishes nothing.
+
+**Why asked, not automatic**: the date decides an article's place on its column page, the homepage
+and the weekly newsletter pre-fill, so an always-update would push old articles back to the top on
+every typo fix, and would overwrite deliberate dates. Options offered: ask each time (chosen,
+recommended), always use today's date, a "set to today" button by the field, leave it. Also fixes the
+known gap that a draft started days earlier went live with its old date unless changed by hand.
+
+**Verified**: type check, lint on the new files, production build. **Not verified**: the button in
+the real Studio (the user's own login), so the user's first use is its check. (`npm run lint` still
+reports one existing error in Next.js's generated `next-env.d.ts`, unrelated and untouched.)

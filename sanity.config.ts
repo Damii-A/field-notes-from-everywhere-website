@@ -14,6 +14,7 @@ import { FillFromRankingAction } from "./sanity/actions/FillFromRankingAction";
 import { ChooseBooksAction } from "./sanity/actions/ChooseBooksAction";
 import { CreateKitDraftAction } from "./sanity/actions/CreateKitDraftAction";
 import { CreateResendDraftAction } from "./sanity/actions/CreateResendDraftAction";
+import { withPublishDateCheck } from "./sanity/actions/PublishWithDateCheck";
 
 const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
@@ -81,10 +82,11 @@ export default defineConfig({
     // "Fill books from ranking" on Shortlist articles and Reading Room issues — DECISIONS.md, 2026-09-23;
     // "Choose books from ranking" on the other two columns' articles — DECISIONS.md, 2026-10-26;
     // "Create Kit draft" on issues — DECISIONS.md, 2026-10-02;
-    // "Create Resend draft" on weekly newsletters — DECISIONS.md, 2026-10-05.
+    // "Create Resend draft" on weekly newsletters — DECISIONS.md, 2026-10-05;
+    // Publish asks about the date on articles dated before today — DECISIONS.md, 2026-10-28.
     actions: (prev, { schemaType }) =>
       schemaType === "article"
-        ? [...prev, FillFromRankingAction, ChooseBooksAction]
+        ? [...prev.map((a) => (a.action === "publish" ? withPublishDateCheck(a) : a)), FillFromRankingAction, ChooseBooksAction]
         : schemaType === "readingRoomIssue"
           ? [...prev, FillFromRankingAction, CreateKitDraftAction]
           : schemaType === "weeklyNewsletter"

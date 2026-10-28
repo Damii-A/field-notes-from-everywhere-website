@@ -231,7 +231,9 @@ the N most recent published articles per category by query (`publishedAt desc`),
 `pub_hub.md`'s "automatically determined by publication date rather than manually curated."
 No manual curation field needed for those. **Scheduling**: every article query also requires
 `publishedAt <= now()`, so an article published in the Studio with a future date stays hidden
-until then (go-live within the 300s revalidate window — see `DECISIONS.md`, 2026-09-23). The homepage reader-request text bank
+until then (go-live within the 300s revalidate window — see `DECISIONS.md`, 2026-09-23). On articles
+dated before today, the Studio's Publish asks whether to switch to today's date
+(`sanity/actions/PublishWithDateCheck.tsx`, 2026-10-28). The homepage reader-request text bank
 (`REQUESTS` array in the built `Home.dc.html`) stays as a code-level constant, not a CMS
 field — it's copy that changes rarely, isn't tied to any content publishing workflow, and
 adding a CMS array field buys nothing here (Operating Manual §5, prefer simplicity).

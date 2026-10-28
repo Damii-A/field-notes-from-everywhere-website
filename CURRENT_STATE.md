@@ -25,8 +25,10 @@ user's copy (restored after I wrongly merged them); What to Read When got one us
 each set (seasons, "books like"); the rest are unchanged. Tags stay as they are; every format except the Shortlist is hand-picked with the new Studio button
 **"Choose books from ranking"** (tick boxes, tag filter, "Also in" notes; DECISIONS.md 2026-10-26).
 Not yet seen in the real Studio (user's login): the user's first use is its check. **Next, one at a
-time**: the remaining open points in the "Five article formats" DECISIONS entry (seasonal addresses;
-list length settled 2026-10-28: varies by format, ~30 books is where the emailed copy clips in Gmail). Done 2026-10-26: a required **Format** field on What to Read When articles and a
+time**: the remaining open points in the "Five article formats" DECISIONS entry. Settled 2026-10-28: list
+length varies by format (~30 books is where the emailed copy clips in Gmail); seasonal articles keep
+one evergreen address, refreshed yearly; **Publish now asks about the date** on articles dated before
+today (today's date or keep it; `PublishWithDateCheck.tsx`), not yet seen in the real Studio. Done 2026-10-26: a required **Format** field on What to Read When articles and a
 "Write draft sentence" button for the methodology box (patterns approved by the user; publishing is
 blocked while [bracketed] parts remain). The live What to Read When article needs its format set (trope
 or feeling) next time it's edited. None of the new Studio pieces have been seen in the real Studio yet.
@@ -134,7 +136,7 @@ Namecheap; details in `ARCHITECTURE.md` §11.
 - Publish webhook → `/api/webhooks/sanity` (revalidate + IndexNow). The plan allows 2 webhooks;
   1 is used.
 - The local `SANITY_API_TOKEN` is an Editor key ("Claude Code local", 2026-10-28). Writes to live content via scripts trigger Claude Code's auto-mode safety check; they go ahead only with the user's explicit approval in that session.
-- Publishing an article whose date has passed: update its date first, or it shows the old date.
+- Publishing an article whose date has passed: Publish asks whether to use today's date (2026-10-28).
 - More books: `npm run import-books -- <file.csv> [--ranking "Name"]`; Goodreads links:
   `npm run goodreads-links`. The original Thriller CSV in Downloads has old title casing (fixed in
   Sanity); re-importing it unedited would revert 11 books.
