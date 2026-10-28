@@ -15,8 +15,8 @@ Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is c
 Sanity's list, and deleting it would break the site's content fetches.
 
 **First, the internal tool's open items** (its CURRENT_STATE.md "Start here", end of 2026-10-28): the
-user must press **Cancel** on the open Edit session of tool discussion 84 (my browser test misclicked
-and invalidated Dragon Tattoo's Dark Fantasy recommendation; Cancel restores it); verify the rebuilt
+edit session is closed (done; the user then invalidated Dragon Tattoo's Dark Fantasy recommendation
+themselves); verify the rebuilt
 "+ tag" menu on a database copy; speed up the tool's duplicate scan. Never click-test against the
 tool's live data. Then the next feature is "Send to website" (design in the paragraph below).
 
