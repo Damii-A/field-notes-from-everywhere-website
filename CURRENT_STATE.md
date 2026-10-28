@@ -28,12 +28,14 @@ website" will update Sanity rankings and books from it. Agreed tag model: primar
 rankings, never stored as book tags (each Sanity ranking linked to its tool primary tag, with the real
 recommendation count; books get a separate "Recommended by readers in" list); book tags = reader +
 the user's research tags, one set per book. Done 2026-10-28 in the tool: research tags separated from
-reader evidence + the 2026-09-23 import repaired (tool DECISIONS.md). Next: research-tag editing in
-the tool, then the send (preview first; books + rankings only, never articles), a one-time catch-up
-of the website's metadata fixes into the tool (9 titles, 3 authors, 2 blurbs, 49 covers, 49 Goodreads
-links differ), and "Tick all shown" in "Choose books from ranking". Still to ask the user: book
-details edited only in the tool afterwards (recommended) or in either place. Website keeps its own
-blurb for existing books unless ticked in the preview (user's choice).
+reader evidence + the 2026-09-23 import repaired; research tags editable in the tool; 7 duplicate
+books merged + stronger duplicate check; pre-change backups kept a year; the website's book fixes
+copied into the tool (49 Thriller books now identical in both). **Book details and book tags are
+edited only in the tool from now on** (user, 2026-10-28); the Studio's book fields should become
+view-only when the send is built. Next: the send (preview first; books + rankings only, never
+articles; removes the primary tag "Thriller" from the 49 books and "Dark Romance" from The Risk;
+ask the user Global vs International Manhunt for I Am Pilgrim), then "Tick all shown" in "Choose
+books from ranking". All tool details: the tool's DECISIONS.md, 2026-10-28 entries.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
