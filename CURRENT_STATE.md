@@ -18,6 +18,9 @@ Sanity's list, and deleting it would break the site's content fetches.
 check the user's Kit member tag is gone (paused subscription, below); (2) before 2026-12-14, keep a
 reference copy of the Claude Design project (above). Otherwise the user's next step is writing the
 next article with the new Studio tools; offer the remaining open points one at a time.
+The user is also adding tags to the existing books (research), using the new **Tags tab on
+rankings** (2026-10-28; DECISIONS.md) to see which tag-focused lists have enough books. If they bring
+an "extra tags" sheet for existing books, merge tags by script; don't re-import the original CSV.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.

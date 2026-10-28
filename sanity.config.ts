@@ -15,6 +15,7 @@ import { ChooseBooksAction } from "./sanity/actions/ChooseBooksAction";
 import { CreateKitDraftAction } from "./sanity/actions/CreateKitDraftAction";
 import { CreateResendDraftAction } from "./sanity/actions/CreateResendDraftAction";
 import { withPublishDateCheck } from "./sanity/actions/PublishWithDateCheck";
+import { RankingTagsView } from "./sanity/components/RankingTagsView";
 
 const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
@@ -31,7 +32,13 @@ export default defineConfig({
   dataset,
   basePath: "/studio",
   plugins: [
-    structureTool({ structure }),
+    structureTool({
+      structure,
+      // Rankings get a "Tags" tab beside the form: tag counts across the ranking's books,
+      // for planning tag-focused lists (DECISIONS.md, 2026-10-28).
+      defaultDocumentNode: (S, { schemaType }) =>
+        schemaType === "ranking" ? S.document().views([S.view.form(), S.view.component(RankingTagsView).title("Tags")]) : S.document(),
+    }),
     // "Preview" — the real site, showing unpublished/scheduled content,
     // inside the Studio (DECISIONS.md, 2026-09-24). Preview is switched on
     // via app/api/draft-mode/enable, which only accepts a secret the Studio

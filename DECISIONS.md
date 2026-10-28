@@ -2681,3 +2681,26 @@ known gap that a draft started days earlier went live with its old date unless c
 with its date unchanged (checked in Sanity). A Studio tab opened before a deploy keeps the old code
 until reloaded (the first try showed no dialog for that reason). (`npm run lint` still
 reports one existing error in Next.js's generated `next-env.d.ts`, unrelated and untouched.)
+
+## 2026-10-28 — "Tags" tab on rankings, for planning tag-focused lists
+
+**Decision** (user-requested): each ranking in the Studio has a **Tags** tab beside its form
+(`sanity/components/RankingTags.tsx`, loaded by `RankingTagsView.tsx`, wired via `defaultDocumentNode`
+in `sanity.config.ts`): every tag on the ranking's books with how many books carry it, sorted by
+count or A–Z, a tag search, and a click on a tag lists its books in rank order (rank, cover, title,
+author). Display only. Purpose (user's words, paraphrased): see "this tag is on X books" to decide
+which tag-focused lists (formats 2 and 4) to make within a ranking, which keeps them inside the
+research ("the most-recommended thrillers, narrowed to this setting/trope/experience").
+
+**What the data showed when built** (Thriller, 49 books, 92 tags): 64 tags on one book, 20 on two;
+5+ books only for Thriller (49), Unreliable Narrator (10), Serial Killer (6), Detective MC (5).
+Espionage: 2. Plot twists split across "Plot Twist" (2) and "Plot Twist Ending" (4). The user plans
+more tagging research on the existing books and fuller tags on future imports. Advised: reuse
+existing tag names exactly (the importer matches by name; a variant makes a new tag); for the 49
+existing books, add tags in the Studio or via an "extra tags" sheet merged by a script (not a
+re-import of the original CSV, which would revert title fixes and reset the ranking order).
+
+**Verified**: rendered with the real Thriller data in headless Chromium: counts above, Unreliable
+Narrator opens its 10 books in rank order, A–Z + search "plot" lists Murder Plot / Plot Twist / Plot
+Twist Ending, no-match message, no console errors, no sideways scroll at 390px; type check, lint,
+production build. **Not verified**: the tab in the real Studio (user's login).
