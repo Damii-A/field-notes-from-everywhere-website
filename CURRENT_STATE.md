@@ -15,10 +15,9 @@ Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is c
 Sanity's list, and deleting it would break the site's content fetches.
 
 **Start the next session here (as of end of 2026-10-28; nothing blocking).** The internal tool's "Send to
-website" is built (steps 1-4 below) but has **never sent for real**. **First (user's instruction): check
-that the notes and the code agree in both repos before any new work** — see the tool's CURRENT_STATE.md
-"Start here" item 0 for the known mismatches (here: the I Am Pilgrim question below is settled, International
-Manhunt). Next: (1) the user finishes filling in the
+website" is built (steps 1-4 below) but has **never sent for real**. The notes-vs-code check of both repos
+was **done 2026-10-29** (tool commit e8b6ddd; here, only the I Am Pilgrim line below needed fixing). The
+tool's own docs hold all of its changes; tool notes in this file are short pointers only. Next: (1) the user finishes filling in the
 Thriller books' details in the tool; (2) the user's first real "Send to Studio" of Thriller from the tool's
 ranking page, then check the Studio, an article and a "Where to read" page together; (3) step 5: make the
 Studio's book fields view-only. Full list and the send's rules: the tool's CURRENT_STATE.md "Start here" and
@@ -51,8 +50,8 @@ Editor key "Claude Code local" (shared; deleting it stops both); (4) the send **
 undo script, checked with Sanity's dry run against live content; **never sent for real**: the user's first
 Thriller send is the check, then look at the Studio, an article and a book page); (5) next: Studio book fields view-only. Details: the send (preview first; books + rankings only, never
 articles; removes the primary tag "Thriller" from the 49 books and "Dark Romance" from The Risk;
-ask the user Global vs International Manhunt for I Am Pilgrim), then "Tick all shown" in "Choose
-books from ranking". All tool details: the tool's DECISIONS.md, 2026-10-28 entries.
+I Am Pilgrim settled as "International Manhunt"), then "Tick all shown" in "Choose
+books from ranking" (planned, not built). All tool details: the tool's DECISIONS.md, 2026-10-28 entries.
 
 Trimmed 2026-10-06: the session-by-session history that used to sit here (much of it superseded)
 is in git (`git log -p -- CURRENT_STATE.md`); every decision it described is in `DECISIONS.md`.
