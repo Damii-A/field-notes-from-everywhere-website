@@ -173,7 +173,10 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   names of the website rankings that include it come first, then its own tags, without repeating a
   name (`BOOK_RANKINGS` / `withRankingPills`, `lib/content/index.ts`). Worked out from the rankings on
   every read, never stored on the book. A per-article tag choice (`bookEntries[].tags`) still replaces
-  the whole set. (Not expected to be reused by a
+  the whole set. **How many show** (2026-10-30): in an article, the ranking pills plus the book's first 4
+  own tags (`BOOK_TAGS_SHOWN`; the internal tool sends tags in display order), then a "+N more" pill that
+  expands in place; the Reading Room issue email the same with a plain "+N more"; a per-article or
+  per-issue tag choice, "Where to read" and the Studio tools show every tag. (Not expected to be reused by a
   future Reading Room Books catalogue — see `tag`, above.)
 - **`article`** — `title`, `slug`, `metaDescription` (search/link-preview summary, also the
   hub lead card, RSS and recap summary; falls back to `methodologySentence` when empty),
@@ -509,3 +512,16 @@ Scoped to actual risk (Operating Manual §29), not applied uniformly:
   subscriber product get built in a later phase — tracked as backlog, not scheduled.
 - Final list/tag naming inside Kit and Price/Product naming inside Paddle depend on the
   user's own account setup in those tools.
+- **Sanity gaps for the internal tool's topic suggester** (audited from the tool 2026-10-30; full
+  design in the tool's `docs/TOPIC_SUGGESTER_DESIGN.md` §6-§10). Planned together with the
+  suggester, not built: (1) book facts on `book` (page count, publication year, series status /
+  name / number / total), carried by the send; (2) tag categories on `tag` (the tool's 10: Genre,
+  Character, Relationship, Trope, Mood, Theme, Setting, Experience, Story Elements, Intensity), and
+  how they relate to the 9 `theme` groups; (3) a "post idea" document type (books in order,
+  formula, why they qualify, pin format, timing, evidence line, each book's relevant tags) with a
+  "Start article from this idea" action that also fills each entry's "Tags shown here"; (4) article
+  formats per formula in all three columns (today only What to Read When has `format`); (5) the
+  third column's new name and scope (book club, challenges/checklists, book a month), which needs
+  the user's direction first; (6) article layouts beyond one flat list (grouped sections, a
+  12-month calendar, checklists); (7) Studio book fields view-only (after the tool's first send).
+  Unchecked: Sanity plan usage limits (sanity.io/manage → project → Usage; the Editor key can't read them).

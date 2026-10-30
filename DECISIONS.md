@@ -2756,4 +2756,6 @@ yet seen: the "+N more" pill itself on a real page and in a real email (after th
 
 **Process note**: made from an internal-tool session (the user has since asked that website changes be made
 from a session in this folder). Committed, **not pushed** (pushing deploys): a session here should review it
-against the design project and push.
+against the design project and push. **Reviewed and pushed 2026-10-30** from a session here (code, type
+check, build; the design project couldn't be opened, see CURRENT_STATE.md). Not covered by this change: the
+"send this list to me" email still shows every tag (raised with the user).

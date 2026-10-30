@@ -1,6 +1,6 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-28. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-10-30. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **2026-10-28: access check.** Working: GitHub push, live site, Resend, Kit, Sanity read **and write**
 (new local Editor key "Claude Code local", made by the user; the old one returned "Session not found",
@@ -14,14 +14,19 @@ or GitHub CLIs installed (not needed). Old Sanity keys ("Claude Write token (Rob
 Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is can't be told from
 Sanity's list, and deleting it would break the site's content fetches.
 
-**2026-10-30 (from an internal-tool session; read first).** One commit here is **not pushed yet**: book
-tags show the first 4 under a book in articles and the issue email, with "+N more" (DECISIONS.md,
-2026-10-30). Review it against the Claude Design project, then push. The internal tool's state moved on a
-lot (pools, research sheet, "Send books to Studio" from its Pool prep page); its handover note for this
-repo, including a Sanity gap list for the coming topic suggester (book facts, tag categories, "post idea"
-documents, formats per formula in all three columns, layouts, the third column's name, view-only book
-fields), is the tool's `docs/handover/WEBSITE_HANDOVER_2026-10-30.md`. The first real send of Thriller waits
-until the tags change is live.
+**2026-10-30: book-tag limit reviewed and pushed.** Commit 7cc409f (made from an internal-tool session):
+book tags show the first 4 under a book in articles and the Reading Room issue email, then "+N more"
+(DECISIONS.md, 2026-10-30). Reviewed here: code sound, type check + production build clean; pushed. No
+visible change yet: the 4 books with 5 tags all carry "Thriller", which merges into the ranking pill.
+**Not checked against the Claude Design project** (DesignSync needs `/design-login`, unavailable in that
+session; the design shows no tag limit anyway, and this is the user's direction). **Gap found, raised with
+the user**: the "send this list to me" email (`lib/email/bookListEmail.ts`) still lists every tag, so after
+the tool's first send it would carry ~20 pills per book (and clip in Gmail much sooner). The tool's handover
+note is its `docs/handover/WEBSITE_HANDOVER_2026-10-30.md`; its Sanity gap list for the coming topic
+suggester is now in ARCHITECTURE.md §15 (future work, not to build yet). Next (agreed order): the user's
+first "Send books to Studio" of Thriller from the tool's Pool prep page (53-book pool), then reload the
+Studio and check the Studio, one article and one "Where to read" page together; then step 5, Studio book
+fields view-only.
 
 **Start the next session here (as of end of 2026-10-28; nothing blocking).** The internal tool's "Send to
 website" is built (steps 1-4 below) but has **never sent for real**. The notes-vs-code check of both repos
@@ -179,7 +184,7 @@ handling and a post-trial branch on the `reading_room_member` contact property.
 Namecheap; details in `ARCHITECTURE.md` §11.
 
 **Content (Sanity)**: project `7ci7c80z`, dataset `production`, Studio at `/studio`.
-- 49 books (all with Goodreads links and slugs), 94 tags, the "Thriller" ranking (49 books).
+- 49 books (all with Goodreads links and slugs), 93 tags, the "Thriller" ranking (49 books) (counted 2026-10-30).
 - Published: the three Thriller articles (one per column, dated 2026-09-27), Terms / Privacy /
   Disclosures (real copy, "Last updated" 2026-09-30), Site Settings.
 - The user's Thriller Reading Room issue (Kit draft updated by the user 2026-10-05).
