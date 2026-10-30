@@ -175,7 +175,7 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   every read, never stored on the book. A per-article tag choice (`bookEntries[].tags`) still replaces
   the whole set. **How many show** (2026-10-30): in an article, the ranking pills plus the book's first 4
   own tags (`BOOK_TAGS_SHOWN`; the internal tool sends tags in display order), then a "+N more" pill that
-  expands in place; the Reading Room issue email the same with a plain "+N more"; a per-article or
+  expands in place; the "send this list" and Reading Room issue emails the same with a plain "+N more"; a per-article or
   per-issue tag choice, "Where to read" and the Studio tools show every tag. (Not expected to be reused by a
   future Reading Room Books catalogue — see `tag`, above.)
 - **`article`** — `title`, `slug`, `metaDescription` (search/link-preview summary, also the

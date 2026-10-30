@@ -19,9 +19,9 @@ book tags show the first 4 under a book in articles and the Reading Room issue e
 (DECISIONS.md, 2026-10-30). Reviewed here: code sound, type check + production build clean; pushed. No
 visible change yet: the 4 books with 5 tags all carry "Thriller", which merges into the ranking pill.
 **Not checked against the Claude Design project** (DesignSync needs `/design-login`, unavailable in that
-session; the design shows no tag limit anyway, and this is the user's direction). **Gap found, raised with
-the user**: the "send this list to me" email (`lib/email/bookListEmail.ts`) still lists every tag, so after
-the tool's first send it would carry ~20 pills per book (and clip in Gmail much sooner). The tool's handover
+session; the design shows no tag limit anyway, and this is the user's direction). **Gap found and fixed the
+same day (user's choice)**: the "send this list to me" email listed every tag; it now shows the same first
+4 + "+N more" as the article (checked by test render; not yet seen in a real email). The tool's handover
 note is its `docs/handover/WEBSITE_HANDOVER_2026-10-30.md`; its Sanity gap list for the coming topic
 suggester is now in ARCHITECTURE.md §15 (future work, not to build yet). Next (agreed order): the user's
 first "Send books to Studio" of Thriller from the tool's Pool prep page (53-book pool), then reload the

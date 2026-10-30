@@ -38,8 +38,12 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
       const cover = b.coverImage
         ? `<img src="${esc(sized(b.coverImage.url, COVER_WIDTH * 2))}" alt="${esc(b.coverImage.alt || b.title)}" width="${COVER_WIDTH}" style="display:block;width:${COVER_WIDTH}px;height:auto;border-radius:3px 6px 6px 3px;border:0;" />`
         : `<div style="width:${COVER_WIDTH}px;height:${Math.round(COVER_WIDTH * 1.5)}px;background:${c.tagBorder};border-radius:3px 6px 6px 3px;"></div>`;
-      const tags = (b.tags ?? [])
-        .map((t) => `<span style="display:inline-block;margin:0 4px 6px 0;padding:3px 10px;border:1px solid ${c.tagBorder};border-radius:999px;font:12px/1.4 ${BODY};color:${INK_SOFT};">${esc(t.label)}</span>`)
+      // Same tags as the article: the first few, then a plain "+N more" (an email can't expand; user, 2026-10-30).
+      const all = b.tags ?? [];
+      const shown = b.tagsShown === undefined ? all : all.slice(0, b.tagsShown);
+      const more = all.length - shown.length;
+      const tags = [...shown.map((t) => esc(t.label)), ...(more > 0 ? [`+${more} more`] : [])]
+        .map((t) => `<span style="display:inline-block;margin:0 4px 6px 0;padding:3px 10px;border:1px solid ${c.tagBorder};border-radius:999px;font:12px/1.4 ${BODY};color:${INK_SOFT};">${t}</span>`)
         .join("");
       const blurb = splitParagraphs(b.blurb)
         .map((p) => `<p style="margin:0 0 12px;font:15px/1.6 ${BODY};color:${INK_SOFT};">${esc(p).replace(/\n/g, "<br/>")}</p>`)

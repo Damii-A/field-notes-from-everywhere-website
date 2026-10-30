@@ -2757,5 +2757,8 @@ yet seen: the "+N more" pill itself on a real page and in a real email (after th
 **Process note**: made from an internal-tool session (the user has since asked that website changes be made
 from a session in this folder). Committed, **not pushed** (pushing deploys): a session here should review it
 against the design project and push. **Reviewed and pushed 2026-10-30** from a session here (code, type
-check, build; the design project couldn't be opened, see CURRENT_STATE.md). Not covered by this change: the
-"send this list to me" email still shows every tag (raised with the user).
+check, build; the design project couldn't be opened, see CURRENT_STATE.md). **Extended the same day** (user's
+choice, over "first 4 with no '+N more'" or leaving it): the "send this list to me" email
+(`lib/email/bookListEmail.ts`) now shows the same tags as the article, with a plain "+N more" pill. It had
+listed every tag, which after the first send would have meant ~20 pills per book and Gmail clipping much
+sooner. Checked with a test render (10 tags → pill + 4 + "+5 more"; an article's own tag choice in full).
