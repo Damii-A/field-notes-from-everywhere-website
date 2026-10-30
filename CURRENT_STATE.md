@@ -14,6 +14,15 @@ or GitHub CLIs installed (not needed). Old Sanity keys ("Claude Write token (Rob
 Notes Sanity API") are left in place: which key Vercel's `SANITY_API_TOKEN` is can't be told from
 Sanity's list, and deleting it would break the site's content fetches.
 
+**2026-10-30 (from an internal-tool session; read first).** One commit here is **not pushed yet**: book
+tags show the first 4 under a book in articles and the issue email, with "+N more" (DECISIONS.md,
+2026-10-30). Review it against the Claude Design project, then push. The internal tool's state moved on a
+lot (pools, research sheet, "Send books to Studio" from its Pool prep page); its handover note for this
+repo, including a Sanity gap list for the coming topic suggester (book facts, tag categories, "post idea"
+documents, formats per formula in all three columns, layouts, the third column's name, view-only book
+fields), is the tool's `docs/handover/WEBSITE_HANDOVER_2026-10-30.md`. The first real send of Thriller waits
+until the tags change is live.
+
 **Start the next session here (as of end of 2026-10-28; nothing blocking).** The internal tool's "Send to
 website" is built (steps 1-4 below) but has **never sent for real**. The notes-vs-code check of both repos
 was **done 2026-10-29** (tool commit e8b6ddd; here, only the I Am Pilgrim line below needed fixing). The

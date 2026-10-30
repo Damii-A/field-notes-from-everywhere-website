@@ -208,6 +208,24 @@
   color: var(--ink-700);
 }
 
+/* "+N more" / "Show fewer" after a book's first tags (DECISIONS.md, 2026-10-30). */
+.moreTags {
+  border-style: dashed;
+  background: transparent;
+  color: var(--ink-500);
+  cursor: pointer;
+}
+
+.moreTags:hover {
+  color: var(--ink-700);
+  border-color: var(--ink-500);
+}
+
+.moreTags:focus-visible {
+  outline: 2px solid var(--ink-700);
+  outline-offset: 2px;
+}
+
 .callout {
   margin: clamp(20px, 2.4vw, 32px) 0;
   padding: 18px 20px;

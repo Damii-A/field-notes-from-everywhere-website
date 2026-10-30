@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { BOOK_TAGS_SHOWN } from "@/lib/content";
 import { readingRoomIssueHtml, type IssueEmail } from "@/lib/email/readingRoomIssueEmail";
 import { KitDraftLockedError, saveReadingRoomDraft } from "@/lib/integrations/kit";
 import { SITE_URL } from "@/lib/siteUrl";
@@ -47,7 +48,7 @@ const ISSUE_QUERY = `*[_type == "readingRoomIssue" && _id == $id][0]{
   "books": bookEntries[defined(book)]{
     "id": book._ref, "slug": book->slug.current, "title": book->title, "author": book->author, "coverUrl": book->coverImage.asset->url,
     "ownBlurb": blurb, "canonicalBlurb": book->canonicalBlurb,
-    "tags": select(count(tags) > 0 => tags[]->name, book->tags[]->name)
+    "ownTags": tags[]->name, "bookTags": book->tags[]->name
   }
 }`;
 
@@ -57,7 +58,7 @@ type Issue = Partial<Omit<IssueEmail, "books">> & {
   previewText?: string;
   kitBroadcastId?: number;
   rankedIds?: string[] | null;
-  books: (Omit<IssueEmail["books"][number], "tags" | "rank" | "pageUrl" | "blurb"> & { id: string; slug?: string | null; ownBlurb?: string | null; canonicalBlurb?: string | null; tags: (string | null)[] | null })[] | null;
+  books: (Omit<IssueEmail["books"][number], "tags" | "moreTags" | "rank" | "pageUrl" | "blurb"> & { id: string; slug?: string | null; ownBlurb?: string | null; canonicalBlurb?: string | null; ownTags: (string | null)[] | null; bookTags: (string | null)[] | null })[] | null;
 };
 
 const REQUIRED: [keyof Issue, string][] = [
@@ -94,15 +95,20 @@ export async function POST(req: Request) {
     aboutThisIssue: issue.aboutThisIssue!,
     closingSentence: issue.closingSentence!,
     signOff: issue.signOff!,
-    books: books.map(({ id, slug, ownBlurb, canonicalBlurb, ...b }) => {
+    books: books.map(({ id, slug, ownBlurb, canonicalBlurb, ownTags, bookTags, ...b }) => {
       const pos = issue.rankedIds?.indexOf(id) ?? -1;
+      // Tags chosen for this issue show in full; otherwise the book's first few, then "+N more" (2026-10-30).
+      const own = (ownTags ?? []).filter((t): t is string => !!t);
+      const all = own.length > 0 ? own : (bookTags ?? []).filter((t): t is string => !!t);
+      const limit = own.length > 0 ? all.length : BOOK_TAGS_SHOWN;
       return {
         ...b,
         // A blurb written for this issue, else the book's own (publisher) blurb,
         // in full: readers need enough to decide (user, 2026-10-05; it was cut
         // to a sentence or two before, to stay under Gmail's clip limit).
         blurb: ownBlurb?.trim() ? ownBlurb : (canonicalBlurb ?? ""),
-        tags: (b.tags ?? []).filter((t): t is string => !!t),
+        tags: all.slice(0, limit),
+        moreTags: Math.max(0, all.length - limit),
         rank: pos >= 0 ? pos + 1 : undefined,
         // The book's "Where to read" page (full blurb + where to get it). No UTM
         // tags: Kit reports clicks per issue, and every byte of the URL is

@@ -73,6 +73,12 @@ export interface BookEntry {
   /** The book's /where-to-read/<slug> page; missing until the book has a slug. */
   slug?: string;
   tags?: TagRef[];
+  /**
+   * How many of `tags` show before "+N more" (the ranking pills plus the book's first
+   * BOOK_TAGS_SHOWN tags; DECISIONS.md, 2026-10-30). Missing = show them all (an article's own
+   * per-book tag choice).
+   */
+  tagsShown?: number;
   /** BookCover accepts a solid "spine" colour when there's no real cover image yet. */
   spine?: string;
   coverImage?: {

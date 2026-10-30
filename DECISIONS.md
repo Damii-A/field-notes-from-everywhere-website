@@ -2729,3 +2729,31 @@ validate` 0/0, production build. The Studio fields themselves: user's login. Ran
 through the `ranking` cache tag if the publish webhook covers rankings (its filter can't be read with the
 current key), else within the 5-minute refresh.
 
+## 2026-10-30 — Book tags: the first 4 under a book in an article and the issue email, "+N more" for the rest
+
+**Context**: the internal tool's first real send of Thriller (not done yet) would give each Thriller book
+14-23 tags (the user's research tags plus reader tags; 334 new tag names) where books show about 4 today, and
+every place a book's tags show listed all of them. None of the 3 live Thriller articles picks its own tags
+per book, so all of them would have shown ~20 pills per book.
+
+**Decision** (the user's, made in an internal-tool session; a user-directed change the Claude Design
+project doesn't show, recorded here per CLAUDE.md): under a book in an **article** its ranking pills show,
+then its first **4** own tags (`BOOK_TAGS_SHOWN`, `lib/content/index.ts`), then a dashed **"+N more"** pill
+that expands the rest in place ("Show fewer" folds them back; `BookTags` in `components/ArticleView.tsx`,
+`.moreTags` in its CSS). An article entry that picks its own tags ("Tags shown here") still shows all of
+them (`tagsShown` is left unset). The **Reading Room issue email** shows the issue's own tag choice in full,
+else the book's first 4 plus a plain "+N more" pill (an email can't expand; the full list is on the book's
+page). The **"Where to read" page** shows every tag (unchanged). Which 4 lead is decided by the tool, which
+now sends each book's tags in display order: one Mood, Trope, Setting and Experience tag first (a reader
+tag, else the most distinctive one shared by 2+ books), then the rest by category, Intensity last (the
+tool's DECISIONS.md, 2026-10-30). Direction recorded for later (user): the tags shown under books should
+depend on the post's format; the tool's planned "post idea" documents would fill each entry's "Tags shown
+here" (the tool's docs/TOPIC_SUGGESTER_DESIGN.md §10).
+
+**Verified**: type check, lint, production build; the Shortlist article served from the build against live
+content looks as before (no book has more than 4 own tags yet, so no "+N more" shows until the send). Not
+yet seen: the "+N more" pill itself on a real page and in a real email (after the first send).
+
+**Process note**: made from an internal-tool session (the user has since asked that website changes be made
+from a session in this folder). Committed, **not pushed** (pushing deploys): a session here should review it
+against the design project and push.

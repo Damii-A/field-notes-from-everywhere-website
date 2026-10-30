@@ -249,15 +249,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {book.title}
                       </h2>
                       <span className={styles.bookAuthor}>{book.author}</span>
-                      {book.tags && book.tags.length > 0 ? (
-                        <div className={styles.tagRow}>
-                          {book.tags.map((t) => (
-                            <span key={t.slug} className={styles.tag}>
-                              {t.label}
-                            </span>
-                          ))}
-                        </div>
-                      ) : null}
+                      {book.tags && book.tags.length > 0 ? <BookTags tags={book.tags} shown={book.tagsShown} /> : null}
                       <div className={styles.bookBlurb}>
                         {splitParagraphs(book.blurb).map((p, k) => (
                           <p key={k}>{p}</p>
@@ -551,5 +543,29 @@ function SendListPopup({
         )}
       </div>
     </>
+  );
+}
+
+/**
+ * A book's tag pills: its ranking pills and first few tags, with "+N more" for the rest
+ * (DECISIONS.md, 2026-10-30). `shown` missing = all of them.
+ */
+function BookTags({ tags, shown }: { tags: { label: string; slug: string }[]; shown?: number }) {
+  const [open, setOpen] = useState(false);
+  const hidden = shown === undefined ? 0 : Math.max(0, tags.length - shown);
+  const visible = open || hidden === 0 ? tags : tags.slice(0, shown);
+  return (
+    <div className={styles.tagRow}>
+      {visible.map((t) => (
+        <span key={t.slug} className={styles.tag}>
+          {t.label}
+        </span>
+      ))}
+      {hidden > 0 ? (
+        <button type="button" className={`${styles.tag} ${styles.moreTags}`} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+          {open ? "Show fewer" : `+${hidden} more`}
+        </button>
+      ) : null}
+    </div>
   );
 }

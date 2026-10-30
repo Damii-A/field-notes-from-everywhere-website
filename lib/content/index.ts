@@ -135,6 +135,13 @@ function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
  */
 const BOOK_RANKINGS = `*[_type == "ranking" && references(^._id)] | order(name asc)`;
 
+/**
+ * How many of a book's own tags show under it in an article and the issue email before "+N more"
+ * (user, 2026-10-30: books now carry ~20 tags from the internal tool, which sends them in the order
+ * they should show). The "Where to read" page shows them all.
+ */
+export const BOOK_TAGS_SHOWN = 4;
+
 /** The book's ranking pills first, then its own tags, without repeating a name (e.g. a "Thriller" tag left from before). */
 export function withRankingPills<T>(rankings: T[], tags: T[], name: (t: T) => string): T[] | undefined {
   const seen = new Set<string>();
@@ -157,10 +164,11 @@ export function withRankingPills<T>(rankings: T[], tags: T[], name: (t: T) => st
  */
 function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | null {
   if (!raw.refBook) return null; // dangling reference — skip rather than crash on bad CMS data
-  const tags =
-    raw.tagOverrides && raw.tagOverrides.length > 0
-      ? raw.tagOverrides
-      : withRankingPills(raw.refBook.rankings ?? [], raw.refBook.tags ?? [], (t) => t.label);
+  const own = !!raw.tagOverrides && raw.tagOverrides.length > 0;
+  const tags = own ? raw.tagOverrides : withRankingPills(raw.refBook.rankings ?? [], raw.refBook.tags ?? [], (t) => t.label);
+  // Ranking pills always show; then the book's first few tags (an article's own choice shows in full).
+  const pillNames = new Set((raw.refBook.rankings ?? []).map((r) => r.label.trim().toLowerCase()));
+  const pills = (tags ?? []).filter((t) => pillNames.has(t.label.trim().toLowerCase())).length;
   return {
     rank,
     title: raw.refBook.title,
@@ -168,6 +176,7 @@ function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | n
     blurb: raw.blurb || raw.refBook.canonicalBlurb || "",
     slug: raw.refBook.slug ?? undefined,
     tags: tags?.map((t) => ({ label: t.label, slug: t.slug })),
+    tagsShown: own ? undefined : pills + BOOK_TAGS_SHOWN,
     coverImage: raw.refBook.coverImage ? { url: raw.refBook.coverImage.url, alt: raw.refBook.title } : undefined,
   };
 }

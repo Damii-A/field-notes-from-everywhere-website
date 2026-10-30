@@ -22,6 +22,8 @@ export interface IssueEmailBook {
   blurb?: string;
   coverUrl?: string;
   tags: string[];
+  /** How many more tags the book has beyond `tags` (shown as "+N more"; the full list is on its page). */
+  moreTags?: number;
   /** Position in the issue's ranking (1 = most recommended); omitted when the book isn't in it. */
   rank?: number;
   /** The book's /where-to-read page (full blurb, where to get it); no link when missing. */
@@ -136,7 +138,8 @@ export function readingRoomIssueHtml(issue: IssueEmail, palette: IssuePaletteNam
       const cover = b.coverUrl
         ? `<img src="${esc(sized(b.coverUrl, COVER_WIDTH * 2))}" alt="${esc(b.title)}" width="${COVER_WIDTH}" style="display:block;border-radius:3px 6px 6px 3px">`
         : `<div style="width:${COVER_WIDTH}px;height:${Math.round(COVER_WIDTH * 1.5)}px;background:${COVER_STANDIN};border-radius:3px 6px 6px 3px;"></div>`;
-      const tags = b.tags.map((t) => `<span style="${PILL}">${esc(t).replace(/ /g, "&nbsp;")}</span>`).join("&#32;"); // &#32;: a real space the whitespace-stripping below keeps
+      const more = b.moreTags ? [`+${b.moreTags}&nbsp;more`] : [];
+      const tags = [...b.tags.map((t) => esc(t).replace(/ /g, "&nbsp;")), ...more].map((t) => `<span style="${PILL}">${t}</span>`).join("&#32;"); // &#32;: a real space the whitespace-stripping below keeps
       return `
         <tr><td style="padding:22px 0 8px;${i > 0 ? `border-top:1px solid ${c.divider}` : ""}">
           <div style="${COVER_BOX}">${cover}</div><div style="${BOOK_TEXT}">
