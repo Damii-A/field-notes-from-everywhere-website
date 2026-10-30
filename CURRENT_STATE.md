@@ -28,18 +28,27 @@ first "Send books to Studio" of Thriller from the tool's Pool prep page (53-book
 Studio and check the Studio, one article and one "Where to read" page together; then step 5, Studio book
 fields view-only.
 
-**Start the next session here (as of end of 2026-10-28; nothing blocking).** The internal tool's "Send to
-website" is built (steps 1-4 below) but has **never sent for real**. The notes-vs-code check of both repos
-was **done 2026-10-29** (tool commit e8b6ddd; here, only the I Am Pilgrim line below needed fixing). The
-tool's own docs hold all of its changes; tool notes in this file are short pointers only. Next: (1) the user finishes filling in the
-Thriller books' details in the tool; (2) the user's first real "Send to Studio" of Thriller from the tool's
-ranking page, then check the Studio, an article and a "Where to read" page together; (3) step 5: make the
-Studio's book fields view-only. Full list and the send's rules: the tool's CURRENT_STATE.md "Start here" and
-DECISIONS.md (2026-10-28). Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused
-subscription, below); (b) before 2026-12-14, keep a reference copy of the Claude Design project (above).
-Otherwise the user's next website step is writing the next article with the Studio tools; offer remaining
-open points one at a time. If the user brings an "extra tags" sheet for existing books, the tool is now
-where book tags are edited (not a website re-import).
+**Start the next session here (as of end of 2026-10-30; nothing blocking, nothing unpushed).** The tag limit
+is live everywhere tags show under a book (article, "send this list" email, Reading Room issue email). The
+tool's "Send books to Studio" (its Pool prep page; Thriller pool 53 books) has **never sent for real**.
+Suggested next steps, in order:
+1. **The user's first real "Send books to Studio" of Thriller** (done from the tool, in a tool session).
+   Expected from its 2026-10-30 preview: 48 books updated, 5 new (no Goodreads link yet), The Risk off the
+   ranking, 1,016 tags added, "Thriller" removed as a book tag.
+2. **Check together here**: the user reloads the Studio (F5); then check the Studio (Thriller ranking and a
+   book), one live article (expect ranking pill + 4 tags + "+N more", which expands; "Show fewer" folds it
+   back; check on a phone width too), one "Where to read" page (every tag) and, for the 5 new books, their
+   "Where to read" pages (covers, Goodreads fallback). Optional: a "send this list" test only to the user's
+   own address, with their OK (no live click tests on real data).
+3. **Step 5: Studio book fields view-only** (book details and tags are edited only in the tool).
+4. Then the user's next article with the Studio tools; the tool's topic suggester and its Sanity gap list
+   (ARCHITECTURE.md §15) are planned there first, not built here yet.
+Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused subscription, below);
+(b) before 2026-12-14, keep a reference copy of the Claude Design project (above); the tag limit was
+never compared against it (DesignSync needs `/design-login` in an interactive session). Offer the
+remaining open points one at a time. Tool notes in this file are short pointers; the tool's own docs hold
+its changes. If the user brings an "extra tags" sheet for existing books, the tool is where book tags are
+edited (not a website re-import).
 
 **2026-10-28: tool ↔ website plan (in progress).** The internal tool (`../Field Notes From Everywhere
 Internal Tool`, its own repo and docs) becomes the one place for book research; a manual "Send to
