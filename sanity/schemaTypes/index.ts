@@ -7,5 +7,6 @@ import readingRoomIssue from "./readingRoomIssue";
 import weeklyNewsletter from "./weeklyNewsletter";
 import legalPage from "./legalPage";
 import siteSettings from "./siteSettings";
+import postIdea from "./postIdea";
 
-export const schemaTypes = [tag, theme, book, ranking, article, readingRoomIssue, weeklyNewsletter, legalPage, siteSettings];
+export const schemaTypes = [tag, theme, book, ranking, postIdea, article, readingRoomIssue, weeklyNewsletter, legalPage, siteSettings];

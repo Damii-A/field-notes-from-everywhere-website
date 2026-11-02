@@ -51,6 +51,15 @@ export const structure: StructureResolver = (S) =>
               ),
             ),
         ),
+      // Sent from the internal tool; view-only here (DECISIONS.md, 2026-11-03).
+      S.listItem()
+        .title("Post ideas")
+        .child(
+          S.documentTypeList("postIdea")
+            .title("Post ideas")
+            .defaultOrdering([{ field: "sentAt", direction: "desc" }])
+            .initialValueTemplates([]),
+        ),
       S.documentTypeListItem("readingRoomIssue").title("Reading Room issues"),
       S.listItem()
         .title("Weekly newsletters")

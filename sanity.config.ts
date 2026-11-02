@@ -85,7 +85,9 @@ export default defineConfig({
     // of the global "+ New document" menu so it can't be accidentally
     // duplicated from outside the pinned entry in the sidebar.
     newDocumentOptions: (prev, { creationContext }) =>
-      creationContext.type === "global" ? prev.filter((item) => item.templateId !== "siteSettings" && item.templateId !== "article-by-category") : prev,
+      creationContext.type === "global"
+        ? prev.filter((item) => !["siteSettings", "article-by-category", "postIdea"].includes(item.templateId))
+        : prev,
     // "Fill books from ranking" on Shortlist articles and Reading Room issues — DECISIONS.md, 2026-09-23;
     // "Choose books from ranking" on the other two columns' articles — DECISIONS.md, 2026-10-26;
     // "Create Kit draft" on issues — DECISIONS.md, 2026-10-02;
@@ -98,6 +100,9 @@ export default defineConfig({
           ? [...prev, FillFromRankingAction, CreateKitDraftAction]
           : schemaType === "weeklyNewsletter"
             ? [...prev, CreateResendDraftAction]
-            : prev,
+            : // Post ideas are sent and replaced by the internal tool only (DECISIONS.md, 2026-11-03).
+              schemaType === "postIdea"
+              ? []
+              : prev,
   },
 });
