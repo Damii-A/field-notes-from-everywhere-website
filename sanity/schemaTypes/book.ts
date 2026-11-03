@@ -34,6 +34,20 @@ export default defineType({
     defineField({ name: "canonicalBlurb", title: "Canonical blurb", type: "text", rows: 3 }),
     defineField({ name: "tags", title: "Tags", type: "array", of: [{ type: "reference", to: [{ type: "tag" }] }] }),
     defineField({
+      name: "pageCount",
+      title: "Page count",
+      description: "Set by \"Send books to Studio\" in the internal tool. Shown under the author as \"Page count: …\".",
+      type: "number",
+      readOnly: true,
+    }),
+    defineField({
+      name: "readingHours",
+      title: "Estimated reading time (hours)",
+      description: "The internal tool's estimate from the page count, sent with it. Shown as \"Est. reading time: … hours\".",
+      type: "number",
+      readOnly: true,
+    }),
+    defineField({
       name: "toolBookId",
       title: "Internal tool book ID",
       description:

@@ -104,6 +104,8 @@ interface RawBookEntry {
     coverImage: RawImage | null;
     tags: RawTag[] | null;
     rankings: RawTag[] | null;
+    pageCount: number | null;
+    readingHours: number | null;
   } | null;
 }
 
@@ -141,7 +143,6 @@ const BOOK_RANKINGS = `*[_type == "ranking" && references(^._id)] | order(name a
  * they should show). The "Where to read" page shows them all.
  */
 export const BOOK_TAGS_SHOWN = 4;
-
 /** The book's ranking pills first, then its own tags, without repeating a name (e.g. a "Thriller" tag left from before). */
 export function withRankingPills<T>(rankings: T[], tags: T[], name: (t: T) => string): T[] | undefined {
   const seen = new Set<string>();
@@ -179,6 +180,8 @@ function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | n
     tags: tags?.map((t) => ({ label: t.label, slug: t.slug })),
     tagsShown: own ? undefined : pills + BOOK_TAGS_SHOWN,
     coverImage: raw.refBook.coverImage ? { url: raw.refBook.coverImage.url, alt: raw.refBook.title } : undefined,
+    pageCount: raw.refBook.pageCount ?? undefined,
+    readingHours: raw.refBook.readingHours ?? undefined,
   };
 }
 
@@ -250,7 +253,9 @@ const FULL_ARTICLE_PROJECTION = `{
       canonicalBlurb,
       "coverImage": coverImage{ "url": asset->url },
       "tags": tags[]->{ "label": name, "slug": slug.current },
-      "rankings": ${BOOK_RANKINGS}{ "label": name, "slug": slug.current }
+      "rankings": ${BOOK_RANKINGS}{ "label": name, "slug": slug.current },
+      pageCount,
+      readingHours
     }
   },
   "whatToReadNext": whatToReadNext[@->publishedAt <= now() || $includeScheduled]->${SUMMARY_PROJECTION}
@@ -448,6 +453,8 @@ interface RawWhereToRead {
   coverUrl: string | null;
   goodreadsUrl: string | null;
   canonicalBlurb: string | null;
+  pageCount: number | null;
+  readingHours: number | null;
   tags: (string | null)[] | null;
   rankings: (string | null)[] | null;
   lists: {
@@ -469,7 +476,7 @@ const RELATED_LIMIT = 6;
 export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook | null> {
   const raw = await groqFetch<(RawWhereToRead & { _id: string }) | null>(
     `*[_type == "book" && slug.current == $slug][0]{
-      _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, goodreadsUrl, canonicalBlurb,
+      _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, goodreadsUrl, canonicalBlurb, pageCount, readingHours,
       "tags": tags[]->name,
       "rankings": ${BOOK_RANKINGS}.name,
       "lists": *[_type == "article" && ${RELEASED} && references(^._id)] | order(publishedAt desc){
@@ -521,6 +528,8 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
     author: raw.author,
     coverUrl: raw.coverUrl ?? undefined,
     goodreadsUrl: raw.goodreadsUrl ?? undefined,
+    pageCount: raw.pageCount ?? undefined,
+    readingHours: raw.readingHours ?? undefined,
     blurb: lists.find((l) => l.ownBlurb)?.ownBlurb ?? raw.canonicalBlurb ?? undefined,
     tags: withRankingPills(
       (raw.rankings ?? []).filter((t): t is string => !!t),

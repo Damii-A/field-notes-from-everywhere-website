@@ -1,6 +1,7 @@
 import { articlePath, type Article, type CategorySlug } from "@/lib/content";
 import { CATEGORIES } from "@/lib/content/categories";
 import { splitParagraphs } from "@/lib/content/paragraphs";
+import { bookFactLabels } from "@/lib/books/facts";
 import { SITE_URL } from "@/lib/siteUrl";
 import { BODY, DISPLAY, INK, INK_MUTED, INK_SOFT, MONO, RULE, esc, firstName, sized } from "./shared";
 import { withUtm } from "./utm";
@@ -48,7 +49,11 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
       const blurb = splitParagraphs(b.blurb)
         .map((p) => `<p style="margin:0 0 12px;font:15px/1.6 ${BODY};color:${INK_SOFT};">${esc(p).replace(/\n/g, "<br/>")}</p>`)
         .join("");
-      const rank = b.rank ? `<div style="font:700 26px/1 ${DISPLAY};color:${c.title};margin:0 0 10px;">${b.rank}</div>` : "";
+      // "Page count · Est. reading time" under the author, as in the article (user, 2026-11-03).
+      const facts = bookFactLabels(b)
+        .map((l) => `<span style="display:inline-block;margin:0 4px 6px 0;padding:3px 10px;border:1px solid ${c.methodBorder};border-radius:999px;background:${c.methodBg};font:600 12px/1.4 ${BODY};color:${INK};">${esc(l)}</span>`)
+        .join("");
+      const rank = b.rank ?`<div style="font:700 26px/1 ${DISPLAY};color:${c.title};margin:0 0 10px;">${b.rank}</div>` : "";
       return `
         <tr><td style="padding:24px 0;${i > 0 ? `border-top:1px solid ${RULE};` : ""}">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
@@ -56,6 +61,7 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
             <td class="fnfe-text" valign="top">
               <h2 style="margin:0 0 4px;font:700 20px/1.25 ${DISPLAY};color:${c.title};">${esc(b.title)}</h2>
               <p style="margin:0 0 10px;font:600 14px/1.4 ${BODY};color:${INK};">${esc(b.author)}</p>
+              ${facts ? `<div style="margin:0 0 4px;">${facts}</div>` : ""}
               ${tags ? `<div style="margin:0 0 8px;">${tags}</div>` : ""}
               ${blurb}
             </td>
@@ -131,7 +137,10 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
 export function bookListEmailText(article: Article, name: string, unsubscribeUrl: string): string {
   const hi = firstName(name);
   const books = article.books
-    .map((b) => `${b.rank ? `${b.rank}. ` : "- "}${b.title} by ${b.author}\n${splitParagraphs(b.blurb).join("\n\n")}`)
+    .map((b) => {
+      const facts = bookFactLabels(b).join(" · ");
+      return `${b.rank ? `${b.rank}. ` : "- "}${b.title} by ${b.author}\n${facts ? `${facts}\n` : ""}${splitParagraphs(b.blurb).join("\n\n")}`;
+    })
     .join("\n\n");
   return `${hi ? `Hi ${hi},` : "Hi there,"}
 

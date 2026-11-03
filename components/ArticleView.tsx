@@ -13,6 +13,7 @@ import popupStyles from "./Popup.module.css";
 import type { Article, CategorySlug } from "@/lib/content";
 import { formatArticleDate } from "@/lib/content/dates";
 import { splitParagraphs } from "@/lib/content/paragraphs";
+import { bookFactLabels, type BookFacts } from "@/lib/books/facts";
 import { CATEGORIES } from "@/lib/content/categories"; // not "@/lib/content": that pulls server-only fetching into this client component
 
 const NEWSLETTER_PITCH = "Get a weekly roundup of our latest book lists, delivered to your inbox.";
@@ -229,7 +230,11 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
               const showCallout = (i + 1) % 5 === 0 && i !== article.books.length - 1;
               return (
                 <div key={`${book.title}-${i}`}>
-                  <div className={ranked ? `${styles.bookRow} ${styles.bookRowRanked}` : styles.bookRow}>
+                  <div
+                    className={[styles.bookRow, ranked && styles.bookRowRanked, bookFactLabels(book).length > 0 && styles.bookRowFacts]
+                      .filter(Boolean)
+                      .join(" ")}
+                  >
                     {ranked ? (
                       <span className={styles.bookRank} style={{ color: style.titleColor }}>
                         {i + 1}
@@ -249,6 +254,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {book.title}
                       </h2>
                       <span className={styles.bookAuthor}>{book.author}</span>
+                      <BookFactsRow pageCount={book.pageCount} readingHours={book.readingHours} border={style.methodologyBorder} />
                       {book.tags && book.tags.length > 0 ? <BookTags tags={book.tags} shown={book.tagsShown} /> : null}
                       <div className={styles.bookBlurb}>
                         {splitParagraphs(book.blurb).map((p, k) => (
@@ -550,6 +556,24 @@ function SendListPopup({
  * A book's tag pills: its ranking pills and first few tags, with "+N more" for the rest
  * (DECISIONS.md, 2026-10-30). `shown` missing = all of them.
  */
+/**
+ * "Page count: 336" and "Est. reading time: 6 hours" under the author, each in a pill (user,
+ * 2026-11-03) styled like the article's "send this list" callout; nothing without a page count.
+ */
+function BookFactsRow({ border, ...facts }: BookFacts & { border: string }) {
+  const labels = bookFactLabels(facts);
+  if (labels.length === 0) return null;
+  return (
+    <div className={styles.bookFacts}>
+      {labels.map((l) => (
+        <span key={l} className={styles.bookFact} style={{ borderColor: border }}>
+          {l}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function BookTags({ tags, shown }: { tags: { label: string; slug: string }[]; shown?: number }) {
   const [open, setOpen] = useState(false);
   const hidden = shown === undefined ? 0 : Math.max(0, tags.length - shown);

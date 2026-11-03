@@ -175,6 +175,27 @@
   color: var(--ink-800);
 }
 
+/* "Page count" and "Est. reading time" pills between the author and the tags (user, 2026-11-03):
+   the "send this list" callout's colours (--paper-050, the column's border), tag-pill shape. */
+.bookFacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bookFact {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid;
+  background: var(--paper-050);
+  white-space: nowrap;
+  font: var(--weight-semibold) var(--text-xs) / 1.25 var(--font-body);
+  color: var(--ink-800);
+}
+
 .bookBlurb {
   font: var(--type-body);
   color: var(--ink-700);
@@ -495,6 +516,24 @@
       "rank cover tags"
       "blurb blurb blurb";
   }
+  /* With a page-count row: one more row under the author (nothing changes for books without one). */
+  .bookRowFacts {
+    grid-template-areas:
+      "cover title"
+      "cover author"
+      "cover facts"
+      "cover tags"
+      "blurb blurb";
+    grid-template-rows: auto auto auto 1fr auto;
+  }
+  .bookRowRanked.bookRowFacts {
+    grid-template-areas:
+      "rank cover title"
+      "rank cover author"
+      "rank cover facts"
+      "rank cover tags"
+      "blurb blurb blurb";
+  }
   .bookRank {
     grid-area: rank;
     min-width: 0;
@@ -510,6 +549,9 @@
   }
   .bookAuthor {
     grid-area: author;
+  }
+  .bookFacts {
+    grid-area: facts;
   }
   .tagRow {
     grid-area: tags;

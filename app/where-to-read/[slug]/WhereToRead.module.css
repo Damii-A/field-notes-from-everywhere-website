@@ -36,6 +36,35 @@
   color: var(--ochre-500);
 }
 
+/* "Page count" and "Est. reading time" pills in "About", above the tags (user, 2026-11-03):
+   the tag-pill shape, a shade lighter than the page, clay border (the page's kicker colour). */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.fact {
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--clay-500);
+  background: var(--paper-050);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-900);
+}
+
+/* "Appeared in these book lists" and "If you enjoyed…" each in their own panel (user,
+   2026-11-03): a shade darker than the page's --paper-100, so the --paper-050 cards still stand out. */
+.boxed {
+  width: 100%;
+  box-sizing: border-box;
+  padding: clamp(28px, 4.5vw, 48px) clamp(20px, 4.5vw, 48px);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--paper-100) 93%, var(--ink-700));
+}
+
 .answer {
   margin: 0;
   max-width: 60ch;

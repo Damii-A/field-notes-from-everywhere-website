@@ -58,6 +58,9 @@ export interface WhereToReadBook {
   /** The blurb to show: a featuring article's own per-list blurb if one exists, else the book's canonical blurb. */
   blurb?: string;
   tags: string[];
+  /** From the internal tool (lib/books/facts.ts). */
+  pageCount?: number;
+  readingHours?: number;
   /** Published articles featuring the book, newest first. `rank` only on ranked columns (The Shortlist). */
   lists: { title: string; href: string; category: CategorySlug; rank?: number; bookCount: number }[];
   /** Other books from those lists (each has its own page), up to 6. */
@@ -79,6 +82,9 @@ export interface BookEntry {
    * per-book tag choice).
    */
   tagsShown?: number;
+  /** From the internal tool; shown as "Page count: … · Est. reading time: …" (lib/books/facts.ts). */
+  pageCount?: number;
+  readingHours?: number;
   /** BookCover accepts a solid "spine" colour when there's no real cover image yet. */
   spine?: string;
   coverImage?: {

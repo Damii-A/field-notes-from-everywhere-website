@@ -8,6 +8,7 @@ import { getWhereToReadBook } from "@/lib/content";
 import { CATEGORIES } from "@/lib/content/categories";
 import { splitParagraphs } from "@/lib/content/paragraphs";
 import { STORES } from "@/lib/books/stores";
+import { bookFactLabels } from "@/lib/books/facts";
 import { pageMetadata } from "@/lib/metadata";
 import { SITE_URL } from "@/lib/siteUrl";
 import styles from "./WhereToRead.module.css";
@@ -65,6 +66,7 @@ export default async function WhereToReadPage({ params }: Props) {
   const url = `${SITE_URL}/where-to-read/${book.slug}`;
   // The book's name in quotation marks wherever it appears on the page (user, 2026-10-02).
   const quoted = `“${book.title}”`;
+  const facts = bookFactLabels(book);
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -120,9 +122,19 @@ export default async function WhereToReadPage({ params }: Props) {
               </ul>
             </section>
 
-            {(book.blurb || book.tags.length > 0) && (
+            {(book.blurb || book.tags.length > 0 || facts.length > 0) && (
               <section aria-labelledby="about" className={styles.section}>
                 <h2 id="about" className={styles.heading}>About {quoted}</h2>
+                {/* "Page count" and "Est. reading time" pills above the tags (user, 2026-11-03). */}
+                {facts.length > 0 && (
+                  <div className={styles.facts}>
+                    {facts.map((f) => (
+                      <span key={f} className={styles.fact}>
+                        {f}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 {book.tags.length > 0 && (
                   <ul className={styles.tags} aria-label="Tags">
                     {book.tags.map((t) => (
@@ -143,7 +155,7 @@ export default async function WhereToReadPage({ params }: Props) {
             )}
 
             {book.lists.length > 0 && (
-              <section aria-labelledby="lists" className={styles.section}>
+              <section aria-labelledby="lists" className={`${styles.section} ${styles.boxed}`}>
                 <h2 id="lists" className={styles.heading}>
                   {quoted} appeared in {book.lists.length === 1 ? "this book list" : "these book lists"}
                 </h2>
@@ -168,7 +180,7 @@ export default async function WhereToReadPage({ params }: Props) {
             )}
 
             {book.related.length > 0 && (
-              <section aria-labelledby="related" className={styles.section}>
+              <section aria-labelledby="related" className={`${styles.section} ${styles.boxed}`}>
                 <h2 id="related" className={styles.heading}>If you enjoyed {quoted}, you might also enjoy these books</h2>
                 <ul className={styles.related}>
                   {book.related.map((r) => (
