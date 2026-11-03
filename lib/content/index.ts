@@ -165,8 +165,9 @@ export function withRankingPills<T>(rankings: T[], tags: T[], name: (t: T) => st
 function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | null {
   if (!raw.refBook) return null; // dangling reference — skip rather than crash on bad CMS data
   const own = !!raw.tagOverrides && raw.tagOverrides.length > 0;
-  const tags = own ? raw.tagOverrides : withRankingPills(raw.refBook.rankings ?? [], raw.refBook.tags ?? [], (t) => t.label);
-  // Ranking pills always show; then the book's first few tags (an article's own choice shows in full).
+  // Ranking pills always come first, also before an article's own tag choice (user, 2026-11-03).
+  const tags = withRankingPills(raw.refBook.rankings ?? [], (own ? raw.tagOverrides : raw.refBook.tags) ?? [], (t) => t.label);
+  // Then the book's first few tags (an article's own choice shows in full).
   const pillNames = new Set((raw.refBook.rankings ?? []).map((r) => r.label.trim().toLowerCase()));
   const pills = (tags ?? []).filter((t) => pillNames.has(t.label.trim().toLowerCase())).length;
   return {
