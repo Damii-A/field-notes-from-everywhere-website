@@ -2,7 +2,8 @@
  * Article formats = the internal tool's formulas, per column (DECISIONS.md, 2026-11-03;
  * the tool's docs/TOPIC_SUGGESTER_DESIGN.md §7a and §11). Values are the tool's formula
  * codes, so "Start article" copies a post idea's formula straight in. Grouped map was
- * dropped and Graded scale is parked in the tool, so neither is here.
+ * dropped and Graded scale is parked in the tool, so neither is here; Book a month was
+ * merged into Challenge in the tool (2026-11-02) and removed here (user, 2026-11-03).
  */
 export const FORMATS_BY_COLUMN: Record<string, { value: string; title: string }[]> = {
   "the-shortlist": [
@@ -21,8 +22,7 @@ export const FORMATS_BY_COLUMN: Record<string, { value: string; title: string }[
   ],
   "book-club-book-picks": [
     { value: "bookclub", title: "Book club" },
-    { value: "bookamonth", title: "Book a month" },
-    { value: "challenge", title: "Challenge or checklist" },
+    { value: "challenge", title: "Challenge (checklist or month-by-month reading path)" },
   ],
 };
 

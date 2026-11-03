@@ -21,7 +21,6 @@ export const FORMULA_NAMES: Record<string, string> = {
   seasonal: "Seasonal",
   series: "Series",
   bookclub: "Book club",
-  bookamonth: "Book a month",
   challenge: "Challenge",
 };
 

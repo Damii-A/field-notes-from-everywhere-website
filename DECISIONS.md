@@ -2787,7 +2787,7 @@ own tag choice dropped it; no published entry had one, so no live page changed).
 - `ranking`: reference to the ranking document (e.g. `ranking-thriller`).
 - `title` (string, rendered, numbers filled in); `otherTitles` (array of strings).
 - `formula` (string code): `authority`, `ultimate`, `year`, `mood`, `intensity`, `pace`, `blend`, `comparison`,
-  `seasonal`, `series`, `bookclub`, `bookamonth`, `challenge` (`FORMULA_NAMES`, `sanity/schemaTypes/postIdea.ts`;
+  `seasonal`, `series`, `bookclub`, `bookamonth` (removed 2026-11-03: merged into `challenge` in the tool), `challenge` (`FORMULA_NAMES`, `sanity/schemaTypes/postIdea.ts`;
   a new formula needs its code added there).
 - `column` (string): the **article category code**, not the display name: `the-shortlist`, `what-to-read-when`,
   `book-club-book-picks` (the third column's planned rename to "Up Next" is a later website change; whatever
@@ -2909,8 +2909,9 @@ for that column (`sanity/lib/formats.ts`; the Studio shows only the column's own
 one from another column):
 - **The Shortlist**: `authority`, `ultimate`, `year`.
 - **What to Read When**: `mood`, `intensity`, `pace`, `blend`, `comparison`, `seasonal`, `series`.
-- **Book Club Book Picks**: `bookclub`, `bookamonth`, `challenge`.
-Grouped map (dropped in the tool) and Graded scale (parked) aren't formats. The old What to Read When values
+- **Book Club Book Picks**: `bookclub`, `challenge`.
+Grouped map (dropped in the tool) and Graded scale (parked) aren't formats. **`bookamonth` removed the same day** (user,
+after the tool session said it merged Book a month into Challenge on 2026-11-02 and will never send it; nothing used it). The old What to Read When values
 `books-like`, `trope-or-feeling` and `seasonal` (2026-10-26) are replaced: books-like → `comparison`, seasonal unchanged,
 trope-or-feeling split into mood / intensity / pace / blend.
 
@@ -2933,6 +2934,6 @@ No public page reads `format`; nothing visible changed.
 "Start article" on sample ideas (in-column formula set; out-of-column or missing formula left empty); the five
 articles read back with their new formats. **Not yet seen** in the real Studio (the user's login).
 
-**Noted for the tool**: idea 53 "A Thriller Book for Every Month of 2027" is sent as `challenge`; its title reads like
-Book a month (`bookamonth`). Either is valid in the third column.
+**Idea 53** "A Thriller Book for Every Month of 2027" stays `challenge` (tool session: a month-by-month path is one kind
+of Challenge), so "Start article" gives it the Challenge format.
 
