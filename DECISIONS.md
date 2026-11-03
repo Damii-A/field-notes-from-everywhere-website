@@ -2965,3 +2965,21 @@ lists that say what to read next (book club picks, challenges, month-by-month re
 phone, article pill, About); live: `/up-next` and the article 200, the old article address 308 to the new one, the homepage
 links to the new address; IndexNow accepted (200).
 
+## 2026-11-03 — Sections in book lists (month-by-month paths); anchor book stored
+
+**Decision** (planned with the user from what the tool sends today; the look approved by the user from a local preview):
+- **`bookEntries[].section`** (optional string, e.g. "January (Winter, New Year)"). A heading shows above the first book of
+  each run of entries sharing a section (`lib/content/sections.ts`): the part before brackets as a display-font heading in
+  the column's title colour, the bracketed part beneath in small capitals; the book row after it loses its top rule. Same
+  headings in the "send this list" email (HTML and plain text). Articles without sections look exactly as before.
+- **"Start article"** fills each entry's section from the idea's `groups` (a book's first group wins).
+- **`article.anchorBook`** (book reference, shown in the Studio on Comparison articles only): set by "Start article" from
+  the idea's `anchorBook`. **Not shown on the page** (user: keep the article look; store only).
+- **Not built**: checklists (no idea sends one) and grouped sections by tag (the tool dropped Grouped map as a topic).
+- No design-project equivalent; user-directed (the tool's `docs/TOPIC_SUGGESTER_DESIGN.md` §11 item 36 (3)).
+
+**Verified**: type check, lint, schema validation; "Start article" dry run on real ideas (idea 53: 12/12 entries with
+their month, Up Next, Challenge; idea 40: anchor The Silent Patient, no sections; idea 16: plain); local preview of the
+live Up Next article with made-up months (desktop and phone, 12 headings, no sideways scroll). **Not yet seen**: the email
+version, and a real sectioned article.
+

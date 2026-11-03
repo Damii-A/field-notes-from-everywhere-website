@@ -10,6 +10,7 @@ import { ShareButtons } from "./ShareButtons";
 import { NewsletterSignupButton } from "./NewsletterSignupButton";
 import styles from "./ArticleView.module.css";
 import popupStyles from "./Popup.module.css";
+import { sectionHeading, sectionStartingAt } from "@/lib/content/sections";
 import type { Article, CategorySlug } from "@/lib/content";
 import { formatArticleDate } from "@/lib/content/dates";
 import { splitParagraphs } from "@/lib/content/paragraphs";
@@ -228,8 +229,19 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
           <div id="book-list" className={styles.bookList}>
             {article.books.map((book, i) => {
               const showCallout = (i + 1) % 5 === 0 && i !== article.books.length - 1;
+              const section = sectionStartingAt(article.books, i);
+              const heading = section ? sectionHeading(section) : null;
               return (
                 <div key={`${book.title}-${i}`}>
+                  {heading ? (
+                    // Section heading (e.g. a month in a reading path; DECISIONS.md, 2026-11-03).
+                    <div className={styles.section}>
+                      <h2 className={styles.sectionTitle} style={{ color: style.titleColor }}>
+                        {heading.title}
+                      </h2>
+                      {heading.note ? <p className={styles.sectionNote}>{heading.note}</p> : null}
+                    </div>
+                  ) : null}
                   <div
                     className={[styles.bookRow, ranked && styles.bookRowRanked, bookFactLabels(book).length > 0 && styles.bookRowFacts]
                       .filter(Boolean)

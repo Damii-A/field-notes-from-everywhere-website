@@ -17,3 +17,13 @@ authority. Nothing in the tool's folder was changed.
   `/up-next/<slug>`.
 
 Full record: the website's `DECISIONS.md`, "2026-11-03 — Third column renamed \"Up Next\"".
+
+## Also live: sections and anchor book (same day)
+
+- An idea's **`groups`** now matter: "Start article" gives each book its group's `label` as a **Section**, and the article
+  shows the label as a heading above that group's first book ("January (Winter, New Year)" shows "January" with
+  "WINTER, NEW YEAR" beneath; text in brackets goes on the small line). Keep labels in that shape. Groups' books must be
+  the idea's own `books` (same references); a book in two groups takes the first.
+- An idea's **`anchorBook`** is stored on Comparison articles (`article.anchorBook`), not shown yet.
+- Checklists: nothing on the website yet; tell a website session when the tool sends one.
+

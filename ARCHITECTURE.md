@@ -532,6 +532,5 @@ Scoped to actual risk (Operating Manual §29), not applied uniformly:
   **built 2026-11-03** (`postIdea`, §6; pin formats dropped, pins never go to the Studio); (4) ~~article
   formats per formula in all three columns~~ **done 2026-11-03**; (5) the
   third column's new name and scope (book club, challenges/checklists, book a month), which needs
-  the user's direction first; (6) article layouts beyond one flat list (grouped sections, a
-  12-month calendar, checklists); (7) ~~Studio book fields view-only~~ **done 2026-11-03**.
+  the user's direction first; (6) ~~article layouts beyond one flat list~~ **sections done 2026-11-03** (`bookEntries[].section`; checklists not built); (7) ~~Studio book fields view-only~~ **done 2026-11-03**.
   Unchecked: Sanity plan usage limits (sanity.io/manage → project → Usage; the Editor key can't read them).

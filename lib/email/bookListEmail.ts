@@ -2,6 +2,7 @@ import { articlePath, type Article, type CategorySlug } from "@/lib/content";
 import { CATEGORIES } from "@/lib/content/categories";
 import { splitParagraphs } from "@/lib/content/paragraphs";
 import { bookFactLabels } from "@/lib/books/facts";
+import { sectionHeading, sectionStartingAt } from "@/lib/content/sections";
 import { SITE_URL } from "@/lib/siteUrl";
 import { BODY, DISPLAY, INK, INK_MUTED, INK_SOFT, MONO, RULE, esc, firstName, sized } from "./shared";
 import { withUtm } from "./utm";
@@ -53,9 +54,15 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
       const facts = bookFactLabels(b)
         .map((l) => `<span style="display:inline-block;margin:0 4px 6px 0;padding:3px 10px;border:1px solid ${c.methodBorder};border-radius:999px;background:${c.methodBg};font:600 12px/1.4 ${BODY};color:${INK};">${esc(l)}</span>`)
         .join("");
+      // Section heading (e.g. a month in a reading path), as in the article (DECISIONS.md, 2026-11-03).
+      const sec = sectionStartingAt(article.books, i);
+      const h = sec ? sectionHeading(sec) : null;
+      const sectionRow = h
+        ? `<tr><td style="padding:28px 0 4px;${i > 0 ? `border-top:1px solid ${RULE};` : ""}"><h2 style="margin:0;font:700 24px/1.15 ${DISPLAY};color:${c.title};">${esc(h.title)}</h2>${h.note ? `<p style="margin:4px 0 0;font:600 11px/1.4 ${BODY};letter-spacing:0.12em;text-transform:uppercase;color:${INK_SOFT};">${esc(h.note)}</p>` : ""}</td></tr>`
+        : "";
       const rank = b.rank ?`<div style="font:700 26px/1 ${DISPLAY};color:${c.title};margin:0 0 10px;">${b.rank}</div>` : "";
-      return `
-        <tr><td style="padding:24px 0;${i > 0 ? `border-top:1px solid ${RULE};` : ""}">
+      return `${sectionRow}
+        <tr><td style="padding:24px 0;${i > 0 && !h ? `border-top:1px solid ${RULE};` : ""}">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
             <td class="fnfe-cover" width="${COVER_WIDTH}" valign="top" style="padding:0 18px 0 0;">${rank}${cover}</td>
             <td class="fnfe-text" valign="top">
@@ -137,9 +144,13 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
 export function bookListEmailText(article: Article, name: string, unsubscribeUrl: string): string {
   const hi = firstName(name);
   const books = article.books
-    .map((b) => {
+    .map((b, i) => {
       const facts = bookFactLabels(b).join(" · ");
-      return `${b.rank ? `${b.rank}. ` : "- "}${b.title} by ${b.author}\n${facts ? `${facts}\n` : ""}${splitParagraphs(b.blurb).join("\n\n")}`;
+      const sec = sectionStartingAt(article.books, i);
+      const h = sec ? sectionHeading(sec) : null;
+      return `${h ? `${h.title.toUpperCase()}${h.note ? ` (${h.note})` : ""}
+
+` : ""}${b.rank ? `${b.rank}. ` : "- "}${b.title} by ${b.author}\n${facts ? `${facts}\n` : ""}${splitParagraphs(b.blurb).join("\n\n")}`;
     })
     .join("\n\n");
   return `${hi ? `Hi ${hi},` : "Hi there,"}

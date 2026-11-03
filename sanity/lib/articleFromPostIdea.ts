@@ -18,6 +18,8 @@ export interface PostIdeaDoc {
   focusKeyword?: string;
   timing?: { scheduleFor?: string };
   books?: { book?: { _ref: string }; tagsShown?: { _ref: string }[] }[];
+  anchorBook?: { _ref: string };
+  groups?: { label?: string; books?: { _ref: string }[] }[];
 }
 
 const ref = (id: string) => ({ _type: "reference", _ref: id });
@@ -54,6 +56,12 @@ export function articleFromPostIdea(
       markDefs: [],
       children: [{ _type: "span", _key: randomKey(), text, marks: [] }],
     }));
+  // Groups (e.g. a month-by-month path's months) become each entry's "Section" (DECISIONS.md, 2026-11-03).
+  const sectionOf = new Map<string, string>();
+  for (const g of idea.groups ?? []) {
+    const label = g.label?.trim();
+    if (label) for (const b of g.books ?? []) if (b._ref && !sectionOf.has(b._ref)) sectionOf.set(b._ref, label);
+  }
   const metaDescription = idea.metaDescription?.trim();
   const slug = idea.slug?.trim();
   // The focus keyword field only shows (and is only checked) on Shortlist articles.
@@ -74,10 +82,12 @@ export function articleFromPostIdea(
       ...(intro.length ? { introText: intro } : {}),
       ...(idea.evidenceLine?.trim() ? { methodologySentence: idea.evidenceLine.trim() } : {}),
       postIdea: { ...ref(idea._id), _weak: true },
+      ...(format === "comparison" && idea.anchorBook?._ref ? { anchorBook: ref(idea.anchorBook._ref) } : {}),
       bookEntries: books.map((b) => ({
         _type: "bookEntry",
         _key: randomKey(),
         book: ref(b.book!._ref),
+        ...(sectionOf.has(b.book!._ref) ? { section: sectionOf.get(b.book!._ref) } : {}),
         ...(b.tagsShown?.length ? { tags: b.tagsShown.map((t) => ({ ...ref(t._ref), _key: randomKey() })) } : {}),
       })),
     },

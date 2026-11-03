@@ -54,8 +54,21 @@ export const bookEntry = {
       type: "array",
       of: [{ type: "reference", to: [{ type: "tag" }] }],
     }),
+    defineField({
+      name: "section",
+      title: "Section",
+      description:
+        "Optional: a heading for the part of the list this book starts or belongs to, e.g. \"January (Winter, New Year)\". A heading shows above the first book of each section; words in brackets show smaller under it. Leave empty for a plain list. \"Start article\" fills this from the post idea's groups.",
+      type: "string",
+    }),
   ],
-  preview: { select: { title: "book.title", subtitle: "book.author" } },
+  preview: {
+    select: { title: "book.title", author: "book.author", section: "section" },
+    prepare: ({ title, author, section }: { title?: string; author?: string; section?: string }) => ({
+      title,
+      subtitle: [section, author].filter(Boolean).join(" · "),
+    }),
+  },
 };
 
 /**
@@ -286,6 +299,14 @@ export default defineType({
         "pub_article.md §5. Drag entries into the order you want them to appear — for The Shortlist, that order IS the rank (1, 2, 3…), shown automatically. There's no separate number to set or keep in sync.",
       type: "array",
       of: [bookEntry],
+    }),
+    defineField({
+      name: "anchorBook",
+      title: "Anchor book",
+      description: "Comparison (\"books like…\") articles: the book this list is like. Set by \"Start article\"; not shown on the page yet.",
+      type: "reference",
+      to: [{ type: "book" }],
+      hidden: ({ document }) => document?.format !== "comparison",
     }),
     defineField({
       name: "postIdea",

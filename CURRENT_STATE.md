@@ -83,7 +83,10 @@ user before each** (order not chosen yet):
 1. ~~Article formats per formula in all three columns~~ **Done 2026-11-03** (DECISIONS.md, same date; the 5 existing
    articles updated, backup in `backups/2026-11-03-article-formats-before.json`); Book a month removed (merged into Challenge in the tool).
    **Seen working by the user** in the real Studio.
-2. Layouts beyond one flat list (12-month path, grouped sections, anchor book): backend first, look kept.
+2. ~~Layouts beyond one flat list~~ **Done 2026-11-03** (DECISIONS.md, same date): book entries take an optional Section
+   (headings like "January" shown only where set; "Start article" fills them from an idea's groups); Comparison articles
+   store their anchor book (not shown). **Not yet seen**: a real sectioned article (start one from idea 53) and its
+   "send this list" email. Not built: checklists (nothing sends one), showing the anchor book.
 3. ~~Rename the third column "Up Next"~~ **Done 2026-11-03** (DECISIONS.md, same date): live at `/up-next`, old addresses
    308-redirect, the one article's `category` changed (backup `backups/2026-11-03-up-next-before.json`), IndexNow pinged.
 4. The Shortlist's description (it now also holds unranked Year posts).

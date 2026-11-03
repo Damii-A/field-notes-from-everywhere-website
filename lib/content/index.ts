@@ -95,6 +95,7 @@ interface RawArticleSummary {
 
 interface RawBookEntry {
   blurb?: string;
+  section?: string;
   tagOverrides: RawTag[] | null;
   refBook: {
     title: string;
@@ -177,6 +178,7 @@ function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | n
     rank,
     title: raw.refBook.title,
     author: raw.refBook.author,
+    ...(raw.section?.trim() ? { section: raw.section.trim() } : {}),
     blurb: raw.blurb || raw.refBook.canonicalBlurb || "",
     slug: raw.refBook.slug ?? undefined,
     tags: tags?.map((t) => ({ label: t.label, slug: t.slug })),
@@ -250,6 +252,7 @@ const FULL_ARTICLE_PROJECTION = `{
   },
   bookEntries[]{
     blurb,
+    section,
     "tagOverrides": tags[]->{ "label": name, "slug": slug.current },
     "refBook": book->{
       title,

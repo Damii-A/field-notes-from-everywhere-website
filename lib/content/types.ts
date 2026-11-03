@@ -70,6 +70,8 @@ export interface WhereToReadBook {
 }
 
 export interface BookEntry {
+  /** Optional section heading this entry belongs to, e.g. "January (Winter, New Year)" (DECISIONS.md, 2026-11-03). */
+  section?: string;
   rank?: number; // derived from array position for ranked (Shortlist) categories — never authored directly, see lib/content/index.ts
   title: string;
   author: string;
