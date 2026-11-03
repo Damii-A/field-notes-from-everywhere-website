@@ -69,7 +69,7 @@ function NewsletterPopup({ onClose }: { onClose: () => void }) {
   return (
     <>
       <div onClick={onClose} aria-hidden="true" className={styles.overlay} />
-      <div className={styles.popup} role="dialog" aria-modal="true" aria-labelledby="newsletter-popup-heading">
+      <div className={`${styles.popup} ${styles.tidy}`} role="dialog" aria-modal="true" aria-labelledby="newsletter-popup-heading">
         <div className={styles.popupHeader}>
           <span id="newsletter-popup-heading" className={styles.popupHeading} role={status === "sent" ? "status" : undefined}>
             {status === "sent" ? "You’re on the list — welcome!" : "Join the free FNFE newsletter"}

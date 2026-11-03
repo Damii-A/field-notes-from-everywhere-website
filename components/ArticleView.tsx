@@ -492,7 +492,7 @@ function SendListPopup({
   return (
     <>
       <div onClick={onClose} aria-hidden="true" className={popupStyles.overlay} />
-      <div className={`${popupStyles.popup} ${popupStyles.sendList}`}>
+      <div className={`${popupStyles.popup} ${popupStyles.tidy}`}>
         <div className={popupStyles.popupHeader}>
           <span className={popupStyles.popupHeading} role={status === "sent" ? "status" : undefined}>
             {status === "sent" ? (
