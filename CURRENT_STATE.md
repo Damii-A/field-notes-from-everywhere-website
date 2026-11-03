@@ -92,7 +92,8 @@ today (see the numbered list and "Open" below). **Waiting on the user, small che
 (b) "Start article" on idea 53 (month sections); (c) a Pinterest pin on one article + the Pinterest button; (d) the
 first published "books like" article, then link it from that book's "Where to read" page. **Dated**: Tue 2026-11-10,
 the first weekly newsletter with a new article (Studio link + "Create Resend draft"); ~2026-12-03, the vercel.app search
-result. The post-idea send and "Start article" work for real (above). The rest of the tool's website list, **one at a time, asking the
+result. **After the tool switches to `up-next`**: remove the old column code's acceptance (`articleFromPostIdea.ts`, `postIdea.ts`
+`columnName`) once idea 53 is re-sent. The post-idea send and "Start article" work for real (above). The rest of the tool's website list, **one at a time, asking the
 user before each** (order not chosen yet):
 1. ~~Article formats per formula in all three columns~~ **Done 2026-11-03** (DECISIONS.md, same date; the 5 existing
    articles updated, backup in `backups/2026-11-03-article-formats-before.json`); Book a month removed (merged into Challenge in the tool).
