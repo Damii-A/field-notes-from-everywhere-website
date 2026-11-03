@@ -4,11 +4,17 @@ import { defineField, defineType } from "sanity";
  * Canonical book record — ARCHITECTURE.md §6. Referenced by an article's
  * bookEntries (with a per-article blurb override) and, later, the Reading
  * Room Books catalogue, which dedupes against this document.
+ *
+ * View-only in the Studio (user, 2026-11-03; DECISIONS.md): books are edited only
+ * in the internal tool and arrive by its "Send books to Studio". They can't be
+ * created, edited, duplicated or deleted here (sanity.config.ts). An article's own
+ * blurb and "Tags shown here" stay editable on the article.
  */
 export default defineType({
   name: "book",
   title: "Book",
   type: "document",
+  readOnly: true,
   fields: [
     defineField({ name: "title", title: "Title", type: "string", validation: (r) => r.required() }),
     defineField({ name: "author", title: "Author", type: "string", validation: (r) => r.required() }),

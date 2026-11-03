@@ -85,16 +85,20 @@ export default defineConfig({
     // Site settings is a singleton (see sanity/structure.ts) — keep it out
     // of the global "+ New document" menu so it can't be accidentally
     // duplicated from outside the pinned entry in the sidebar.
+    // Books come only from the internal tool (DECISIONS.md, 2026-11-03), so no "new book" anywhere,
+    // including from an article's book field.
     newDocumentOptions: (prev, { creationContext }) =>
-      creationContext.type === "global"
+      (creationContext.type === "global"
         ? prev.filter((item) => !["siteSettings", "article-by-category", "postIdea"].includes(item.templateId))
-        : prev,
+        : prev
+      ).filter((item) => item.templateId !== "book"),
     // "Fill books from ranking" on Shortlist articles and Reading Room issues — DECISIONS.md, 2026-09-23;
     // "Choose books from ranking" on the other two columns' articles — DECISIONS.md, 2026-10-26;
     // "Create Kit draft" on issues — DECISIONS.md, 2026-10-02;
     // "Create Resend draft" on weekly newsletters — DECISIONS.md, 2026-10-05;
     // Publish asks about the date on articles dated before today — DECISIONS.md, 2026-10-28;
-    // "Start article" on post ideas (their only action) — DECISIONS.md, 2026-11-03.
+    // "Start article" on post ideas (their only action) — DECISIONS.md, 2026-11-03;
+    // books have no actions (view-only, sent by the internal tool) — DECISIONS.md, 2026-11-03.
     actions: (prev, { schemaType }) =>
       schemaType === "article"
         ? [...prev.map((a) => (a.action === "publish" ? withPublishDateCheck(a) : a)), FillFromRankingAction, ChooseBooksAction]
@@ -105,6 +109,8 @@ export default defineConfig({
             : // Post ideas are sent and replaced by the internal tool only (DECISIONS.md, 2026-11-03).
               schemaType === "postIdea"
               ? [StartArticleAction]
-              : prev,
+              : schemaType === "book"
+                ? []
+                : prev,
   },
 });

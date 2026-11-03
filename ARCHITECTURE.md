@@ -166,8 +166,9 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary even
   though a theme and a tag may share a name.
 - **`book`** — canonical book record: `title`, `author`, `slug` (its `/where-to-read/<slug>` address, 2026-10-02), `coverImage`, `canonicalBlurb`,
-  `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId`, `pageCount` and `readingHours` (all three read-only, set by
-  the internal tool's "Send to website"; the last two since 2026-11-03, shown as "Page count" / "Est. reading time"
+  `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId`, `pageCount` and `readingHours`. **The whole document is
+  view-only in the Studio since 2026-11-03** (no create, edit, duplicate or delete; books come only from the
+  internal tool's "Send to website"; the last two fields the last two since 2026-11-03, shown as "Page count" / "Est. reading time"
   pills under the author, `lib/books/facts.ts`). Referenced by articles, rankings and Reading Room issues, and
   the source of the "Where to read" pages. **Ranking pills**: wherever a book's tags show (article
   entries, "Where to read", the book-list email, the Studio's book picker and ranking Tags tab), the
@@ -532,5 +533,5 @@ Scoped to actual risk (Operating Manual §29), not applied uniformly:
   formats per formula in all three columns (today only What to Read When has `format`); (5) the
   third column's new name and scope (book club, challenges/checklists, book a month), which needs
   the user's direction first; (6) article layouts beyond one flat list (grouped sections, a
-  12-month calendar, checklists); (7) Studio book fields view-only (after the tool's first send).
+  12-month calendar, checklists); (7) ~~Studio book fields view-only~~ **done 2026-11-03**.
   Unchecked: Sanity plan usage limits (sanity.io/manage → project → Usage; the Editor key can't read them).

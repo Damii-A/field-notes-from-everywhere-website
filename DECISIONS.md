@@ -2886,3 +2886,18 @@ validation 0/0, production build. Lint's one error is the build-generated `next-
 - **"About {Book}" on "Where to read"**: its own panel, same shape as the two below it, coloured `--oat-200` (#E3E0CE,
   the design's "deeper page" token): close to the page's `--paper-100` but warm, unlike the grey-green panels.
 
+## 2026-11-03 — Books are view-only in the Studio
+
+**Decision** (the agreed step 5 of "Send to website"; the user chose to do it now): every book field is view-only in the
+Studio (`readOnly` on the `book` type), books have no document actions there (no publish, duplicate or delete), and
+"new book" is gone everywhere, including the "Create new" option inside an article's book field (`sanity.config.ts`).
+**Why**: books are edited only in the internal tool (user, 2026-10-28), whose "Send books to Studio" writes every book
+field (title, author, blurb, Goodreads link, cover, tags, page count + reading time, `toolBookId`; the web address only
+when it creates a book). A Studio edit would be overwritten or silently drift from the tool; a book made in the Studio
+would have no `toolBookId`. **Still editable**: an article's own per-book blurb and "Tags shown here", rankings, tags.
+The only book without a `toolBookId` is The Risk (Dark Romance); the tool's send handles unlinked books.
+`npm run import-books` still writes by API (the Studio lock doesn't affect it) but is superseded by the tool.
+
+**Verified**: type check, schema validation 0/0, production build; no Studio action writes books. **Not yet seen** in
+the real Studio (the user's login).
+

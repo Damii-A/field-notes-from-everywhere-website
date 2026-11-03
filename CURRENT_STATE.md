@@ -87,7 +87,9 @@ user before each** (order not chosen yet):
    Sanity by API, checked live on the article, the Shortlist page and the homepage; slug unchanged.
 6. Tag categories and book facts on the website, so the tool's send can carry them. **Page count + reading time
    done 2026-11-03**; still open: year, series, tag categories.
-7. Studio book fields view-only (not done: only `toolBookId` is read-only).
+7. ~~Studio book fields view-only~~ **Done 2026-11-03**: the whole book is view-only in the Studio (DECISIONS.md, same
+   date). **Not yet seen** in the real Studio (the user's login): open a book, and check an article's book field has no
+   "Create new".
 8. Move the Claude Design project out of standalone Claude Design before 2026-12-14.
 9. Optional: Sanity plan usage limits (sanity.io/manage → Usage; the user can see them).
 Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused subscription, below);
@@ -118,7 +120,7 @@ before, except The Risk's pills now say "Thriller · Dark Romance" (was the reve
 Send button + preview (read-only) **done 2026-10-28**, checked on a database copy; (3) **done 2026-10-28**: the tool uses this repo's
 Editor key "Claude Code local" (shared; deleting it stops both); (4) the send **built 2026-10-28** (backup first,
 undo script, checked with Sanity's dry run against live content; **never sent for real**: the user's first
-Thriller send is the check, then look at the Studio, an article and a book page); (5) next: Studio book fields view-only. Details: the send (preview first; books + rankings only, never
+Thriller send is the check, then look at the Studio, an article and a book page); (5) Studio book fields view-only, **done 2026-11-03**. Details: the send (preview first; books + rankings only, never
 articles; removes the primary tag "Thriller" from the 49 books and "Dark Romance" from The Risk;
 I Am Pilgrim settled as "International Manhunt"), then "Tick all shown" in "Choose
 books from ranking" (planned, not built). All tool details: the tool's DECISIONS.md, 2026-10-28 entries.
