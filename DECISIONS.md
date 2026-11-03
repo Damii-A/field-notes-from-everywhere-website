@@ -2898,6 +2898,6 @@ would have no `toolBookId`. **Still editable**: an article's own per-book blurb 
 The only book without a `toolBookId` is The Risk (Dark Romance); the tool's send handles unlinked books.
 `npm run import-books` still writes by API (the Studio lock doesn't affect it) but is superseded by the tool.
 
-**Verified**: type check, schema validation 0/0, production build; no Studio action writes books. **Not yet seen** in
-the real Studio (the user's login).
+**Verified**: type check, schema validation 0/0, production build; no Studio action writes books; **seen working by the
+user** in the real Studio (2026-11-03).
 

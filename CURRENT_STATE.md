@@ -88,8 +88,7 @@ user before each** (order not chosen yet):
 6. Tag categories and book facts on the website, so the tool's send can carry them. **Page count + reading time
    done 2026-11-03**; still open: year, series, tag categories.
 7. ~~Studio book fields view-only~~ **Done 2026-11-03**: the whole book is view-only in the Studio (DECISIONS.md, same
-   date). **Not yet seen** in the real Studio (the user's login): open a book, and check an article's book field has no
-   "Create new".
+   date). **Seen working by the user** in the real Studio (2026-11-03).
 8. Move the Claude Design project out of standalone Claude Design before 2026-12-14.
 9. Optional: Sanity plan usage limits (sanity.io/manage → Usage; the user can see them).
 Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused subscription, below);
