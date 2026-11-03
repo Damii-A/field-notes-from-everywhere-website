@@ -3049,5 +3049,7 @@ pagespeed.web.dev run after it (mobile, the Shortlist article): performance 96, 
 
 **Follow-up, same day**: Delius and IBM Plex Mono no longer preloaded (`preload: false`, `app/fonts.ts`): 4 of the 7
 preloaded font files, used only for quotes and small mono labels, competed with the hero image. They still load (swap,
-metric-matched fallbacks), just after the critical files.
+metric-matched fallbacks), just after the critical files. **User's pagespeed.web.dev runs after it (mobile)**: homepage
+performance 99, **LCP 2.1s (target met)**; the Shortlist article performance 90, LCP 0.9s but speed index 16.1s (one run;
+nothing on the page changes on a timer, so likely a one-off; a re-run was asked for).
 

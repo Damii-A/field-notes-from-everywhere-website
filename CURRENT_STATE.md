@@ -228,8 +228,9 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 - Largest-contentful-paint on mobile vs the 2.5s target. **2026-11-03**: article hero + hub lead image now fetched first
   at high priority (article hero sized to its 720px column); confirmed live (the hero request is "High"), but the effect
   couldn't be measured fairly: local Lighthouse through Avast swings 2.4-4.7s run to run, and the PageSpeed Insights API's
-  anonymous daily quota was used up. **Next**: the user runs pagespeed.web.dev (mobile) on an article and the homepage.
-  Remaining levers: ~300ms render-blocking CSS; 7 preloaded font files.
+  anonymous daily quota was used up. Then 4 of 7 font preloads dropped. **User's
+  pagespeed.web.dev (mobile)**: homepage 99, LCP 2.1s (met); article 90, LCP 0.9s, speed index 16.1s (one run, likely a
+  fluke; re-run asked). Remaining lever if needed: ~300ms render-blocking CSS.
 - A check on the user's own phone and a tablet (the phone share-sheet button is already verified).
 - Cosmetic leftovers, user's discretion: the unused Kit form and old Kit free-list tags; the
   `*.vercel.app` CORS entries in Sanity.
