@@ -15,6 +15,7 @@ import { ChooseBooksAction } from "./sanity/actions/ChooseBooksAction";
 import { CreateKitDraftAction } from "./sanity/actions/CreateKitDraftAction";
 import { CreateResendDraftAction } from "./sanity/actions/CreateResendDraftAction";
 import { withPublishDateCheck } from "./sanity/actions/PublishWithDateCheck";
+import { StartArticleAction } from "./sanity/actions/StartArticleAction";
 import { RankingTagsView } from "./sanity/components/RankingTagsView";
 
 const projectId =
@@ -92,7 +93,8 @@ export default defineConfig({
     // "Choose books from ranking" on the other two columns' articles — DECISIONS.md, 2026-10-26;
     // "Create Kit draft" on issues — DECISIONS.md, 2026-10-02;
     // "Create Resend draft" on weekly newsletters — DECISIONS.md, 2026-10-05;
-    // Publish asks about the date on articles dated before today — DECISIONS.md, 2026-10-28.
+    // Publish asks about the date on articles dated before today — DECISIONS.md, 2026-10-28;
+    // "Start article" on post ideas (their only action) — DECISIONS.md, 2026-11-03.
     actions: (prev, { schemaType }) =>
       schemaType === "article"
         ? [...prev.map((a) => (a.action === "publish" ? withPublishDateCheck(a) : a)), FillFromRankingAction, ChooseBooksAction]
@@ -102,7 +104,7 @@ export default defineConfig({
             ? [...prev, CreateResendDraftAction]
             : // Post ideas are sent and replaced by the internal tool only (DECISIONS.md, 2026-11-03).
               schemaType === "postIdea"
-              ? []
+              ? [StartArticleAction]
               : prev,
   },
 });

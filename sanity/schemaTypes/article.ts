@@ -269,6 +269,16 @@ export default defineType({
       of: [bookEntry],
     }),
     defineField({
+      name: "postIdea",
+      title: "Started from post idea",
+      description: "Set by \"Start article\" on a post idea, so the internal tool can tell when this idea's article is live.",
+      type: "reference",
+      to: [{ type: "postIdea" }],
+      weak: true,
+      readOnly: true,
+      hidden: ({ value }) => !value,
+    }),
+    defineField({
       name: "whatToReadNext",
       title: "What to read next",
       description: "pub_article.md §6.5 — editorially chosen, up to 3.",
