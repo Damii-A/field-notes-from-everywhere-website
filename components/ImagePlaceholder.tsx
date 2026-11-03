@@ -11,6 +11,10 @@ export interface ImagePlaceholderProps {
   position?: string;
   style?: React.CSSProperties;
   fill?: boolean;
+  /** The page's main (largest) image: fetched first, at high priority (DECISIONS.md, 2026-11-03). */
+  priority?: boolean;
+  /** How wide the image shows, for picking the right size to download. */
+  sizes?: string;
 }
 
 /**
@@ -20,14 +24,15 @@ export interface ImagePlaceholderProps {
  * image yet, it renders a neutral placeholder box labelled with what belongs
  * there, so every page stays visually complete before Sanity is populated.
  */
-export function ImagePlaceholder({ label, src, alt, position, style, fill = true }: ImagePlaceholderProps) {
+export function ImagePlaceholder({ label, src, alt, position, style, fill = true, priority, sizes }: ImagePlaceholderProps) {
   if (src) {
     return (
       <Image
         src={src}
         alt={alt || label}
         fill={fill}
-        sizes="(max-width: 768px) 100vw, 50vw"
+        priority={priority}
+        sizes={sizes ?? "(max-width: 768px) 100vw, 50vw"}
         style={{ objectFit: "cover", objectPosition: position, ...style }}
       />
     );

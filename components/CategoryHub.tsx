@@ -68,7 +68,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
             className={category === "the-shortlist" ? `${styles.leadCard} ${styles.leadCardFlush}` : styles.leadCard}
           >
             <div className={styles.leadImage}>
-              <ImagePlaceholder label="Lead article image" src={hub.latest.heroImage?.url} position={hub.latest.heroImage?.position} alt={hub.latest.heroImage?.alt} />
+              <ImagePlaceholder label="Lead article image" src={hub.latest.heroImage?.url} position={hub.latest.heroImage?.position} alt={hub.latest.heroImage?.alt} priority />
             </div>
             <div className={styles.leadBody} style={{ background: colors.leadBg }}>
               <span className={styles.leadLabel} style={{ color: colors.leadLabel }}>

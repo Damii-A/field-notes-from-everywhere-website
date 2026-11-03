@@ -203,7 +203,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
           </div>
 
           <div className={styles.hero} style={{ borderRadius: style.heroRadius }}>
-            <ImagePlaceholder label={article.heroImage?.alt ?? "Article image"} src={article.heroImage?.url} position={article.heroImage?.position} />
+            <ImagePlaceholder label={article.heroImage?.alt ?? "Article image"} src={article.heroImage?.url} position={article.heroImage?.position} priority sizes="(max-width: 760px) 100vw, 720px" />
           </div>
 
           <div className={styles.intro}>
