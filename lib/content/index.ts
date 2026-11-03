@@ -536,6 +536,8 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
       (raw.tags ?? []).filter((t): t is string => !!t),
       (t) => t,
     ) ?? [],
+    // As in articles: the ranking pills, then the first few tags, then "+N more" (user, 2026-11-03).
+    tagsShown: new Set((raw.rankings ?? []).filter(Boolean)).size + BOOK_TAGS_SHOWN,
     // A ranking ("#1 of 15") is the strongest reason to read it, so ranked lists lead; otherwise newest first.
     lists: [...lists].sort((x, y) => Number(!!y.rank) - Number(!!x.rank)).map((l) => ({ title: l.title, href: l.href, category: l.category, rank: l.rank, bookCount: l.bookCount })),
     related,

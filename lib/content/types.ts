@@ -58,6 +58,8 @@ export interface WhereToReadBook {
   /** The blurb to show: a featuring article's own per-list blurb if one exists, else the book's canonical blurb. */
   blurb?: string;
   tags: string[];
+  /** How many of `tags` show before "+N more" (ranking pills + the first BOOK_TAGS_SHOWN). */
+  tagsShown: number;
   /** From the internal tool (lib/books/facts.ts). */
   pageCount?: number;
   readingHours?: number;

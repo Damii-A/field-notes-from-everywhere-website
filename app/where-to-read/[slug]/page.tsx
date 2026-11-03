@@ -12,6 +12,7 @@ import { bookFactLabels } from "@/lib/books/facts";
 import { pageMetadata } from "@/lib/metadata";
 import { SITE_URL } from "@/lib/siteUrl";
 import styles from "./WhereToRead.module.css";
+import { BookPageTags } from "./BookPageTags";
 
 /**
  * A book's "Where to read" page (DECISIONS.md, 2026-10-02): one page per book, built
@@ -135,15 +136,7 @@ export default async function WhereToReadPage({ params }: Props) {
                     ))}
                   </div>
                 )}
-                {book.tags.length > 0 && (
-                  <ul className={styles.tags} aria-label="Tags">
-                    {book.tags.map((t) => (
-                      <li key={t} className={styles.tag}>
-                        {t}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                {book.tags.length > 0 && <BookPageTags tags={book.tags} shown={book.tagsShown} />}
                 {book.blurb && (
                   <div className={styles.blurb}>
                     {splitParagraphs(book.blurb).map((p, i) => (

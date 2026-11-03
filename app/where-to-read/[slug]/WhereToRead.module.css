@@ -208,6 +208,25 @@
   color: var(--ink-900);
 }
 
+/* "+N more" / "Show fewer" after the first tags (user, 2026-11-03), like articles' dashed pill. */
+.moreTags {
+  border-style: dashed;
+  background: transparent;
+  font-family: inherit;
+  line-height: inherit;
+  color: var(--ink-700);
+  cursor: pointer;
+}
+
+.moreTags:hover {
+  background: var(--ochre-100);
+}
+
+.moreTags:focus-visible {
+  outline: 2px solid var(--ink-700);
+  outline-offset: 2px;
+}
+
 /* Related books (up to 6): at most 3 per row (3 + 3, not 5 + 1), 2 per row on phones;
    rows centred, so a short last row sits in the middle. */
 .related {
