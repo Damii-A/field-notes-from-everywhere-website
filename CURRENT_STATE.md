@@ -220,7 +220,7 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 ## Open, raise one at a time (nothing blocking)
 
 - Cancelling the old WordPress hosting, if the account still exists (provider unknown).
-- ~~Accurate sitemap `lastmod`~~ **done 2026-11-03**. Optional: JSON-LD beyond the book pages (offered, not chosen).
+- ~~Accurate sitemap `lastmod`~~ **done 2026-11-03**. ~~JSON-LD beyond the book pages~~ **articles done 2026-11-03** (user chose it; DECISIONS.md, same date).
 - The Family Upstairs cover belongs to the tool now (books are edited only there); a better cover goes in via the tool's send.
 - Covers: The Family Upstairs is square (318 × 318, cropped); a full 1838 × 2775 cover is in the
   Pinterest folder (offered, not done). Still under 300px wide but the best front covers found:

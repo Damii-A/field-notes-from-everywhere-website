@@ -5,6 +5,8 @@ import { Footer } from "@/components/Footer";
 import { ArticleView } from "@/components/ArticleView";
 import { articleMetadata, articlePath, getArticleBySlug } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
+import { JsonLd } from "@/components/JsonLd";
+import { articleJsonLd } from "@/lib/content/articleJsonLd";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -20,6 +22,7 @@ export default async function ShortlistArticlePage({ params }: { params: Promise
   return (
     <>
       <Header active="the-shortlist" />
+      <JsonLd data={articleJsonLd(article)} />
       <ArticleView article={article} shareUrl={`${SITE_URL}${articlePath(article)}`} />
       <Footer />
     </>

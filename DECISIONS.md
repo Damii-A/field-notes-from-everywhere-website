@@ -3055,3 +3055,15 @@ nothing on the page changes on a timer); **re-run: performance 96, LCP 2.6s, spe
 Closed as done: the article sits at the target within run-to-run variation; the last lever (~300ms render-blocking CSS) is
 left as diminishing returns.
 
+## 2026-11-03 — Structured data (JSON-LD) on article pages
+
+**Decision** (user, asked; invisible to readers): every article page carries schema.org data
+(`lib/content/articleJsonLd.ts`, rendered by `components/JsonLd.tsx` in the three `[slug]` pages): an **Article**
+(headline, description, hero image, published date; author and publisher the Organization "Field Notes From Everywhere",
+brand only, with the ghost logo), an **ItemList** of its books in order (ranked columns `ItemListOrderAscending`, others
+`ItemListUnordered`; each item a **Book** with its author and its "Where to read" URL), and a **BreadcrumbList**
+(Home › column › article). Book pages keep their own Book + BreadcrumbList (2026-10-02).
+
+**Verified**: type check, lint, build; the local build against live content: the Shortlist article lists 15 books
+ascending, Up Next 12 and What to Read When 11 unordered, every book with its Where to read URL, breadcrumbs per column.
+
