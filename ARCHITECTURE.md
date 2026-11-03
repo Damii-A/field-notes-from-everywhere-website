@@ -214,8 +214,9 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
 - **`postIdea`** — one approved post idea sent from the internal tool (2026-11-03, `DECISIONS.md` has
   the full field contract): title + other titles, formula, column (article category code), ranking, why
   it qualifies, evidence line, timing, books in order with the tags that put each in, shared tags,
-  groups, anchor book, notes. View-only in the Studio ("Post ideas"); the tool replaces it on resend.
-  Its one action, **"Start article"** (`sanity/actions/StartArticleAction.tsx`), makes a draft article
+  groups, anchor book, notes, and the article text (intro, meta description, slug, focus keyword). View-only in the Studio ("Post ideas"); the tool replaces it on resend.
+  Its one action, **"Start article"** (`sanity/actions/StartArticleAction.tsx`), makes a draft article (prefilled
+  with that text when the idea has it)
   and sets `article.postIdea` (read-only weak reference), which is how the tool reads back that an
   idea's article is live. Nothing on the public site reads `postIdea`.
 - **`readingRoomIssue`** — one Reading Room email (added 2026-10-02, see `DECISIONS.md`): `title`

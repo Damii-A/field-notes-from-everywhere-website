@@ -56,6 +56,13 @@ list" email to the user's own address. The user **hasn't looked at the email pre
 time"). "Where to read": lists and related books in panels a shade darker than the page; About shows first tags +
 "+N more". Note back to the tool: `docs/handover/TOOL_HANDOVER_2026-11-03_BOOK_FACTS.md`.
 
+**2026-11-03 (later): article text on post ideas** (DECISIONS.md, same date). Post ideas carry `introText`,
+`metaDescription`, `slug`, `focusKeyword` (view-only, from the tool); "Start article" prefills the draft with them
+(focus keyword on Shortlist only), so the user adds only the hero image + alt text. **Next check**: reload the Studio,
+the tool re-sends an idea with its text, then "Start article" on it. The Twists article (started before) gets its text by
+hand; the 19 Thriller ideas sent earlier need re-sending to carry it. Note back to the tool:
+`docs/handover/TOOL_HANDOVER_2026-11-03_ARTICLE_TEXT.md`.
+
 **Start the next session here (as of end of 2026-11-03; nothing unpushed).** The tool session builds its
 "Send ideas to Studio" against the contract; the first real send is the next check (look at the Post ideas
 list, then "Start article" on one real idea). The rest of the tool's website list, **one at a time, asking the

@@ -10,6 +10,10 @@ export interface PostIdeaDoc {
   column?: string;
   ranking?: { _ref: string };
   evidenceLine?: string;
+  introText?: string;
+  metaDescription?: string;
+  slug?: string;
+  focusKeyword?: string;
   timing?: { scheduleFor?: string };
   books?: { book?: { _ref: string }; tagsShown?: { _ref: string }[] }[];
 }
@@ -42,6 +46,24 @@ export function articleFromPostIdea(
   const scheduleFor = idea.timing?.scheduleFor ? new Date(`${idea.timing.scheduleFor}T14:00:00Z`) : null;
   const publishedAt = scheduleFor && scheduleFor > now ? scheduleFor.toISOString() : undefined;
 
+  // The tool's article text (sent from 2026-11-03; older ideas have none). Plain text: a blank line
+  // starts a new paragraph.
+  const intro = (idea.introText ?? "")
+    .split(/\n\s*\n/)
+    .map((p) => p.replace(/\s+/g, " ").trim())
+    .filter(Boolean)
+    .map((text) => ({
+      _type: "block",
+      _key: randomKey(),
+      style: "normal",
+      markDefs: [],
+      children: [{ _type: "span", _key: randomKey(), text, marks: [] }],
+    }));
+  const metaDescription = idea.metaDescription?.trim();
+  const slug = idea.slug?.trim();
+  // The focus keyword field only shows (and is only checked) on Shortlist articles.
+  const focusKeyword = idea.column === "the-shortlist" ? idea.focusKeyword?.trim() : undefined;
+
   return {
     fields: {
       _type: "article",
@@ -51,6 +73,10 @@ export function articleFromPostIdea(
       author: "The FNFE Team",
       ...(publishedAt ? { publishedAt } : {}),
       ...(idea.ranking?._ref ? { ranking: ref(idea.ranking._ref) } : {}),
+      ...(slug ? { slug: { _type: "slug", current: slug } } : {}),
+      ...(metaDescription ? { metaDescription } : {}),
+      ...(focusKeyword ? { focusKeyword } : {}),
+      ...(intro.length ? { introText: intro } : {}),
       ...(idea.evidenceLine?.trim() ? { methodologySentence: idea.evidenceLine.trim() } : {}),
       postIdea: { ...ref(idea._id), _weak: true },
       bookEntries: books.map((b) => ({

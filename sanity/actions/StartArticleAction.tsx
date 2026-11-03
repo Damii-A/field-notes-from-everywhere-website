@@ -10,7 +10,8 @@ function randomKey() {
 /**
  * Studio document action on post ideas: makes a draft article in the idea's column
  * (title, books in order with their "Tags shown here", "How we made this list" from
- * the evidence line; sanity/lib/articleFromPostIdea.ts) and opens it. If an article
+ * the evidence line, and the tool's intro, meta description, slug and focus keyword
+ * when sent; sanity/lib/articleFromPostIdea.ts) and opens it. If an article
  * was already started from this idea, it opens that one instead (user, 2026-11-03).
  */
 export function StartArticleAction(props: DocumentActionProps) {

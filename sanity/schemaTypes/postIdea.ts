@@ -48,6 +48,32 @@ export default defineType({
       type: "string",
       options: { list: CATEGORY_LIST.map((c) => ({ value: c.slug, title: c.name })) },
     }),
+    defineField({
+      name: "introText",
+      title: "Intro text",
+      description: "\"Start article\" puts this in the article's intro (plain text; add links in the article).",
+      type: "text",
+      rows: 4,
+    }),
+    defineField({
+      name: "metaDescription",
+      title: "Meta description",
+      description: "\"Start article\" copies this to the article.",
+      type: "text",
+      rows: 2,
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      description: "The article's web address. \"Start article\" copies this to the article.",
+      type: "string",
+    }),
+    defineField({
+      name: "focusKeyword",
+      title: "Focus keyword",
+      description: "\"Start article\" copies this to Shortlist articles (the only column with the field).",
+      type: "string",
+    }),
     defineField({ name: "ranking", title: "Ranking", type: "reference", to: [{ type: "ranking" }] }),
     defineField({ name: "whyItQualifies", title: "Why it qualifies", type: "text", rows: 2 }),
     defineField({

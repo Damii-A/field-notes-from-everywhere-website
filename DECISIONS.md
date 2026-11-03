@@ -2803,6 +2803,8 @@ own tag choice dropped it; no published entry had one, so no live page changed).
   `{ _type: "postIdeaGroup", _key, label, books: [book references] }`, e.g. the 12-month path's steps). Stored only:
   nothing on the website uses them yet, and "Start article" uses the flat `books` list.
 - Every array item needs a `_key`.
+- Article text (added later the same day, entry "2026-11-03 — Article text on post ideas"): `introText`,
+  `metaDescription`, `slug`, `focusKeyword` (strings, all optional).
 
 **"Start article"** (`sanity/actions/StartArticleAction.tsx`, fields in `sanity/lib/articleFromPostIdea.ts`) fills:
 title, category (= `column`), author "The FNFE Team", ranking, `methodologySentence` = the evidence line,
@@ -2846,3 +2848,24 @@ visible change approved by the user from a local preview with made-up numbers):
 "Where to read" page and the email (rendered to a file; **the user hasn't looked at the email preview yet**); live after
 deploy: the panels and "+18 more" on Gone Girl's page; no page-count pills anywhere until the tool sends the numbers.
 The Claude Design project couldn't be checked (DesignSync needs `/design-login`); the design shows none of this.
+
+## 2026-11-03 — Article text on post ideas; "Start article" prefills it
+
+**Decision** (planned with the user from the internal tool's `docs/handover/WEBSITE_HANDOVER_2026-11-03_ARTICLE_TEXT.md`;
+Studio only, no public page changes): `postIdea` gained four view-only string fields, named as the tool proposed:
+**`introText`** (plain text; a blank line starts a new paragraph), **`metaDescription`**, **`slug`** (the plain string,
+e.g. `thriller-books-with-plot-twists`, not a slug object) and **`focusKeyword`**. All optional. "Start article"
+(`sanity/lib/articleFromPostIdea.ts`) copies them into the new draft: `introText` as plain paragraphs (no links; the user
+adds links in the article), `metaDescription` as is, `slug` as `{ _type: "slug", current }`, and `focusKeyword` **only
+when the column is `the-shortlist`** (the field is hidden and unchecked in the other columns). Values are trimmed and
+otherwise left as sent; the article's own checks still apply (Sanity's slug uniqueness check, the meta description's
+length and duplicate warnings, the Shortlist SEO warnings). Ideas without them start as before; an article already
+started is never changed (the Twists article gets its text by hand). The user still adds the hero image and its alt text.
+
+**Context**: the user asked for the article's text to come prefilled; the tool drafts it per idea and the user confirms
+it there. The tool checks slugs for uniqueness across its ideas and the Studio's articles before sending.
+
+**Verified**: the fill logic on sample ideas (Shortlist with all four fields and two intro paragraphs; What to Read When,
+where the focus keyword is left out; an older idea with none, which fills exactly as before); type check, schema
+validation 0/0, production build. Lint's one error is the build-generated `next-env.d.ts`, present without this change.
+**Not yet seen**: the fields in the real Studio, or a real send carrying them.
