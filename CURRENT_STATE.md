@@ -234,7 +234,8 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 - Before joining an **ad network**: a Google-certified consent platform for EEA/UK/Swiss visitors,
   and a privacy-policy update naming it.
 
-Settled, don't offer again: merging the homepage and hub-page column descriptions (deliberately
+Settled, don't offer again: the "12-thrillers-books…" typo in the Up Next article's address (kept, user
+2026-11-03); centring the newsletter popup's "Once a week…" line (kept left-aligned, user 2026-11-03); merging the homepage and hub-page column descriptions (deliberately
 different, user 2026-10-26); merging near-duplicate book tags (declined 2026-09-29); blocking AI
 training crawlers in robots.txt (declined twice).
 
