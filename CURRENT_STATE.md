@@ -89,7 +89,8 @@ user before each** (order not chosen yet):
    "send this list" email. Not built: checklists (nothing sends one), showing the anchor book.
 3. ~~Rename the third column "Up Next"~~ **Done 2026-11-03** (DECISIONS.md, same date): live at `/up-next`, old addresses
    308-redirect, the one article's `category` changed (backup `backups/2026-11-03-up-next-before.json`), IndexNow pinged.
-4. The Shortlist's description (it now also holds unranked Year posts).
+4. ~~The Shortlist's description~~ **Done 2026-11-03** ("ranked" dropped from the hub and homepage descriptions; user's pick;
+   DECISIONS.md, same date).
 5. ~~The live Shortlist title~~ **Done 2026-11-03** (user's pick): "15 Thriller Book Recommendations (From
    2,181 Reader Picks)" (was "…Real Readers"; 2,181 is recommendations from over 1,100 readers). Changed in
    Sanity by API, checked live on the article, the Shortlist page and the homepage; slug unchanged.

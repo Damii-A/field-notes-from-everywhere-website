@@ -5,7 +5,7 @@ export const CATEGORIES: Record<CategorySlug, CategoryDef> = {
     slug: "the-shortlist",
     name: "The Shortlist",
     description:
-      "The Shortlist is where we rank the books readers recommend most for a particular genre, theme or reading request. Each article turns thousands of recommendations from real reader discussions into a shorter, ranked list of the books that came up most often.",
+      "The Shortlist is where we gather the books readers recommend most for a particular genre, theme or reading request. Each article turns thousands of recommendations from real reader discussions into a shorter list of the books that came up most often.",
     ranked: true,
     identity: { pageBg: "var(--sage-100)", accent: "var(--sage-700)" },
   },

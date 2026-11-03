@@ -2983,3 +2983,13 @@ their month, Up Next, Challenge; idea 40: anchor The Silent Patient, no sections
 live Up Next article with made-up months (desktop and phone, 12 headings, no sideways scroll). **Not yet seen**: the email
 version, and a real sectioned article.
 
+## 2026-11-03 — The Shortlist's descriptions no longer say "ranked"
+
+**Decision** (user's pick of minimal edits to their own copy): the column now also holds the tool's Year lists, picked by
+recommendation count but shown in fit order (the tool's `TOPIC_SUGGESTER_DESIGN.md` §11 item 43), so "ranked" was no
+longer true of every list. Hub page (`lib/content/categories.ts`, also its meta description and `/llms.txt`): "rank" →
+"gather", ", ranked" removed. Homepage box (`app/page.tsx`): "ranked collections" → "collections", "ranked lists" →
+"shorter lists". The About box ("reading lists of the most recommended books") was already accurate and is unchanged.
+Kept: the two description sets stay deliberately different (2026-10-26). Ranked articles (Authority, Ultimate) still show
+their numbers.
+

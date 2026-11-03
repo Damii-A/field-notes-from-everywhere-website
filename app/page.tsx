@@ -150,9 +150,9 @@ export default async function HomePage() {
                 The Shortlist
               </Link>
               <p style={{ font: "var(--type-body)", lineHeight: 1.7, color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
-                Our shortlists are ranked collections of books built around a specific theme, trope, or reader request.
-                We analyse real reader discussions to uncover the books recommended most often, then distill those
-                recommendations into ranked lists.
+                Our shortlists are collections of books built around a specific theme, trope, or reader request. We
+                analyse real reader discussions to uncover the books recommended most often, then distill those
+                recommendations into shorter lists.
               </p>
             </div>
           </div>
