@@ -50,9 +50,8 @@ Worth a look in a few weeks.
 
 **2026-11-03 (later): page count + reading time, "Where to read" panels and tag limit, live** (DECISIONS.md, same
 date). `book.pageCount` / `book.readingHours` (read-only, from the tool) show as two pills under the author in
-articles, the "send this list" email and the "Where to read" About section; **none show yet**: the user resends
-Thriller's books from the tool to fill them, then check one article, one book page and (optionally) a "send this
-list" email to the user's own address. The user **hasn't looked at the email preview** yet (their choice, "another
+articles, the "send this list" email and the "Where to read" About section; **showing since the tool's resend**
+(53 of 54 books; seen in a local build of the live content 2026-11-03). The user **hasn't looked at the email preview** yet (their choice, "another
 time"). "Where to read": lists and related books in panels a shade darker than the page; About shows first tags +
 "+N more". Note back to the tool: `docs/handover/TOOL_HANDOVER_2026-11-03_BOOK_FACTS.md`.
 
@@ -69,9 +68,15 @@ date). Articles have "Pinterest pin" + "Pin description" in the Studio; the Pint
 button on the live article. Also: Publish stays greyed out until "Published at" is set ("Start article" leaves it empty
 on purpose, except Seasonal ideas).
 
-**Start the next session here (as of end of 2026-11-03; nothing unpushed).** The tool session builds its
-"Send ideas to Studio" against the contract; the first real send is the next check (look at the Post ideas
-list, then "Start article" on one real idea). The rest of the tool's website list, **one at a time, asking the
+**Checked in Sanity 2026-11-03 (end of day)**: all 19 Thriller post ideas are in the Studio, all carrying the
+article text; the first tool-driven article, "11 Thrillers You Can Read in a Day" (from `postIdea-16`; intro, meta
+description and slug prefilled), is **published** (dated 2026-11-03); the Twists draft (`postIdea-8`, started before
+the text existed) is still a draft with no intro, meta description or slug. 53 of 54 books have page count + reading
+time; the one without is **The Risk** (Dark Romance, not in the Thriller ranking; it fills when that ranking is sent).
+No article has a Pinterest pin yet. The user confirmed the popup changes live.
+
+**Start the next session here (as of end of 2026-11-03; nothing unpushed).** The post-idea send and "Start
+article" work for real (above). The rest of the tool's website list, **one at a time, asking the
 user before each** (order not chosen yet):
 1. Article formats per formula in all three columns (today only What to Read When has `format`).
 2. Layouts beyond one flat list (12-month path, grouped sections, anchor book): backend first, look kept.
