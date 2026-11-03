@@ -1,0 +1,1092 @@
+[
+ {
+  "_createdAt": "2026-09-23T23:22:14Z",
+  "_id": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+  "_rev": "bJPTuW3xZoOyTmudjreNRU",
+  "_system": {
+   "base": {
+    "id": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+    "rev": "bJPTuW3xZoOyTmudjrdvgg"
+   }
+  },
+  "_type": "article",
+  "_updatedAt": "2026-10-28T12:18:32Z",
+  "author": "The FNFE Team",
+  "bookEntries": [
+   {
+    "_key": "pvnvz1d1pi",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-family-upstairs-lisa-jewell",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "9z5alljkrw",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-never-lie-freida-mcfadden",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "hbfgs5t5ef",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-and-then-there-were-none-agatha-christie",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "ahez2a1h1g",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-look-closer-david-ellis",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "w3hb5qgq34",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-kill-for-me-kill-for-you-steve-cavanagh",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "0x6f87873h",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-shutter-island-dennis-lehane",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "et1cqotaim",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-girl-with-the-dragon-tattoo-stieg-larsson",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "zmtp94tlgn",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-fourth-monkey-j-d-barker",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "owkt475rrh",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-gone-girl-gillian-flynn",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "9ws9qoekjt",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-sharp-objects-gillian-flynn",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "9sev0zg4x9",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-push-ashley-audrain",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "yglrhhsw2y",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-pretty-girls-karin-slaughter",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "3jmdgcmles",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-dark-places-gillian-flynn",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "leriw2ua9y",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-intensity-dean-koontz",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "5hsbpxiwu3",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-behind-closed-doors-b-a-paris",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "qmp0lpifnj",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-local-woman-missing-mary-kubica",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "km9k2ibu8m",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-silent-patient-alex-michaelides",
+     "_type": "reference"
+    }
+   }
+  ],
+  "category": "what-to-read-when",
+  "format": "trope-or-feeling",
+  "heroImage": {
+   "_type": "image",
+   "alt": "top thriller books ",
+   "asset": {
+    "_ref": "image-f94b808eb85fbcec3d4576ff6fbc19302024276c-2400x1000-png",
+    "_type": "reference"
+   }
+  },
+  "introText": [
+   {
+    "_key": "23b64fc0b447",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "d4c3059b9462",
+      "_type": "span",
+      "marks": [],
+      "text": "For this list, we went looking for thrillers that give you very few reasons to trust your first impression."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "1383cdbe1b88",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "959d7cfc2f83",
+      "_type": "span",
+      "marks": [],
+      "text": "Some will make you suspicious of the people at the center of the story."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "9d8f6f4ecfac",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "163bf25d643b",
+      "_type": "span",
+      "marks": [],
+      "text": "Others will have you questioning whether you can trust the story itself."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "f096421aa64d",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "3b2e940e3de1",
+      "_type": "span",
+      "marks": [],
+      "text": "And a few will let you "
+     },
+     {
+      "_key": "b4b36dbd7be4",
+      "_type": "span",
+      "marks": [
+       "4eba66497d16"
+      ],
+      "text": "settle comfortably into a theory before giving you a very good reason to throw it out the window"
+     },
+     {
+      "_key": "61ce197f6883",
+      "_type": "span",
+      "marks": [],
+      "text": "."
+     }
+    ],
+    "markDefs": [
+     {
+      "_key": "4eba66497d16",
+      "_type": "internalLink",
+      "reference": {
+       "_ref": "83486678-0dad-451e-8946-e210eb34f542",
+       "_type": "reference"
+      }
+     }
+    ],
+    "style": "normal"
+   },
+   {
+    "_key": "420c1bd35762",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "e33228f3c9e7",
+      "_type": "span",
+      "marks": [],
+      "text": "Here are 17 thrillers to read when you’re in the mood to doubt everything."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   }
+  ],
+  "metaDescription": "From unreliable narrators to secrets that change everything, these reader-recommended thrillers reward a healthy amount of suspicion.",
+  "methodologySentence": "To create this article, we analysed 2,181 reader recommendations. We pulled the 17 books on this list from a larger list of the top 50 most-recommended books.",
+  "publishedAt": "2026-09-27T14:39:49.937Z",
+  "ranking": {
+   "_ref": "ranking-thriller",
+   "_type": "reference"
+  },
+  "rankingCount": 17,
+  "slug": {
+   "_type": "slug",
+   "current": "these-17-thrillers-will-have-you-questioning-everything-and-everyone"
+  },
+  "title": "These 17 Thrillers Will Have You Questioning Everything and Everyone",
+  "whatToReadNext": [
+   {
+    "_key": "321b0cdae79c",
+    "_ref": "53587f3f-d994-481a-bee3-d0839e044a1d",
+    "_type": "reference"
+   },
+   {
+    "_key": "49f3867d3e4f",
+    "_ref": "83486678-0dad-451e-8946-e210eb34f542",
+    "_type": "reference"
+   }
+  ]
+ },
+ {
+  "_createdAt": "2026-09-23T23:05:42Z",
+  "_id": "53587f3f-d994-481a-bee3-d0839e044a1d",
+  "_rev": "au2og3C4ulRdIC4jSAL5cs",
+  "_system": {
+   "base": {
+    "id": "53587f3f-d994-481a-bee3-d0839e044a1d",
+    "rev": "au2og3C4ulRdIC4jS9VbNt"
+   }
+  },
+  "_type": "article",
+  "_updatedAt": "2026-11-03T19:06:33Z",
+  "author": "The FNFE Team",
+  "bookEntries": [
+   {
+    "_key": "hzr0y9h4lw",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-silent-patient-alex-michaelides",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "as8rwl44k0",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-gone-girl-gillian-flynn",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "mowhts5mae",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-sharp-objects-gillian-flynn",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "c5baredpaq",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-girl-with-the-dragon-tattoo-stieg-larsson",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "e8l65pnilq",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-pretty-girls-karin-slaughter",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "oxk2n4ttqo",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-dark-matter-blake-crouch",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "tvspso5erw",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-red-dragon-thomas-harris",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "ewudvn58m0",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-silence-of-the-lambs-thomas-harris",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "fvraqe7h2r",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-i-am-pilgrim-terry-hayes",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "79goq7j80s",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-no-exit-taylor-adams",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "rwxdgte6u7",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-rock-paper-scissors-alice-feeney",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "9rnlqnrfsf",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-verity-colleen-hoover",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "xh31btfnhb",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-day-of-the-jackal-frederick-forsyth",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "7da9r1n73q",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-behind-her-eyes-sarah-pinborough",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "crtdzmi51s",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-kind-worth-killing-peter-swanson",
+     "_type": "reference"
+    }
+   }
+  ],
+  "category": "the-shortlist",
+  "focusKeyword": "thriller book recommendations",
+  "heroImage": {
+   "_type": "image",
+   "alt": "thriller book recommendations",
+   "asset": {
+    "_ref": "image-2adf71a49800f26d7abe3e699cc933f2d5ece2d5-2400x1000-png",
+    "_type": "reference"
+   }
+  },
+  "introText": [
+   {
+    "_key": "d8e75d6c5b5c",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "671f8f7bb383",
+      "_type": "span",
+      "marks": [],
+      "text": "With millions of thrillers out there, finding one worth reading can be a challenge. So we analyzed thousands of real thriller book recommendations to see which books had the most organic mentions."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "2fa8fb5b1dec",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "681f45f4b2bb",
+      "_type": "span",
+      "marks": [],
+      "text": "Some of the results probably won’t surprise you. "
+     },
+     {
+      "_key": "470e32d16388",
+      "_type": "span",
+      "marks": [
+       "em"
+      ],
+      "text": "Gone Girl"
+     },
+     {
+      "_key": "67d697d045e3",
+      "_type": "span",
+      "marks": [],
+      "text": " has been everywhere for years, and "
+     },
+     {
+      "_key": "7bfde436892b",
+      "_type": "span",
+      "marks": [
+       "em"
+      ],
+      "text": "The Silent Patient"
+     },
+     {
+      "_key": "eb69f275230b",
+      "_type": "span",
+      "marks": [],
+      "text": " is hardly a hidden gem. But keep going, and you might find a few hidden gems."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "fd72af903d58",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "8d534429b1e7",
+      "_type": "span",
+      "marks": [],
+      "text": "There are old favorites, newer hits, and a few great thrillers that don’t get nearly as much mainstream attention as they deserve. Enjoy!"
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   }
+  ],
+  "metaDescription": "Find your next read with thriller book recommendations drawn from thousands of real reader picks, including popular favorites and lesser-known standouts.",
+  "methodologySentence": "To create this article, we analysed 2,181 reader recommendations. The books on this list were the most frequently recommended.",
+  "publishedAt": "2026-09-27T14:11:18.979Z",
+  "ranking": {
+   "_ref": "ranking-thriller",
+   "_type": "reference"
+  },
+  "rankingCount": 15,
+  "slug": {
+   "_type": "slug",
+   "current": "thriller-book-recommendations"
+  },
+  "themes": [
+   {
+    "_key": "485fcd0a9c28",
+    "_ref": "495b15b8-3cb4-4680-b2ac-bde96e23b8d7",
+    "_type": "reference"
+   }
+  ],
+  "title": "We Read 2,181 Thriller Book Recommendations. These 15 Came Up the Most.",
+  "whatToReadNext": [
+   {
+    "_key": "1d6cc8c98667",
+    "_ref": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+    "_type": "reference"
+   },
+   {
+    "_key": "9fce5e5b9247",
+    "_ref": "83486678-0dad-451e-8946-e210eb34f542",
+    "_type": "reference"
+   }
+  ]
+ },
+ {
+  "_createdAt": "2026-09-23T23:25:28Z",
+  "_id": "83486678-0dad-451e-8946-e210eb34f542",
+  "_rev": "ANJ8VSfhOz4bxNByopnWC1",
+  "_system": {
+   "base": {
+    "id": "83486678-0dad-451e-8946-e210eb34f542",
+    "rev": "4lJ2mGct5PnttFtjrl3GfI"
+   }
+  },
+  "_type": "article",
+  "_updatedAt": "2026-09-30T15:53:10Z",
+  "author": "The FNFE Team",
+  "bookEntries": [
+   {
+    "_key": "yzvf2livdc",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-pretty-girls-karin-slaughter",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "4heb3mb19w",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-last-house-on-needless-street-catriona-ward",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "i0b4tpros5",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-then-she-was-gone-lisa-jewell",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "gveqcxq6lq",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-sharp-objects-gillian-flynn",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "3nvsxyw0f7",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-girl-with-the-dragon-tattoo-stieg-larsson",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "3cwk3mz3mk",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-risk-s-t-abby",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "ulgx1z05rj",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-in-the-woods-tana-french",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "n6yw97kqbd",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-silent-patient-alex-michaelides",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "r81en203hv",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-mystic-river-dennis-lehane",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "tuyn0vurjh",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-likeness-tana-french",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "eostd26ur4",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-none-of-this-is-true-lisa-jewell",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "wranqkh6u6",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-gone-girl-gillian-flynn",
+     "_type": "reference"
+    }
+   }
+  ],
+  "category": "book-club-book-picks",
+  "heroImage": {
+   "_type": "image",
+   "alt": "thriller book picks",
+   "asset": {
+    "_ref": "image-79663e3b965cbf31484bd31381e64c7dc434389b-2400x1000-png",
+    "_type": "reference"
+   }
+  },
+  "introText": [
+   {
+    "_key": "9d8e54941e9a",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "5c45c06aadeb",
+      "_type": "span",
+      "marks": [],
+      "text": "We had one rule for the thrillers on this list: there had to be something worth arguing about."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "c36281f6707c",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "d71859de2bde",
+      "_type": "span",
+      "marks": [],
+      "text": "Maybe it’s whether a character can be trusted. Maybe it’s whether one clue changes how you see everything that came before it. Either way, these 12 books will give you plenty of material for theories, predictions, and strong opinions."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "3aed3d132fe6",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "27a345c88929",
+      "_type": "span",
+      "marks": [],
+      "text": "A quick tip for a bit more fun: get everyone to commit to their theories before you reach the final chapters."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   }
+  ],
+  "metaDescription": "Give your book club something to debate with reader-recommended thrillers full of suspicious characters, surprising reveals and plenty to discuss.",
+  "methodologySentence": "To create this article, we analysed 2,181 book recommendations from real reader discussions. We pulled the 12 books on this list from a larger list of the top 50 most-recommended books in those discussions.",
+  "publishedAt": "2026-09-27T14:40:31.405Z",
+  "ranking": {
+   "_ref": "ranking-thriller",
+   "_type": "reference"
+  },
+  "rankingCount": 12,
+  "slug": {
+   "_type": "slug",
+   "current": "12-thrillers-books-that-will-have-everyone-comparing-theories"
+  },
+  "themes": [
+   {
+    "_key": "92ce9b500943",
+    "_ref": "495b15b8-3cb4-4680-b2ac-bde96e23b8d7",
+    "_type": "reference"
+   }
+  ],
+  "title": "12 Thriller Books That Will Have Everyone Comparing Theories",
+  "whatToReadNext": [
+   {
+    "_key": "b1dbdb959fc9",
+    "_ref": "53587f3f-d994-481a-bee3-d0839e044a1d",
+    "_type": "reference"
+   },
+   {
+    "_key": "ea7d779083dd",
+    "_ref": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+    "_type": "reference"
+   }
+  ]
+ },
+ {
+  "_createdAt": "2026-11-03T15:47:44Z",
+  "_id": "b7721e67-0030-4770-a0ff-5dd8455b2783",
+  "_rev": "hXIPOb7vJnToWfg6FVSg8r",
+  "_type": "article",
+  "_updatedAt": "2026-11-03T18:29:04Z",
+  "author": "The FNFE Team",
+  "bookEntries": [
+   {
+    "_key": "knef94y0vb",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-silent-patient-alex-michaelides",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "j25o8704ms",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-never-lie-freida-mcfadden",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "xp2erd17lv",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-housemaid-freida-mcfadden",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "5bgt6hcqx8",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-rock-paper-scissors-alice-feeney",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "57og6rxrtj",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-girl-on-the-train-paula-hawkins",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "snwwl2im8o",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-plot-jean-hanff-korelitz",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "uw31vb2ppd",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-verity-colleen-hoover",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "0zob08x0xj",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-his-hers-alice-feeney",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "nidg7m3e05",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-sharp-objects-gillian-flynn",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "w28zczey2c",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-behind-her-eyes-sarah-pinborough",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "yjbrh32uqb",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-family-upstairs-lisa-jewell",
+     "_type": "reference"
+    }
+   }
+  ],
+  "category": "what-to-read-when",
+  "format": "trope-or-feeling",
+  "heroImage": {
+   "_type": "image",
+   "alt": "a hero image for a blog post about short thriller books",
+   "asset": {
+    "_ref": "image-4cfc85887551f8cd99160f251ed65333b092d04e-2400x1000-png",
+    "_type": "reference"
+   }
+  },
+  "introText": [
+   {
+    "_key": "ks0o18knxh",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "czz45zcfgg",
+      "_type": "span",
+      "marks": [],
+      "text": "Not every great thriller needs a week of your evenings. Every one of these short thriller books comes in under 350 pages, so a Saturday, a long flight or a rainy afternoon is all the time you'll need."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   }
+  ],
+  "metaDescription": "Pressed for time? These short thriller books all come in under 350 pages, and The Silent Patient and Sharp Objects are among them.",
+  "methodologySentence": "The books recommended in this post were pulled from the top 53 of a larger list of 1,028 books compiled from an analysis of 2,181 real reader recommendations.",
+  "postIdea": {
+   "_ref": "postIdea-16",
+   "_type": "reference",
+   "_weak": true
+  },
+  "publishedAt": "2026-11-03T18:28:59.992Z",
+  "ranking": {
+   "_ref": "ranking-thriller",
+   "_type": "reference"
+  },
+  "slug": {
+   "_type": "slug",
+   "current": "short-thriller-books"
+  },
+  "title": "11 Thrillers You Can Read in a Day",
+  "whatToReadNext": [
+   {
+    "_key": "0f61e8431dda",
+    "_ref": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+    "_type": "reference"
+   },
+   {
+    "_key": "de90194917db",
+    "_ref": "53587f3f-d994-481a-bee3-d0839e044a1d",
+    "_type": "reference"
+   },
+   {
+    "_key": "b1d22c584141",
+    "_ref": "83486678-0dad-451e-8946-e210eb34f542",
+    "_type": "reference"
+   }
+  ]
+ },
+ {
+  "_createdAt": "2026-11-03T14:26:23Z",
+  "_id": "drafts.2b0505ed-c98a-470c-b8ae-cb2c4f7485fb",
+  "_rev": "69de70a5-5e86-455b-8325-b8f23cb428fa",
+  "_type": "article",
+  "_updatedAt": "2026-11-03T14:30:36Z",
+  "author": "The FNFE Team",
+  "bookEntries": [
+   {
+    "_key": "wyh5kwch0d",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-behind-her-eyes-sarah-pinborough",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "3wy24hy2ka",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     },
+     {
+      "_key": "kmjz0hua94",
+      "_ref": "tag-plot-twist-ending",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "yppnfgl7f3",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-silent-patient-alex-michaelides",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "e4prq91xtz",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     },
+     {
+      "_key": "0moh0183t8",
+      "_ref": "tag-plot-twist-ending",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "016bde4htj",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-rock-paper-scissors-alice-feeney",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "qjo3xuwvpl",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     },
+     {
+      "_key": "h461ojzbjt",
+      "_ref": "tag-plot-twist-ending",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "sc0y4b1hfk",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-only-one-left-riley-sager",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "qxowm31gt0",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "v4wms7a8ek",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-dark-matter-blake-crouch",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "xfdkrc5nm9",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "fn8jpom2a7",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-likeness-tana-french",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "r05q8cvidk",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "8ytv079jzz",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-no-exit-taylor-adams",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "i72xgzg1ni",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "o1hb1xdse1",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-wrong-place-wrong-time-gillian-mcallister",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "rus2kxxb74",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "w25dnjyp5a",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-drowning-woman-robyn-harding",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "2mgba1mnnl",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "5o3m58hsu5",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-plot-jean-hanff-korelitz",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "9lv8hbs32m",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     }
+    ]
+   },
+   {
+    "_key": "53k7rv1dl6",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-i-let-you-go-clare-mackintosh",
+     "_type": "reference"
+    },
+    "tags": [
+     {
+      "_key": "bj128b6y47",
+      "_ref": "tag-plot-twist",
+      "_type": "reference"
+     }
+    ]
+   }
+  ],
+  "category": "what-to-read-when",
+  "format": "trope-or-feeling",
+  "methodologySentence": "The books recommended in this post were pulled from a larger list of X books compiled from an analysis of 2,181 reader recommendations.",
+  "postIdea": {
+   "_ref": "postIdea-8",
+   "_type": "reference",
+   "_weak": true
+  },
+  "ranking": {
+   "_ref": "ranking-thriller",
+   "_type": "reference"
+  },
+  "title": "11 Thriller Books With Twists You Won't See Coming"
+ }
+]

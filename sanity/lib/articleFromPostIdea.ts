@@ -1,3 +1,5 @@
+import { isFormatForColumn } from "./formats";
+
 /**
  * What "Start article" puts in a new draft article from a post idea (DECISIONS.md,
  * 2026-11-03). Pure (no Sanity access) so it can be checked in isolation.
@@ -18,16 +20,6 @@ export interface PostIdeaDoc {
   books?: { book?: { _ref: string }; tagsShown?: { _ref: string }[] }[];
 }
 
-/** What to Read When needs a Format; formulas with no matching one leave it for the editor. */
-const WTRW_FORMAT_BY_FORMULA: Record<string, string> = {
-  comparison: "books-like",
-  seasonal: "seasonal",
-  mood: "trope-or-feeling",
-  intensity: "trope-or-feeling",
-  pace: "trope-or-feeling",
-  blend: "trope-or-feeling",
-};
-
 const ref = (id: string) => ({ _type: "reference", _ref: id });
 
 /** The new article's fields, or a reason the idea can't become one yet. */
@@ -41,7 +33,8 @@ export function articleFromPostIdea(
   const books = (idea.books ?? []).filter((b) => b.book?._ref);
   if (books.length === 0) return { problem: "This idea has no books." };
 
-  const format = idea.column === "what-to-read-when" && idea.formula ? WTRW_FORMAT_BY_FORMULA[idea.formula] : undefined;
+  // Formats are the tool's formula codes; a formula that isn't one of the column's formats is left for the editor.
+  const format = isFormatForColumn(idea.column, idea.formula) ? idea.formula : undefined;
   // Seasonal ideas: schedule for their date, 10am US Eastern in summer (14:00 UTC), if it's still ahead.
   const scheduleFor = idea.timing?.scheduleFor ? new Date(`${idea.timing.scheduleFor}T14:00:00Z`) : null;
   const publishedAt = scheduleFor && scheduleFor > now ? scheduleFor.toISOString() : undefined;

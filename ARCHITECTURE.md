@@ -184,8 +184,8 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
 - **`article`** — `title`, `slug`, `metaDescription` (search/link-preview summary, also the
   hub lead card, RSS and recap summary; falls back to `methodologySentence` when empty),
   `focusKeyword` (Shortlist only; drives Studio SEO warnings, `sanity/lib/seoChecks.ts`),
-  `category` (enum), `format` (What to Read When only, required: books-like / trope-or-feeling /
-  seasonal; drives the "Write draft sentence" pattern on `methodologySentence`, which refuses to
+  `category` (enum), `format` (every column, required since 2026-11-03: the internal tool's formula codes for
+  that column, `sanity/lib/formats.ts`; "Start article" copies the idea's formula; drives the "Write draft sentence" pattern on `methodologySentence`, which refuses to
   publish with [bracketed] parts left — `sanity/lib/methodologyPattern.ts`, 2026-10-26), `themes[]` (references to `theme` —
   which of the 8 "Browse Our Collections" groupings this whole article belongs to, added
   2026-09-23; not yet read by any page, see below), `author`, `publishedAt`, `heroImage`,
@@ -529,8 +529,8 @@ Scoped to actual risk (Operating Manual §29), not applied uniformly:
   name / number / total), carried by the send; (2) tag categories on `tag` (the tool's 10: Genre,
   Character, Relationship, Trope, Mood, Theme, Setting, Experience, Story Elements, Intensity), and
   how they relate to the 9 `theme` groups; (3) ~~a "post idea" document type + "Start article"~~
-  **built 2026-11-03** (`postIdea`, §6; pin formats dropped, pins never go to the Studio); (4) article
-  formats per formula in all three columns (today only What to Read When has `format`); (5) the
+  **built 2026-11-03** (`postIdea`, §6; pin formats dropped, pins never go to the Studio); (4) ~~article
+  formats per formula in all three columns~~ **done 2026-11-03**; (5) the
   third column's new name and scope (book club, challenges/checklists, book a month), which needs
   the user's direction first; (6) article layouts beyond one flat list (grouped sections, a
   12-month calendar, checklists); (7) ~~Studio book fields view-only~~ **done 2026-11-03**.

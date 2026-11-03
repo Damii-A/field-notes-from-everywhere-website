@@ -1,6 +1,8 @@
 import { defineField, defineType, type RuleDef, type ValidationContext } from "sanity";
 import { TITLE_MAX_CHARS, keywordWarning, portableTextPlain, slugShapeWarnings, suggestedFocusKeyword } from "../lib/seoChecks";
-import { WTRW_FORMATS, hasPlaceholders } from "../lib/methodologyPattern";
+import { hasPlaceholders } from "../lib/methodologyPattern";
+import { ALL_FORMATS, isFormatForColumn } from "../lib/formats";
+import { FormatInput } from "../components/FormatInput";
 import { MethodologyInput } from "../components/MethodologyInput";
 
 interface SeoDoc {
@@ -154,14 +156,17 @@ export default defineType({
       name: "format",
       title: "Format",
       description:
-        "What kind of What to Read When list this is. It decides the \"How we made this list\" draft sentence (DECISIONS.md, 2026-10-26). The other two columns each have one format, so they don't need this.",
+        "What kind of list this is: the internal tool's formula (\"Start article\" sets it from the post idea). It decides the \"How we made this list\" draft sentence (DECISIONS.md, 2026-11-03).",
       type: "string",
-      options: { list: WTRW_FORMATS.map((f) => ({ value: f.value, title: f.title })), layout: "radio" },
-      hidden: ({ document }) => document?.category !== "what-to-read-when",
+      options: { list: ALL_FORMATS, layout: "radio" },
+      components: { input: FormatInput },
+      hidden: ({ document }) => !document?.category,
       validation: (r) =>
-        r.custom((value, context) =>
-          (context.document as SeoDoc | undefined)?.category === "what-to-read-when" && !value ? "Choose this article's format." : true,
-        ),
+        r.custom((value: string | undefined, context) => {
+          const category = (context.document as SeoDoc | undefined)?.category;
+          if (!value) return "Choose this article's format.";
+          return isFormatForColumn(category, value) ? true : "This format belongs to another column. Choose one of this column's formats.";
+        }),
     }),
     defineField({
       name: "themes",

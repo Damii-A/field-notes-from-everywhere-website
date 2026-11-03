@@ -2901,3 +2901,38 @@ The only book without a `toolBookId` is The Risk (Dark Romance); the tool's send
 **Verified**: type check, schema validation 0/0, production build; no Studio action writes books; **seen working by the
 user** in the real Studio (2026-11-03).
 
+## 2026-11-03 — Article formats = the tool's formulas, in every column
+
+**Decision** (planned with the user; the tool's `docs/TOPIC_SUGGESTER_DESIGN.md` §7a: "each formula gets its own article
+format"): `article.format` is now required in **all three columns**, and its values are the internal tool's formula codes
+for that column (`sanity/lib/formats.ts`; the Studio shows only the column's own choices, `FormatInput.tsx`, and refuses
+one from another column):
+- **The Shortlist**: `authority`, `ultimate`, `year`.
+- **What to Read When**: `mood`, `intensity`, `pace`, `blend`, `comparison`, `seasonal`, `series`.
+- **Book Club Book Picks**: `bookclub`, `bookamonth`, `challenge`.
+Grouped map (dropped in the tool) and Graded scale (parked) aren't formats. The old What to Read When values
+`books-like`, `trope-or-feeling` and `seasonal` (2026-10-26) are replaced: books-like → `comparison`, seasonal unchanged,
+trope-or-feeling split into mood / intensity / pace / blend.
+
+**"Start article"** sets `format` = the idea's `formula` whenever that formula is one of the column's formats (else left
+for the editor), in every column (was What to Read When only, via a mapping).
+
+**"Write draft sentence": no new wording** (user approved reusing the approved sentences): every Shortlist format uses
+the Shortlist sentence; every third-column format the Book Club sentence; Comparison the "books like" sentence;
+Seasonal the seasonal one; Mood, Intensity, Pace, Blend and Series the former "trope or feeling" sentence ("…picking
+the ones [with…]"). Tool-made articles arrive with the idea's evidence line in the box anyway.
+
+**Existing articles updated in Sanity** (user-approved; backup of all five first,
+`backups/2026-11-03-article-formats-before.json`): the Shortlist article → `authority`; the Book Club article →
+`bookclub`; "11 Thrillers You Can Read in a Day" → `pace` and the Twists draft → `mood` (their ideas' formulas);
+"These 17 Thrillers Will Have You Questioning Everything and Everyone" → `mood` (user's pick).
+
+No public page reads `format`; nothing visible changed.
+
+**Verified**: type check, lint (sanity/), schema validation 0/0, production build; every format's draft sentence and
+"Start article" on sample ideas (in-column formula set; out-of-column or missing formula left empty); the five
+articles read back with their new formats. **Not yet seen** in the real Studio (the user's login).
+
+**Noted for the tool**: idea 53 "A Thriller Book for Every Month of 2027" is sent as `challenge`; its title reads like
+Book a month (`bookamonth`). Either is valid in the third column.
+
