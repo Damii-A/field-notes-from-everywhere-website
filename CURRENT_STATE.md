@@ -225,8 +225,11 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 - Covers: The Family Upstairs is square (318 × 318, cropped); a full 1838 × 2775 cover is in the
   Pinterest folder (offered, not done). Still under 300px wide but the best front covers found:
   I Let You Go, Nightwatching, Rebecca (267/265/267px).
-- Largest-contentful-paint 2.6-3.3s on mobile vs the 2.5s target (homepage hero image). Remaining
-  levers, not done: ~300ms render-blocking CSS; the homepage preloads 7 font files.
+- Largest-contentful-paint on mobile vs the 2.5s target. **2026-11-03**: article hero + hub lead image now fetched first
+  at high priority (article hero sized to its 720px column); confirmed live (the hero request is "High"), but the effect
+  couldn't be measured fairly: local Lighthouse through Avast swings 2.4-4.7s run to run, and the PageSpeed Insights API's
+  anonymous daily quota was used up. **Next**: the user runs pagespeed.web.dev (mobile) on an article and the homepage.
+  Remaining levers: ~300ms render-blocking CSS; 7 preloaded font files.
 - A check on the user's own phone and a tablet (the phone share-sheet button is already verified).
 - Cosmetic leftovers, user's discretion: the unused Kit form and old Kit free-list tags; the
   `*.vercel.app` CORS entries in Sanity.

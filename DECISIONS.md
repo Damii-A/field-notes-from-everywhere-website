@@ -3034,3 +3034,15 @@ unchanged (the book's last edit).
 **Verified**: type check, lint, production build; the local sitemap against live content: 51 URLs as before, every
 article, hub and legal page dated, About/Contact undated, 38 book pages dated.
 
+## 2026-11-03 — Article hero and hub lead image fetched first
+
+**Decision** (open item: mobile largest-contentful-paint above 2.5s): Lighthouse showed the article's hero image (the
+page's largest element on phones) requested at **Low** priority, only after the 7 font files and the CSS. `ImagePlaceholder`
+gained `priority` and `sizes`; the article hero uses `priority` (Next.js preloads it with `fetchpriority="high"`) and
+`sizes="(max-width: 760px) 100vw, 720px"` (it never shows wider than the 720px column); the hub's lead image uses
+`priority`. The homepage hero already had `priority`. Nothing visible changes.
+
+**Verified**: type check, lint, build; live, the hero request is now "High". **Not verified**: the time saved. Local
+Lighthouse (through Avast's TLS inspection) varied 3.3-4.7s on the article and 2.4-4.0s on a hub between runs, and the
+PageSpeed Insights API refused (anonymous daily quota). The user's pagespeed.web.dev run is the measurement.
+
