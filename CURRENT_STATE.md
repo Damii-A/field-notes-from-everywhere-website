@@ -233,9 +233,9 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
   font preloads dropped. User's pagespeed.web.dev (mobile): homepage 99 / LCP 2.1s; article 96 / LCP 0.9-2.6s. Left: ~300ms
   render-blocking CSS (diminishing returns).
 - A check on the user's own phone and a tablet (the phone share-sheet button is already verified).
-- Kit leftovers (checked 2026-11-03 by API): only form "Newsletter site" (7664818, 0 subscribers) and tag "Imported
-  September 22nd, 2026 at 9:04 AM" (23811640, 0) are unused; steps given to the user to delete them. Keep tag
-  `reading-room-member` (23811808, used by the code). The old free-list tags are already gone. (~~`*.vercel.app` CORS entries
+- ~~Kit leftovers~~ **Done 2026-11-03**: the unused "Imported September 22nd…" tag deleted by the user; form "Newsletter
+  site" (7664818, 0 subscribers) left in place (Kit offered no delete; harmless, settled). Keep tag `reading-room-member`
+  (23811808, used by the code). (~~`*.vercel.app` CORS entries
   in Sanity~~ removed by the user 2026-11-03; checked: the real domain still allowed, vercel.app no longer.)
 - Before joining an **ad network**: a Google-certified consent platform for EEA/UK/Swiss visitors,
   and a privacy-policy update naming it.
