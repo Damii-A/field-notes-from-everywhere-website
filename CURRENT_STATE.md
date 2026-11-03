@@ -105,7 +105,9 @@ user before each** (order not chosen yet):
    component-library flow, not archiving, so it wasn't used. Its notice says Claude Design is moving into Claude.
    **Now optional** (user, 2026-11-03): the live site + DECISIONS.md are the authority (CLAUDE.md updated); a copy of
    the design project is history only. If the user opens it and finds a move/export option, an export can be committed.
-9. Optional: Sanity plan usage limits (sanity.io/manage → Usage; the user can see them).
+9. ~~Sanity plan usage~~ **Checked 2026-11-03** (user's screenshot, free plan): documents 502 / 10k (5%, the one to
+   watch as rankings grow), API requests 2.7k / 250k a month, bandwidth 49.9 MB / 100 GB, assets 7.8 MB / 100 GB,
+   datasets 1 / 2, webhooks 1 / 2, seats 1 / 20. Nothing near a limit.
 Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused subscription, below);
 (b) before 2026-12-14, keep a reference copy of the Claude Design project (above); the tag limit was
 never compared against it (DesignSync needs `/design-login` in an interactive session). Offer the
