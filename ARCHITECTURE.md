@@ -530,7 +530,6 @@ Scoped to actual risk (Operating Manual §29), not applied uniformly:
   Character, Relationship, Trope, Mood, Theme, Setting, Experience, Story Elements, Intensity), and
   how they relate to the 9 `theme` groups; (3) ~~a "post idea" document type + "Start article"~~
   **built 2026-11-03** (`postIdea`, §6; pin formats dropped, pins never go to the Studio); (4) ~~article
-  formats per formula in all three columns~~ **done 2026-11-03**; (5) the
-  third column's new name and scope (book club, challenges/checklists, book a month), which needs
-  the user's direction first; (6) ~~article layouts beyond one flat list~~ **sections done 2026-11-03** (`bookEntries[].section`; checklists not built); (7) ~~Studio book fields view-only~~ **done 2026-11-03**.
+  formats per formula in all three columns~~ **done 2026-11-03**; (5) ~~the
+  third column's new name and scope~~ **done 2026-11-03** ("Up Next", `/up-next`); (6) ~~article layouts beyond one flat list~~ **sections done 2026-11-03** (`bookEntries[].section`; checklists not built); (7) ~~Studio book fields view-only~~ **done 2026-11-03**.
   Unchecked: Sanity plan usage limits (sanity.io/manage → project → Usage; the Editor key can't read them).
