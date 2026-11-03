@@ -2932,7 +2932,7 @@ No public page reads `format`; nothing visible changed.
 
 **Verified**: type check, lint (sanity/), schema validation 0/0, production build; every format's draft sentence and
 "Start article" on sample ideas (in-column formula set; out-of-column or missing formula left empty); the five
-articles read back with their new formats. **Not yet seen** in the real Studio (the user's login).
+articles read back with their new formats; **seen working by the user** in the real Studio (2026-11-03).
 
 **Idea 53** "A Thriller Book for Every Month of 2027" stays `challenge` (tool session: a month-by-month path is one kind
 of Challenge), so "Start article" gives it the Challenge format.

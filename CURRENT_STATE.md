@@ -79,7 +79,8 @@ No article has a Pinterest pin yet. The user confirmed the popup changes live.
 article" work for real (above). The rest of the tool's website list, **one at a time, asking the
 user before each** (order not chosen yet):
 1. ~~Article formats per formula in all three columns~~ **Done 2026-11-03** (DECISIONS.md, same date; the 5 existing
-   articles updated, backup in `backups/2026-11-03-article-formats-before.json`). **Not yet seen** in the real Studio.
+   articles updated, backup in `backups/2026-11-03-article-formats-before.json`); Book a month removed (merged into Challenge in the tool).
+   **Seen working by the user** in the real Studio.
 2. Layouts beyond one flat list (12-month path, grouped sections, anchor book): backend first, look kept.
 3. Rename the third column "Up Next" (name, description, links; a web-address change needs a decision).
 4. The Shortlist's description (it now also holds unranked Year posts).
