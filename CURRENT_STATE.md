@@ -46,7 +46,9 @@ Studio/article/"Where to read" check after it was done isn't recorded here, so a
 address 308-redirects every path to the real domain, and per-deployment `*.vercel.app` URLs send
 `X-Robots-Tag: noindex` with a canonical to the real domain, so Google should replace them as it recrawls.
 Suggested to the user (optional): Search Console → URL inspection → "Request indexing" for `/` and `/about`.
-Worth a look in a few weeks.
+Worth a look in a few weeks. **2026-11-03**: the user sees the real domain first with a vercel.app result under it;
+explained (leftover entry, clears on recrawl; can't be removed without owning the address). **Around 2026-12-03**: if
+`site:field-notes-from-everywhere-website.vercel.app` still lists pages, look again.
 
 **2026-11-03 (later): page count + reading time, "Where to read" panels and tag limit, live** (DECISIONS.md, same
 date). `book.pageCount` / `book.readingHours` (read-only, from the tool) show as two pills under the author in
