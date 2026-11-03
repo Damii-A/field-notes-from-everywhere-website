@@ -3051,5 +3051,7 @@ pagespeed.web.dev run after it (mobile, the Shortlist article): performance 96, 
 preloaded font files, used only for quotes and small mono labels, competed with the hero image. They still load (swap,
 metric-matched fallbacks), just after the critical files. **User's pagespeed.web.dev runs after it (mobile)**: homepage
 performance 99, **LCP 2.1s (target met)**; the Shortlist article performance 90, LCP 0.9s but speed index 16.1s (one run;
-nothing on the page changes on a timer, so likely a one-off; a re-run was asked for).
+nothing on the page changes on a timer); **re-run: performance 96, LCP 2.6s, speed index 2.6s** (the 16.1s was a fluke).
+Closed as done: the article sits at the target within run-to-run variation; the last lever (~300ms render-blocking CSS) is
+left as diminishing returns.
 
