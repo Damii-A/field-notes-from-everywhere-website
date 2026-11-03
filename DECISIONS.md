@@ -3065,5 +3065,7 @@ brand only, with the ghost logo), an **ItemList** of its books in order (ranked 
 (Home › column › article). Book pages keep their own Book + BreadcrumbList (2026-10-02).
 
 **Verified**: type check, lint, build; the local build against live content: the Shortlist article lists 15 books
-ascending, Up Next 12 and What to Read When 11 unordered, every book with its Where to read URL, breadcrumbs per column.
+ascending, Up Next 12 and What to Read When 11 unordered, every book with its Where to read URL, breadcrumbs per column. **Google Rich Results Test (user, live
+Shortlist article, 2026-11-03): 2 valid items, Articles and Breadcrumbs, no errors** (ItemList of Books isn't a Google
+rich-result type, so it isn't listed there; it stays for search engines' understanding).
 
