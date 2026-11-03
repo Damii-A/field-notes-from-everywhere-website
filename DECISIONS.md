@@ -3044,5 +3044,10 @@ gained `priority` and `sizes`; the article hero uses `priority` (Next.js preload
 
 **Verified**: type check, lint, build; live, the hero request is now "High". **Not verified**: the time saved. Local
 Lighthouse (through Avast's TLS inspection) varied 3.3-4.7s on the article and 2.4-4.0s on a hub between runs, and the
-PageSpeed Insights API refused (anonymous daily quota). The user's pagespeed.web.dev run is the measurement.
+PageSpeed Insights API refused (anonymous daily quota). The user's pagespeed.web.dev run is the measurement. **User's
+pagespeed.web.dev run after it (mobile, the Shortlist article): performance 96, LCP 2.8s** (was 2.6-3.3s before); homepage 94, LCP 2.9s (its hero was already `priority`).
+
+**Follow-up, same day**: Delius and IBM Plex Mono no longer preloaded (`preload: false`, `app/fonts.ts`): 4 of the 7
+preloaded font files, used only for quotes and small mono labels, competed with the hero image. They still load (swap,
+metric-matched fallbacks), just after the critical files.
 

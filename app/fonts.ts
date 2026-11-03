@@ -9,7 +9,9 @@ import { Comfortaa, Delius, IBM_Plex_Mono, Nunito } from "next/font/google";
  * variables in app/globals.css. See DECISIONS.md, 2026-09-24.
  */
 const comfortaa = Comfortaa({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--nf-display", display: "swap" });
-const delius = Delius({ subsets: ["latin"], weight: "400", variable: "--nf-hand", display: "swap" });
+// Delius (quotes) and IBM Plex Mono (small labels) aren't preloaded: they're small details, and
+// preloading them held up the page's main image on phones (DECISIONS.md, 2026-11-03).
+const delius = Delius({ subsets: ["latin"], weight: "400", variable: "--nf-hand", display: "swap", preload: false });
 const nunito = Nunito({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
@@ -17,6 +19,6 @@ const nunito = Nunito({
   variable: "--nf-body",
   display: "swap",
 });
-const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--nf-mono", display: "swap" });
+const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--nf-mono", display: "swap", preload: false });
 
 export const fontVariables = [comfortaa.variable, delius.variable, nunito.variable, plexMono.variable].join(" ");
