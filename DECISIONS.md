@@ -2817,3 +2817,32 @@ a missing book refused); the fill logic on that sample (seasonal format, date, 5
 unmapped formula left empty; no title refused); and **by the user in the real Studio**: the Post ideas list, the
 view-only idea, "Start article" making the draft, and a second press opening the same draft. The sample idea and its
 draft were then deleted. **Not yet seen**: a real send from the tool.
+
+## 2026-11-03 — Page count and reading time on books; "Where to read" panels and tag limit
+
+**Decision** (user-directed, from the internal tool's `docs/handover/WEBSITE_HANDOVER_2026-11-03_BOOK_FACTS.md`; every
+visible change approved by the user from a local preview with made-up numbers):
+- **Data** (agreed as the tool proposed): `book.pageCount` (number) and `book.readingHours` (number, the tool's
+  estimate: pages ÷ 60, rounded, at least 1), both **read-only** in the Studio and sent by "Send books to Studio". The
+  website only words them (`lib/books/facts.ts`): "Page count: 336" and "Est. reading time: 6 hours" ("1 hour"). No page
+  count = nothing shown; a page count without hours shows only the page count.
+- **Where they show**, each as its own pill (user: "inside a pill with a border and background color"):
+  article book entries in all three columns, between the author and the tags (the "send this list" callout's
+  colours: `--paper-050` ground, the column's `methodologyBorder`; tag-pill shape; on phones an extra grid row only
+  when the book has a page count); the "send this list" email, same spot (the email's `methodBg` / `methodBorder`),
+  plus a line in the plain-text version; the "Where to read" page's **About** section above the tags (user's pick over
+  the dark hero band under "by Author"; `--paper-050`, `--clay-500` border). Not added: the paused Reading Room issue
+  email and the Studio's book lists.
+- **Spec departure**: `pub_article.md` §5 says not to add "database-like metadata to the standard public book entry
+  unless a later editorial decision explicitly introduces them". This entry is that decision (the spec mirror is not
+  edited).
+- **"Where to read" page**: "{Title} appeared in these book lists" and "If you enjoyed {Title}…" each sit in their own
+  panel, a shade darker than the page (`color-mix` of `--paper-100` with 7% `--ink-700`), radius `--radius-xl`, padding
+  28-48px. A light slate-blue was tried first and rejected by the user ("use a color lighter or darker than the
+  background"). The About section's tags now show the ranking pill(s) + the first 4 tags, then a dashed "+N more"
+  pill that expands and folds back, as in articles (`BookPageTags.tsx`; was every tag).
+
+**Verified**: type check, lint, schema validation 0/0, production build; local preview of the three articles, the
+"Where to read" page and the email (rendered to a file; **the user hasn't looked at the email preview yet**); live after
+deploy: the panels and "+18 more" on Gone Girl's page; no page-count pills anywhere until the tool sends the numbers.
+The Claude Design project couldn't be checked (DesignSync needs `/design-login`); the design shows none of this.

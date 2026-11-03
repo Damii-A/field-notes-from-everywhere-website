@@ -166,8 +166,9 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary even
   though a theme and a tag may share a name.
 - **`book`** — canonical book record: `title`, `author`, `slug` (its `/where-to-read/<slug>` address, 2026-10-02), `coverImage`, `canonicalBlurb`,
-  `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId` (read-only, set by the internal tool's "Send to
-  website", 2026-10-28). Referenced by articles, rankings and Reading Room issues, and
+  `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId`, `pageCount` and `readingHours` (all three read-only, set by
+  the internal tool's "Send to website"; the last two since 2026-11-03, shown as "Page count" / "Est. reading time"
+  pills under the author, `lib/books/facts.ts`). Referenced by articles, rankings and Reading Room issues, and
   the source of the "Where to read" pages. **Ranking pills**: wherever a book's tags show (article
   entries, "Where to read", the book-list email, the Studio's book picker and ranking Tags tab), the
   names of the website rankings that include it come first, then its own tags, without repeating a
@@ -176,7 +177,8 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   book's own tags, after the ranking pills (since 2026-11-03; before, it dropped them too). **How many show** (2026-10-30): in an article, the ranking pills plus the book's first 4
   own tags (`BOOK_TAGS_SHOWN`; the internal tool sends tags in display order), then a "+N more" pill that
   expands in place; the "send this list" and Reading Room issue emails the same with a plain "+N more"; a per-article or
-  per-issue tag choice, "Where to read" and the Studio tools show every tag. (Not expected to be reused by a
+  per-issue tag choice and the Studio tools show every tag; "Where to read" shows the same first few, then a
+  "+N more" that expands (2026-11-03). (Not expected to be reused by a
   future Reading Room Books catalogue — see `tag`, above.)
 - **`article`** — `title`, `slug`, `metaDescription` (search/link-preview summary, also the
   hub lead card, RSS and recap summary; falls back to `methodologySentence` when empty),

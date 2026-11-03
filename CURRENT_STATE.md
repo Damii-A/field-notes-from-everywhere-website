@@ -48,6 +48,14 @@ address 308-redirects every path to the real domain, and per-deployment `*.verce
 Suggested to the user (optional): Search Console → URL inspection → "Request indexing" for `/` and `/about`.
 Worth a look in a few weeks.
 
+**2026-11-03 (later): page count + reading time, "Where to read" panels and tag limit, live** (DECISIONS.md, same
+date). `book.pageCount` / `book.readingHours` (read-only, from the tool) show as two pills under the author in
+articles, the "send this list" email and the "Where to read" About section; **none show yet**: the user resends
+Thriller's books from the tool to fill them, then check one article, one book page and (optionally) a "send this
+list" email to the user's own address. The user **hasn't looked at the email preview** yet (their choice, "another
+time"). "Where to read": lists and related books in panels a shade darker than the page; About shows first tags +
+"+N more". Note back to the tool: `docs/handover/TOOL_HANDOVER_2026-11-03_BOOK_FACTS.md`.
+
 **Start the next session here (as of end of 2026-11-03; nothing unpushed).** The tool session builds its
 "Send ideas to Studio" against the contract; the first real send is the next check (look at the Post ideas
 list, then "Start article" on one real idea). The rest of the tool's website list, **one at a time, asking the
@@ -59,7 +67,8 @@ user before each** (order not chosen yet):
 5. ~~The live Shortlist title~~ **Done 2026-11-03** (user's pick): "15 Thriller Book Recommendations (From
    2,181 Reader Picks)" (was "…Real Readers"; 2,181 is recommendations from over 1,100 readers). Changed in
    Sanity by API, checked live on the article, the Shortlist page and the homepage; slug unchanged.
-6. Tag categories and book facts (page count, year, series) on the website, so the tool's send can carry them.
+6. Tag categories and book facts on the website, so the tool's send can carry them. **Page count + reading time
+   done 2026-11-03**; still open: year, series, tag categories.
 7. Studio book fields view-only (not done: only `toolBookId` is read-only).
 8. Move the Claude Design project out of standalone Claude Design before 2026-12-14.
 9. Optional: Sanity plan usage limits (sanity.io/manage → Usage; the user can see them).
