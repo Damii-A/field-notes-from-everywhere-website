@@ -171,7 +171,8 @@ tested: a real signup through the new popup (same `/api/subscribe` call as the f
 keep test contacts off the real list). Follow-ups from the pause:
 1. ~~Cancel their own $7 subscription~~ The user **paused** it instead (by 2026-10-28; Paddle said the
    pause is scheduled, i.e. from the next billing date, ~2026-11-05). Still Kit-tagged on 2026-10-28, as
-   expected. **After ~2026-11-05, check the Kit member tag is gone**: a real pause has never been seen by
+   expected. **Checked early, 2026-11-03: the Kit member tag is already gone** (Kit API: subscriber 4306601425 active, no tags;
+   `reading-room-member` has 0 subscribers), so the pause reached Kit; not re-checked in Paddle. (Was: after ~2026-11-05, check the Kit member tag is gone): a real pause has never been seen by
    the webhook (`subscription.updated` → status `paused` → untag; `subscription.paused` isn't a
    subscribed event). If the tag is still there, check Paddle's notification log for what was sent.
 2. ~~Legal pages~~ **Done 2026-10-28**: published by the user, checked live (new wording and date on
@@ -232,8 +233,10 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
   font preloads dropped. User's pagespeed.web.dev (mobile): homepage 99 / LCP 2.1s; article 96 / LCP 0.9-2.6s. Left: ~300ms
   render-blocking CSS (diminishing returns).
 - A check on the user's own phone and a tablet (the phone share-sheet button is already verified).
-- Cosmetic leftovers, user's discretion: the unused Kit form and old Kit free-list tags; the
-  `*.vercel.app` CORS entries in Sanity.
+- Kit leftovers (checked 2026-11-03 by API): only form "Newsletter site" (7664818, 0 subscribers) and tag "Imported
+  September 22nd, 2026 at 9:04 AM" (23811640, 0) are unused; steps given to the user to delete them. Keep tag
+  `reading-room-member` (23811808, used by the code). The old free-list tags are already gone. (~~`*.vercel.app` CORS entries
+  in Sanity~~ removed by the user 2026-11-03; checked: the real domain still allowed, vercel.app no longer.)
 - Before joining an **ad network**: a Google-certified consent platform for EEA/UK/Swiss visitors,
   and a privacy-policy update naming it.
 
