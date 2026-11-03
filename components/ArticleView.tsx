@@ -192,7 +192,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
           </div>
 
           {/* Where the floating share rail doesn't fit (hidden by CSS on wide screens). */}
-          <ShareButtons url={shareUrl} title={article.title} image={article.heroImage?.url} layout="row" className={styles.bylineShare} />
+          <ShareButtons url={shareUrl} title={article.title} image={article.pinterestPin?.url ?? article.heroImage?.url} pinDescription={article.pinterestPin?.description} layout="row" className={styles.bylineShare} />
 
           <div className={styles.methodologyBox} style={{ borderLeftColor: style.methodologyBorder }}>
             <span className={styles.methodologyLabel}>How we made this list</span>
@@ -295,7 +295,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
             })}
           </div>
 
-          <ShareButtons url={shareUrl} title={article.title} image={article.heroImage?.url} layout="row" heading="Share this list" className={styles.endShare} />
+          <ShareButtons url={shareUrl} title={article.title} image={article.pinterestPin?.url ?? article.heroImage?.url} pinDescription={article.pinterestPin?.description} layout="row" heading="Share this list" className={styles.endShare} />
 
           {/* Promoted The Reading Room until it was paused (user, 2026-10-23; DECISIONS.md): now the free newsletter. */}
           <aside className={styles.rrBanner} style={{ background: style.rrBannerBg }}>
@@ -348,7 +348,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
         ) : null}
       </div>
 
-      {showShare ? <ShareButtons url={shareUrl} title={article.title} image={article.heroImage?.url} layout="rail" /> : null}
+      {showShare ? <ShareButtons url={shareUrl} title={article.title} image={article.pinterestPin?.url ?? article.heroImage?.url} pinDescription={article.pinterestPin?.description} layout="rail" /> : null}
 
       {popup ? (
         <SendListPopup

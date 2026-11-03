@@ -18,6 +18,7 @@ export function ShareButtons({
   url,
   title,
   image,
+  pinDescription,
   layout,
   heading,
   className,
@@ -25,6 +26,8 @@ export function ShareButtons({
   url: string;
   title: string;
   image?: string;
+  /** Pinterest's description; defaults to the title. */
+  pinDescription?: string;
   layout: "rail" | "row";
   heading?: string;
   className?: string;
@@ -40,7 +43,7 @@ export function ShareButtons({
   const u = encodeURIComponent(url);
   const t = encodeURIComponent(title);
   const networks = [
-    { name: "Pinterest", icon: "pinterest", color: "#E60023", href: `https://pinterest.com/pin/create/button/?url=${u}&description=${t}${image ? `&media=${encodeURIComponent(image)}` : ""}` },
+    { name: "Pinterest", icon: "pinterest", color: "#E60023", href: `https://pinterest.com/pin/create/button/?url=${u}&description=${encodeURIComponent(pinDescription ?? title)}${image ? `&media=${encodeURIComponent(image)}` : ""}` },
     { name: "Reddit", icon: "reddit", color: "#FF4500", href: `https://www.reddit.com/submit?url=${u}&title=${t}` },
     { name: "Facebook", icon: "facebook", color: "#0866FF", href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
     { name: "X", icon: "x-logo", color: "#000000", href: `https://x.com/intent/post?url=${u}&text=${t}` },

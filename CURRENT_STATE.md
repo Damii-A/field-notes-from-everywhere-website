@@ -63,6 +63,12 @@ the tool re-sends an idea with its text, then "Start article" on it. The Twists 
 hand; the 19 Thriller ideas sent earlier need re-sending to carry it. Note back to the tool:
 `docs/handover/TOOL_HANDOVER_2026-11-03_ARTICLE_TEXT.md`.
 
+**2026-11-03 (later still): Pinterest pin field, popup tidy, bigger intro, "About" panel** (DECISIONS.md, same
+date). Articles have "Pinterest pin" + "Pin description" in the Studio; the Pinterest share button uses them (hero image
++ title when empty). **Not yet tried with a real pin**: the user uploads one, publishes, then presses the Pinterest
+button on the live article. Also: Publish stays greyed out until "Published at" is set ("Start article" leaves it empty
+on purpose, except Seasonal ideas).
+
 **Start the next session here (as of end of 2026-11-03; nothing unpushed).** The tool session builds its
 "Send ideas to Studio" against the contract; the first real send is the next check (look at the Post ideas
 list, then "Start article" on one real idea). The rest of the tool's website list, **one at a time, asking the

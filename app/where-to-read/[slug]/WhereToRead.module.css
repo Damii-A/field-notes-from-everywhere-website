@@ -65,6 +65,12 @@
   background: color-mix(in srgb, var(--paper-100) 93%, var(--ink-700));
 }
 
+/* "About {Book}" in its own panel too (user, 2026-11-03): --oat-200, the design's deeper page
+   colour, a warm beige near the page's --paper-100 but unlike the grey-green panels below. */
+.aboutBoxed {
+  background: var(--oat-200);
+}
+
 .answer {
   margin: 0;
   max-width: 60ch;

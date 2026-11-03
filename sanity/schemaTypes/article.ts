@@ -195,6 +195,20 @@ export default defineType({
         ),
     }),
     defineField({
+      name: "pinterestPin",
+      title: "Pinterest pin",
+      description:
+        "The pin the Pinterest share button saves, instead of the hero image. Design it tall (2:3, e.g. 1000 × 1500 px). Leave empty to use the hero image.",
+      type: "image",
+    }),
+    defineField({
+      name: "pinDescription",
+      title: "Pin description",
+      description: "The text that goes with the pin on Pinterest. Leave empty to use the article title.",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
       name: "methodologySentence",
       title: "Methodology sentence",
       description:

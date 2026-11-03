@@ -124,7 +124,7 @@ export default async function WhereToReadPage({ params }: Props) {
             </section>
 
             {(book.blurb || book.tags.length > 0 || facts.length > 0) && (
-              <section aria-labelledby="about" className={styles.section}>
+              <section aria-labelledby="about" className={`${styles.section} ${styles.boxed} ${styles.aboutBoxed}`}>
                 <h2 id="about" className={styles.heading}>About {quoted}</h2>
                 {/* "Page count" and "Est. reading time" pills above the tags (user, 2026-11-03). */}
                 {facts.length > 0 && (

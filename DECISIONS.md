@@ -2869,3 +2869,20 @@ it there. The tool checks slugs for uniqueness across its ideas and the Studio's
 where the focus keyword is left out; an older idea with none, which fills exactly as before); type check, schema
 validation 0/0, production build. Lint's one error is the build-generated `next-env.d.ts`, present without this change.
 **Not yet seen**: the fields in the real Studio, or a real send carrying them.
+
+## 2026-11-03 — Article Pinterest pin; "send this list" popup tidy; bigger intro; "About" panel on "Where to read"
+
+**Decisions** (all user-directed the same day; each visible change seen in a local production build at 1280px and 390px):
+- **Pinterest pin per article** (user's pick: one pin per article, over several for the reader to choose from): articles
+  gained `pinterestPin` (image; designed tall, 2:3, e.g. 1000 × 1500) and `pinDescription` (text). The Pinterest share
+  button (`components/ShareButtons.tsx`) sends the pin as `media` and the pin description as `description`; without a
+  pin it falls back to the hero image and the title, as before. Nothing else on the page shows the pin. Not done: making
+  Pinterest's own browser "Save" button pick the pin (it offers the page's visible images).
+- **"Send this list to me" popup** (`Popup.module.css`, `.sendList`, scoped to this popup; the newsletter popup shares
+  the file and is unchanged): heading centred (close button moved to the corner), fine print centred with 16px above it,
+  "Send it" kept on one line (it wrapped to two in the desktop row), the fields turn off-white (`--paper-000`, #FBFBF5)
+  while typing, including over the browser's own blue autofill colour.
+- **Article intro** (`.introP`): 18px (`--text-md`), up from body size 16px, so it isn't lost on the page.
+- **"About {Book}" on "Where to read"**: its own panel, same shape as the two below it, coloured `--oat-200` (#E3E0CE,
+  the design's "deeper page" token): close to the page's `--paper-100` but warm, unlike the grey-green panels.
+

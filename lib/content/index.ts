@@ -111,6 +111,8 @@ interface RawBookEntry {
 
 interface RawArticle extends RawArticleSummary {
   author: string;
+  pinterestPin: string | null;
+  pinDescription: string | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   introText: any[] | undefined;
   bookEntries: RawBookEntry[] | null;
@@ -192,6 +194,7 @@ function toArticle(raw: RawArticle): Article {
     author: raw.author,
     publishedAt: raw.publishedAt,
     methodologySentence: raw.methodologySentence ?? "",
+    pinterestPin: raw.pinterestPin ? { url: raw.pinterestPin, description: raw.pinDescription?.trim() || undefined } : undefined,
     introParagraphs: portableTextToParagraphs(raw.introText),
     books: (raw.bookEntries ?? [])
       .map((entry, i) => toBookEntry(entry, isRanked ? i + 1 : undefined))
@@ -232,6 +235,8 @@ const FULL_ARTICLE_PROJECTION = `{
   heroImage{ "url": asset->url, alt, hotspot, crop, "dimensions": asset->metadata.dimensions },
   "themes": themes[]->{ "label": name, "slug": slug.current, group },
   author,
+  "pinterestPin": pinterestPin.asset->url,
+  pinDescription,
   introText[]{
     ...,
     markDefs[]{
