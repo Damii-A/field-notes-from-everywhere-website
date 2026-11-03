@@ -77,6 +77,14 @@ the text existed) is still a draft with no intro, meta description or slug. 53 o
 time; the one without is **The Risk** (Dark Romance, not in the Thriller ranking; it fills when that ranking is sent).
 No article has a Pinterest pin yet. The user confirmed the popup changes live.
 
+**Tool notes not yet passed on (tell the user at session start; user's request 2026-11-03)**: written 2026-11-03 for
+the internal-tool session, in `docs/handover/`: `TOOL_HANDOVER_2026-11-03_ARTICLE_TEXT.md` (final names of the four
+article-text fields), `TOOL_HANDOVER_2026-11-03_FORMATS.md` (formats = formulas; Book a month removed),
+`TOOL_HANDOVER_2026-11-03_UP_NEXT.md` (send `column: "up-next"`; sections from `groups`; anchor book stored),
+`TOOL_HANDOVER_2026-11-03_BOOK_DETAILS.md` (year, series, tag category fields to send; two high-overlap idea pairs).
+Remove each from this line once the user confirms it was passed on. (Earlier notes, `TOOL_HANDOVER_2026-11-03.md` and
+`…_BOOK_FACTS.md`, were acted on by the tool already: it sent ideas and page counts.)
+
 **Start the next session here (end of 2026-11-03; nothing unpushed).** Every non-dated open item was worked through
 today (see the numbered list and "Open" below). **Waiting on the user, small checks**: (a) the Twists draft was deleted
 (checked: no article for `postIdea-8`; the idea carries its text), so "Start article" on it should now come prefilled;
