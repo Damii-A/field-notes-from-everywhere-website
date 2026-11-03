@@ -120,6 +120,40 @@
   }
 }
 
+/* The article "send this list to me" popup only (user, 2026-11-03): heading and
+   fine print centred, "Send it" kept on one line, off-white fields while typing. */
+.sendList .popupHeader {
+  position: relative;
+  justify-content: center;
+}
+.sendList .popupHeading {
+  text-align: center;
+  padding: 0 28px;
+}
+.sendList .popupClose {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.sendList .popupSubmit {
+  flex: none;
+  white-space: nowrap;
+}
+.sendList .popupFine {
+  text-align: center;
+  margin-top: 16px;
+}
+.sendList .popupInput:focus {
+  background: var(--paper-000);
+}
+/* Browsers paint their own (blue) background on fields they autofill; this covers it. */
+.sendList .popupInput:-webkit-autofill,
+.sendList .popupInput:-webkit-autofill:focus {
+  -webkit-box-shadow: inset 0 0 0 40px var(--paper-000);
+  -webkit-text-fill-color: var(--ink-800);
+  caret-color: var(--ink-800);
+}
+
 @keyframes sheet-up {
   from {
     transform: translateY(100%);

@@ -131,6 +131,7 @@
 
 .introP {
   font: var(--type-body);
+  font-size: var(--text-md); /* 18px, a step above body text so the intro isn't lost (user, 2026-11-03) */
   color: var(--ink-700);
   margin: 0;
 }
