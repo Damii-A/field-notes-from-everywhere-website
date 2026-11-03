@@ -219,7 +219,10 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 
 ## Open, raise one at a time (nothing blocking)
 
-- Cancelling the old WordPress hosting, if the account still exists (provider unknown).
+- ~~Cancelling the old WordPress hosting~~ **Settled 2026-11-03**: it's a Namecheap Stellar shared plan the user keeps
+  for Livo, so it stays. DNS checked: nothing on fieldnotesfromeverywhere.com uses it (site on Vercel, mail on Zoho MX,
+  registration at Namecheap, separate). Suggested, optional: remove the old FNFE WordPress install from that cPanel (an
+  unmaintained WordPress on the same account is a risk to Livo); user's call.
 - ~~Accurate sitemap `lastmod`~~ **done 2026-11-03**. ~~JSON-LD beyond the book pages~~ **articles done 2026-11-03** (user chose it; DECISIONS.md, same date).
 - The Family Upstairs cover belongs to the tool now (books are edited only there); a better cover goes in via the tool's send.
 - Covers: The Family Upstairs is square (318 × 318, cropped); a full 1838 × 2775 cover is in the
