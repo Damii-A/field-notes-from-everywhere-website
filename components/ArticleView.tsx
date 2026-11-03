@@ -495,7 +495,11 @@ function SendListPopup({
       <div className={`${popupStyles.popup} ${popupStyles.sendList}`}>
         <div className={popupStyles.popupHeader}>
           <span className={popupStyles.popupHeading} role={status === "sent" ? "status" : undefined}>
-            {status === "sent" ? "Your list is on its way!" : "Want us to send this book list to your email?"}
+            {status === "sent" ? (
+              "Your list is on its way!"
+            ) : (
+              <>Enter your email below and we&rsquo;ll send you a list with all {bookCount} recommendations.</>
+            )}
           </span>
           <button type="button" onClick={onClose} aria-label="Close" className={popupStyles.popupClose}>
             <Icon name="x" size={18} />
@@ -508,9 +512,6 @@ function SendListPopup({
           </p>
         ) : (
           <form onSubmit={handleSubmit}>
-            <p className={popupStyles.popupBody}>
-              Enter your email below and we&rsquo;ll send you a list with all {bookCount} recommendations.
-            </p>
             <div className={popupStyles.popupForm}>
               <input
                 type="text"

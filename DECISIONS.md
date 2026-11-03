@@ -2880,7 +2880,7 @@ validation 0/0, production build. Lint's one error is the build-generated `next-
   Pinterest's own browser "Save" button pick the pin (it offers the page's visible images).
 - **"Send this list to me" popup** (`Popup.module.css`, `.sendList`, scoped to this popup; the newsletter popup shares
   the file and is unchanged): heading centred (close button moved to the corner), fine print centred with 16px above it,
-  "Send it" kept on one line (it wrapped to two in the desktop row), the fields turn off-white (`--paper-000`, #FBFBF5)
+  "Send it" kept on one line (it wrapped to two in the desktop row), the old body line ("Enter your email below and we'll send you a list with all N recommendations.") is now the heading and "Want us to send this book list to your email?" is gone (the article's own callout already asks it; user), the fields turn off-white (`--paper-000`, #FBFBF5)
   while typing, including over the browser's own blue autofill colour.
 - **Article intro** (`.introP`): 18px (`--text-md`), up from body size 16px, so it isn't lost on the page.
 - **"About {Book}" on "Where to read"**: its own panel, same shape as the two below it, coloured `--oat-200` (#E3E0CE,
