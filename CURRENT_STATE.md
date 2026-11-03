@@ -1,6 +1,6 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-10-30. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-11-03. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **2026-10-28: access check.** Working: GitHub push, live site, Resend, Kit, Sanity read **and write**
 (new local Editor key "Claude Code local", made by the user; the old one returned "Session not found",
@@ -28,21 +28,40 @@ first "Send books to Studio" of Thriller from the tool's Pool prep page (53-book
 Studio and check the Studio, one article and one "Where to read" page together; then step 5, Studio book
 fields view-only.
 
-**Start the next session here (as of end of 2026-10-30; nothing blocking, nothing unpushed).** The tag limit
-is live everywhere tags show under a book (article, "send this list" email, Reading Room issue email). The
-tool's "Send books to Studio" (its Pool prep page; Thriller pool 53 books) has **never sent for real**.
-Suggested next steps, in order:
-1. **The user's first real "Send books to Studio" of Thriller** (done from the tool, in a tool session).
-   Expected from its 2026-10-30 preview: 48 books updated, 5 new (no Goodreads link yet), The Risk off the
-   ranking, 1,016 tags added, "Thriller" removed as a book tag.
-2. **Check together here**: the user reloads the Studio (F5); then check the Studio (Thriller ranking and a
-   book), one live article (expect ranking pill + 4 tags + "+N more", which expands; "Show fewer" folds it
-   back; check on a phone width too), one "Where to read" page (every tag) and, for the 5 new books, their
-   "Where to read" pages (covers, Goodreads fallback). Optional: a "send this list" test only to the user's
-   own address, with their OK (no live click tests on real data).
-3. **Step 5: Studio book fields view-only** (book details and tags are edited only in the tool).
-4. Then the user's next article with the Studio tools; the tool's topic suggester and its Sanity gap list
-   (ARCHITECTURE.md §15) are planned there first, not built here yet.
+**2026-11-03: post ideas (website side) built and live** (commits 028dce3, b5bd246, 6fe3c10; DECISIONS.md
+"2026-11-03 — Post ideas in the Studio", which holds the data contract). Planned with the user from the tool's
+`docs/handover/WEBSITE_HANDOVER_2026-11-03.md`. "Post ideas" in the Studio (view-only `postIdea`, sent by the
+tool), "Start article" on each (draft article: title, books + "Tags shown here", evidence line, format, seasonal
+date; a second press opens the same article), `article.postIdea` for the tool's "Published" read-back; the
+ranking pill now stays first before an entry's own tag choice. **Seen working by the user in the real Studio**
+with a sample idea (sample and its draft deleted after: 0 post ideas, the 3 real articles untouched). Note back
+to the tool: `docs/handover/TOOL_HANDOVER_2026-11-03.md` (this repo). **User preference (2026-11-03): keep the
+current article/hub look and reader experience; tool-driven work is backend only**, so any visible layout change
+needs their OK with a preview first. The first real "Send books to Studio" of Thriller has happened (Sanity:
+ranking 53 books, 2,181 recommendations, 54 books, 415 tags, checked 2026-11-03); whether the joint
+Studio/article/"Where to read" check after it was done isn't recorded here, so ask the user.
+
+**Google showing `vercel.app` results (user, 2026-11-03)**: Google lists the homepage and About under the old
+`field-notes-from-everywhere-website.vercel.app` address (indexed before the 2026-09-27 cutover). Checked: that
+address 308-redirects every path to the real domain, and per-deployment `*.vercel.app` URLs send
+`X-Robots-Tag: noindex` with a canonical to the real domain, so Google should replace them as it recrawls.
+Suggested to the user (optional): Search Console → URL inspection → "Request indexing" for `/` and `/about`.
+Worth a look in a few weeks.
+
+**Start the next session here (as of end of 2026-11-03; nothing unpushed).** The tool session builds its
+"Send ideas to Studio" against the contract; the first real send is the next check (look at the Post ideas
+list, then "Start article" on one real idea). The rest of the tool's website list, **one at a time, asking the
+user before each** (order not chosen yet):
+1. Article formats per formula in all three columns (today only What to Read When has `format`).
+2. Layouts beyond one flat list (12-month path, grouped sections, anchor book): backend first, look kept.
+3. Rename the third column "Up Next" (name, description, links; a web-address change needs a decision).
+4. The Shortlist's description (it now also holds unranked Year posts).
+5. The live Shortlist title "15 Thriller Book Recommendations (From 2,181 Real Readers)": 2,181 is
+   recommendations, from over 1,100 readers.
+6. Tag categories and book facts (page count, year, series) on the website, so the tool's send can carry them.
+7. Studio book fields view-only (not done: only `toolBookId` is read-only).
+8. Move the Claude Design project out of standalone Claude Design before 2026-12-14.
+9. Optional: Sanity plan usage limits (sanity.io/manage → Usage; the user can see them).
 Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused subscription, below);
 (b) before 2026-12-14, keep a reference copy of the Claude Design project (above); the tag limit was
 never compared against it (DesignSync needs `/design-login` in an interactive session). Offer the

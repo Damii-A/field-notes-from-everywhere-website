@@ -172,8 +172,8 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   entries, "Where to read", the book-list email, the Studio's book picker and ranking Tags tab), the
   names of the website rankings that include it come first, then its own tags, without repeating a
   name (`BOOK_RANKINGS` / `withRankingPills`, `lib/content/index.ts`). Worked out from the rankings on
-  every read, never stored on the book. A per-article tag choice (`bookEntries[].tags`) still replaces
-  the whole set. **How many show** (2026-10-30): in an article, the ranking pills plus the book's first 4
+  every read, never stored on the book. A per-article tag choice (`bookEntries[].tags`) replaces the
+  book's own tags, after the ranking pills (since 2026-11-03; before, it dropped them too). **How many show** (2026-10-30): in an article, the ranking pills plus the book's first 4
   own tags (`BOOK_TAGS_SHOWN`; the internal tool sends tags in display order), then a "+N more" pill that
   expands in place; the "send this list" and Reading Room issue emails the same with a plain "+N more"; a per-article or
   per-issue tag choice, "Where to read" and the Studio tools show every tag. (Not expected to be reused by a
@@ -209,6 +209,13 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   2026-10-26): the ranking in rank order with covers and tags, a tag filter, an "Also in" note
   for books other articles from the ranking use; saving keeps existing entries and their
   overrides. Either way it's a one-time fill into ordinary editable entries, not a live link.
+- **`postIdea`** — one approved post idea sent from the internal tool (2026-11-03, `DECISIONS.md` has
+  the full field contract): title + other titles, formula, column (article category code), ranking, why
+  it qualifies, evidence line, timing, books in order with the tags that put each in, shared tags,
+  groups, anchor book, notes. View-only in the Studio ("Post ideas"); the tool replaces it on resend.
+  Its one action, **"Start article"** (`sanity/actions/StartArticleAction.tsx`), makes a draft article
+  and sets `article.postIdea` (read-only weak reference), which is how the tool reads back that an
+  idea's article is live. Nothing on the public site reads `postIdea`.
 - **`readingRoomIssue`** — one Reading Room email (added 2026-10-02, see `DECISIONS.md`): `title`
   (the theme), `subject`, `previewText`, `aboutThisIssue` (one boxed section before the books),
   `closingSentence` + `signOff` (after the books), `ranking` + `rankingCount` (for "Fill books
@@ -517,9 +524,8 @@ Scoped to actual risk (Operating Manual §29), not applied uniformly:
   suggester, not built: (1) book facts on `book` (page count, publication year, series status /
   name / number / total), carried by the send; (2) tag categories on `tag` (the tool's 10: Genre,
   Character, Relationship, Trope, Mood, Theme, Setting, Experience, Story Elements, Intensity), and
-  how they relate to the 9 `theme` groups; (3) a "post idea" document type (books in order,
-  formula, why they qualify, pin format, timing, evidence line, each book's relevant tags) with a
-  "Start article from this idea" action that also fills each entry's "Tags shown here"; (4) article
+  how they relate to the 9 `theme` groups; (3) ~~a "post idea" document type + "Start article"~~
+  **built 2026-11-03** (`postIdea`, §6; pin formats dropped, pins never go to the Studio); (4) article
   formats per formula in all three columns (today only What to Read When has `format`); (5) the
   third column's new name and scope (book club, challenges/checklists, book a month), which needs
   the user's direction first; (6) article layouts beyond one flat list (grouped sections, a

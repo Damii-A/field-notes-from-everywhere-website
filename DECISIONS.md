@@ -2762,3 +2762,58 @@ choice, over "first 4 with no '+N more'" or leaving it): the "send this list to 
 (`lib/email/bookListEmail.ts`) now shows the same tags as the article, with a plain "+N more" pill. It had
 listed every tag, which after the first send would have meant ~20 pills per book and Gmail clipping much
 sooner. Checked with a test render (10 tags → pill + 4 + "+5 more"; an article's own tag choice in full).
+
+## 2026-11-03 — Post ideas in the Studio ("postIdea") and "Start article"; the data contract with the internal tool
+
+**Decision** (planned with the user from the internal tool's handover note, `docs/handover/WEBSITE_HANDOVER_2026-11-03.md`
+in the tool's repo; the tool's design is its `docs/TOPIC_SUGGESTER_DESIGN.md` §11 items 32-37): approved ideas from the
+tool's "Post ideas" screen are sent (by hand, from the tool) as **`postIdea`** documents, listed under **"Post ideas"** in
+the Studio. **"Start article"** on one makes a draft article; from then on the article belongs to the Studio and the tool
+never creates or edits articles. The public pages look exactly as before (user: keep the current layout and reader
+experience; the new structure is backend only).
+
+**User's choices** (asked 2026-11-03): post ideas are **view-only** in the Studio (the tool is the one place they're
+edited, like books; the document type is `readOnly`, can't be created, published or deleted in the Studio, and "Start
+article" is its only action); pressing "Start article" on an idea that already has an article (draft or published)
+**opens that article** instead of making another; a Seasonal idea's future "schedule for" date **becomes the draft's
+published date** (10:00 US Eastern summer time, 14:00 UTC; left empty if the date has passed). The **ranking pill
+stays first** even when an entry has its own "Tags shown here" (`toBookEntry`, `lib/content/index.ts`; previously an
+own tag choice dropped it; no published entry had one, so no live page changed).
+
+**Data contract** (agreed; the tool builds its send against this):
+- One document per idea, `_id` **`postIdea-<toolIdeaId>`**, `_type` `postIdea`, written with `createOrReplace` (a
+  resend replaces it; started articles are never touched).
+- `toolIdeaId` (number); `sentAt` (datetime, last send).
+- `ranking`: reference to the ranking document (e.g. `ranking-thriller`).
+- `title` (string, rendered, numbers filled in); `otherTitles` (array of strings).
+- `formula` (string code): `authority`, `ultimate`, `year`, `mood`, `intensity`, `pace`, `blend`, `comparison`,
+  `seasonal`, `series`, `bookclub`, `bookamonth`, `challenge` (`FORMULA_NAMES`, `sanity/schemaTypes/postIdea.ts`;
+  a new formula needs its code added there).
+- `column` (string): the **article category code**, not the display name: `the-shortlist`, `what-to-read-when`,
+  `book-club-book-picks` (the third column's planned rename to "Up Next" is a later website change; whatever
+  `article.category` uses then is what the tool sends).
+- `whyItQualifies`, `evidenceLine`, `notes` (strings).
+- `timing` (object, optional): `occasion` (string), `window` (string, e.g. "1 Oct – 31 Oct"), `scheduleFor`
+  (date `YYYY-MM-DD`), `year` (number).
+- `books` (array, in order) of `{ _type: "postIdeaBook", _key, book: reference to the book, tagsShown: [tag
+  references] }`. The tool resolves each book's Sanity `_id` from its `toolBookId`; tags are `tag-<name>` ids as in
+  "Send books to Studio". References are strong, so Sanity **refuses the whole send** if any book or tag isn't in the
+  Studio (checked with a dry run).
+- `sharedTags` (array of tag references, up to 8); `anchorBook` (book reference, Comparison ideas); `groups` (array of
+  `{ _type: "postIdeaGroup", _key, label, books: [book references] }`, e.g. the 12-month path's steps). Stored only:
+  nothing on the website uses them yet, and "Start article" uses the flat `books` list.
+- Every array item needs a `_key`.
+
+**"Start article"** (`sanity/actions/StartArticleAction.tsx`, fields in `sanity/lib/articleFromPostIdea.ts`) fills:
+title, category (= `column`), author "The FNFE Team", ranking, `methodologySentence` = the evidence line,
+`bookEntries` (each book with "Tags shown here" = `tagsShown`), What to Read When `format` where the formula maps
+to one (comparison → books-like; seasonal → seasonal; mood/intensity/pace/blend → trope-or-feeling; others left
+for the editor), published date as above, and **`article.postIdea`**: a read-only weak reference to the idea.
+**Read-back for "Published"**: an idea is published when `*[_type == "article" && postIdea._ref == "postIdea-<id>"
+&& !(_id in path("drafts.**")) && publishedAt <= now()]` finds one.
+
+**Verified**: schema validation 0/0, type check, lint, production build; dry-run sends of a sample idea (accepted;
+a missing book refused); the fill logic on that sample (seasonal format, date, 5 entries with tags; past date and
+unmapped formula left empty; no title refused); and **by the user in the real Studio**: the Post ideas list, the
+view-only idea, "Start article" making the draft, and a second press opening the same draft. The sample idea and its
+draft were then deleted. **Not yet seen**: a real send from the tool.
