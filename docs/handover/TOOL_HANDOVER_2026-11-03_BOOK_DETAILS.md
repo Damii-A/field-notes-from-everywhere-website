@@ -29,3 +29,11 @@ The user chose "store only" (2026-11-03): none of these appear on any page. How 
 data in. Please include the new fields in the send's preview so the user can see what changes.
 
 Full record: the website's `DECISIONS.md`, "2026-11-03 — Publication year, series and tag categories".
+
+## Also: two idea pairs with high book overlap (for the user to review in the tool)
+
+Checked from the website side (share of the smaller list): "14 Thriller Books for Long Winter Nights" and "Get Ready for
+Spooky Season With These 17 Thrillers" share 9 books (64%); "Just Finished Gone Girl? These 12 Twisty Thrillers Are Up
+Next" and "From Agatha Christie to Gillian Flynn: 14 Mystery Thrillers for 2027" share 7 (58%). Their search targets
+differ, so this is about readers seeing the same books, not search. Nothing changes on the website.
+

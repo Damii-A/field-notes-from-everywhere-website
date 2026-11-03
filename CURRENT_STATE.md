@@ -156,9 +156,9 @@ emailed copy clips in Gmail); seasonal articles keep one evergreen address, refr
 asks about the date** on articles dated before today (`PublishWithDateCheck.tsx`). Seen working in the
 real Studio (2026-10-28): the Format field (live What to Read When article set to trope or feeling)
 and the Publish date dialog. **Not yet used for real**: "Choose books from ranking" and "Write draft
-sentence"; the user's next article is their check. Still open in the "Five article formats" entry,
-none urgent: overlap between several lists from one ranking (search cannibalisation), and linking
-"books like X" articles from the matching "Where to read" page.
+sentence"; the user's next article is their check. Overlap between lists from one ranking: **checked 2026-11-03, no website change** (live articles share 2-5 books
+per pair; search targets differ; the tool already limits overlap; two high-overlap idea pairs passed to the tool).
+Still open: linking "books like X" articles from the matching "Where to read" page, **once the first one is published**.
 
 **2026-10-23: The Reading Room is paused as a product** (user; DECISIONS.md). The business now
 focuses on the Publication and the free weekly newsletter; The Reading Room may relaunch later. Every

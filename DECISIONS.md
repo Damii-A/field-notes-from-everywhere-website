@@ -3069,3 +3069,14 @@ ascending, Up Next 12 and What to Read When 11 unordered, every book with its Wh
 Shortlist article, 2026-11-03): 2 valid items, Articles and Breadcrumbs, no errors** (ItemList of Books isn't a Google
 rich-result type, so it isn't listed there; it stays for search engines' understanding).
 
+## 2026-11-03 — Overlap between lists from one ranking: no website change
+
+**Checked** (open item from "Five article formats", 2026-10-26): book overlap across the 4 live articles and 19 post
+ideas, as a share of the smaller list. Live articles: 18-45% per pair (2-5 books). Ideas: 12 of 253 pairs share half or
+more; highest Winter Nights / Spooky Season 64% (9 books) and Gone Girl / Christie-to-Flynn 58% (7). **Decision**: nothing
+to build on the website. Search cannibalisation is about pages targeting the same query, and the ideas target different
+queries with unique slugs and meta descriptions (checked in the tool); shared books are already limited by the tool's
+2026-11-02 rule (lists ≤20, books not already in other ideas preferred). The two high-overlap pairs were passed to the
+tool session (`docs/handover/TOOL_HANDOVER_2026-11-03_BOOK_DETAILS.md`). Linking "books like X" articles from the
+matching "Where to read" page waits until one is published.
+
