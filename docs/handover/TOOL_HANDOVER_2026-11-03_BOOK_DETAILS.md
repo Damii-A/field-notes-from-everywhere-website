@@ -37,3 +37,11 @@ Spooky Season With These 17 Thrillers" share 9 books (64%); "Just Finished Gone 
 Next" and "From Agatha Christie to Gillian Flynn: 14 Mystery Thrillers for 2027" share 7 (58%). Their search targets
 differ, so this is about readers seeing the same books, not search. Nothing changes on the website.
 
+## Two book fixes that now belong to the tool
+
+- **The Family Upstairs cover**: the website's is square (318 × 318, cropped). A full 1838 × 2775 cover is in the user's
+  Downloads, in the "FNFE book covers" folder. Books are edited only in the tool now, so it goes in there and arrives with
+  the next send.
+- **The Risk** (S.T. Abby) is the one website book with no `toolBookId`, page count or reading time. It isn't in the
+  Thriller ranking; it fills when its Dark Romance ranking is sent.
+
