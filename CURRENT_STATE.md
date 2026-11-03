@@ -95,7 +95,8 @@ user before each** (order not chosen yet):
    2,181 Reader Picks)" (was "…Real Readers"; 2,181 is recommendations from over 1,100 readers). Changed in
    Sanity by API, checked live on the article, the Shortlist page and the homepage; slug unchanged.
 6. Tag categories and book facts on the website, so the tool's send can carry them. **Page count + reading time
-   done 2026-11-03**; still open: year, series, tag categories.
+   done 2026-11-03**; **year, series and tag categories: website fields added 2026-11-03** (stored only, not shown;
+   user's choice); waiting for the tool's send to fill them (note: `docs/handover/TOOL_HANDOVER_2026-11-03_BOOK_DETAILS.md`).
 7. ~~Studio book fields view-only~~ **Done 2026-11-03**: the whole book is view-only in the Studio (DECISIONS.md, same
    date). **Seen working by the user** in the real Studio (2026-11-03).
 8. Move the Claude Design project out of standalone Claude Design before 2026-12-14.

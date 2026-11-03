@@ -53,6 +53,30 @@ export default defineType({
       type: "number",
       readOnly: true,
     }),
+    // Publication year and series (DECISIONS.md, 2026-11-03): sent by the internal tool, stored only (not shown on the site yet).
+    defineField({
+      name: "publishedYear",
+      title: "Publication year",
+      description: "Set by \"Send books to Studio\". Stored only; not shown on the site yet.",
+      type: "number",
+    }),
+    defineField({
+      name: "series",
+      title: "Series",
+      description: "Set by \"Send books to Studio\" once confirmed in the tool. Stored only; not shown on the site yet.",
+      type: "object",
+      fields: [
+        defineField({
+          name: "status",
+          title: "Status",
+          type: "string",
+          options: { list: [{ value: "standalone", title: "Standalone" }, { value: "finished", title: "Finished series" }, { value: "ongoing", title: "Ongoing series" }] },
+        }),
+        defineField({ name: "name", title: "Series name", type: "string" }),
+        defineField({ name: "number", title: "Number in the series", type: "number" }),
+        defineField({ name: "total", title: "Books in the series", type: "number" }),
+      ],
+    }),
     defineField({
       name: "toolBookId",
       title: "Internal tool book ID",

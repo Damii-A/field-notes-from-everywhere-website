@@ -2993,3 +2993,18 @@ longer true of every list. Hub page (`lib/content/categories.ts`, also its meta 
 Kept: the two description sets stay deliberately different (2026-10-26). Ranked articles (Authority, Ultimate) still show
 their numbers.
 
+## 2026-11-03 — Publication year, series and tag categories: website fields (stored only)
+
+**Decision** (planned with the user; "store only for now" chosen over showing them as pills): the website now has the fields
+the internal tool needs to send the rest of its book facts (the tool's `TOPIC_SUGGESTER_DESIGN.md` §10 gaps 1-2). All
+view-only in the Studio (books are view-only as a whole; `tag.category` is `readOnly`), **not shown on any page**:
+- `book.publishedYear` (number).
+- `book.series` (object): `status` (`standalone` / `finished` / `ongoing`), `name` (string), `number` (number; the tool
+  stores it as a real number, e.g. 2.5 for a novella), `total` (number). Only series info the tool has confirmed is to be sent.
+- `tag.category` (string): one of the tool's 10, spelled as in the tool: Genre, Character, Relationship, Trope, Mood, Theme,
+  Setting, Experience, Story Elements, Intensity.
+How they're shown (pills like page count, filters, a "Why you'll love these" box) is decided later, with real data in.
+Website themes (the 9 hub groups) are unrelated and unchanged.
+
+**Verified**: type check, schema validation 0/0, production build. **Not yet seen**: a send carrying them.
+

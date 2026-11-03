@@ -26,5 +26,15 @@ export default defineType({
       options: { source: "name" },
       validation: (r) => r.required(),
     }),
+    defineField({
+      name: "category",
+      title: "Category",
+      description: "The internal tool's tag category, set by \"Send books to Studio\" (DECISIONS.md, 2026-11-03). Stored only; not shown on the site yet.",
+      type: "string",
+      readOnly: true,
+      options: {
+        list: ["Genre", "Character", "Relationship", "Trope", "Mood", "Theme", "Setting", "Experience", "Story Elements", "Intensity"],
+      },
+    }),
   ],
 });

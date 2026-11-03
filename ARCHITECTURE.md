@@ -149,7 +149,8 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   Modeled as a frontend-level enum/constant, not a Sanity document — its visual identity
   (colour, motion, typography) is explicitly frontend-controlled per spec, and there will
   never be a 4th without an engineering change anyway.
-- **`tag`** — Publication-only, book-level descriptor vocabulary (`name`, `slug`) — e.g. "dark
+- **`tag`** — Publication-only, book-level descriptor vocabulary (`name`, `slug`, and since 2026-11-03 a read-only
+  `category`, one of the internal tool's 10, stored only) — e.g. "dark
   fantasy," "brutal." Used by `book.tags[]` and, per article, `bookEntries[].tags[]` (an
   optional override of which of a book's tags display for that specific article). Deliberately
   **not** the mechanism for hub-page grouping — see `theme` below. Originally modeled with a
@@ -166,7 +167,8 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   future glossary, kept deliberately separate from `tag`'s book-descriptor vocabulary even
   though a theme and a tag may share a name.
 - **`book`** — canonical book record: `title`, `author`, `slug` (its `/where-to-read/<slug>` address, 2026-10-02), `coverImage`, `canonicalBlurb`,
-  `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId`, `pageCount` and `readingHours`. **The whole document is
+  `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId`, `pageCount` and `readingHours`, `publishedYear` and `series`
+  (`status` / `name` / `number` / `total`; both stored only since 2026-11-03). **The whole document is
   view-only in the Studio since 2026-11-03** (no create, edit, duplicate or delete; books come only from the
   internal tool's "Send to website"; the last two fields the last two since 2026-11-03, shown as "Page count" / "Est. reading time"
   pills under the author, `lib/books/facts.ts`). Referenced by articles, rankings and Reading Room issues, and
