@@ -2937,3 +2937,31 @@ articles read back with their new formats; **seen working by the user** in the r
 **Idea 53** "A Thriller Book for Every Month of 2027" stays `challenge` (tool session: a month-by-month path is one kind
 of Challenge), so "Start article" gives it the Challenge format.
 
+## 2026-11-03 — Third column renamed "Up Next" (`/up-next`)
+
+**Decision** (user, 2026-10-31 in the tool's design, `docs/TOPIC_SUGGESTER_DESIGN.md` §11 item 37; built 2026-11-03 with the
+user's approval of the plan, the wording and a local preview): "Book Club Book Picks" is now **"Up Next"**: guided reading
+lists that say what to read next (book club picks, challenges, month-by-month reading paths). This reverses the 2026-10-26
+"no renames" entry (the column's scope widened when the tool's Challenge and Book club formulas were placed in it).
+- **Name** everywhere it shows: menu, footer, homepage box, About, the column page and its metadata, article pills, emails,
+  RSS, llms.txt, the Studio. Colours and layout unchanged (sky/slate identity kept).
+- **Web address** `/up-next` (user's choice over keeping the old one); `/book-club-book-picks` and
+  `/book-club-book-picks/:slug` **308-redirect** (`next.config.mjs`), so old links and Pins keep working. IndexNow pinged
+  for the old and new addresses; Google follows the redirects and the sitemap.
+- **Internal code** `up-next` (`article.category`, `CategorySlug`, formats, Studio). The one article in the column was
+  changed in Sanity after the deploy (backup: `backups/2026-11-03-up-next-before.json`). "Start article" and the post-idea
+  preview still accept the old `book-club-book-picks` from the tool until it switches (idea 53 carries it).
+- **Descriptions** (the user's text, minimal edits approved by the user):
+  - Column page: "Up Next is a collection of guided reading lists that tell you what to read next, from your book club's
+    next pick to a year-long reading challenge. Browse curated book lists for different genres, themes, and group reading
+    experiences."
+  - Homepage box: "This is the column for readers looking for guided reading lists, from book club picks and reading
+    challenges to other shared reading experiences. These book lists are built from our analysis of real reader
+    recommendations for the specific experience we're curating for."
+  - About: "…for various book club types, reading challenges and themes."
+- The Claude Design project still says "Book Club Book Picks"; this entry is the record of the user-directed change.
+
+**Verified**: type check, schema validation, production build; local preview (menu, homepage box, column page on desktop and
+phone, article pill, About); live: `/up-next` and the article 200, the old article address 308 to the new one, the homepage
+links to the new address; IndexNow accepted (200).
+

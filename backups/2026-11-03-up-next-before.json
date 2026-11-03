@@ -1,0 +1,200 @@
+[
+ {
+  "_createdAt": "2026-09-23T23:25:28Z",
+  "_id": "83486678-0dad-451e-8946-e210eb34f542",
+  "_rev": "hXIPOb7vJnToWfg6FVUAmj",
+  "_system": {
+   "base": {
+    "id": "83486678-0dad-451e-8946-e210eb34f542",
+    "rev": "4lJ2mGct5PnttFtjrl3GfI"
+   }
+  },
+  "_type": "article",
+  "_updatedAt": "2026-11-03T19:18:54Z",
+  "author": "The FNFE Team",
+  "bookEntries": [
+   {
+    "_key": "yzvf2livdc",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-pretty-girls-karin-slaughter",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "4heb3mb19w",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-last-house-on-needless-street-catriona-ward",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "i0b4tpros5",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-then-she-was-gone-lisa-jewell",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "gveqcxq6lq",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-sharp-objects-gillian-flynn",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "3nvsxyw0f7",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-girl-with-the-dragon-tattoo-stieg-larsson",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "3cwk3mz3mk",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-risk-s-t-abby",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "ulgx1z05rj",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-in-the-woods-tana-french",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "n6yw97kqbd",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-silent-patient-alex-michaelides",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "r81en203hv",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-mystic-river-dennis-lehane",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "tuyn0vurjh",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-the-likeness-tana-french",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "eostd26ur4",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-none-of-this-is-true-lisa-jewell",
+     "_type": "reference"
+    }
+   },
+   {
+    "_key": "wranqkh6u6",
+    "_type": "bookEntry",
+    "book": {
+     "_ref": "book-gone-girl-gillian-flynn",
+     "_type": "reference"
+    }
+   }
+  ],
+  "category": "book-club-book-picks",
+  "format": "bookclub",
+  "heroImage": {
+   "_type": "image",
+   "alt": "thriller book picks",
+   "asset": {
+    "_ref": "image-79663e3b965cbf31484bd31381e64c7dc434389b-2400x1000-png",
+    "_type": "reference"
+   }
+  },
+  "introText": [
+   {
+    "_key": "9d8e54941e9a",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "5c45c06aadeb",
+      "_type": "span",
+      "marks": [],
+      "text": "We had one rule for the thrillers on this list: there had to be something worth arguing about."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "c36281f6707c",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "d71859de2bde",
+      "_type": "span",
+      "marks": [],
+      "text": "Maybe it’s whether a character can be trusted. Maybe it’s whether one clue changes how you see everything that came before it. Either way, these 12 books will give you plenty of material for theories, predictions, and strong opinions."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   },
+   {
+    "_key": "3aed3d132fe6",
+    "_type": "block",
+    "children": [
+     {
+      "_key": "27a345c88929",
+      "_type": "span",
+      "marks": [],
+      "text": "A quick tip for a bit more fun: get everyone to commit to their theories before you reach the final chapters."
+     }
+    ],
+    "markDefs": [],
+    "style": "normal"
+   }
+  ],
+  "metaDescription": "Give your book club something to debate with reader-recommended thrillers full of suspicious characters, surprising reveals and plenty to discuss.",
+  "methodologySentence": "To create this article, we analysed 2,181 book recommendations from real reader discussions. We pulled the 12 books on this list from a larger list of the top 50 most-recommended books in those discussions.",
+  "publishedAt": "2026-09-27T14:40:31.405Z",
+  "ranking": {
+   "_ref": "ranking-thriller",
+   "_type": "reference"
+  },
+  "rankingCount": 12,
+  "slug": {
+   "_type": "slug",
+   "current": "12-thrillers-books-that-will-have-everyone-comparing-theories"
+  },
+  "themes": [
+   {
+    "_key": "92ce9b500943",
+    "_ref": "495b15b8-3cb4-4680-b2ac-bde96e23b8d7",
+    "_type": "reference"
+   }
+  ],
+  "title": "12 Thriller Books That Will Have Everyone Comparing Theories",
+  "whatToReadNext": [
+   {
+    "_key": "b1dbdb959fc9",
+    "_ref": "53587f3f-d994-481a-bee3-d0839e044a1d",
+    "_type": "reference"
+   },
+   {
+    "_key": "ea7d779083dd",
+    "_ref": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+    "_type": "reference"
+   }
+  ]
+ }
+]

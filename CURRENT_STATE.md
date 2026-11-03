@@ -82,7 +82,8 @@ user before each** (order not chosen yet):
    articles updated, backup in `backups/2026-11-03-article-formats-before.json`); Book a month removed (merged into Challenge in the tool).
    **Seen working by the user** in the real Studio.
 2. Layouts beyond one flat list (12-month path, grouped sections, anchor book): backend first, look kept.
-3. Rename the third column "Up Next" (name, description, links; a web-address change needs a decision).
+3. ~~Rename the third column "Up Next"~~ **Done 2026-11-03** (DECISIONS.md, same date): live at `/up-next`, old addresses
+   308-redirect, the one article's `category` changed (backup `backups/2026-11-03-up-next-before.json`), IndexNow pinged.
 4. The Shortlist's description (it now also holds unranked Year posts).
 5. ~~The live Shortlist title~~ **Done 2026-11-03** (user's pick): "15 Thriller Book Recommendations (From
    2,181 Reader Picks)" (was "…Real Readers"; 2,181 is recommendations from over 1,100 readers). Changed in

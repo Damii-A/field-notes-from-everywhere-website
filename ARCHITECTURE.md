@@ -52,7 +52,7 @@ system; it does not redefine the product.
 │   /                    Home       /api/subscribe        (Kit)    │
 │   /the-shortlist[/...] hub+article /api/webhooks/paddle          │
 │   /what-to-read-when[/...]        /api/webhooks/sanity           │
-│   /book-club-book-picks[/...]        (→ on-demand revalidate)    │
+│   /up-next[/...]                     (→ on-demand revalidate)    │
 │   /the-reading-room    RR landing  /studio/*  (embedded Sanity   │
 │   /about /contact                              Studio, auth'd)   │
 │   /terms /privacy-and-cookies /disclosures                       │
@@ -119,8 +119,8 @@ what would force adding one (building the logged-in Reading Room product).
 | `/the-shortlist/[slug]` | Shortlist article | ranked, numbered book list |
 | `/what-to-read-when` | hub | same hub template, clay identity |
 | `/what-to-read-when/[slug]` | article | unranked |
-| `/book-club-book-picks` | hub | same hub template, sky identity |
-| `/book-club-book-picks/[slug]` | article | unranked, paired presentation |
+| `/up-next` | hub | same hub template, sky identity (was `/book-club-book-picks` until 2026-11-03; 308 redirects in `next.config.mjs`) |
+| `/up-next/[slug]` | article | unranked, paired presentation |
 | `/the-reading-room` | "Taking a break" note | paused 2026-10-23: hero + newsletter signup, noindex; the landing page is kept in `ReadingRoomLanding.tsx` |
 | `/the-reading-room/subscribe` | Subscribe (checkout) | **paused: 307-redirects to `/the-reading-room`** (`next.config.mjs`). Paddle inline checkout embedded beside our order summary (`components/ReadingRoomCheckout.tsx`); "You're in" state on completion; noindex |
 | `/about` | About | `#how-we-find-the-books` anchor, linked from every article's methodology box |
@@ -145,7 +145,7 @@ Derived from the "CMS controlled" vs. "frontend controlled" split in
 in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{ b.tags }}`,
 `{{ b.rank }}` in `Article - The Shortlist.dc.html`).
 
-- **`category`** — fixed set of 3 (Shortlist / What to Read When / Book Club Book Picks).
+- **`category`** — fixed set of 3: `the-shortlist`, `what-to-read-when`, `up-next` ("Up Next", renamed from "Book Club Book Picks" / `book-club-book-picks` 2026-11-03).
   Modeled as a frontend-level enum/constant, not a Sanity document — its visual identity
   (colour, motion, typography) is explicitly frontend-controlled per spec, and there will
   never be a 4th without an engineering change anyway.
@@ -207,7 +207,7 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   `article.ranking`. Shortlist articles (and Reading Room issues) use the Studio's "Fill books
   from ranking" action (`sanity/actions/FillFromRankingAction.tsx`, `pickTopBooks` in
   `sanity/lib/pickBooksFromRanking.ts`): the top `rankingCount` books in rank order. What to Read
-  When and Book Club Book Picks articles are hand-picked with "Choose books from ranking"
+  When and Up Next articles are hand-picked with "Choose books from ranking"
   (`sanity/actions/ChooseBooksAction.tsx`, list UI in `sanity/components/RankingBookPicker.tsx`,
   2026-10-26): the ranking in rank order with covers and tags, a tag filter, an "Also in" note
   for books other articles from the ranking use; saving keeps existing entries and their
