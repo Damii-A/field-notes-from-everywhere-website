@@ -234,7 +234,8 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 - ~~Largest-contentful-paint on mobile~~ **Done 2026-11-03** (DECISIONS.md, same date): hero images fetched first, 4 of 7
   font preloads dropped. User's pagespeed.web.dev (mobile): homepage 99 / LCP 2.1s; article 96 / LCP 0.9-2.6s. Left: ~300ms
   render-blocking CSS (diminishing returns).
-- A check on the user's own phone and a tablet (the phone share-sheet button is already verified).
+- ~~A check on the user's own phone~~ **Done 2026-11-03**: "everything is good on mobile" (menu, Up Next, article, Where to
+  read, send-list popup, Pinterest share). Tablet not checked (optional).
 - ~~Kit leftovers~~ **Done 2026-11-03**: the unused "Imported September 22nd…" tag deleted by the user; form "Newsletter
   site" (7664818, 0 subscribers) left in place (Kit offered no delete; harmless, settled). Keep tag `reading-room-member`
   (23811808, used by the code). (~~`*.vercel.app` CORS entries
