@@ -21,7 +21,7 @@ const NEWSLETTER_PITCH = "Get a weekly roundup of our latest book lists, deliver
 const CATEGORY_LABEL: Record<CategorySlug, string> = {
   "the-shortlist": "The Shortlist",
   "what-to-read-when": "What to Read When",
-  "book-club-book-picks": "Book Club Book Picks",
+  "up-next": "Up Next",
 };
 
 // Per-category visual identity for the elements that vary — mirrors the
@@ -80,7 +80,7 @@ const CATEGORY_STYLE: Record<
     floatAdLabelColor: "var(--clay-700)",
     progressAccent: "var(--clay-700)",
   },
-  "book-club-book-picks": {
+  "up-next": {
     pageBg: "var(--paper-050)",
     titleColor: "var(--slate-600)",
     tagBg: "var(--slate-600)",
@@ -403,7 +403,7 @@ function ProgressRail({
     );
   }
 
-  if (category === "book-club-book-picks") {
+  if (category === "up-next") {
     return (
       <div className={styles.progressWrap} style={{ alignItems: "center", gap: 0 }} aria-hidden="true">
         {Array.from({ length: total }).map((_, i) => (

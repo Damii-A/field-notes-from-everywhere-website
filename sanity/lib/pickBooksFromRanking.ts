@@ -2,7 +2,7 @@
  * Chooses books from a theme's reader-recommendation ranking — the rule behind
  * the Studio's "Fill books from ranking" action: the ranking's top `count`
  * books, in rank order. Used by The Shortlist and Reading Room issues only;
- * What to Read When and Book Club Book Picks articles are hand-picked with
+ * What to Read When and Up Next articles are hand-picked with
  * "Choose books from ranking" (DECISIONS.md, 2026-10-26, which replaced the
  * earlier "top 5 + books not in sibling articles" rule for those columns).
  *

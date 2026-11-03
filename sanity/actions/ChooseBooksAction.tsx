@@ -15,7 +15,7 @@ interface PickerData {
 }
 
 /**
- * "Choose books from ranking" on What to Read When and Book Club Book Picks
+ * "Choose books from ranking" on What to Read When and Up Next
  * articles (DECISIONS.md, 2026-10-26): every format except the ranked
  * Shortlist is hand-picked. Lists the article's ranking in rank order with
  * covers and tags, a tag filter, and a note on books already used by other

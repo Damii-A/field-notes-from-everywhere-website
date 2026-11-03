@@ -49,7 +49,7 @@ export async function GET() {
   <channel>
     <title>Field Notes From Everywhere — Publication</title>
     <link>${SITE_URL}</link>
-    <description>New reader-recommendation reading lists from The Shortlist, What to Read When, and Book Club Book Picks.</description>
+    <description>New reader-recommendation reading lists from The Shortlist, What to Read When, and Up Next.</description>
     <language>en-us</language>${items}
   </channel>
 </rss>`;

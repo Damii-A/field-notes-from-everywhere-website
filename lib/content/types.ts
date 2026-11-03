@@ -6,7 +6,7 @@
  * is a change in one place, not a rewrite of every page.
  */
 
-export type CategorySlug = "the-shortlist" | "what-to-read-when" | "book-club-book-picks";
+export type CategorySlug = "the-shortlist" | "what-to-read-when" | "up-next";
 
 export interface CategoryDef {
   slug: CategorySlug;

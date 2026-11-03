@@ -35,7 +35,12 @@ const nextConfig = {
   // The Reading Room is paused (user, 2026-10-23; DECISIONS.md): its checkout
   // page is kept but unreachable. Temporary (307), since it's coming back.
   async redirects() {
-    return [{ source: "/the-reading-room/subscribe", destination: "/the-reading-room", permanent: false }];
+    return [
+      { source: "/the-reading-room/subscribe", destination: "/the-reading-room", permanent: false },
+      // Third column renamed "Up Next" (DECISIONS.md, 2026-11-03): old links and Pins keep working.
+      { source: "/book-club-book-picks", destination: "/up-next", permanent: true },
+      { source: "/book-club-book-picks/:slug", destination: "/up-next/:slug", permanent: true },
+    ];
   },
   async rewrites() {
     return [

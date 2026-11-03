@@ -8,18 +8,18 @@ import { SITE_URL } from "@/lib/siteUrl";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getArticleBySlug("book-club-book-picks", slug);
+  const article = await getArticleBySlug("up-next", slug);
   return articleMetadata(article);
 }
 
 export default async function ClubArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const article = await getArticleBySlug("book-club-book-picks", slug);
+  const article = await getArticleBySlug("up-next", slug);
   if (!article) notFound();
 
   return (
     <>
-      <Header active="book-club-book-picks" />
+      <Header active="up-next" />
       <ArticleView article={article} shareUrl={`${SITE_URL}${articlePath(article)}`} />
       <Footer />
     </>

@@ -208,13 +208,13 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* Book Club Book Picks rail */}
+      {/* Up Next rail */}
       {showcase.clubPairs.length > 0 ? (
         <section style={{ background: "var(--paper-100)", padding: "clamp(32px,4vw,56px) 0 clamp(20px,2.4vw,32px)", overflow: "hidden" }}>
           <div className={styles.showcaseHeader}>
             <div className={styles.showcaseBox} style={{ ["--box-bg" as string]: "var(--paper-100)" }}>
               <Link
-                href="/book-club-book-picks"
+                href="/up-next"
                 style={{
                   display: "block",
                   font: "var(--weight-bold) clamp(26px,3vw,38px)/1.04 var(--font-display)",
@@ -223,10 +223,11 @@ export default async function HomePage() {
                   maxWidth: "24ch",
                 }}
               >
-                Book Club Book Picks
+                Up Next
               </Link>
               <p style={{ font: "var(--type-body)", color: "var(--text-soft)", margin: 0, maxWidth: "70ch" }}>
-                This is the column for readers looking for book recommendations for shared reading experiences. These
+                This is the column for readers looking for guided reading lists, from book club picks and reading
+                challenges to other shared reading experiences. These
                 book lists are built from our analysis of real reader recommendations for the specific experience
                 we&rsquo;re curating for.
               </p>

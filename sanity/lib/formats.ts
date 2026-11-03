@@ -20,7 +20,7 @@ export const FORMATS_BY_COLUMN: Record<string, { value: string; title: string }[
     { value: "seasonal", title: "Seasonal (a season or occasion)" },
     { value: "series", title: "Series (series to binge or start)" },
   ],
-  "book-club-book-picks": [
+  "up-next": [
     { value: "bookclub", title: "Book club" },
     { value: "challenge", title: "Challenge (checklist or month-by-month reading path)" },
   ],

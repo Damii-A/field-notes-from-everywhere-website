@@ -48,7 +48,7 @@ export function methodologyPattern(input: PatternInput): { sentence: string } | 
       return {
         sentence: `To create this article, we analysed ${recs} reader recommendations. The books on this list were the most frequently recommended.`,
       };
-    case "book-club-book-picks":
+    case "up-next":
       return {
         sentence: `To create this article, we analysed ${recs} book recommendations from real reader discussions. We pulled the ${n} books on this list from a larger list of the top ${top} most-recommended books in those discussions.`,
       };

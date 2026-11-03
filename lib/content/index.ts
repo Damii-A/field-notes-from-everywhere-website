@@ -390,7 +390,7 @@ export async function getHomeShowcase(): Promise<HomeShowcase> {
   const [when, shortlist, clubItems] = await Promise.all([
     latestSummaries("what-to-read-when", 5),
     latestSummaries("the-shortlist", 5),
-    latestSummaries("book-club-book-picks", 6),
+    latestSummaries("up-next", 6),
   ]);
 
   const clubPairs: [ArticleSummary, ArticleSummary | undefined][] = [];

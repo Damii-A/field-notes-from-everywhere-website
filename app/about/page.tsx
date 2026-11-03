@@ -127,12 +127,12 @@ export default async function AboutPage() {
                   </p>
                 </div>
                 <div style={{ background: "var(--sky-200)", borderRadius: "var(--radius-lg)", padding: 20, display: "flex", flexDirection: "column", gap: 10 }}>
-                  <Link href="/book-club-book-picks" style={{ font: "var(--weight-bold) var(--text-md)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--sky-text)" }}>
-                    Book Club Book Picks
+                  <Link href="/up-next" style={{ font: "var(--weight-bold) var(--text-md)/1.25 var(--font-display)", letterSpacing: "var(--tracking-tight)", color: "var(--sky-text)" }}>
+                    Up Next
                   </Link>
                   <p style={{ font: "var(--type-small)", color: "var(--ink-700)", margin: 0 }}>
                     This is our column where we build custom reading lists with book recommendations for various book
-                    club types and themes.
+                    club types, reading challenges and themes.
                   </p>
                 </div>
               </div>

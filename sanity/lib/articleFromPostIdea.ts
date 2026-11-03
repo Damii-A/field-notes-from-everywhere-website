@@ -29,12 +29,14 @@ export function articleFromPostIdea(
   now: Date,
 ): { fields: Record<string, unknown> } | { problem: string } {
   if (!idea.title?.trim()) return { problem: "This idea has no title yet. Pick one in the internal tool and send it again." };
-  if (!idea.column) return { problem: "This idea has no column. Set one in the internal tool and send it again." };
+  // The third column was renamed "Up Next" (2026-11-03); ideas sent before the tool switched still say the old code.
+  const column = idea.column === "book-club-book-picks" ? "up-next" : idea.column;
+  if (!column) return { problem: "This idea has no column. Set one in the internal tool and send it again." };
   const books = (idea.books ?? []).filter((b) => b.book?._ref);
   if (books.length === 0) return { problem: "This idea has no books." };
 
   // Formats are the tool's formula codes; a formula that isn't one of the column's formats is left for the editor.
-  const format = isFormatForColumn(idea.column, idea.formula) ? idea.formula : undefined;
+  const format = isFormatForColumn(column, idea.formula) ? idea.formula : undefined;
   // Seasonal ideas: schedule for their date, 10am US Eastern in summer (14:00 UTC), if it's still ahead.
   const scheduleFor = idea.timing?.scheduleFor ? new Date(`${idea.timing.scheduleFor}T14:00:00Z`) : null;
   const publishedAt = scheduleFor && scheduleFor > now ? scheduleFor.toISOString() : undefined;
@@ -55,13 +57,13 @@ export function articleFromPostIdea(
   const metaDescription = idea.metaDescription?.trim();
   const slug = idea.slug?.trim();
   // The focus keyword field only shows (and is only checked) on Shortlist articles.
-  const focusKeyword = idea.column === "the-shortlist" ? idea.focusKeyword?.trim() : undefined;
+  const focusKeyword = column === "the-shortlist" ? idea.focusKeyword?.trim() : undefined;
 
   return {
     fields: {
       _type: "article",
       title: idea.title.trim(),
-      category: idea.column,
+      category: column,
       ...(format ? { format } : {}),
       author: "The FNFE Team",
       ...(publishedAt ? { publishedAt } : {}),

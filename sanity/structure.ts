@@ -18,7 +18,7 @@ import type { StructureResolver } from "sanity/structure";
 const ARTICLE_CATEGORIES = [
   { slug: "the-shortlist", title: "The Shortlist" },
   { slug: "what-to-read-when", title: "What to Read When" },
-  { slug: "book-club-book-picks", title: "Book Club Book Picks" },
+  { slug: "up-next", title: "Up Next" },
 ] as const;
 
 export const structure: StructureResolver = (S) =>

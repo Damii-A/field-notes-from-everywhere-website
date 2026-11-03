@@ -149,7 +149,7 @@ export default defineType({
       name: "category",
       title: "Category",
       type: "string",
-      options: { list: ["the-shortlist", "what-to-read-when", "book-club-book-picks"] },
+      options: { list: ["the-shortlist", "what-to-read-when", "up-next"] },
       validation: (r) => r.required(),
     }),
     defineField({
@@ -267,7 +267,7 @@ export default defineType({
       name: "ranking",
       title: "Ranking",
       description:
-        "Which theme ranking this article's books come from. The Shortlist: set this and \"How many books\", then use \"Fill books from ranking\" (in the menu next to the Publish button) to add the top books automatically. What to Read When / Book Club Book Picks: set this, then use \"Choose books from ranking\" (same menu) to tick the books you want.",
+        "Which theme ranking this article's books come from. The Shortlist: set this and \"How many books\", then use \"Fill books from ranking\" (in the menu next to the Publish button) to add the top books automatically. What to Read When / Up Next: set this, then use \"Choose books from ranking\" (same menu) to tick the books you want.",
       type: "reference",
       to: [{ type: "ranking" }],
     }),

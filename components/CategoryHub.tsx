@@ -28,7 +28,7 @@ const IDENTITY_COLOR: Record<CategorySlug, { band: string; name: string; leadLab
     leadTitle: "var(--ink-900)",
     leadMeta: "var(--ink-700)",
   },
-  "book-club-book-picks": {
+  "up-next": {
     band: "var(--paper-050)",
     name: "var(--slate-600)",
     leadLabel: "var(--sky-200)",

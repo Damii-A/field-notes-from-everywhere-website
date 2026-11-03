@@ -17,11 +17,11 @@ export const CATEGORIES: Record<CategorySlug, CategoryDef> = {
     ranked: false,
     identity: { pageBg: "var(--oat-200)", accent: "var(--clay-700)" },
   },
-  "book-club-book-picks": {
-    slug: "book-club-book-picks",
-    name: "Book Club Book Picks",
+  "up-next": {
+    slug: "up-next",
+    name: "Up Next",
     description:
-      "Book Club Book Picks is a collection of book recommendations for your next book club read. Browse curated book lists for different genres, themes, and group reading experiences.",
+      "Up Next is a collection of guided reading lists that tell you what to read next, from your book club’s next pick to a year-long reading challenge. Browse curated book lists for different genres, themes, and group reading experiences.",
     ranked: false,
     identity: { pageBg: "var(--paper-100)", accent: "var(--slate-600)" },
   },
