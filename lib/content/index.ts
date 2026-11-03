@@ -563,6 +563,27 @@ export async function getWhereToReadSlugs(): Promise<{ slug: string; updatedAt: 
   );
 }
 
+/**
+ * Real "last changed" dates for the sitemap (DECISIONS.md, 2026-11-03): each live article's
+ * last edit (never before its publish date), and each legal page's "Last updated" date.
+ */
+export async function getSitemapDates(): Promise<{
+  articles: { category: CategorySlug; slug: string; changed: string }[];
+  legal: { slug: string; updatedOn: string | null }[];
+}> {
+  return groqFetch(
+    `{
+      "articles": *[_type == "article" && defined(slug.current) && ${RELEASED}]{
+        category, "slug": slug.current,
+        "changed": select(_updatedAt > publishedAt => _updatedAt, publishedAt)
+      },
+      "legal": *[_type == "legalPage"]{ slug, updatedOn }
+    }`,
+    {},
+    { tags: ["article", "legalPage"], revalidate: 300 },
+  );
+}
+
 /** One book by id: its slug, for the old /find-it/<id> address to forward to /where-to-read/<slug>. Null if it doesn't exist. */
 export async function getBookById(id: string): Promise<{ slug?: string } | null> {
   const raw = await groqFetch<{ slug: string | null } | null>(

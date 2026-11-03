@@ -3022,3 +3022,15 @@ product. Standalone Claude Design closes by 2026-12-14 (moving into Claude); kee
 future sessions at a stale, possibly unreachable source. Checked the same day: no full copy of the design project exists
 (only the text specs and build notes, by the 2026-09-21 decision); a copy is now optional history, not a dependency.
 
+## 2026-11-03 — Sitemap dates are real "last changed" dates
+
+**Decision** (from the open list, invisible to readers): `app/sitemap.ts` no longer stamps "now" on the homepage, hubs and
+static pages on every read (search engines learn to ignore a sitemap like that), and every live article now has a date.
+Articles: their last edit, never before their publish date (`getSitemapDates`, `lib/content/index.ts`). Hubs: their
+newest article change; the homepage: the newest across all columns. Terms / Privacy / Disclosures: their "Last updated"
+date from the Studio. About and Contact: no date (written in code, nothing dated behind them). "Where to read" pages:
+unchanged (the book's last edit).
+
+**Verified**: type check, lint, production build; the local sitemap against live content: 51 URLs as before, every
+article, hub and legal page dated, About/Contact undated, 38 book pages dated.
+
