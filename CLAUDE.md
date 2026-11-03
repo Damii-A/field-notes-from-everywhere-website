@@ -14,16 +14,20 @@ V1 is the public marketing/editorial site plus Reading Room trial signup — see
 
 ## Governing sources, in order of authority
 
-1. **The live Claude Design project** — `claude.ai/design`, project **"Full FNFE Website"**
-   (projectId `5a207ce5-1cf9-4986-b5f1-12c9e767072d`), accessed via the `DesignSync` tool
-   (requires `/design-login` authorization in an interactive session — not available to every
-   session or subagent). This is the authoritative definition of the V1 product: its pages,
-   content structure, visual system, responsive behavior, interactions, motion and states.
-   Build what's there. Do not redesign it or add product scope it doesn't show.
-2. **`docs/design-specs/DESIGN_PROJECT_BUILD_NOTES.md`** — the design project's own build
-   notes (mirrored verbatim). States, in the design team's own words, where the built pages
-   depart from the specs and what was deliberately cut from V1. **Trust this over the specs
-   below when they conflict** — it is closer to the live design project than the specs are.
+1. **The live site as built (this repo's code) together with `DECISIONS.md`** — since
+   2026-11-03 (user's decision; DECISIONS.md, same date) the authoritative definition of the
+   product: its pages, content structure, visual system, responsive behavior, interactions,
+   motion and states. The site was built from the Claude Design project in September 2026 and
+   has since changed in many user-directed ways, each recorded in `DECISIONS.md`. Build from
+   what's there and what's recorded. Do not redesign it or add product scope nobody asked for;
+   a visible change needs the user's OK (with a preview when it's a layout change).
+2. **The Claude Design project** — `claude.ai/design`, project **"Full FNFE Website"**
+   (projectId `5a207ce5-1cf9-4986-b5f1-12c9e767072d`): the **September 2026 starting point**,
+   no longer the authority (standalone Claude Design closes by 2026-12-14; it's moving into
+   Claude). Useful as history and for the design team's original intent; where it differs from
+   the site, the site and `DECISIONS.md` win. Its build notes are mirrored in
+   **`docs/design-specs/DESIGN_PROJECT_BUILD_NOTES.md`** (where the built pages departed from the
+   specs and what was cut from V1; trust them over the specs below when the two conflict).
 3. **`docs/design-specs/*.md`** (`homepage`, `about`, `pub_hub`, `pub_article`, `rr_landing`,
    `rr_subscriber`, `utility_pages`) — the original client experience-spec documents, mirrored
    verbatim. Authoritative for content hierarchy, business rules (trial length, pricing,
@@ -42,8 +46,8 @@ never replaces them — consult the actual source when its subject matter is rel
 prior session's interpretation of it. Code should never silently override documented intent.
 If something in the codebase conflicts with a governing document, that's a conflict to
 resolve intentionally (Operating Manual §14), not something to paper over. A genuine change
-of product direction updates the relevant source of truth (the design project or, if the user
-directs a change the design doesn't reflect, this repo's docs) rather than creating
+of product direction updates the relevant source of truth (this repo's docs, chiefly
+`DECISIONS.md`) rather than creating
 undocumented divergence between code and docs.
 
 ## Session startup protocol
@@ -61,10 +65,10 @@ Before substantial implementation work:
 3. Read the relevant sections of `ARCHITECTURE.md` for the area identified above (or the area
    the user explicitly named).
 4. Check `DECISIONS.md` for anything already settled in that area.
-5. If you're touching a specific page/feature, read its governing spec in
-   `docs/design-specs/` **and**, if you have design-tool access, the live page in the Claude
-   Design project — the specs describe intent, the live project shows the actual current
-   built state (see governing-sources ordering above).
+5. If you're touching a specific page/feature, look at the live page (or a local build), its
+   `DECISIONS.md` entries, and its spec in `docs/design-specs/` — the specs describe the
+   original intent, the site and its decisions show the current state (see governing-sources
+   ordering above).
 6. Inspect the existing implementation before changing it.
 7. Confirm you understand the actual outcome wanted before starting, now that you've read
    everything above.
@@ -84,8 +88,8 @@ Don't re-read every document in full for a trivial change — read what's releva
   these.
 - Preserve working functionality; avoid unrelated rewrites; follow established patterns in
   this repo unless there's a real reason to change them.
-- Port design-system tokens and components faithfully — don't recreate values by eyeballing
-  the design; read the actual token/component source from the design project.
+- Use the site's existing design tokens (`styles/tokens/`) and components faithfully — don't
+  invent new values by eyeballing; new looks reuse existing tokens where they can.
 - Treat `prefers-reduced-motion` handling as a hard requirement on every bespoke animation
   (it's explicitly required in the specs, not optional polish).
 - Keep the repository recoverable: commit logical units of work with clear messages; don't

@@ -103,8 +103,8 @@ user before each** (order not chosen yet):
    copy exists anywhere (only the text specs + build notes in `docs/design-specs/`, by design, 2026-09-21; the
    `FNFE Website Structure.pdf` in Downloads predates the design). `DesignSync` is for the user-started /design-sync
    component-library flow, not archiving, so it wasn't used. Its notice says Claude Design is moving into Claude.
-   **Asked the user** to open the project and report any move or export option; an export gets committed as a frozen
-   reference copy.
+   **Now optional** (user, 2026-11-03): the live site + DECISIONS.md are the authority (CLAUDE.md updated); a copy of
+   the design project is history only. If the user opens it and finds a move/export option, an export can be committed.
 9. Optional: Sanity plan usage limits (sanity.io/manage → Usage; the user can see them).
 Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused subscription, below);
 (b) before 2026-12-14, keep a reference copy of the Claude Design project (above); the tag limit was

@@ -35,10 +35,10 @@ the newsletter itself, which Kit sends — not anything this website renders beh
 
 ## 2. Source of truth for the product
 
-`CLAUDE.md` names the governing sources in full. In short: the **live Claude Design project**
-(`claude.ai/design`, project "Full FNFE Website") is authoritative for the product and UX.
-`docs/design-specs/` mirrors the text specs and the design team's own build notes for when
-that live project isn't reachable. This document translates that product into a production
+`CLAUDE.md` names the governing sources in full. In short: since 2026-11-03 the **live site as
+built plus `DECISIONS.md`** is authoritative for the product and UX; the Claude Design project
+(`claude.ai/design`, project "Full FNFE Website") is the September 2026 starting point.
+`docs/design-specs/` mirrors the text specs and the design team's own build notes. This document translates that product into a production
 system; it does not redefine the product.
 
 ## 3. High-level architecture

@@ -36,8 +36,12 @@ on live rendering:
 
 ## Authority and how to read these together
 
-1. **The live Claude Design project** (the actual `.dc.html` pages) is authoritative for
-   what V1 looks like and does. Build what's there.
+**Update 2026-11-03 (user's decision):** the live site as built, plus the repo's `DECISIONS.md`,
+is now the authority; the Claude Design project is the September 2026 starting point (see the
+root `CLAUDE.md`). The order below describes how these documents relate to each other.
+
+1. **The Claude Design project** (the actual `.dc.html` pages) was authoritative for what V1
+   looked like and did when it was built.
 2. **`DESIGN_PROJECT_BUILD_NOTES.md`** explains, in the design team's own words, where the
    built pages depart from the specs below and what was deliberately cut from V1. Trust it
    over the specs when they conflict.

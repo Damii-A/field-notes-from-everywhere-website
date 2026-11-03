@@ -3008,3 +3008,17 @@ Website themes (the 9 hub groups) are unrelated and unchanged.
 
 **Verified**: type check, schema validation 0/0, production build. **Not yet seen**: a send carrying them.
 
+## 2026-11-03 — The live site + DECISIONS.md are the authority; the design project is the starting point
+
+**Decision** (user, asked): `CLAUDE.md`'s governing sources now put **the live site as built, together with `DECISIONS.md`**
+first. The Claude Design project ("Full FNFE Website") becomes the September 2026 starting point: history and original
+intent, no longer the authority. Edited to match: `CLAUDE.md` (sources 1-2, the source-of-truth rule, startup step 5, the
+design-token working rule), `ARCHITECTURE.md` §2, `docs/design-specs/README.md` (an update note; the mirrored specs and
+build notes themselves are unchanged, verbatim).
+
+**Why**: the site was built from the design project on 2026-09-21 and has since changed in many user-directed ways
+(282 commits; 45+ decision entries record user-directed changes or departures), so the design project no longer shows the
+product. Standalone Claude Design closes by 2026-12-14 (moving into Claude); keeping it as the top authority would point
+future sessions at a stale, possibly unreachable source. Checked the same day: no full copy of the design project exists
+(only the text specs and build notes, by the 2026-09-21 decision); a copy is now optional history, not a dependency.
+
