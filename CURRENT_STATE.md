@@ -77,6 +77,8 @@ the text existed) is still a draft with no intro, meta description or slug. 53 o
 time; the one without is **The Risk** (Dark Romance, not in the Thriller ranking; it fills when that ranking is sent).
 No article has a Pinterest pin yet. The user confirmed the popup changes live.
 
+**2026-11-04: no hero image on article pages** (DECISIONS.md, same date; user's idea, approved from a preview). The first book is now on the opening screen on phones and laptops. The image is still added to each article: hubs, homepage, "What to read next", emails and link previews use it.
+
 **2026-11-04: Post ideas split by status** (DECISIONS.md, same date; user's pick of three lists). "Post ideas" in the Studio
 opens onto Not started / In progress / Published, with counts, worked out live from the articles. **Seen working by the
 user** in the real Studio (2026-11-04).

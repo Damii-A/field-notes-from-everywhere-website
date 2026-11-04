@@ -113,15 +113,6 @@
   text-underline-offset: 3px;
 }
 
-.hero {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 12 / 5;
-  margin-top: clamp(28px, 3.4vw, 44px);
-  overflow: hidden;
-  box-shadow: var(--shadow-raised);
-}
-
 .intro {
   margin-top: clamp(28px, 3.4vw, 44px);
   display: flex;

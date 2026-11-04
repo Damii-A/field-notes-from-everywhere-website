@@ -203,7 +203,7 @@ export default defineType({
       name: "heroImage",
       title: "Hero image",
       description:
-        "Design at 2400 × 1000 px: the article banner's exact shape, so the whole image shows there. Other places (hub cards, homepage) only trim the sides, never the top or bottom, so keep the main subject in the middle third. If the subject isn't centred, click the crop icon on the image and drag the focus circle onto it.",
+        "Not shown on the article page itself: it's the image on hub cards, the homepage, \"What to read next\", newsletter emails and link previews. Design at 2400 × 1000 px. Hub cards and the homepage only trim the sides, never the top or bottom, so keep the main subject in the middle third. If the subject isn't centred, click the crop icon on the image and drag the focus circle onto it.",
       type: "image",
       options: { hotspot: true },
       fields: [{ name: "alt", type: "string", title: "Alt text", description: "Describe what's in the image, for search engines and screen readers." }],

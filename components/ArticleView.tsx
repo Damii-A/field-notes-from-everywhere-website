@@ -38,7 +38,6 @@ const CATEGORY_STYLE: Record<
     tagBg: string;
     tagColor: string;
     methodologyBorder: string;
-    heroRadius: string;
     rrBannerBg: string;
     rrBannerLabelColor: string;
     rrBannerFineColor: string;
@@ -55,7 +54,6 @@ const CATEGORY_STYLE: Record<
     tagBg: "var(--sage-700)",
     tagColor: "var(--paper-050)",
     methodologyBorder: "var(--sage-600)",
-    heroRadius: "var(--radius-lg)",
     rrBannerBg: "var(--sage-700)",
     rrBannerLabelColor: "var(--paper-050)",
     rrBannerFineColor: "var(--paper-050)",
@@ -71,7 +69,6 @@ const CATEGORY_STYLE: Record<
     tagBg: "var(--clay-300)",
     tagColor: "var(--ink-900)",
     methodologyBorder: "var(--clay-500)",
-    heroRadius: "46% 54% 50% 50%/10% 10% 12% 12%",
     rrBannerBg: "var(--clay-300)",
     rrBannerLabelColor: "var(--ink-700)",
     rrBannerFineColor: "var(--ink-700)",
@@ -87,7 +84,6 @@ const CATEGORY_STYLE: Record<
     tagBg: "var(--slate-600)",
     tagColor: "var(--paper-050)",
     methodologyBorder: "var(--sky-600)",
-    heroRadius: "var(--radius-lg)",
     rrBannerBg: "var(--sky-200)",
     rrBannerLabelColor: "var(--ink-700)",
     rrBannerFineColor: "var(--ink-800)",
@@ -200,10 +196,6 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
             <p className={styles.methodologyText}>
               {article.methodologySentence} <Link href="/about#how-we-find-the-books">How we find the books</Link>
             </p>
-          </div>
-
-          <div className={styles.hero} style={{ borderRadius: style.heroRadius }}>
-            <ImagePlaceholder label={article.heroImage?.alt ?? "Article image"} src={article.heroImage?.url} position={article.heroImage?.position} priority sizes="(max-width: 760px) 100vw, 720px" />
           </div>
 
           <div className={styles.intro}>

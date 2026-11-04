@@ -3101,3 +3101,24 @@ filtered lists. It also keeps the lists live: a filter's own listener wouldn't r
 edits); the real `structure` run against real ideas with a stand-in live feed (lists, counts, no "create" button, no redraw when
 nothing moved, an idea moving on "Start article"); type check, lint, schema validation, production build. **Seen working by the user** in the
 real Studio (2026-11-04).
+
+## 2026-11-04 — Hero image no longer shown on the article page
+
+**Decision** (user's idea, approved from a before/after preview): the hero image no longer shows on article pages, in all
+three columns. The page goes from the "How we made this list" box straight to the intro, then the books.
+
+**Why**: the books are the reason a reader came, and the covers already give the page plenty of images. The banner sat
+between the reader and the list. Measured on a live article with it hidden: the book list starts 164px higher on a phone
+(902 to 738, screen height 844) and 344px higher on a laptop (1040 to 696, screen height 900), so the first book is now on
+the opening screen on both.
+
+**Kept**: the field, still on every article and still used by hub pages, the homepage, "What to read next" cards, newsletter
+emails, link previews (`og:image`), the Pinterest button's fallback and the article's JSON-LD. The Studio help text now says
+so. Design size stays 2400 × 1000: existing images are that shape, and emails show the whole image.
+
+**Trade-off accepted**: the JSON-LD names an image readers don't see on the page. Left as it is: the page still has images
+(the covers), and I expect the effect to be minor. Not measured yet: the effect on page speed; the banner was often the
+page's slowest large element, so it shouldn't hurt. This also supersedes the banner part of the 2026-11-03 "Article hero and
+hub lead image fetched first" entry; the hub's lead image is unchanged.
+
+**Verified**: type check, production build, and the live page after deploy (see CURRENT_STATE.md).
