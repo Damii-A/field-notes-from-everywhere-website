@@ -12,7 +12,8 @@
  * 2026-09-24, see DECISIONS.md): keyword in the title tag (the strongest
  * on-page signal), in the intro and in a short, evergreen URL; a unique meta
  * description written for click-through, which does NOT need the keyword
- * (Google doesn't rank on it); internal links; image alt text.
+ * (Google doesn't rank on it); image alt text. Internal links: "What to read next"
+ * fills itself in since 2026-11-04, so that check is gone.
  */
 
 /** Google typically shows about this many characters of a title before cutting it off. */

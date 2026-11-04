@@ -321,15 +321,10 @@ export default defineType({
     defineField({
       name: "whatToReadNext",
       title: "What to read next",
-      description: "pub_article.md §6.5 — editorially chosen, up to 3.",
+      description: "Optional: the site fills this in by itself. Only add an article here to make sure it shows; the rest are picked automatically, up to 3.",
       type: "array",
       of: [{ type: "reference", to: [{ type: "article" }] }],
-      validation: (r) => [
-        r.max(3),
-        shortlistWarning<unknown[]>(r, (v) =>
-          v && v.length > 0 ? null : "SEO: link at least one related article. Internal links help Google and readers find more of your lists.",
-        ),
-      ],
+      validation: (r) => r.max(3),
     }),
   ],
   preview: { select: { title: "title", subtitle: "category" } },

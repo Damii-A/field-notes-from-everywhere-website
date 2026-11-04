@@ -3177,3 +3177,23 @@ no change. The tool doesn't see which ideas are deferred; if that's wanted later
 an idea with no ranking); the real `structure` code against live ideas (read-only): Thriller 19, then Not started 7, In progress 5,
 Deferred 0, Published 7, no "create" button; type check, lint, schema validation, production build. **Seen working by the user** in the real
 Studio, Defer included (2026-11-04).
+
+## 2026-11-04 — "What to read next" fills itself in
+
+**Decision** (user asked to automate it): every article shows 3 picks whenever 3 others are live, with no Studio work. Before this,
+6 of the 10 live articles showed none. `pub_article.md` §6.5 allows it: "Initial selections can be controlled manually", and it
+wants relevant pieces, not simply the latest.
+
+**The rule** (`lib/content/whatToReadNext.ts`): anything chosen by hand in the Studio comes first; the rest are filled by same
+ranking, then most books in common, then newest. No article is recommended more than 4 times while another choice is left: without
+this limit, on the live articles one was recommended 6 times and one never. Hand picks count towards the limit but are never
+dropped. It's worked out when a page renders (cached 5 minutes) and stores nothing, so older articles start pointing at new ones by
+themselves.
+
+**Considered**: matching on shared book tags instead of shared books. Tried on the live articles: nearly the same picks, with more
+code, so the simple rule won. Known effect: picks repeat some books (2-8 here), since that's what makes them related.
+
+**Changed in the Studio**: the field's help text says it's optional, and the Shortlist SEO warning for an empty field is gone.
+
+**Verified**: eight rule cases; the real rule on the 10 live articles (3 picks each, every article recommended at least once, none
+over 4, hand picks kept); type check, lint, production build.

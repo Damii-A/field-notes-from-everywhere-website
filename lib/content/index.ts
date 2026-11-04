@@ -11,6 +11,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
 import { CATEGORIES } from "./categories";
 import { formatArticleDate } from "./dates";
+import { pickWhatToReadNext, type NextCandidate } from "./whatToReadNext";
 import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, ThemeRef, WhereToReadBook } from "./types";
 
 export { CATEGORIES, CATEGORY_LIST } from "./categories";
@@ -111,13 +112,13 @@ interface RawBookEntry {
 }
 
 interface RawArticle extends RawArticleSummary {
+  _id: string;
   author: string;
   pinterestPin: string | null;
   pinDescription: string | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   introText: any[] | undefined;
   bookEntries: RawBookEntry[] | null;
-  whatToReadNext: RawArticleSummary[] | null;
 }
 
 function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
@@ -196,7 +197,7 @@ function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | n
   };
 }
 
-function toArticle(raw: RawArticle): Article {
+function toArticle(raw: RawArticle, whatToReadNext: ArticleSummary[]): Article {
   const isRanked = CATEGORIES[raw.category].ranked;
   return {
     ...toArticleSummary(raw),
@@ -208,7 +209,7 @@ function toArticle(raw: RawArticle): Article {
     books: (raw.bookEntries ?? [])
       .map((entry, i) => toBookEntry(entry, isRanked ? i + 1 : undefined))
       .filter((b): b is BookEntry => b !== null),
-    whatToReadNext: (raw.whatToReadNext ?? []).map(toArticleSummary),
+    whatToReadNext,
   };
 }
 
@@ -234,6 +235,7 @@ const SUMMARY_PROJECTION = `{
 }`;
 
 const FULL_ARTICLE_PROJECTION = `{
+  _id,
   "slug": slug.current,
   category,
   title,
@@ -272,9 +274,26 @@ const FULL_ARTICLE_PROJECTION = `{
       pageCount,
       readingHours
     }
-  },
-  "whatToReadNext": whatToReadNext[@->publishedAt <= now() || $includeScheduled]->${SUMMARY_PROJECTION}
+  }
 }`;
+
+/** Worked out from every live article, in lib/content/whatToReadNext.ts. */
+async function getWhatToReadNext(articleId: string): Promise<ArticleSummary[]> {
+  const raws = await groqFetch<(NextCandidate & { summary: RawArticleSummary })[]>(
+    `*[_type == "article" && ${RELEASED}]{
+      "id": _id,
+      "ranking": ranking._ref,
+      publishedAt,
+      "books": bookEntries[].book._ref,
+      "handPicked": whatToReadNext[]._ref,
+      "summary": @${SUMMARY_PROJECTION}
+    }`,
+    {},
+    { tags: ["article"], revalidate: 300 },
+  );
+  const summaries = new Map(raws.map((r) => [r.id, r.summary]));
+  return (pickWhatToReadNext(raws).get(articleId) ?? []).map((id) => toArticleSummary(summaries.get(id)!));
+}
 
 export async function getLatestArticle(category: CategorySlug): Promise<Article | null> {
   const raw = await groqFetch<RawArticle | null>(
@@ -282,7 +301,7 @@ export async function getLatestArticle(category: CategorySlug): Promise<Article 
     { category },
     { tags: ["article", "book", "tag", "ranking"], revalidate: 300 },
   );
-  return raw ? toArticle(raw) : null;
+  return raw ? toArticle(raw, await getWhatToReadNext(raw._id)) : null;
 }
 
 export interface HubPage {
@@ -317,7 +336,7 @@ export async function getArticleBySlug(category: CategorySlug, slug: string): Pr
     { category, slug },
     { tags: ["article", "book", "tag", "ranking"], revalidate: 300 },
   );
-  return raw ? toArticle(raw) : null;
+  return raw ? toArticle(raw, await getWhatToReadNext(raw._id)) : null;
 }
 
 const LEGAL_PAGE_FALLBACK_TITLE: Record<LegalPage["slug"], string> = {
