@@ -3137,3 +3137,22 @@ To hide another tag, add its name to the list.
 Non-sexual heavy tags (e.g. "Child Abuse") were not part of the request.
 
 **Also settled**: blurbs on the lists stay. My suggestion to replace them with our own text was declined by the user.
+
+## 2026-11-04 — AdSense first, then Journey; legal pages name AdSense
+
+**Decision** (user): apply to Google AdSense now, as the site stands, then move to Journey by Mediavine at 1,000 Tier 1
+sessions in 30 days. Publisher ID `pub-5271200373971782` (public); site connected through `public/ads.txt`. No consent
+platform bought or installed in advance: AdSense's Privacy & messaging has a Google-certified one.
+
+**Legal pages**: Privacy & Cookies and Disclosures now name Google AdSense, with Google's required wording (vendor cookies,
+Google's advertising cookies, Ads Settings and aboutads.info opt-outs). User approved the exact text; changed in Sanity by
+API, "Last updated" 2026-11-04; old text in `backups/2026-11-04-legal-before-adsense.json`. "We show ads" goes live slightly
+before any ad does, because Google reviews this wording and no ads run before approval.
+
+**Promises these pages now make, to keep before ads run**: a consent choice before ad cookies in the UK, EU and Switzerland,
+and a "Do Not Sell or Share My Personal Information" link where US state laws apply. **The policy also promises to tell the
+email list about significant changes**: one line in the 2026-11-10 newsletter. "Right now, FNFE doesn't earn any money" on
+Disclosures stays true until ads earn; change it then.
+
+**Known risk accepted**: about 97% of the list text is shared book blurbs. If Google flags it, the user will consider two
+fields per book ("This book might be for you" / "might not be for you"), based strictly on the blurb, tags and verifiable facts.

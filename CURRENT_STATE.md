@@ -262,9 +262,10 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
      each blurb (needs a field + preview). **User's call 2026-11-04: apply as is first**; revisit if Google rejects the site.
      **User's idea if it's flagged (replaces the "why it's here" line):** two fields per book, "This book might be for you" and
      "This book might not be for you", based strictly on the blurb, tags and verifiable information.
-   - **Signed up**: publisher ID `pub-5271200373971782` (public); site connected by `public/ads.txt`. **Next: Privacy and
-     Disclosures wording approved and live, then the user presses "Request review".** The ad code and consent pop-up aren't on
-     the site yet.
+   - **Signed up**: publisher ID `pub-5271200373971782` (public); site connected by `public/ads.txt`. **Privacy and Disclosures
+     updated 2026-11-04** (approved text; DECISIONS.md, same date). **Next: the user presses "Request review"** (a few days, up
+     to 2-4 weeks). The ad code and consent pop-up aren't on the site yet. **One line about the policy change goes in the
+     2026-11-10 newsletter.**
    - **Second risk**: 47 templated "Where to read" pages, about three quarters of the sitemap, mostly the same answer,
      store links and blurb. Keep ads off them (and off the Reading Room page).
    - **Tags**: "Explicit Sex" and "Sexual Violence" hidden from public pages (done; DECISIONS.md, same date).
