@@ -252,18 +252,23 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
    thing to settle.
 2. **Automate the "What to read next" picks** on each article (today up to 3, picked by hand in the Studio's `whatToReadNext` field; the spec, `pub_article.md` §6.5, says "editorially
    chosen", so automating it is a deliberate change to record in DECISIONS.md).
-3. **Prepare the site for ad network applications** (started 2026-11-04; researched, nothing built). Corrects the older
-   note here: **don't buy or install a consent platform in advance.** The network brings its own: Mediavine/Journey shows
-   its own to the right regions by default, and AdSense has a Google-certified message built in. Which network comes first,
-   so everything below waits on it. Target, if the user agrees: **Journey by Mediavine** (official requirement: 1,000
-   sessions from Tier 1 countries in 30 days, plus content and traffic quality; Grow must run for 30 days first). Main
-   Mediavine: $5,000 annual ad revenue. Raptive: 25,000 monthly pageviews (press reports, official page not read).
-   AdSense: no traffic minimum on its eligibility page. **Waiting on the user: their last-30-days Tier 1 sessions in GA4.**
-   Already fine: About, Contact, Privacy, Terms and Disclosures live; both legal pages written for future ads. **When a
-   network is chosen**: add its script (and Grow; confirm a custom Next.js install in its portal first), `ads.txt` (404
-   today; the lines come from the network), name it in Privacy & Cookies and change "we don't show ads" on Privacy and
-   Disclosures, and make its consent pop-up and our own cookie banner work as one (GA4 must follow the choice, no two
-   banners). Don't put the network's name on the site before it's real.
+3. **Prepare the site for ad networks** (started 2026-11-04; audited, nothing built). **User's plan: AdSense first (the
+   site is new, nearly zero traffic), then Journey by Mediavine at 1,000 Tier 1 sessions in 30 days.** Don't install a
+   consent platform in advance (corrects an older note): AdSense's Privacy & messaging has a Google-certified one, and
+   Journey brings its own. AdSense lists no traffic minimum; it reviews the whole site for original, high-quality content.
+   - **Main risk, found by audit**: of about 18,150 words across the 10 published lists, 507 are ours (intros); 17,652 are
+     shared book blurbs (at least some publisher text; 0 of 128 entries have their own). The fix needs no build: each
+     entry's existing `blurb` field overrides the book's. Waiting on the user's decision.
+   - **Second risk**: 47 templated "Where to read" pages, about three quarters of the sitemap, mostly the same answer,
+     store links and blurb. Keep ads off them (and off the Reading Room page).
+   - **Tags**: some in the page HTML name sensitive subjects ("Explicit Sex" on Eye of the Needle, "Sexual Violence" on
+     2 books). Google bans non-consensual sexual themes; whether a warning tag counts is unknown. Waiting on the user.
+   - Fine already: About, Contact, Privacy, Terms, Disclosures; no dead ends.
+   - **Once the user signs up** (the publisher ID isn't secret): AdSense code loading with consent, `ads.txt` (404 today),
+     Google's EU/UK/Swiss message and US states message, one banner rather than two (GA4 follows the choice), Privacy
+     (Google's required wording: vendor cookies, Ads Settings opt-out) and Disclosures ("we don't show ads" goes). Legal
+     text is live Sanity data: the user approves it first. Seller information stays Confidential (keeps the owner's name
+     out of sellers.json). Never click own ads or ask readers to.
 
 ## Open, raise one at a time (nothing blocking)
 
