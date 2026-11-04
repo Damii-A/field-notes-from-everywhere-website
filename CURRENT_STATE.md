@@ -252,8 +252,18 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
    thing to settle.
 2. **Automate the "What to read next" picks** on each article (today up to 3, picked by hand in the Studio's `whatToReadNext` field; the spec, `pub_article.md` §6.5, says "editorially
    chosen", so automating it is a deliberate change to record in DECISIONS.md).
-3. **Prepare the site for ad network applications**: a Google-certified consent platform for EEA/UK/Swiss visitors, and a
-   privacy-policy update naming it.
+3. **Prepare the site for ad network applications** (started 2026-11-04; researched, nothing built). Corrects the older
+   note here: **don't buy or install a consent platform in advance.** The network brings its own: Mediavine/Journey shows
+   its own to the right regions by default, and AdSense has a Google-certified message built in. Which network comes first,
+   so everything below waits on it. Target, if the user agrees: **Journey by Mediavine** (official requirement: 1,000
+   sessions from Tier 1 countries in 30 days, plus content and traffic quality; Grow must run for 30 days first). Main
+   Mediavine: $5,000 annual ad revenue. Raptive: 25,000 monthly pageviews (press reports, official page not read).
+   AdSense: no traffic minimum on its eligibility page. **Waiting on the user: their last-30-days Tier 1 sessions in GA4.**
+   Already fine: About, Contact, Privacy, Terms and Disclosures live; both legal pages written for future ads. **When a
+   network is chosen**: add its script (and Grow; confirm a custom Next.js install in its portal first), `ads.txt` (404
+   today; the lines come from the network), name it in Privacy & Cookies and change "we don't show ads" on Privacy and
+   Disclosures, and make its consent pop-up and our own cookie banner work as one (GA4 must follow the choice, no two
+   banners). Don't put the network's name on the site before it's real.
 
 ## Open, raise one at a time (nothing blocking)
 
