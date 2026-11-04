@@ -1,6 +1,6 @@
 import { distinctUntilChanged, map } from "rxjs";
 import type { StructureBuilder, StructureResolver } from "sanity/structure";
-import { POST_IDEA_STATUS_QUERY, sortPostIdeas, type PostIdeaStatusRow } from "./lib/postIdeaStatus";
+import { POST_IDEA_STATUS_QUERY, sortPostIdeas, type PostIdeaStatusRow, type PostIdeaTheme } from "./lib/postIdeaStatus";
 
 /**
  * Custom Studio sidebar — replaces the default flat, alphabetical
@@ -23,7 +23,7 @@ const ARTICLE_CATEGORIES = [
   { slug: "up-next", title: "Up Next" },
 ] as const;
 
-/** One of the three Post ideas lists; view-only, so no "create new" button. */
+/** One of a theme's Post ideas lists; view-only, so no "create new" button. */
 const postIdeaList = (S: StructureBuilder, id: string, title: string, ids: string[]) =>
   S.listItem()
     .id(id)
@@ -38,6 +38,23 @@ const postIdeaList = (S: StructureBuilder, id: string, title: string, ids: strin
         .params({ ids })
         .defaultOrdering([{ field: "sentAt", direction: "desc" }])
         .initialValueTemplates([]),
+    );
+
+/** A theme (e.g. Thriller), opening onto its lists. */
+const postIdeaTheme = (S: StructureBuilder, { id, name, total, status }: PostIdeaTheme) =>
+  S.listItem()
+    .id(`postIdeas-${id}`)
+    .title(`${name} (${total})`)
+    .child(
+      S.list()
+        .id(`postIdeas-${id}`)
+        .title(name)
+        .items([
+          postIdeaList(S, `postIdeas-${id}-notStarted`, "Not started", status.notStarted),
+          postIdeaList(S, `postIdeas-${id}-inProgress`, "In progress", status.inProgress),
+          postIdeaList(S, `postIdeas-${id}-deferred`, "Deferred", status.deferred),
+          postIdeaList(S, `postIdeas-${id}-published`, "Published", status.published),
+        ]),
     );
 
 export const structure: StructureResolver = (S, { documentStore }) =>
@@ -70,8 +87,9 @@ export const structure: StructureResolver = (S, { documentStore }) =>
               ),
             ),
         ),
-      // Sent from the internal tool; view-only here (DECISIONS.md, 2026-11-03). Split by
-      // status, live, from raw documents (see postIdeaStatus.ts; DECISIONS.md, 2026-11-04).
+      // Sent from the internal tool; view-only here (DECISIONS.md, 2026-11-03). Grouped by
+      // theme, then status, live, from raw documents (see postIdeaStatus.ts; DECISIONS.md,
+      // 2026-11-04). "Theme" here is the idea's ranking, not the Themes section below.
       S.listItem()
         .id("postIdeas")
         .title("Post ideas")
@@ -82,15 +100,11 @@ export const structure: StructureResolver = (S, { documentStore }) =>
               map((rows) => sortPostIdeas(rows as PostIdeaStatusRow[])),
               // Article edits re-run the query; only redraw when an idea changes list.
               distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-              map((status) =>
+              map((themes) =>
                 S.list()
                   .id("postIdeas")
                   .title("Post ideas")
-                  .items([
-                    postIdeaList(S, "postIdeasNotStarted", "Not started", status.notStarted),
-                    postIdeaList(S, "postIdeasInProgress", "In progress", status.inProgress),
-                    postIdeaList(S, "postIdeasPublished", "Published", status.published),
-                  ]),
+                  .items(themes.map((theme) => postIdeaTheme(S, theme))),
               ),
             ),
         ),

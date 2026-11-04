@@ -221,7 +221,7 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   Its one action, **"Start article"** (`sanity/actions/StartArticleAction.tsx`), makes a draft article (prefilled
   with that text when the idea has it)
   and sets `article.postIdea` (read-only weak reference), which is how the tool reads back that an
-  idea's article is live. The Studio splits ideas into Not started / In progress / Published with live counts (`sanity/lib/postIdeaStatus.ts`, `sanity/structure.ts`, 2026-11-04), worked out from `article.postIdea`, never stored. Nothing on the public site reads `postIdea`.
+  idea's article is live. The Studio groups ideas by theme (their ranking), then Not started / In progress / Deferred / Published with live counts; **`postIdeaDeferral`** (`postIdeaDeferral-<toolIdeaId>`, set by the "Defer" action) keeps Deferred separate because a re-send replaces the idea (`sanity/lib/postIdeaStatus.ts`, `sanity/structure.ts`, 2026-11-04), worked out from `article.postIdea`, never stored. Nothing on the public site reads `postIdea`.
 - **`readingRoomIssue`** — one Reading Room email (added 2026-10-02, see `DECISIONS.md`): `title`
   (the theme), `subject`, `previewText`, `aboutThisIssue` (one boxed section before the books),
   `closingSentence` + `signOff` (after the books), `ranking` + `rankingCount` (for "Fill books

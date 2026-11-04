@@ -79,6 +79,8 @@ No article has a Pinterest pin yet. The user confirmed the popup changes live.
 
 **2026-11-04: no hero image on article pages** (DECISIONS.md, same date; user's idea, approved from a preview). The first book is now on the opening screen on phones and laptops. The image is still added to each article: hubs, homepage, "What to read next", emails and link previews use it.
 
+**2026-11-04: Post ideas by theme, with Deferred** (DECISIONS.md, same date; replaces the three flat lists below). Post ideas → Thriller → Not started / In progress / Deferred / Published. "Defer" is in an idea's actions menu and survives tool re-sends.
+
 **2026-11-04: Post ideas split by status** (DECISIONS.md, same date; user's pick of three lists). "Post ideas" in the Studio
 opens onto Not started / In progress / Published, with counts, worked out live from the articles. **Seen working by the
 user** in the real Studio (2026-11-04).
@@ -246,13 +248,7 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 
 ## To do: the user's list (added 2026-11-04; not started, user said don't work on these yet)
 
-1. **Park post ideas without deleting them**: a way to move ideas the user doesn't want to work on for now out of
-   "Not started", so that list shows only ideas they want to work on (the Studio's Post ideas lists, DECISIONS.md
-   2026-11-04). Note: post ideas are view-only in the Studio and belong to the tool, so where "parked" lives is the first
-   thing to settle.
-   **Goes with it (user, 2026-11-04): group post ideas by theme.** Opening "Post ideas" shows themes (e.g. Thriller); opening
-   a theme shows its own lists: Not started, In progress, Published, and the new Deferred list. Ideas already carry a `ranking`
-   reference, which is the likely source of the theme. Best built together with Deferred.
+1. ~~Park post ideas, group by theme~~ **Built 2026-11-04** (DECISIONS.md, same date). **Next: the user reloads the Studio and tries Defer on one idea.**
 2. **Automate the "What to read next" picks** on each article (today up to 3, picked by hand in the Studio's `whatToReadNext` field; the spec, `pub_article.md` §6.5, says "editorially
    chosen", so automating it is a deliberate change to record in DECISIONS.md).
 3. **Prepare the site for ad networks** (started 2026-11-04; audited, nothing built). **User's plan: AdSense first (the

@@ -71,7 +71,7 @@ export function StartArticleAction(props: DocumentActionProps) {
 
   return {
     label: running ? "Starting article…" : "Start article",
-    tone: "primary",
+    tone: "primary" as const,
     disabled: running || !idea,
     dialog,
     onHandle: () => void start(),

@@ -3156,3 +3156,24 @@ Disclosures stays true until ads earn; change it then.
 
 **Known risk accepted**: about 97% of the list text is shared book blurbs. If Google flags it, the user will consider two
 fields per book ("This book might be for you" / "might not be for you"), based strictly on the blurb, tags and verifiable facts.
+
+## 2026-11-04 — Post ideas grouped by theme, with a Deferred list
+
+**Decision** (user): "Post ideas" in the Studio now opens onto **themes** (Thriller today), and each theme onto **Not started**,
+**In progress**, **Deferred** and **Published**. Replaces the three flat lists from earlier the same day. A theme is the idea's
+`ranking`, so a new ranking's ideas get their own theme without any change here; an idea with no ranking goes under "No theme".
+This is unrelated to the Studio's "Themes" section (hub groupings).
+
+**Deferred**: "Defer" in the idea's actions menu moves it out of Not started without deleting it; "Bring back to Not started"
+reverses it. It isn't available once an article has been started from the idea, and an article always outranks it (an idea
+with an article is never Deferred).
+
+**Why a separate `postIdeaDeferral` document, not a field on the idea**: the tool sends ideas with `createOrReplace`, so a re-send
+would wipe a field kept on the idea. `postIdeaDeferral-<toolIdeaId>` survives re-sends. `idea` is a plain string, not a reference,
+so it can't block the tool from replacing or removing an idea. Not in the sidebar, no public page reads it, and the tool needs
+no change. The tool doesn't see which ideas are deferred; if that's wanted later, it can read these documents.
+
+**Verified**: ten status cases (including deferred then started, deferred then published, a deferral left from a removed idea, and
+an idea with no ranking); the real `structure` code against live ideas (read-only): Thriller 19, then Not started 7, In progress 5,
+Deferred 0, Published 7, no "create" button; type check, lint, schema validation, production build. **Not yet seen** in the real
+Studio; the Defer button itself hasn't been pressed (no clicks on live data).

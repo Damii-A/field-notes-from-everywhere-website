@@ -16,6 +16,7 @@ import { CreateKitDraftAction } from "./sanity/actions/CreateKitDraftAction";
 import { CreateResendDraftAction } from "./sanity/actions/CreateResendDraftAction";
 import { withPublishDateCheck } from "./sanity/actions/PublishWithDateCheck";
 import { StartArticleAction } from "./sanity/actions/StartArticleAction";
+import { DeferIdeaAction } from "./sanity/actions/DeferIdeaAction";
 import { RankingTagsView } from "./sanity/components/RankingTagsView";
 
 const projectId =
@@ -89,7 +90,7 @@ export default defineConfig({
     // including from an article's book field.
     newDocumentOptions: (prev, { creationContext }) =>
       (creationContext.type === "global"
-        ? prev.filter((item) => !["siteSettings", "article-by-category", "postIdea"].includes(item.templateId))
+        ? prev.filter((item) => !["siteSettings", "article-by-category", "postIdea", "postIdeaDeferral"].includes(item.templateId))
         : prev
       ).filter((item) => item.templateId !== "book"),
     // "Fill books from ranking" on Shortlist articles and Reading Room issues — DECISIONS.md, 2026-09-23;
@@ -97,7 +98,7 @@ export default defineConfig({
     // "Create Kit draft" on issues — DECISIONS.md, 2026-10-02;
     // "Create Resend draft" on weekly newsletters — DECISIONS.md, 2026-10-05;
     // Publish asks about the date on articles dated before today — DECISIONS.md, 2026-10-28;
-    // "Start article" on post ideas (their only action) — DECISIONS.md, 2026-11-03;
+    // "Start article" on post ideas — DECISIONS.md, 2026-11-03; "Defer" beside it — 2026-11-04;
     // books have no actions (view-only, sent by the internal tool) — DECISIONS.md, 2026-11-03.
     actions: (prev, { schemaType }) =>
       schemaType === "article"
@@ -108,8 +109,8 @@ export default defineConfig({
             ? [...prev, CreateResendDraftAction]
             : // Post ideas are sent and replaced by the internal tool only (DECISIONS.md, 2026-11-03).
               schemaType === "postIdea"
-              ? [StartArticleAction]
-              : schemaType === "book"
+              ? [StartArticleAction, DeferIdeaAction]
+              : schemaType === "book" || schemaType === "postIdeaDeferral"
                 ? []
                 : prev,
   },
