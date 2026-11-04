@@ -25,9 +25,7 @@ export const FORMULA_NAMES: Record<string, string> = {
 };
 
 const formulaName = (code?: string) => (code ? (FORMULA_NAMES[code] ?? code) : "No formula");
-// "book-club-book-picks": the third column's code before its "Up Next" rename (2026-11-03).
-const columnName = (slug?: string) =>
-  CATEGORY_LIST.find((c) => c.slug === (slug === "book-club-book-picks" ? "up-next" : slug))?.name ?? slug ?? "No column";
+const columnName = (slug?: string) => CATEGORY_LIST.find((c) => c.slug === slug)?.name ?? slug ?? "No column";
 
 export default defineType({
   name: "postIdea",

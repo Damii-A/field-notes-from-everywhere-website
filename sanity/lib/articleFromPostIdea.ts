@@ -32,7 +32,7 @@ export function articleFromPostIdea(
 ): { fields: Record<string, unknown> } | { problem: string } {
   if (!idea.title?.trim()) return { problem: "This idea has no title yet. Pick one in the internal tool and send it again." };
   // The third column was renamed "Up Next" (2026-11-03); ideas sent before the tool switched still say the old code.
-  const column = idea.column === "book-club-book-picks" ? "up-next" : idea.column;
+  const column = idea.column;
   if (!column) return { problem: "This idea has no column. Set one in the internal tool and send it again." };
   const books = (idea.books ?? []).filter((b) => b.book?._ref);
   if (books.length === 0) return { problem: "This idea has no books." };
