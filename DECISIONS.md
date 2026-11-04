@@ -3121,4 +3121,4 @@ so. Design size stays 2400 × 1000: existing images are that shape, and emails s
 page's slowest large element, so it shouldn't hurt. This also supersedes the banner part of the 2026-11-03 "Article hero and
 hub lead image fetched first" entry; the hub's lead image is unchanged.
 
-**Verified**: type check, production build, and the live page after deploy (see CURRENT_STATE.md).
+**Verified**: type check, production build; live on the cat and mouse article in a real browser (no banner, all 11 books, book list at 738px on a phone and 696px on a laptop, `og:image` and JSON-LD image still there) and on the What to Read When hub (images still showing).
