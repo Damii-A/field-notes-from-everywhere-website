@@ -83,8 +83,9 @@ user** in the real Studio (2026-11-04).
 
 **2026-11-04: "Where to read" SEO checked against outside feedback (no change needed).** Live Gone Girl page: own address,
 title, description and canonical; content in the server's HTML before JavaScript; 42 book pages in the sitemap; the Shortlist
-article links its 15 books. Whether Google indexes them isn't known here: suggested to the user, Search Console → Pages. Many
-under "Crawled, currently not indexed" would be the signal to add original content per page.
+article links its 15 books. **User's Search Console, 2026-11-04: 47 pages indexed, book pages among them** (10 rows seen; sitemap has 63 URLs, 47 of them
+book pages), so they are being indexed; the user is satisfied and doesn't need ranking numbers now. If many later show
+"Crawled, currently not indexed", add original content per page.
 
 **Tool notes not yet passed on (tell the user at session start; user's request 2026-11-03)**, in `docs/handover/`
 (checked against the tool's own docs and code, 2026-11-03): `TOOL_HANDOVER_2026-11-03_UP_NEXT.md` (not seen: the tool
