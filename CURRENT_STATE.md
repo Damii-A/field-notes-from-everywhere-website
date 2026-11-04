@@ -89,14 +89,11 @@ article links its 15 books. **User's Search Console, 2026-11-04: 47 pages indexe
 book pages), so they are being indexed; the user is satisfied and doesn't need ranking numbers now. If many later show
 "Crawled, currently not indexed", add original content per page.
 
-**Tool notes not yet passed on (tell the user at session start; user's request 2026-11-03)**, in `docs/handover/`
-(checked against the tool's own docs and code, 2026-11-03): `TOOL_HANDOVER_2026-11-03_UP_NEXT.md` (not seen: the tool
-still sends `column: "book-club-book-picks"`, accepted by the website; switch to `"up-next"`; sections from `groups`;
-anchor book stored), `TOOL_HANDOVER_2026-11-03_BOOK_DETAILS.md` (not seen: year, series, tag category fields to send;
-two high-overlap idea pairs), and `TOOL_HANDOVER_2026-11-03_FORMATS.md` **last section only** ("Idea 53 and Book a
-month": the tool read the first version and answered about idea 53; it hasn't seen that `bookamonth` was removed, which
-answers its question). Already seen by the tool: `…_ARTICLE_TEXT.md`, `…_BOOK_FACTS.md`, `TOOL_HANDOVER_2026-11-03.md`.
-Remove each from this line once the user confirms it was passed on.
+**Tool notes: none waiting (checked 2026-11-04).** All six notes in `docs/handover/` have been acted on by the tool
+(its commits `e9c55fc`, `29934d3`, `1da72d8`, `02af582`; checked read-only in the Studio): ideas send `column: "up-next"`
+(idea 53 re-sent with it and its 12 groups; no idea carries the old code); 53 of 54 books have year and series, and 411
+of 415 tags have a category; nothing uses `bookamonth`. Left with the user, not the tool: the two high-overlap idea pairs
+in `…_BOOK_DETAILS.md` (a review in the tool; not recorded as done). At session start, mention any new note added here.
 
 **Start the next session here (end of 2026-11-03; nothing unpushed).** Every non-dated open item was worked through
 today (see the numbered list and "Open" below). **Waiting on the user, small checks**: (a) the Twists draft was deleted
@@ -123,7 +120,7 @@ user before each** (order not chosen yet):
    Sanity by API, checked live on the article, the Shortlist page and the homepage; slug unchanged.
 6. Tag categories and book facts on the website, so the tool's send can carry them. **Page count + reading time
    done 2026-11-03**; **year, series and tag categories: website fields added 2026-11-03** (stored only, not shown;
-   user's choice); waiting for the tool's send to fill them (note: `docs/handover/TOOL_HANDOVER_2026-11-03_BOOK_DETAILS.md`).
+   user's choice); **filled by the tool's send 2026-11-04** (53 of 54 books, all but The Risk; 411 of 415 tags).
 7. ~~Studio book fields view-only~~ **Done 2026-11-03**: the whole book is view-only in the Studio (DECISIONS.md, same
    date). **Seen working by the user** in the real Studio (2026-11-03).
 8. Move the Claude Design project out of standalone Claude Design before 2026-12-14. **Checked 2026-11-03**: no full
@@ -254,9 +251,8 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
   registration at Namecheap, separate). Suggested, optional: remove the old FNFE WordPress install from that cPanel (an
   unmaintained WordPress on the same account is a risk to Livo); user's call.
 - ~~Accurate sitemap `lastmod`~~ **done 2026-11-03**. ~~JSON-LD beyond the book pages~~ **articles done 2026-11-03** (user chose it; DECISIONS.md, same date).
-- The Family Upstairs cover belongs to the tool now (books are edited only there); a better cover goes in via the tool's send.
-- Covers: The Family Upstairs is square (318 × 318, cropped); a full 1838 × 2775 cover is in the
-  Pinterest folder (offered, not done). Still under 300px wide but the best front covers found:
+- ~~The Family Upstairs cover~~ **Done**: the Studio has had the full 1838 × 2775 cover since the tool's send of
+  2026-10-31 (checked 2026-11-04). Covers still under 300px wide but the best front covers found:
   I Let You Go, Nightwatching, Rebecca (267/265/267px).
 - ~~Largest-contentful-paint on mobile~~ **Done 2026-11-03** (DECISIONS.md, same date): hero images fetched first, 4 of 7
   font preloads dropped. User's pagespeed.web.dev (mobile): homepage 99 / LCP 2.1s; article 96 / LCP 0.9-2.6s. Left: ~300ms

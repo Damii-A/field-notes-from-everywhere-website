@@ -39,7 +39,8 @@ differ, so this is about readers seeing the same books, not search. Nothing chan
 
 ## Two book fixes that now belong to the tool
 
-- **The Family Upstairs cover**: the website's is square (318 × 318, cropped). A full 1838 × 2775 cover is in the user's
+- ~~**The Family Upstairs cover**~~ **Out of date, nothing to do (2026-11-04):** the Studio has had the full 1838 × 2775
+  cover since the tool's send of 2026-10-31. Original note: the website's is square (318 × 318, cropped). A full 1838 × 2775 cover is in the user's
   Downloads, in the "FNFE book covers" folder. Books are edited only in the tool now, so it goes in there and arrives with
   the next send.
 - **The Risk** (S.T. Abby) is the one website book with no `toolBookId`, page count or reading time. It isn't in the
