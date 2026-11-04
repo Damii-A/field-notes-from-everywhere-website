@@ -146,12 +146,19 @@ const BOOK_RANKINGS = `*[_type == "ranking" && references(^._id)] | order(name a
  * they should show). The "Where to read" page shows them all.
  */
 export const BOOK_TAGS_SHOWN = 4;
-/** The book's ranking pills first, then its own tags, without repeating a name (e.g. a "Thriller" tag left from before). */
+/**
+ * Tags kept off every public page and email, whatever the tool sends (user, 2026-11-04: ahead of the AdSense
+ * review; DECISIONS.md, same date). They stay on the book in the tool and the Studio. Lower case.
+ */
+const HIDDEN_TAGS = new Set(["explicit sex", "sexual violence"]);
+export const isPublicTag = (name: string) => !HIDDEN_TAGS.has(name.trim().toLowerCase());
+
+/** The book's ranking pills first, then its own tags, without repeating a name (e.g. a "Thriller" tag left from before). Hidden tags are left out. */
 export function withRankingPills<T>(rankings: T[], tags: T[], name: (t: T) => string): T[] | undefined {
   const seen = new Set<string>();
   const all = [...rankings, ...tags].filter((t) => {
     const key = name(t).trim().toLowerCase();
-    if (seen.has(key)) return false;
+    if (seen.has(key) || !isPublicTag(key)) return false;
     seen.add(key);
     return true;
   });

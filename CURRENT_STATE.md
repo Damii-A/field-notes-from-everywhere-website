@@ -257,12 +257,12 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
    consent platform in advance (corrects an older note): AdSense's Privacy & messaging has a Google-certified one, and
    Journey brings its own. AdSense lists no traffic minimum; it reviews the whole site for original, high-quality content.
    - **Main risk, found by audit**: of about 18,150 words across the 10 published lists, 507 are ours (intros); 17,652 are
-     shared book blurbs (at least some publisher text; 0 of 128 entries have their own). The fix needs no build: each
-     entry's existing `blurb` field overrides the book's. Waiting on the user's decision.
+     shared book blurbs (at least some publisher text; 0 of 128 entries have their own). The fix considered: each
+     entry's existing `blurb` field would replace the book's, **which the user declined: the blurbs stay on the lists.** How to add
+     original text alongside them is still open.
    - **Second risk**: 47 templated "Where to read" pages, about three quarters of the sitemap, mostly the same answer,
      store links and blurb. Keep ads off them (and off the Reading Room page).
-   - **Tags**: some in the page HTML name sensitive subjects ("Explicit Sex" on Eye of the Needle, "Sexual Violence" on
-     2 books). Google bans non-consensual sexual themes; whether a warning tag counts is unknown. Waiting on the user.
+   - **Tags**: "Explicit Sex" and "Sexual Violence" hidden from public pages (done; DECISIONS.md, same date).
    - Fine already: About, Contact, Privacy, Terms, Disclosures; no dead ends.
    - **Once the user signs up** (the publisher ID isn't secret): AdSense code loading with consent, `ads.txt` (404 today),
      Google's EU/UK/Swiss message and US states message, one banner rather than two (GA4 follows the choice), Privacy

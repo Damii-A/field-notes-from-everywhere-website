@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { BOOK_TAGS_SHOWN } from "@/lib/content";
+import { BOOK_TAGS_SHOWN, isPublicTag } from "@/lib/content";
 import { readingRoomIssueHtml, type IssueEmail } from "@/lib/email/readingRoomIssueEmail";
 import { KitDraftLockedError, saveReadingRoomDraft } from "@/lib/integrations/kit";
 import { SITE_URL } from "@/lib/siteUrl";
@@ -98,8 +98,8 @@ export async function POST(req: Request) {
     books: books.map(({ id, slug, ownBlurb, canonicalBlurb, ownTags, bookTags, ...b }) => {
       const pos = issue.rankedIds?.indexOf(id) ?? -1;
       // Tags chosen for this issue show in full; otherwise the book's first few, then "+N more" (2026-10-30).
-      const own = (ownTags ?? []).filter((t): t is string => !!t);
-      const all = own.length > 0 ? own : (bookTags ?? []).filter((t): t is string => !!t);
+      const own = (ownTags ?? []).filter((t): t is string => !!t && isPublicTag(t));
+      const all = own.length > 0 ? own : (bookTags ?? []).filter((t): t is string => !!t && isPublicTag(t));
       const limit = own.length > 0 ? all.length : BOOK_TAGS_SHOWN;
       return {
         ...b,

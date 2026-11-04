@@ -3122,3 +3122,18 @@ page's slowest large element, so it shouldn't hurt. This also supersedes the ban
 hub lead image fetched first" entry; the hub's lead image is unchanged.
 
 **Verified**: type check, production build; live on the cat and mouse article in a real browser (no banner, all 11 books, book list at 738px on a phone and 696px on a laptop, `og:image` and JSON-LD image still there) and on the What to Read When hub (images still showing).
+
+## 2026-11-04 — "Explicit Sex" and "Sexual Violence" tags hidden from public pages
+
+**Decision** (user, while preparing for the AdSense review): these two tags no longer show on any article, "Where to read"
+page or email. Google's publisher policies ban graphic sexual text and non-consensual sexual themes, and it's unclear how a
+reviewer reads a label naming them. Affected books: Eye of the Needle; Kill for Me, Kill for You; Pretty Girls.
+
+**How**: `HIDDEN_TAGS` in `lib/content/index.ts`, applied where tags join the page (`withRankingPills`) and in the paused
+Reading Room email route, by name. The tags stay on the books in the tool and the Studio, and a resend can't bring them back.
+To hide another tag, add its name to the list.
+
+**Left showing, as they aren't "heavy sexual" tags**: "Spicy" (Verity), "Forbidden Romance" (2 books), "Sexism" (2 books).
+Non-sexual heavy tags (e.g. "Child Abuse") were not part of the request.
+
+**Also settled**: blurbs on the lists stay. My suggestion to replace them with our own text was declined by the user.
