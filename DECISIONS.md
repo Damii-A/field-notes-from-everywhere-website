@@ -3175,5 +3175,5 @@ no change. The tool doesn't see which ideas are deferred; if that's wanted later
 
 **Verified**: ten status cases (including deferred then started, deferred then published, a deferral left from a removed idea, and
 an idea with no ranking); the real `structure` code against live ideas (read-only): Thriller 19, then Not started 7, In progress 5,
-Deferred 0, Published 7, no "create" button; type check, lint, schema validation, production build. **Not yet seen** in the real
-Studio; the Defer button itself hasn't been pressed (no clicks on live data).
+Deferred 0, Published 7, no "create" button; type check, lint, schema validation, production build. **Seen working by the user** in the real
+Studio, Defer included (2026-11-04).

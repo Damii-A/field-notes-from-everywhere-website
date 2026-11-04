@@ -248,7 +248,7 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 
 ## To do: the user's list (added 2026-11-04; not started, user said don't work on these yet)
 
-1. ~~Park post ideas, group by theme~~ **Built 2026-11-04** (DECISIONS.md, same date). **Next: the user reloads the Studio and tries Defer on one idea.**
+1. ~~Park post ideas, group by theme~~ **Built 2026-11-04** (DECISIONS.md, same date). **Seen working by the user** (2026-11-04).
 2. **Automate the "What to read next" picks** on each article (today up to 3, picked by hand in the Studio's `whatToReadNext` field; the spec, `pub_article.md` §6.5, says "editorially
    chosen", so automating it is a deliberate change to record in DECISIONS.md).
 3. **Prepare the site for ad networks** (started 2026-11-04; audited, nothing built). **User's plan: AdSense first (the
