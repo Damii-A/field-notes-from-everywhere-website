@@ -44,7 +44,7 @@ export default async function ReadingRoomPausedPage() {
           <h1 className={styles.heroTitle}>The Reading Room</h1>
           <p className={styles.heroByline}>is taking a break for now</p>
           <p style={{ font: "var(--type-body)", fontSize: "clamp(17px,1.6vw,20px)", lineHeight: 1.6, color: "var(--paper-050)", margin: 0, maxWidth: "46ch", textWrap: "pretty" }}>
-            In the meantime, our free newsletter sends you a weekly roundup of the latest book lists we&rsquo;ve
+            In the meantime, our free newsletter sends you an occasional roundup of the latest book lists we&rsquo;ve
             published.
           </p>
           <NewsletterSignupButton className={styles.heroCta}>Join the free newsletter</NewsletterSignupButton>

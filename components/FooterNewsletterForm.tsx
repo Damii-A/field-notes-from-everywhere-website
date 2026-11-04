@@ -82,7 +82,7 @@ export function FooterNewsletterForm({ labelClassName }: { labelClassName?: stri
           {errorMessage}
         </p>
       ) : null}
-      <p className={styles.fine}>New reading lists from the Publication, roughly weekly. Unsubscribe any time.</p>
+      <p className={styles.fine}>New reading lists from the Publication, every so often. Unsubscribe any time.</p>
     </form>
   );
 }

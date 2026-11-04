@@ -17,7 +17,7 @@ import { splitParagraphs } from "@/lib/content/paragraphs";
 import { bookFactLabels, type BookFacts } from "@/lib/books/facts";
 import { CATEGORIES } from "@/lib/content/categories"; // not "@/lib/content": that pulls server-only fetching into this client component
 
-const NEWSLETTER_PITCH = "Get a weekly roundup of our latest book lists, delivered to your inbox.";
+const NEWSLETTER_PITCH = "Get an occasional roundup of our latest book lists, delivered to your inbox.";
 
 const CATEGORY_LABEL: Record<CategorySlug, string> = {
   "the-shortlist": "The Shortlist",

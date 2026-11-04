@@ -83,7 +83,7 @@ function NewsletterPopup({ onClose }: { onClose: () => void }) {
         ) : (
           <form onSubmit={handleSubmit}>
             <p className={styles.popupBody}>
-              Once a week, we&rsquo;ll send you a roundup of the latest book lists we&rsquo;ve published.
+              Every so often, we&rsquo;ll send you a roundup of the latest book lists we&rsquo;ve published.
             </p>
             <div className={styles.popupForm} style={{ marginTop: 14 }}>
               <input

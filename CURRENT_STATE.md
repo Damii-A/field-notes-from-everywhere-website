@@ -249,7 +249,8 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
 
 Don't send it, and don't remind the user about it. **Why**: every list is Thriller today, so a subscriber would get a repetitive
 email. The user will redesign how it works once more rankings are on the site. Nothing goes to readers by itself: the Tuesday job
-only emails the user a Studio link, which they can ignore. Unchanged until the redesign: that job, and the signup offers on the site.
+only emails the user a Studio link, which they can ignore. Unchanged until the redesign: that job. Signup wording, the welcome and book list emails and the unsubscribe page no longer say
+"weekly" (user, 2026-11-04: "occasional" / "every so often"); put it back if the redesign makes it weekly again.
 This replaces every "Tue 2026-11-10" note in this file, including the policy-change line, which needs its own way to reach the list.
 
 ## To do: the user's list (added 2026-11-04; not started, user said don't work on these yet)

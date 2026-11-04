@@ -30,7 +30,7 @@ function copy(when: ReturnType<typeof firstNewsletterWhen>) {
   return {
     lines: [
       "You’re officially signed up for the Field Notes From Everywhere newsletter!",
-      `${start}, we’ll send you a weekly roundup of the latest book lists we’ve published, so you can catch up on anything you might have missed.`,
+      `${start}, we’ll send you an occasional roundup of the latest book lists we’ve published, so you can catch up on anything you might have missed.`,
       when === "today" ? "See you later today!" : "See you Wednesday!",
     ],
     signOff: "The FNFE Team",

@@ -311,7 +311,7 @@ export default async function HomePage() {
           And if your TBR can handle even more...
         </h2>
         <p style={{ font: "var(--type-quote)", color: "var(--paper-050)", margin: 0, maxWidth: "58ch" }}>
-          Get a weekly roundup of our latest book lists, delivered straight to your inbox.
+          Get an occasional roundup of our latest book lists, delivered straight to your inbox.
         </p>
       </section>
 

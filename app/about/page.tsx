@@ -158,7 +158,7 @@ export default async function AboutPage() {
               </div>
               <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>This is our free email newsletter.</p>
               <p style={{ font: "var(--type-body)", color: "var(--slate-100)", margin: 0, maxWidth: "66ch" }}>
-                Once a week, we send you a roundup of the latest book lists we&rsquo;ve published, so you can catch up
+                Every so often, we send you a roundup of the latest book lists we&rsquo;ve published, so you can catch up
                 on anything you might have missed.
               </p>
               <div
@@ -186,7 +186,7 @@ export default async function AboutPage() {
                       textWrap: "pretty",
                     }}
                   >
-                    Get a weekly roundup of our latest book lists, delivered to your inbox.
+                    Get an occasional roundup of our latest book lists, delivered to your inbox.
                   </span>
                   <span style={{ font: "var(--type-small)", color: "var(--ink-700)" }}>It&rsquo;s free. Unsubscribe any time.</span>
                 </div>

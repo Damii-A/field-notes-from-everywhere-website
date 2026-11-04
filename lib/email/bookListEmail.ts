@@ -130,7 +130,7 @@ export function bookListEmailHtml(article: Article, name: string, footerHtml: st
         </td></tr>
         <tr><td style="padding:24px 0 0;">
           <p style="margin:0 0 18px;font:16px/1.6 ${BODY};color:${INK};">Happy reading,<br/>The FNFE Team</p>
-          <p style="margin:0;font:15px/1.6 ${BODY};color:${INK_SOFT};"><strong>P.P.S.</strong> You&rsquo;ll also be getting our free weekly newsletter, which is pretty much a roundup of the book lists we&rsquo;ve published on the site that week. We think you&rsquo;ll love it, but you can unsubscribe at any time using the unsubscribe link at the bottom of every email.</p>
+          <p style="margin:0;font:15px/1.6 ${BODY};color:${INK_SOFT};"><strong>P.P.S.</strong> You&rsquo;ll also be getting our free newsletter, which is pretty much a roundup of the book lists we&rsquo;ve published on the site lately. We think you&rsquo;ll love it, but you can unsubscribe at any time using the unsubscribe link at the bottom of every email.</p>
         </td></tr>
       </table>
     </td></tr>
@@ -167,7 +167,7 @@ Read it on the site: ${withUtm(`${SITE_URL}${articlePath(article)}`, "book_list"
 Happy reading,
 The FNFE Team
 
-P.P.S. You'll also be getting our free weekly newsletter, which is pretty much a roundup of the book lists we've published on the site that week. We think you'll love it, but you can unsubscribe at any time using the unsubscribe link at the bottom of every email.
+P.P.S. You'll also be getting our free newsletter, which is pretty much a roundup of the book lists we've published on the site lately. We think you'll love it, but you can unsubscribe at any time using the unsubscribe link at the bottom of every email.
 
 You're getting this because you joined the Field Notes From Everywhere email list. Unsubscribe: ${unsubscribeUrl}`;
 }

@@ -50,7 +50,7 @@ export function UnsubscribeConfirm({ email, token }: { email: string; token: str
     <>
       <h1 style={headingStyle}>Unsubscribe from our emails?</h1>
       <p style={bodyStyle}>
-        <strong>{email}</strong> will stop getting the Field Notes From Everywhere email list, including the weekly
+        <strong>{email}</strong> will stop getting the Field Notes From Everywhere email list, including our
         round-up of new reading lists.
       </p>
       <Button onClick={unsubscribe} disabled={status === "sending"} style={{ marginTop: 6 }}>
