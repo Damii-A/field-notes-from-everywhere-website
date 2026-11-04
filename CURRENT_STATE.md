@@ -245,6 +245,13 @@ email copy changed in code; Terms and Disclosures (Sanity) now say "sent once a 
 The user's own subscription (lululope@yahoo.com, Kit subscriber 4306601425, first name "Dami") is
 real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be cancelled (above).
 
+## On hold: the weekly newsletter (user, 2026-11-04)
+
+Don't send it, and don't remind the user about it. **Why**: every list is Thriller today, so a subscriber would get a repetitive
+email. The user will redesign how it works once more rankings are on the site. Nothing goes to readers by itself: the Tuesday job
+only emails the user a Studio link, which they can ignore. Unchanged until the redesign: that job, and the signup offers on the site.
+This replaces every "Tue 2026-11-10" note in this file, including the policy-change line, which needs its own way to reach the list.
+
 ## To do: the user's list (added 2026-11-04; not started, user said don't work on these yet)
 
 1. ~~Park post ideas, group by theme~~ **Built 2026-11-04** (DECISIONS.md, same date). **Seen working by the user** (2026-11-04).
@@ -261,8 +268,7 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
      "This book might not be for you", based strictly on the blurb, tags and verifiable information.
    - **Signed up**: publisher ID `pub-5271200373971782` (public); site connected by `public/ads.txt`. **Privacy and Disclosures
      updated 2026-11-04** (approved text; DECISIONS.md, same date). **Submitted for review by the user 2026-11-04** (a few days, up
-     to 2-4 weeks). **Don't let ads run before the consent pop-up and US link are in.** The ad code and consent pop-up aren't on the site yet. **One line about the policy change goes in the
-     2026-11-10 newsletter.**
+     to 2-4 weeks). **Don't let ads run before the consent pop-up and US link are in.** The ad code and consent pop-up aren't on the site yet. **The policy promises to tell the email list about the change: open, as the newsletter is on hold.**
    - **Second risk**: 47 templated "Where to read" pages, about three quarters of the sitemap, mostly the same answer,
      store links and blurb. Keep ads off them (and off the Reading Room page).
    - **Tags**: "Explicit Sex" and "Sexual Violence" hidden from public pages (done; DECISIONS.md, same date).
