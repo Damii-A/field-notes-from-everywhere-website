@@ -250,6 +250,9 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
    "Not started", so that list shows only ideas they want to work on (the Studio's Post ideas lists, DECISIONS.md
    2026-11-04). Note: post ideas are view-only in the Studio and belong to the tool, so where "parked" lives is the first
    thing to settle.
+   **Goes with it (user, 2026-11-04): group post ideas by theme.** Opening "Post ideas" shows themes (e.g. Thriller); opening
+   a theme shows its own lists: Not started, In progress, Published, and the new Deferred list. Ideas already carry a `ranking`
+   reference, which is the likely source of the theme. Best built together with Deferred.
 2. **Automate the "What to read next" picks** on each article (today up to 3, picked by hand in the Studio's `whatToReadNext` field; the spec, `pub_article.md` §6.5, says "editorially
    chosen", so automating it is a deliberate change to record in DECISIONS.md).
 3. **Prepare the site for ad networks** (started 2026-11-04; audited, nothing built). **User's plan: AdSense first (the
@@ -263,8 +266,8 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
      **User's idea if it's flagged (replaces the "why it's here" line):** two fields per book, "This book might be for you" and
      "This book might not be for you", based strictly on the blurb, tags and verifiable information.
    - **Signed up**: publisher ID `pub-5271200373971782` (public); site connected by `public/ads.txt`. **Privacy and Disclosures
-     updated 2026-11-04** (approved text; DECISIONS.md, same date). **Next: the user presses "Request review"** (a few days, up
-     to 2-4 weeks). The ad code and consent pop-up aren't on the site yet. **One line about the policy change goes in the
+     updated 2026-11-04** (approved text; DECISIONS.md, same date). **Submitted for review by the user 2026-11-04** (a few days, up
+     to 2-4 weeks). **Don't let ads run before the consent pop-up and US link are in.** The ad code and consent pop-up aren't on the site yet. **One line about the policy change goes in the
      2026-11-10 newsletter.**
    - **Second risk**: 47 templated "Where to read" pages, about three quarters of the sitemap, mostly the same answer,
      store links and blurb. Keep ads off them (and off the Reading Room page).
