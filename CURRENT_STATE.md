@@ -244,6 +244,17 @@ email copy changed in code; Terms and Disclosures (Sanity) now say "sent once a 
 The user's own subscription (lululope@yahoo.com, Kit subscriber 4306601425, first name "Dami") is
 real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be cancelled (above).
 
+## To do: the user's list (added 2026-11-04; not started, user said don't work on these yet)
+
+1. **Park post ideas without deleting them**: a way to move ideas the user doesn't want to work on for now out of
+   "Not started", so that list shows only ideas they want to work on (the Studio's Post ideas lists, DECISIONS.md
+   2026-11-04). Note: post ideas are view-only in the Studio and belong to the tool, so where "parked" lives is the first
+   thing to settle.
+2. **Automate the "What to read next" picks** on each article (today up to 3, picked by hand in the Studio's `whatToReadNext` field; the spec, `pub_article.md` §6.5, says "editorially
+   chosen", so automating it is a deliberate change to record in DECISIONS.md).
+3. **Prepare the site for ad network applications**: a Google-certified consent platform for EEA/UK/Swiss visitors, and a
+   privacy-policy update naming it.
+
 ## Open, raise one at a time (nothing blocking)
 
 - ~~Cancelling the old WordPress hosting~~ **Settled 2026-11-03**: it's a Namecheap Stellar shared plan the user keeps
@@ -263,8 +274,6 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
   site" (7664818, 0 subscribers) left in place (Kit offered no delete; harmless, settled). Keep tag `reading-room-member`
   (23811808, used by the code). (~~`*.vercel.app` CORS entries
   in Sanity~~ removed by the user 2026-11-03; checked: the real domain still allowed, vercel.app no longer.)
-- Before joining an **ad network**: a Google-certified consent platform for EEA/UK/Swiss visitors,
-  and a privacy-policy update naming it.
 
 Settled, don't offer again: the "12-thrillers-books…" typo in the Up Next article's address (kept, user
 2026-11-03); centring the newsletter popup's "Once a week…" line (kept left-aligned, user 2026-11-03); merging the homepage and hub-page column descriptions (deliberately
