@@ -3080,3 +3080,24 @@ queries with unique slugs and meta descriptions (checked in the tool); shared bo
 tool session (`docs/handover/TOOL_HANDOVER_2026-11-03_BOOK_DETAILS.md`). Linking "books like X" articles from the
 matching "Where to read" page waits until one is published.
 
+## 2026-11-04 — Post ideas split into Not started / In progress / Published
+
+**Decision** (user's pick, over two lists: Not started / Started): published ideas stayed in one flat list, so the user couldn't
+see which were still to do. "Post ideas" in the Studio now opens onto **Not started**, **In progress** and **Published**, each
+with a count (`sanity/structure.ts`; rules in `sanity/lib/postIdeaStatus.ts`). Nothing is stored or ticked: an idea's list comes
+from the articles pointing at it (`article.postIdea`), so it moves by itself on "Start article" and on publish, and returns to
+Not started if its draft is deleted. Published = a published article dated in the past, the same rule as the tool's "Published"
+read-back. Drafts and scheduled articles are In progress. Ideas stay viewable in every list. No public page or tool change.
+
+**Why it reads raw documents in code, not a GROQ filter on the list**: the plain filter (`_id in *[_type == "article"]...`) was
+tried first and passed a direct API test, but the Studio's lists read with the drafts perspective, which drops "drafts." from a
+draft's id (checked against live data). A draft would have shown as Published as soon as "Published at" was filled in, which
+Publish requires. So the list item uses `documentStore.listenQuery` with `perspective: "raw"` and passes the ids to three ordinary
+filtered lists. It also keeps the lists live: a filter's own listener wouldn't reliably notice changes to articles.
+
+**Known limit**: a scheduled article moves to Published at the next article change or Studio reload, not at its go-live minute.
+
+**Verified**: eight status cases (including a draft with a past date, a scheduled article, and a live article with pending draft
+edits); the real `structure` run against real ideas with a stand-in live feed (lists, counts, no "create" button, no redraw when
+nothing moved, an idea moving on "Start article"); type check, lint, schema validation, production build. **Not yet seen**: the
+lists in the real Studio (the login is the user's).

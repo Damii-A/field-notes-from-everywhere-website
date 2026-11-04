@@ -1,12 +1,12 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-11-03. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-11-04. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **2026-10-28: access check.** Working: GitHub push, live site, Resend, Kit, Sanity read **and write**
 (new local Editor key "Claude Code local", made by the user; the old one returned "Session not found",
 i.e. deleted), and the Claude Design project via `DesignSync` (user ran `/design-login`). **Standalone
 Claude Design closes by 2026-12-14** (it moves into Claude): before then, decide how to keep a reference
-copy of the "Full FNFE Website" project, since it's governing source #1. Not working, left on purpose
+copy of the "Full FNFE Website" project (optional since 2026-11-03: it's history now, no longer the authority). Not working, left on purpose
 (user agreed): the Sanity MCP connector (Claude Code's OAuth builds a broken
 `mcp.sanity.io.well-known` URL; the server itself answers fine; the API key covers everything); the
 sandbox `PADDLE_API_KEY` (403 on every endpoint; only matters for a Reading Room relaunch); no Vercel
@@ -77,6 +77,16 @@ the text existed) is still a draft with no intro, meta description or slug. 53 o
 time; the one without is **The Risk** (Dark Romance, not in the Thriller ranking; it fills when that ranking is sent).
 No article has a Pinterest pin yet. The user confirmed the popup changes live.
 
+**2026-11-04: Post ideas split by status** (DECISIONS.md, same date; user's pick of three lists). "Post ideas" in the Studio
+opens onto Not started / In progress / Published, with counts, worked out live from the articles. **Not yet seen by the
+user in the real Studio** (my checks ran the real menu code on real ideas with a stand-in live feed, since the Studio login
+is the user's). Reload the Studio after the deploy.
+
+**2026-11-04: "Where to read" SEO checked against outside feedback (no change needed).** Live Gone Girl page: own address,
+title, description and canonical; content in the server's HTML before JavaScript; 42 book pages in the sitemap; the Shortlist
+article links its 15 books. Whether Google indexes them isn't known here: suggested to the user, Search Console → Pages. Many
+under "Crawled, currently not indexed" would be the signal to add original content per page.
+
 **Tool notes not yet passed on (tell the user at session start; user's request 2026-11-03)**, in `docs/handover/`
 (checked against the tool's own docs and code, 2026-11-03): `TOOL_HANDOVER_2026-11-03_UP_NEXT.md` (not seen: the tool
 still sends `column: "book-club-book-picks"`, accepted by the website; switch to `"up-next"`; sections from `groups`;
@@ -124,7 +134,7 @@ user before each** (order not chosen yet):
    watch as rankings grow), API requests 2.7k / 250k a month, bandwidth 49.9 MB / 100 GB, assets 7.8 MB / 100 GB,
    datasets 1 / 2, webhooks 1 / 2, seats 1 / 20. Nothing near a limit.
 Dated: (a) after ~2026-11-05, check the user's Kit member tag is gone (paused subscription, below);
-(b) before 2026-12-14, keep a reference copy of the Claude Design project (above); the tag limit was
+(b) before 2026-12-14, optionally keep a reference copy of the Claude Design project (above); the tag limit was
 never compared against it (DesignSync needs `/design-login` in an interactive session). Offer the
 remaining open points one at a time. Tool notes in this file are short pointers; the tool's own docs hold
 its changes. If the user brings an "extra tags" sheet for existing books, the tool is where book tags are

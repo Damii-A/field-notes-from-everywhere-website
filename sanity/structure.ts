@@ -1,4 +1,6 @@
-import type { StructureResolver } from "sanity/structure";
+import { distinctUntilChanged, map } from "rxjs";
+import type { StructureBuilder, StructureResolver } from "sanity/structure";
+import { POST_IDEA_STATUS_QUERY, sortPostIdeas, type PostIdeaStatusRow } from "./lib/postIdeaStatus";
 
 /**
  * Custom Studio sidebar — replaces the default flat, alphabetical
@@ -21,7 +23,24 @@ const ARTICLE_CATEGORIES = [
   { slug: "up-next", title: "Up Next" },
 ] as const;
 
-export const structure: StructureResolver = (S) =>
+/** One of the three Post ideas lists; view-only, so no "create new" button. */
+const postIdeaList = (S: StructureBuilder, id: string, title: string, ids: string[]) =>
+  S.listItem()
+    .id(id)
+    .title(`${title} (${ids.length})`)
+    .child(
+      S.documentList()
+        .id(id)
+        .title(title)
+        .schemaType("postIdea")
+        .filter('_type == "postIdea" && _id in $ids')
+        .apiVersion("2025-01-01")
+        .params({ ids })
+        .defaultOrdering([{ field: "sentAt", direction: "desc" }])
+        .initialValueTemplates([]),
+    );
+
+export const structure: StructureResolver = (S, { documentStore }) =>
   S.list()
     .title("Content")
     .items([
@@ -51,14 +70,29 @@ export const structure: StructureResolver = (S) =>
               ),
             ),
         ),
-      // Sent from the internal tool; view-only here (DECISIONS.md, 2026-11-03).
+      // Sent from the internal tool; view-only here (DECISIONS.md, 2026-11-03). Split by
+      // status, live, from raw documents (see postIdeaStatus.ts; DECISIONS.md, 2026-11-04).
       S.listItem()
+        .id("postIdeas")
         .title("Post ideas")
-        .child(
-          S.documentTypeList("postIdea")
-            .title("Post ideas")
-            .defaultOrdering([{ field: "sentAt", direction: "desc" }])
-            .initialValueTemplates([]),
+        .child(() =>
+          documentStore
+            .listenQuery(POST_IDEA_STATUS_QUERY, {}, { tag: "post-idea-status", apiVersion: "2025-01-01", perspective: "raw", throttleTime: 1000 })
+            .pipe(
+              map((rows) => sortPostIdeas(rows as PostIdeaStatusRow[])),
+              // Article edits re-run the query; only redraw when an idea changes list.
+              distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+              map((status) =>
+                S.list()
+                  .id("postIdeas")
+                  .title("Post ideas")
+                  .items([
+                    postIdeaList(S, "postIdeasNotStarted", "Not started", status.notStarted),
+                    postIdeaList(S, "postIdeasInProgress", "In progress", status.inProgress),
+                    postIdeaList(S, "postIdeasPublished", "Published", status.published),
+                  ]),
+              ),
+            ),
         ),
       S.documentTypeListItem("readingRoomIssue").title("Reading Room issues"),
       S.listItem()

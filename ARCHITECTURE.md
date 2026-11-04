@@ -170,7 +170,7 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId`, `pageCount` and `readingHours`, `publishedYear` and `series`
   (`status` / `name` / `number` / `total`; both stored only since 2026-11-03). **The whole document is
   view-only in the Studio since 2026-11-03** (no create, edit, duplicate or delete; books come only from the
-  internal tool's "Send to website"; the last two fields the last two since 2026-11-03, shown as "Page count" / "Est. reading time"
+  internal tool's "Send to website"; page count and reading time show as "Page count" / "Est. reading time"
   pills under the author, `lib/books/facts.ts`). Referenced by articles, rankings and Reading Room issues, and
   the source of the "Where to read" pages. **Ranking pills**: wherever a book's tags show (article
   entries, "Where to read", the book-list email, the Studio's book picker and ranking Tags tab), the
@@ -221,7 +221,7 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   Its one action, **"Start article"** (`sanity/actions/StartArticleAction.tsx`), makes a draft article (prefilled
   with that text when the idea has it)
   and sets `article.postIdea` (read-only weak reference), which is how the tool reads back that an
-  idea's article is live. Nothing on the public site reads `postIdea`.
+  idea's article is live. The Studio splits ideas into Not started / In progress / Published with live counts (`sanity/lib/postIdeaStatus.ts`, `sanity/structure.ts`, 2026-11-04), worked out from `article.postIdea`, never stored. Nothing on the public site reads `postIdea`.
 - **`readingRoomIssue`** — one Reading Room email (added 2026-10-02, see `DECISIONS.md`): `title`
   (the theme), `subject`, `previewText`, `aboutThisIssue` (one boxed section before the books),
   `closingSentence` + `signOff` (after the books), `ranking` + `rankingCount` (for "Fill books
@@ -492,8 +492,8 @@ scope" framing in the initialization brief):
   its canonical to `/` explicitly (the layout's `"./"` resolves to `/index` there).
 - `sitemap.xml` and `robots.txt` generated from the same Sanity queries that render the hubs (plus
   the indexable "Where to read" book pages).
-- **Structured data**: "Where to read" pages carry JSON-LD (`Book` + `BreadcrumbList`), the site's
-  only JSON-LD so far (2026-10-02).
+- **Structured data**: "Where to read" pages carry JSON-LD (`Book` + `BreadcrumbList`, 2026-10-02);
+  article pages carry `Article`, an `ItemList` of `Book`s and `BreadcrumbList` (2026-11-03).
 - `prefers-reduced-motion` handling for every bespoke animation (stratosphere, article
   progress rail, Reading Room drift/shelf) — the spec explicitly requires this in multiple
   places; treat it as a hard requirement, not a nice-to-have.
@@ -534,4 +534,4 @@ Scoped to actual risk (Operating Manual §29), not applied uniformly:
   **built 2026-11-03** (`postIdea`, §6; pin formats dropped, pins never go to the Studio); (4) ~~article
   formats per formula in all three columns~~ **done 2026-11-03**; (5) ~~the
   third column's new name and scope~~ **done 2026-11-03** ("Up Next", `/up-next`); (6) ~~article layouts beyond one flat list~~ **sections done 2026-11-03** (`bookEntries[].section`; checklists not built); (7) ~~Studio book fields view-only~~ **done 2026-11-03**.
-  Unchecked: Sanity plan usage limits (sanity.io/manage → project → Usage; the Editor key can't read them).
+  Sanity plan usage limits: checked 2026-11-03, nothing near a limit (`CURRENT_STATE.md`).
