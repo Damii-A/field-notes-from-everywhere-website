@@ -260,7 +260,11 @@ real; it's the only member-tagged subscriber in Kit (tagged 2026-10-05). To be c
      shared book blurbs (at least some publisher text; 0 of 128 entries have their own). The fix considered: each
      entry's existing `blurb` field would replace the book's, **which the user declined: the blurbs stay on the lists.** Offered: a short "why it's here" line above
      each blurb (needs a field + preview). **User's call 2026-11-04: apply as is first**; revisit if Google rejects the site.
-   - **Next: the user signs up for AdSense and sends the publisher ID (`ca-pub-…`), stopping before "Request review".**
+     **User's idea if it's flagged (replaces the "why it's here" line):** two fields per book, "This book might be for you" and
+     "This book might not be for you", based strictly on the blurb, tags and verifiable information.
+   - **Signed up**: publisher ID `pub-5271200373971782` (public); site connected by `public/ads.txt`. **Next: Privacy and
+     Disclosures wording approved and live, then the user presses "Request review".** The ad code and consent pop-up aren't on
+     the site yet.
    - **Second risk**: 47 templated "Where to read" pages, about three quarters of the sitemap, mostly the same answer,
      store links and blurb. Keep ads off them (and off the Reading Room page).
    - **Tags**: "Explicit Sex" and "Sexual Violence" hidden from public pages (done; DECISIONS.md, same date).
