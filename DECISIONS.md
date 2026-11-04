@@ -3099,5 +3099,5 @@ filtered lists. It also keeps the lists live: a filter's own listener wouldn't r
 
 **Verified**: eight status cases (including a draft with a past date, a scheduled article, and a live article with pending draft
 edits); the real `structure` run against real ideas with a stand-in live feed (lists, counts, no "create" button, no redraw when
-nothing moved, an idea moving on "Start article"); type check, lint, schema validation, production build. **Not yet seen**: the
-lists in the real Studio (the login is the user's).
+nothing moved, an idea moving on "Start article"); type check, lint, schema validation, production build. **Seen working by the user** in the
+real Studio (2026-11-04).

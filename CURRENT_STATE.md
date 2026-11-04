@@ -78,9 +78,8 @@ time; the one without is **The Risk** (Dark Romance, not in the Thriller ranking
 No article has a Pinterest pin yet. The user confirmed the popup changes live.
 
 **2026-11-04: Post ideas split by status** (DECISIONS.md, same date; user's pick of three lists). "Post ideas" in the Studio
-opens onto Not started / In progress / Published, with counts, worked out live from the articles. **Not yet seen by the
-user in the real Studio** (my checks ran the real menu code on real ideas with a stand-in live feed, since the Studio login
-is the user's). Reload the Studio after the deploy.
+opens onto Not started / In progress / Published, with counts, worked out live from the articles. **Seen working by the
+user** in the real Studio (2026-11-04).
 
 **2026-11-04: "Where to read" SEO checked against outside feedback (no change needed).** Live Gone Girl page: own address,
 title, description and canonical; content in the server's HTML before JavaScript; 42 book pages in the sitemap; the Shortlist
