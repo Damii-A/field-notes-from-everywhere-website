@@ -12,7 +12,8 @@ AdSense (not before). If refused again: show the notes on "Where to read" pages 
 Checked live: 80 of 134 books have notes; all 9 live Dark Fantasy lists show the box on every book (all three columns;
 phone render fine). The 10 live Thriller lists have none yet: the user is holding Thriller's send for a tag re-edit.
 19 lists are live in all (9 Dark Fantasy, 10 Thriller); 178 of 306 book entries carry notes.
-Then (user): notes redesigned as two plain bordered boxes and added to "Where to read" pages (129 of 157 sitemap pages).
+Then (user): notes redesigned as two plain bordered boxes and added to "Where to read" pages (129 of 157 sitemap pages);
+**checked live 2026-11-14** (Godblind's book page and the Black Company list show the new boxes).
 **Resubmit only once every live list has notes** (user's choice). Waiting on: the tool's Thriller notes
 (`docs/handover/TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md`, asks for a notes-only send), then a live check here.
 
@@ -111,7 +112,7 @@ book pages), so they are being indexed; the user is satisfied and doesn't need r
 of 415 tags have a category; nothing uses `bookamonth`. Left with the user, not the tool: the two high-overlap idea pairs
 in `…_BOOK_DETAILS.md` (a review in the tool; not recorded as done). At session start, mention any new note added here.
 
-**Start the next session here (end of 2026-11-03; nothing unpushed).** Every non-dated open item was worked through
+**Start the next session here: the 2026-11-14 AdSense section at the top of this file** (nothing unpushed). Older start notes (end of 2026-11-03): Every non-dated open item was worked through
 today (see the numbered list and "Open" below). **Waiting on the user, small checks**: (a) the Twists draft was deleted
 (checked: no article for `postIdea-8`; the idea carries its text), so "Start article" on it should now come prefilled;
 (b) "Start article" on idea 53 (month sections); (c) a Pinterest pin on one article + the Pinterest button; (d) the
