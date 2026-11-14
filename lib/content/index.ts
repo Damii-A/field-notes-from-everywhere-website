@@ -495,6 +495,8 @@ interface RawWhereToRead {
   canonicalBlurb: string | null;
   pageCount: number | null;
   readingHours: number | null;
+  forYou: string | null;
+  notForYou: string | null;
   tags: (string | null)[] | null;
   rankings: (string | null)[] | null;
   lists: {
@@ -516,7 +518,7 @@ const RELATED_LIMIT = 6;
 export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook | null> {
   const raw = await groqFetch<(RawWhereToRead & { _id: string }) | null>(
     `*[_type == "book" && slug.current == $slug][0]{
-      _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, goodreadsUrl, canonicalBlurb, pageCount, readingHours,
+      _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, goodreadsUrl, canonicalBlurb, pageCount, readingHours, forYou, notForYou,
       "tags": tags[]->name,
       "rankings": ${BOOK_RANKINGS}.name,
       "lists": *[_type == "article" && ${RELEASED} && references(^._id)] | order(publishedAt desc){
@@ -570,6 +572,8 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
     goodreadsUrl: raw.goodreadsUrl ?? undefined,
     pageCount: raw.pageCount ?? undefined,
     readingHours: raw.readingHours ?? undefined,
+    ...(raw.forYou?.trim() ? { forYou: raw.forYou.trim() } : {}),
+    ...(raw.notForYou?.trim() ? { notForYou: raw.notForYou.trim() } : {}),
     blurb: lists.find((l) => l.ownBlurb)?.ownBlurb ?? raw.canonicalBlurb ?? undefined,
     tags: withRankingPills(
       (raw.rankings ?? []).filter((t): t is string => !!t),

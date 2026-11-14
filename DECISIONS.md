@@ -3225,3 +3225,14 @@ the second AdSense risk (templated pages), so showing the notes there too is an 
 
 **Verified**: type check, lint, schema validation 0/0, production build; the local preview above. Nothing visible changes on
 the live site until the tool sends notes.
+
+**Update, same day (user, after seeing it live with the tool's Dark Fantasy notes)**: the box stood out too much from the
+rest of the book entry. Now **two separate plain boxes**, one per note, each a 1px border in the column's colour
+(`methodologyBorder`), `--radius-md`, no fill; headings in the book text's font (semibold, small), not the mono caps
+label. Also, **the notes show on "Where to read" pages** (my AdSense suggestion, user approved): under the blurb in the
+About panel, same boxes with a `--clay-500` border. Why: 129 of the site's 157 sitemap pages are book pages, templated
+around a publisher blurb, the likely second reason for the refusal; the notes give each its own text. Both seen in a local
+production build against live content (laptop and phone; no sideways scroll, no console errors). Also checked: all 157
+sitemap URLs answer 200. Thriller's books still have no notes (the tool holds that send for a tag re-edit); asked for a
+notes-only send in `docs/handover/TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md`. **The user resubmits to AdSense only once
+every live list has notes** (user's choice).

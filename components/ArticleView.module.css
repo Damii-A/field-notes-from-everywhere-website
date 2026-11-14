@@ -589,21 +589,20 @@
   }
 }
 
-/* "This book might (not) be for you" under the blurb: the methodology box's look (user, 2026-11-14). */
+/* "This book might (not) be for you" under the blurb: two plain containers with a coloured border (user, 2026-11-14). */
 .fitBox {
-  background: var(--paper-050);
-  border-left: 3px solid var(--border-hairline);
-  border-radius: var(--radius-sm);
-  padding: 16px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.fitPart {
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+/* Headings in the book text's own font, not the mono caps label (user, 2026-11-14). */
+.bookBlurb .fitLabel {
+  font: var(--weight-semibold) var(--text-sm) / 1.4 var(--font-body);
+  color: var(--ink-800);
 }
 
 .bookBlurb .fitText {

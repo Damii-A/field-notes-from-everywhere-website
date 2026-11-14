@@ -586,21 +586,22 @@ function BookFactsRow({ border, ...facts }: BookFacts & { border: string }) {
  */
 function BookFit({ forYou, notForYou, border }: { forYou?: string; notForYou?: string; border: string }) {
   if (!forYou && !notForYou) return null;
+  // Two separate plain containers with a border in the column's colour (user, 2026-11-14).
   return (
-    <div className={styles.fitBox} style={{ borderLeftColor: border }}>
+    <>
       {forYou ? (
-        <div className={styles.fitPart}>
-          <span className={styles.methodologyLabel}>This book might be for you</span>
+        <div className={styles.fitBox} style={{ borderColor: border }}>
+          <span className={styles.fitLabel}>This book might be for you</span>
           <p className={styles.fitText}>{forYou}</p>
         </div>
       ) : null}
       {notForYou ? (
-        <div className={styles.fitPart}>
-          <span className={styles.methodologyLabel}>This book might not be for you</span>
+        <div className={styles.fitBox} style={{ borderColor: border }}>
+          <span className={styles.fitLabel}>This book might not be for you</span>
           <p className={styles.fitText}>{notForYou}</p>
         </div>
       ) : null}
-    </div>
+    </>
   );
 }
 

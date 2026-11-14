@@ -63,6 +63,9 @@ export interface WhereToReadBook {
   /** From the internal tool (lib/books/facts.ts). */
   pageCount?: number;
   readingHours?: number;
+  /** From the internal tool: "This book might (not) be for you" notes (DECISIONS.md, 2026-11-14). */
+  forYou?: string;
+  notForYou?: string;
   /** Published articles featuring the book, newest first. `rank` only on ranked columns (The Shortlist). */
   lists: { title: string; href: string; category: CategorySlug; rank?: number; bookCount: number }[];
   /** Other books from those lists (each has its own page), up to 6. */

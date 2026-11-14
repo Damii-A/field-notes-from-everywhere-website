@@ -132,6 +132,28 @@
   margin: 0;
 }
 
+/* "This book might (not) be for you" (user, 2026-11-14): plain containers with a coloured border, as in articles. */
+.fitBox {
+  width: 100%;
+  border: 1px solid var(--clay-500);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fitLabel {
+  font: var(--weight-semibold) var(--text-sm) / 1.4 var(--font-body);
+  color: var(--ink-800);
+}
+
+.fitText {
+  margin: 0;
+  font: var(--type-small);
+  color: var(--ink-700);
+}
+
 .kicker {
   font: var(--weight-semibold) var(--text-sm) / 1.2 var(--font-mono);
   letter-spacing: 0.12em;

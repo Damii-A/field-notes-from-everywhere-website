@@ -123,7 +123,7 @@ export default async function WhereToReadPage({ params }: Props) {
               </ul>
             </section>
 
-            {(book.blurb || book.tags.length > 0 || facts.length > 0) && (
+            {(book.blurb || book.tags.length > 0 || facts.length > 0 || book.forYou || book.notForYou) && (
               <section aria-labelledby="about" className={`${styles.section} ${styles.boxed} ${styles.aboutBoxed}`}>
                 <h2 id="about" className={styles.heading}>About {quoted}</h2>
                 {/* "Page count" and "Est. reading time" pills above the tags (user, 2026-11-03). */}
@@ -142,6 +142,19 @@ export default async function WhereToReadPage({ params }: Props) {
                     {splitParagraphs(book.blurb).map((p, i) => (
                       <p key={i}>{p}</p>
                     ))}
+                  </div>
+                )}
+                {/* "This book might (not) be for you", as in articles (user, 2026-11-14). */}
+                {book.forYou && (
+                  <div className={styles.fitBox}>
+                    <span className={styles.fitLabel}>This book might be for you</span>
+                    <p className={styles.fitText}>{book.forYou}</p>
+                  </div>
+                )}
+                {book.notForYou && (
+                  <div className={styles.fitBox}>
+                    <span className={styles.fitLabel}>This book might not be for you</span>
+                    <p className={styles.fitText}>{book.notForYou}</p>
                   </div>
                 )}
               </section>
