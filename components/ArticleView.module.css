@@ -589,6 +589,30 @@
   }
 }
 
+/* "This book might (not) be for you" under the blurb: the methodology box's look (user, 2026-11-14). */
+.fitBox {
+  background: var(--paper-050);
+  border-left: 3px solid var(--border-hairline);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fitPart {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bookBlurb .fitText {
+  font: var(--type-small);
+  color: var(--ink-700);
+  margin: 0;
+  white-space: normal;
+}
+
 /* "Where to read …" under each book's blurb (DECISIONS.md, 2026-10-02). */
 .whereToRead {
   align-self: flex-start;

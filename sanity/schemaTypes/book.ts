@@ -53,6 +53,21 @@ export default defineType({
       type: "number",
       readOnly: true,
     }),
+    // Fit notes (user, 2026-11-14): written in the internal tool from the blurb, tags and checkable facts; shown under the blurb in articles.
+    defineField({
+      name: "forYou",
+      title: "This book might be for you",
+      description: "Set by \"Send books to Studio\". One or two sentences, starting \"If you…\". Shown under the book's blurb in articles.",
+      type: "text",
+      rows: 2,
+    }),
+    defineField({
+      name: "notForYou",
+      title: "This book might not be for you",
+      description: "Set by \"Send books to Studio\". One or two sentences, starting \"If you…\". Shown under the book's blurb in articles.",
+      type: "text",
+      rows: 2,
+    }),
     // Publication year and series (DECISIONS.md, 2026-11-03): sent by the internal tool, stored only (not shown on the site yet).
     defineField({
       name: "publishedYear",

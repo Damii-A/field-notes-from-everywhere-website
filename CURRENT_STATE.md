@@ -1,6 +1,13 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-11-04. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-11-14. Full reasoning is in `DECISIONS.md`; this is the short version.
+
+**2026-11-14: AdSense turned the site down; "might be for you" notes built** (DECISIONS.md, same date). Google named no
+reason (screen: "meet AdSense program policies"; email hints at content quality). Built and approved from a preview: books take
+`forYou` / `notForYou`, shown under the blurb in articles; empty until the internal tool sends them. **Next, in order**: (1) the
+user passes `docs/handover/TOOL_HANDOVER_2026-11-14_FIT_NOTES.md` to a tool session, which builds, writes and sends the notes
+for the Thriller books; (2) check they show on a live article; (3) the user ticks the policy box and presses Resubmit in
+AdSense (not before). If refused again: show the notes on "Where to read" pages too (the second risk).
 
 **2026-10-28: access check.** Working: GitHub push, live site, Resend, Kit, Sanity read **and write**
 (new local Editor key "Claude Code local", made by the user; the old one returned "Session not found",
@@ -91,7 +98,7 @@ article links its 15 books. **User's Search Console, 2026-11-04: 47 pages indexe
 book pages), so they are being indexed; the user is satisfied and doesn't need ranking numbers now. If many later show
 "Crawled, currently not indexed", add original content per page.
 
-**Tool notes: none waiting (checked 2026-11-04).** All six notes in `docs/handover/` have been acted on by the tool
+**Tool notes: one waiting (2026-11-14): `TOOL_HANDOVER_2026-11-14_FIT_NOTES.md`** (write and send the "might be for you" notes). Before that, none waiting (checked 2026-11-04): All six notes in `docs/handover/` have been acted on by the tool
 (its commits `e9c55fc`, `29934d3`, `1da72d8`, `02af582`; checked read-only in the Studio): ideas send `column: "up-next"`
 (idea 53 re-sent with it and its 12 groups; no idea carries the old code); 53 of 54 books have year and series, and 411
 of 415 tags have a category; nothing uses `bookamonth`. Left with the user, not the tool: the two high-overlap idea pairs
@@ -269,7 +276,7 @@ This replaces every "Tue 2026-11-10" note in this file.
      "This book might not be for you", based strictly on the blurb, tags and verifiable information.
    - **Signed up**: publisher ID `pub-5271200373971782` (public); site connected by `public/ads.txt`. **Privacy and Disclosures
      updated 2026-11-04** (approved text; DECISIONS.md, same date). **Submitted for review by the user 2026-11-04** (a few days, up
-     to 2-4 weeks). **Don't let ads run before the consent pop-up and US link are in.** The ad code and consent pop-up aren't on the site yet. Telling the email list about the policy change: settled, nothing to send (user, 2026-11-04; the list is effectively the user).
+     to 2-4 weeks). **Not approved (seen 2026-11-14)**; fix in progress, see the top of this file. **Don't let ads run before the consent pop-up and US link are in.** The ad code and consent pop-up aren't on the site yet. Telling the email list about the policy change: settled, nothing to send (user, 2026-11-04; the list is effectively the user).
    - **Second risk**: 47 templated "Where to read" pages, about three quarters of the sitemap, mostly the same answer,
      store links and blurb. Keep ads off them (and off the Reading Room page).
    - **Tags**: "Explicit Sex" and "Sexual Violence" hidden from public pages (done; DECISIONS.md, same date).

@@ -264,6 +264,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {splitParagraphs(book.blurb).map((p, k) => (
                           <p key={k}>{p}</p>
                         ))}
+                        <BookFit forYou={book.forYou} notForYou={book.notForYou} border={style.methodologyBorder} />
                         {book.slug ? (
                           // The book's "Where to read" page (DECISIONS.md, 2026-10-02); also how
                           // search engines find those pages.
@@ -575,6 +576,30 @@ function BookFactsRow({ border, ...facts }: BookFacts & { border: string }) {
           {l}
         </span>
       ))}
+    </div>
+  );
+}
+
+/**
+ * "This book might be for you" / "…might not be for you" (user, 2026-11-14): our own notes from the
+ * internal tool, in the methodology box's style. Nothing shows when neither is set.
+ */
+function BookFit({ forYou, notForYou, border }: { forYou?: string; notForYou?: string; border: string }) {
+  if (!forYou && !notForYou) return null;
+  return (
+    <div className={styles.fitBox} style={{ borderLeftColor: border }}>
+      {forYou ? (
+        <div className={styles.fitPart}>
+          <span className={styles.methodologyLabel}>This book might be for you</span>
+          <p className={styles.fitText}>{forYou}</p>
+        </div>
+      ) : null}
+      {notForYou ? (
+        <div className={styles.fitPart}>
+          <span className={styles.methodologyLabel}>This book might not be for you</span>
+          <p className={styles.fitText}>{notForYou}</p>
+        </div>
+      ) : null}
     </div>
   );
 }

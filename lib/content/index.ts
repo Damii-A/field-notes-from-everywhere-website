@@ -108,6 +108,8 @@ interface RawBookEntry {
     rankings: RawTag[] | null;
     pageCount: number | null;
     readingHours: number | null;
+    forYou: string | null;
+    notForYou: string | null;
   } | null;
 }
 
@@ -194,6 +196,8 @@ function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | n
     coverImage: raw.refBook.coverImage ? { url: raw.refBook.coverImage.url, alt: raw.refBook.title } : undefined,
     pageCount: raw.refBook.pageCount ?? undefined,
     readingHours: raw.refBook.readingHours ?? undefined,
+    ...(raw.refBook.forYou?.trim() ? { forYou: raw.refBook.forYou.trim() } : {}),
+    ...(raw.refBook.notForYou?.trim() ? { notForYou: raw.refBook.notForYou.trim() } : {}),
   };
 }
 
@@ -272,7 +276,9 @@ const FULL_ARTICLE_PROJECTION = `{
       "tags": tags[]->{ "label": name, "slug": slug.current },
       "rankings": ${BOOK_RANKINGS}{ "label": name, "slug": slug.current },
       pageCount,
-      readingHours
+      readingHours,
+      forYou,
+      notForYou
     }
   }
 }`;

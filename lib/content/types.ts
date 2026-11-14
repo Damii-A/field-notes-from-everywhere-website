@@ -89,6 +89,9 @@ export interface BookEntry {
   /** From the internal tool; shown as "Page count: … · Est. reading time: …" (lib/books/facts.ts). */
   pageCount?: number;
   readingHours?: number;
+  /** From the internal tool: "This book might (not) be for you" notes, shown under the blurb. */
+  forYou?: string;
+  notForYou?: string;
   /** BookCover accepts a solid "spine" colour when there's no real cover image yet. */
   spine?: string;
   coverImage?: {

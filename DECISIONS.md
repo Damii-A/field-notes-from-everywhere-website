@@ -3197,3 +3197,31 @@ code, so the simple rule won. Known effect: picks repeat some books (2-8 here), 
 
 **Verified**: eight rule cases; the real rule on the 10 live articles (3 picks each, every article recommended at least once, none
 over 4, hand picks kept); type check, lint, production build.
+
+## 2026-11-14 — "This book might be for you" notes on books
+
+**Decision** (user): AdSense turned the site down (Google gave no specific reason; its email points to "insufficient
+content or content quality"). The likely cause is the risk found 2026-11-04: about 97% of the list text is shared
+publisher blurbs. The user's planned fix from that day is built: each book gains **`forYou`** and **`notForYou`**
+(plain text, view-only in the Studio like the rest of the book), shown in articles in all three columns as a small box
+under the blurb, above "Where to read …", headed "This book might be for you" / "This book might not be for you" (the
+user's wording). The box uses the methodology box's look (`--paper-050`, the column's left rule, mono caps labels;
+`BookFit` in `components/ArticleView.tsx`, `.fitBox` in its CSS). Either note can be missing; with neither, no box.
+
+**Look approved by the user** from a local preview of the live Shortlist article with sample notes on three books (laptop
+and phone; no sideways scroll, no console errors). Spec departure: `pub_article.md` §5's book entry has no such element;
+this entry is the record.
+
+**Sent with each book, not each post idea** (user's pick, my recommendation): the internal tool writes the notes and sends
+them with "Send books to Studio". One send fills every live list, including articles not made from post ideas; each book's
+notes are written once. Alternative: per post idea (tailored to each list, but more writing, and only new or re-sent ideas
+get them). Writing rules for the tool (strictly from the blurb, tags and checkable facts; "If you…"; no spoilers; no
+graphic sexual wording) are in `docs/handover/TOOL_HANDOVER_2026-11-14_FIT_NOTES.md`.
+
+**Not added** (not asked): the notes on "Where to read" pages and in the "send this list" email. "Where to read" pages are
+the second AdSense risk (templated pages), so showing the notes there too is an option if Google refuses again.
+
+**Next**: the tool builds and sends the notes; then the user resubmits in AdSense (don't resubmit before the notes are live).
+
+**Verified**: type check, lint, schema validation 0/0, production build; the local preview above. Nothing visible changes on
+the live site until the tool sends notes.

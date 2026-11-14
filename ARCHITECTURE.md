@@ -168,7 +168,8 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   though a theme and a tag may share a name.
 - **`book`** — canonical book record: `title`, `author`, `slug` (its `/where-to-read/<slug>` address, 2026-10-02), `coverImage`, `canonicalBlurb`,
   `tags[]` (→ `tag`), `goodreadsUrl`, `toolBookId`, `pageCount` and `readingHours`, `publishedYear` and `series`
-  (`status` / `name` / `number` / `total`; both stored only since 2026-11-03). **The whole document is
+  (`status` / `name` / `number` / `total`; both stored only since 2026-11-03). `forYou` / `notForYou` (2026-11-14): the tool's "This book might (not) be for
+  you" notes, shown under the blurb in articles (`BookFit`, `components/ArticleView.tsx`). **The whole document is
   view-only in the Studio since 2026-11-03** (no create, edit, duplicate or delete; books come only from the
   internal tool's "Send to website"; page count and reading time show as "Page count" / "Est. reading time"
   pills under the author, `lib/books/facts.ts`). Referenced by articles, rankings and Reading Room issues, and
