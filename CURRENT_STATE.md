@@ -8,6 +8,10 @@ reason (screen: "meet AdSense program policies"; email hints at content quality)
 user passes `docs/handover/TOOL_HANDOVER_2026-11-14_FIT_NOTES.md` to a tool session, which builds, writes and sends the notes
 for the Thriller books; (2) check they show on a live article; (3) the user ticks the policy box and presses Resubmit in
 AdSense (not before). If refused again: show the notes on "Where to read" pages too (the second risk).
+**Later 2026-11-14: Dark Fantasy notes sent by the tool** (its `docs/handover/WEBSITE_HANDOVER_2026-11-14_FIT_NOTES_SENT.md`).
+Checked live: 80 of 134 books have notes; all 9 live Dark Fantasy lists show the box on every book (all three columns;
+phone render fine). The 10 live Thriller lists have none yet: the user is holding Thriller's send for a tag re-edit.
+19 lists are live in all (9 Dark Fantasy, 10 Thriller); 178 of 306 book entries carry notes.
 
 **2026-10-28: access check.** Working: GitHub push, live site, Resend, Kit, Sanity read **and write**
 (new local Editor key "Claude Code local", made by the user; the old one returned "Session not found",
@@ -98,7 +102,7 @@ article links its 15 books. **User's Search Console, 2026-11-04: 47 pages indexe
 book pages), so they are being indexed; the user is satisfied and doesn't need ranking numbers now. If many later show
 "Crawled, currently not indexed", add original content per page.
 
-**Tool notes: one waiting (2026-11-14): `TOOL_HANDOVER_2026-11-14_FIT_NOTES.md`** (write and send the "might be for you" notes). Before that, none waiting (checked 2026-11-04): All six notes in `docs/handover/` have been acted on by the tool
+**Tool notes: none waiting (2026-11-14):** `TOOL_HANDOVER_2026-11-14_FIT_NOTES.md` was acted on (Dark Fantasy sent; Thriller to follow in the tool). Before that, none waiting (checked 2026-11-04): All six notes in `docs/handover/` have been acted on by the tool
 (its commits `e9c55fc`, `29934d3`, `1da72d8`, `02af582`; checked read-only in the Studio): ideas send `column: "up-next"`
 (idea 53 re-sent with it and its 12 groups; no idea carries the old code); 53 of 54 books have year and series, and 411
 of 415 tags have a category; nothing uses `bookamonth`. Left with the user, not the tool: the two high-overlap idea pairs
