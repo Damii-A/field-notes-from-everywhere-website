@@ -273,7 +273,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {book.slug ? (
                           <Link href={bookPagePath(book.title, book.author)} className={styles.bookTitleLink} target="_blank" rel="noopener">
                             {book.title}
-                            <span aria-hidden="true"> &rarr;</span>
+                            <span aria-hidden="true" className={styles.titleArrow}> &rarr;</span>
                           </Link>
                         ) : (
                           book.title
@@ -286,7 +286,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {splitParagraphs(book.blurb).map((p, k) => (
                           <p key={k}>{p}</p>
                         ))}
-                        <BookFit forYou={book.forYou} notForYou={book.notForYou} />
+                        <BookFit forYou={book.forYou} notForYou={book.notForYou} border={style.methodologyBorder} labelColor={style.titleColor} />
                         {book.slug ? (
                           // The book's "Where to read" page (DECISIONS.md, 2026-10-02); also how
                           // search engines find those pages.
@@ -606,20 +606,21 @@ function BookFactsRow({ border, ...facts }: BookFacts & { border: string }) {
  * "This book might be for you" / "…might not be for you" (user, 2026-11-14): our own notes from the
  * internal tool, in the methodology box's style. Nothing shows when neither is set.
  */
-function BookFit({ forYou, notForYou }: { forYou?: string; notForYou?: string }) {
+function BookFit({ forYou, notForYou, border, labelColor }: { forYou?: string; notForYou?: string; border: string; labelColor: string }) {
   if (!forYou && !notForYou) return null;
-  // Two separate boxes (user, 2026-11-14), green and peach since 2026-11-17.
+  // Two separate plain containers with a border in the column's colour (user, 2026-11-14); both headings in the
+  // column's title colour so they stand out (user, 2026-11-17).
   return (
     <>
       {forYou ? (
-        <div className={`${styles.fitBox} ${styles.fitYes}`}>
-          <span className={styles.fitLabel}>This book might be for you</span>
+        <div className={styles.fitBox} style={{ borderColor: border }}>
+          <span className={styles.fitLabel} style={{ color: labelColor }}>This book might be for you</span>
           <p className={styles.fitText}>{forYou}</p>
         </div>
       ) : null}
       {notForYou ? (
-        <div className={`${styles.fitBox} ${styles.fitNo}`}>
-          <span className={styles.fitLabel}>This book might not be for you</span>
+        <div className={styles.fitBox} style={{ borderColor: border }}>
+          <span className={styles.fitLabel} style={{ color: labelColor }}>This book might not be for you</span>
           <p className={styles.fitText}>{notForYou}</p>
         </div>
       ) : null}

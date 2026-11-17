@@ -147,7 +147,7 @@
 .fitLabel {
   margin: 0;
   font: var(--weight-semibold) var(--text-sm) / 1.4 var(--font-body);
-  color: var(--ink-800);
+  color: var(--clay-700); /* both headings in the page's accent so they stand out (user, 2026-11-17) */
 }
 
 .fitText {
@@ -403,13 +403,3 @@
   }
 }
 
-/* Same colours as in articles (user, 2026-11-17). */
-.fitYes {
-  background: color-mix(in srgb, var(--sage-500) 30%, var(--paper-050));
-  border-color: var(--sage-600);
-}
-
-.fitNo {
-  background: var(--clay-100);
-  border-color: var(--clay-500);
-}

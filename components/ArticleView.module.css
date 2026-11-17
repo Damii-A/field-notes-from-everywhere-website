@@ -49,6 +49,28 @@
 
 .pillRow .categoryTag {
   margin: 0;
+  white-space: nowrap;
+}
+
+/* Both pills stay on one row on phones too (user, 2026-11-17): a little smaller there. */
+@media (max-width: 480px) {
+  .pillRow {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .pillRow .categoryTag {
+    height: 28px;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .pillRow .categoryTag {
+    padding: 0 8px;
+    font-size: 11px;
+    letter-spacing: 0;
+  }
 }
 
 .rankingTag {
@@ -220,6 +242,10 @@
   text-decoration: underline;
   text-decoration-thickness: from-font;
   text-underline-offset: 0.14em;
+}
+
+.titleArrow {
+  font-size: 0.7em; /* the arrow at full heading size was too big (user, 2026-11-17) */
 }
 
 .bookTitleLink:hover,
@@ -634,18 +660,6 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-
-/* Coloured so they stand out as useful (user, 2026-11-17, version A of two previews):
-   a soft green for "might be for you", a soft peach for "might not be". */
-.fitYes {
-  background: color-mix(in srgb, var(--sage-500) 30%, var(--paper-050));
-  border-color: var(--sage-600);
-}
-
-.fitNo {
-  background: var(--clay-100);
-  border-color: var(--clay-500);
 }
 
 /* Headings in the book text's own font, not the mono caps label (user, 2026-11-14). */

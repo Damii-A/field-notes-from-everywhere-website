@@ -3325,6 +3325,9 @@ All user-directed the same day; seen in local screenshots before going live.
   hover colour). Now every text link underlines on hover and keyboard focus (`app/globals.css`, `a:is(:hover, :focus-visible)`
   excluding links that wrap a card: an image, a block or an icon, `:has(div, img, svg, p, h2, h3, picture)`). Cards keep their
   lift; the header menu opts out (`.navLink:hover`); the book page's store/list cards opt out.
-- **"This book might (not) be for you" boxes** (articles and book pages): the plain bordered boxes didn't stand out as useful.
-  Now a soft green box for "might be for you" (`--sage-500` 30% into `--paper-050`, `--sage-600` border) and a soft peach one
-  for "might not be" (`--clay-100`, `--clay-500` border). User's pick of two previews (other: both ochre).
+- **"This book might (not) be for you" headings** (articles and book pages): both headings now share one colour so the
+  sections stand out: the column's title colour in articles (sage / clay / slate), `--clay-700` on book pages. Boxes stay
+  plain bordered as on 2026-11-14. (I first filled the boxes green and peach, a misreading: the user asked for the heading
+  text, in one shared colour; reverted the same day.)
+- **Follow-ups the same day (user)**: the title arrow is smaller (0.7em; too big on desktop); the two pills stay on one row on
+  phones (no wrapping under 480px, slightly smaller pills; checked at 390 and 320px).
