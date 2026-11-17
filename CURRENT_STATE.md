@@ -1,6 +1,6 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-11-14. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-11-17. Full reasoning is in `DECISIONS.md`; this is the short version.
 
 **2026-11-14: AdSense turned the site down; "might be for you" notes built** (DECISIONS.md, same date). Google named no
 reason (screen: "meet AdSense program policies"; email hints at content quality). Built and approved from a preview: books take
@@ -16,6 +16,12 @@ Then (user): notes redesigned as two plain bordered boxes and added to "Where to
 **checked live 2026-11-14** (Godblind's book page and the Black Company list show the new boxes).
 **Resubmit only once every live list has notes** (user's choice). Waiting on: the tool's Thriller notes
 (`docs/handover/TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md`, asks for a notes-only send), then a live check here.
+
+**2026-11-17 (end of session): also live** (DECISIONS.md, same date): article book titles link to their book pages
+(underlined, small centred arrow); column + "All … lists" pills on one row; every text link underlines on hover; fit-note
+headings in the column colour (boxes plain); a list's own story elements lead, then the book's others with "+N more"; book
+pages name the author in "Where to read", "Books like" and the questions, no quotes in the banner title, lists heading
+without "on FNFE". **Start the next session at the AdSense section above** (waiting on Thriller's notes).
 
 **2026-11-17 (later): book pages rebuilt** at `/<title>-by-<author>` (DECISIONS.md, same date): banner, jump links, what it's
 about, where to read, questions, should you read it, books like it, FNFE lists; old `/where-to-read/` links forward. Tool note:
