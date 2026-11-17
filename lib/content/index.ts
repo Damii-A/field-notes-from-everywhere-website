@@ -182,10 +182,11 @@ export function withRankingPills<T>(rankings: T[], tags: T[], name: (t: T) => st
  */
 function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | null {
   if (!raw.refBook) return null; // dangling reference — skip rather than crash on bad CMS data
-  const own = !!raw.tagOverrides && raw.tagOverrides.length > 0;
-  // Ranking pills always come first, also before an article's own tag choice (user, 2026-11-03).
-  const tags = withRankingPills(raw.refBook.rankings ?? [], (own ? raw.tagOverrides : raw.refBook.tags) ?? [], (t) => t.label);
-  // Then the book's first few tags (an article's own choice shows in full).
+  const picks = raw.tagOverrides ?? [];
+  // Ranking pills always come first (user, 2026-11-03), then this article's own picks ("Story elements shown here",
+  // filled from the post idea), then the book's other story elements (user, 2026-11-17; the picks used to replace them).
+  const tags = withRankingPills(raw.refBook.rankings ?? [], [...picks, ...(raw.refBook.tags ?? [])], (t) => t.label);
+  // Shown before "+N more": the pills, then at least the first 4, and every one of the article's picks.
   const pillNames = new Set((raw.refBook.rankings ?? []).map((r) => r.label.trim().toLowerCase()));
   const pills = (tags ?? []).filter((t) => pillNames.has(t.label.trim().toLowerCase())).length;
   return {
@@ -196,7 +197,7 @@ function toBookEntry(raw: RawBookEntry, rank: number | undefined): BookEntry | n
     blurb: raw.blurb || raw.refBook.canonicalBlurb || "",
     slug: raw.refBook.slug ?? undefined,
     tags: tags?.map((t) => ({ label: t.label, slug: t.slug })),
-    tagsShown: own ? undefined : pills + BOOK_TAGS_SHOWN,
+    tagsShown: pills + Math.max(BOOK_TAGS_SHOWN, new Set(picks.map((t) => t.label.trim().toLowerCase()).filter((n) => !pillNames.has(n) && isPublicTag(n))).size),
     coverImage: raw.refBook.coverImage ? { url: raw.refBook.coverImage.url, alt: raw.refBook.title } : undefined,
     pageCount: raw.refBook.pageCount ?? undefined,
     readingHours: raw.refBook.readingHours ?? undefined,

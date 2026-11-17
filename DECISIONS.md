@@ -3329,5 +3329,14 @@ All user-directed the same day; seen in local screenshots before going live.
   sections stand out: the column's title colour in articles (sage / clay / slate), `--clay-700` on book pages. Boxes stay
   plain bordered as on 2026-11-14. (I first filled the boxes green and peach, a misreading: the user asked for the heading
   text, in one shared colour; reverted the same day.)
-- **Follow-ups the same day (user)**: the title arrow is smaller (0.7em; too big on desktop); the two pills stay on one row on
+- **Follow-ups the same day (user)**: the title arrow is smaller (0.7em on phones, 0.5em from 701px up, where the title is bigger; too big on desktop); the two pills stay on one row on
   phones (no wrapping under 480px, slightly smaller pills; checked at 390 and 320px).
+
+## 2026-11-17 — Articles: a list's own story elements lead, the book's others follow
+
+**Decision** (user's pick of three): books in 12 of the 20 live articles showed only the 1-3 story elements their post idea
+picked, because "Start article" fills each entry's "Story elements shown here" and that used to *replace* the book's own
+(19-31 per book), with no "+N more". Now (`toBookEntry`, `lib/content/index.ts`): ranking pills, then the article's picks,
+then the book's other story elements (no repeats, hidden tags still hidden); shown before "+N more": the pills plus at least
+4, and always every pick. Same in the "send this list" email (it follows `tagsShown`). Nothing changed in the Studio or the
+data. Not chosen: ignoring the picks; keeping picks only.
