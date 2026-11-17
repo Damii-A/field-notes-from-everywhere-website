@@ -44,6 +44,7 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
   const [shown, setShown] = useState(HUB_INITIAL_COUNT);
   const visible = hub.articles.slice(0, shown);
   const moreLeft = shown < hub.articles.length;
+  const moreCount = hub.articles.length - shown;
 
   return (
     <div style={{ background: def.identity.pageBg }}>
@@ -108,8 +109,17 @@ export function CategoryHub({ category, hub }: { category: CategorySlug; hub: Hu
               </div>
               {moreLeft ? (
                 <div className={styles.seeMoreRow}>
-                  <Button tone="outline" size="md" onClick={() => setShown((s) => Math.min(hub.articles.length, s + HUB_PAGE_INCREMENT))}>
-                    See more
+                  {/* Filled in the column's accent with the count left, so it isn't missed (user, 2026-11-17; was a plain outline "See more"). */}
+                  <Button
+                    tone="primary"
+                    size="lg"
+                    style={{ background: def.identity.accent, color: "var(--paper-050)", boxShadow: "var(--shadow-card)" }}
+                    onClick={() => setShown((s) => Math.min(hub.articles.length, s + HUB_PAGE_INCREMENT))}
+                  >
+                    {moreCount <= HUB_PAGE_INCREMENT
+                      ? `See ${moreCount} more article${moreCount === 1 ? "" : "s"}`
+                      : `See more articles (${moreCount} left)`}
+                    <span aria-hidden="true">↓</span>
                   </Button>
                 </div>
               ) : null}

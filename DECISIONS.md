@@ -3253,3 +3253,12 @@ section text are untouched, and other formats with sections would still show the
 
 **Verified**: type check, schema validation, production build; the live Dark Fantasy challenge article in that build shows the
 12 months with no notes.
+
+## 2026-11-17 — Column pages: a bolder "See more" with a count
+
+**Decision** (user's pick of three previews; approved from local screenshots at laptop and phone width): the column pages'
+"See more" was a thin outline button the user kept missing, especially when the last visible row looked full. It's now
+filled in the column's accent (`identity.accent`: sage / clay / slate, `--paper-050` text, all ≥4.5:1), large, and says
+how many are hidden: "See 4 more articles ↓", or "See more articles (12 left)" when more than one batch (6) remains
+(`components/CategoryHub.tsx`). Paging unchanged (9, then +6). Not chosen: a "Showing 9 of 13" line by the heading, a
+divider line through the button.
