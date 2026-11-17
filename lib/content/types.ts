@@ -47,9 +47,11 @@ export interface ThemeRef {
   group: CollectionGroup;
 }
 
-/** A book's "Where to read" page (/where-to-read/<slug>): the book plus the published lists featuring it. */
+/** A book's page (/<title>-by-<author>, lib/books/path.ts): the book plus the published lists featuring it. */
 export interface WhereToReadBook {
   slug: string;
+  /** The page's address, /<title>-by-<author> (lib/books/path.ts). */
+  path: string;
   title: string;
   author: string;
   coverUrl?: string;
@@ -66,10 +68,17 @@ export interface WhereToReadBook {
   /** From the internal tool: "This book might (not) be for you" notes (DECISIONS.md, 2026-11-14). */
   forYou?: string;
   notForYou?: string;
+  /** From the internal tool (stored since 2026-11-03; shown in the book page's questions since 2026-11-17). */
+  publishedYear?: number;
+  series?: { status: "standalone" | "finished" | "ongoing"; name?: string; number?: number; total?: number };
+  /** The website rankings it's in, with their "book lists" page when one is live. */
+  genres: { name: string; href?: string }[];
+  /** Other books by the same author that have a live list (their pages are indexed). */
+  sameAuthor: { title: string; path: string }[];
   /** Published articles featuring the book, newest first. `rank` only on ranked columns (The Shortlist). */
   lists: { title: string; href: string; category: CategorySlug; rank?: number; bookCount: number }[];
   /** Other books from those lists (each has its own page), up to 6. */
-  related: { slug: string; title: string; author: string; coverUrl?: string }[];
+  related: { slug: string; path: string; title: string; author: string; coverUrl?: string }[];
 }
 
 export interface BookEntry {
@@ -80,7 +89,7 @@ export interface BookEntry {
   author: string;
   /** Article-specific blurb — pub_article.md §5 ("Blurb"), overrides any canonical book blurb. */
   blurb: string;
-  /** The book's /where-to-read/<slug> page; missing until the book has a slug. */
+  /** The book's stored slug; its page is at /<title>-by-<author> (lib/books/path.ts). Missing until the book has a slug. */
   slug?: string;
   tags?: TagRef[];
   /**

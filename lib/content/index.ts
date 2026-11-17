@@ -12,6 +12,7 @@ import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
 import { CATEGORIES, CATEGORY_LIST } from "./categories";
 import { formatArticleDate } from "./dates";
 import { sectionHeading } from "./sections";
+import { bookPagePath, bookPageSlug } from "@/lib/books/path";
 import { pickWhatToReadNext, type NextCandidate } from "./whatToReadNext";
 import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, ThemeRef, WhereToReadBook } from "./types";
 
@@ -505,8 +506,12 @@ interface RawWhereToRead {
   readingHours: number | null;
   forYou: string | null;
   notForYou: string | null;
+  publishedYear: number | null;
+  series: { status?: string; name?: string; number?: number; total?: number } | null;
   tags: (string | null)[] | null;
   rankings: (string | null)[] | null;
+  rankingLinks: { name: string; slug: string | null; live: boolean }[] | null;
+  sameAuthor: { title: string; author: string }[] | null;
   lists: {
     title: string;
     slug: string;
@@ -527,8 +532,11 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
   const raw = await groqFetch<(RawWhereToRead & { _id: string }) | null>(
     `*[_type == "book" && slug.current == $slug][0]{
       _id, "slug": slug.current, title, author, "coverUrl": coverImage.asset->url, goodreadsUrl, canonicalBlurb, pageCount, readingHours, forYou, notForYou,
+      publishedYear, series,
       "tags": tags[]->name,
       "rankings": ${BOOK_RANKINGS}.name,
+      "rankingLinks": ${BOOK_RANKINGS}{ name, "slug": slug.current, "live": count(*[_type == "article" && ${RELEASED} && references(^._id)]) > 0 },
+      "sameAuthor": *[_type == "book" && author == ^.author && _id != ^._id && count(*[_type == "article" && ${RELEASED} && references(^._id)]) > 0] | order(title asc){ title, author },
       "lists": *[_type == "article" && ${RELEASED} && references(^._id)] | order(publishedAt desc){
         title, "slug": slug.current, category,
         "entries": bookEntries[]{ "id": book._ref, blurb, "book": book->{ "slug": slug.current, title, author, "coverUrl": coverImage.asset->url } }
@@ -568,16 +576,29 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
       const b = q.shift()?.book;
       if (!b?.slug || seen.has(b.slug) || related.length === RELATED_LIMIT) continue;
       seen.add(b.slug);
-      related.push({ slug: b.slug, title: b.title, author: b.author, coverUrl: b.coverUrl ?? undefined });
+      related.push({ slug: b.slug, path: bookPagePath(b.title, b.author), title: b.title, author: b.author, coverUrl: b.coverUrl ?? undefined });
     }
   }
 
+  const series = raw.series?.status
+    ? {
+        status: raw.series.status as "standalone" | "finished" | "ongoing",
+        name: raw.series.name?.trim() || undefined,
+        number: raw.series.number ?? undefined,
+        total: raw.series.total ?? undefined,
+      }
+    : undefined;
   return {
     slug: raw.slug,
+    path: bookPagePath(raw.title, raw.author),
     title: raw.title,
     author: raw.author,
     coverUrl: raw.coverUrl ?? undefined,
     goodreadsUrl: raw.goodreadsUrl ?? undefined,
+    publishedYear: raw.publishedYear ?? undefined,
+    series,
+    genres: (raw.rankingLinks ?? []).map((r) => ({ name: r.name, href: r.slug && r.live ? rankingListsPath(r.slug) : undefined })),
+    sameAuthor: (raw.sameAuthor ?? []).map((b) => ({ title: b.title, path: bookPagePath(b.title, b.author) })),
     pageCount: raw.pageCount ?? undefined,
     readingHours: raw.readingHours ?? undefined,
     ...(raw.forYou?.trim() ? { forYou: raw.forYou.trim() } : {}),
@@ -597,10 +618,10 @@ export async function getWhereToReadBook(slug: string): Promise<WhereToReadBook 
 }
 
 /** Books featured in at least one published article: the indexable "Where to read" pages, for the sitemap. */
-export async function getWhereToReadSlugs(): Promise<{ slug: string; updatedAt: string }[]> {
-  return groqFetch<{ slug: string; updatedAt: string }[]>(
+export async function getWhereToReadSlugs(): Promise<{ slug: string; title: string; author: string; updatedAt: string }[]> {
+  return groqFetch<{ slug: string; title: string; author: string; updatedAt: string }[]>(
     `*[_type == "book" && defined(slug.current) && count(*[_type == "article" && ${RELEASED} && references(^._id)]) > 0]{
-      "slug": slug.current, "updatedAt": _updatedAt
+      "slug": slug.current, title, author, "updatedAt": _updatedAt
     }`,
     {},
     { tags: ["book", "article"], revalidate: 300 },
@@ -629,13 +650,33 @@ export async function getSitemapDates(): Promise<{
 }
 
 /** One book by id: its slug, for the old /find-it/<id> address to forward to /where-to-read/<slug>. Null if it doesn't exist. */
-export async function getBookById(id: string): Promise<{ slug?: string } | null> {
-  const raw = await groqFetch<{ slug: string | null } | null>(
-    `*[_type == "book" && _id == $id][0]{ "slug": slug.current }`,
+export async function getBookById(id: string): Promise<{ slug?: string; title: string; author: string } | null> {
+  const raw = await groqFetch<{ slug: string | null; title: string; author: string } | null>(
+    `*[_type == "book" && _id == $id][0]{ "slug": slug.current, title, author }`,
     { id },
     { tags: ["book"], revalidate: 300 },
   );
-  return raw ? { slug: raw.slug ?? undefined } : null;
+  return raw ? { slug: raw.slug ?? undefined, title: raw.title, author: raw.author } : null;
+}
+
+/** The stored slug of the book whose page address (/<title>-by-<author>, lib/books/path.ts) is `pageSlug`; null if none. */
+export async function getBookSlugForPage(pageSlug: string): Promise<string | null> {
+  const books = await groqFetch<{ slug: string | null; title: string; author: string }[]>(
+    `*[_type == "book" && defined(slug.current)]{ "slug": slug.current, title, author }`,
+    {},
+    { tags: ["book"], revalidate: 300 },
+  );
+  return books.find((b) => b.slug && bookPageSlug(b.title, b.author) === pageSlug)?.slug ?? null;
+}
+
+/** A book's page address from its stored slug (for the old /where-to-read/<slug> addresses); null if none. */
+export async function getBookPathForSlug(slug: string): Promise<string | null> {
+  const b = await groqFetch<{ title: string; author: string } | null>(
+    `*[_type == "book" && slug.current == $slug][0]{ title, author }`,
+    { slug },
+    { tags: ["book"], revalidate: 300 },
+  );
+  return b ? bookPagePath(b.title, b.author) : null;
 }
 
 /**

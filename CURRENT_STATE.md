@@ -17,6 +17,12 @@ Then (user): notes redesigned as two plain bordered boxes and added to "Where to
 **Resubmit only once every live list has notes** (user's choice). Waiting on: the tool's Thriller notes
 (`docs/handover/TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md`, asks for a notes-only send), then a live check here.
 
+**2026-11-17 (later): book pages rebuilt** at `/<title>-by-<author>` (DECISIONS.md, same date): banner, jump links, what it's
+about, where to read, questions, should you read it, books like it, FNFE lists; old `/where-to-read/` links forward. Tool note:
+`docs/handover/TOOL_HANDOVER_2026-11-17_BOOK_PAGES.md` (series titles for a "reading order" question, later; title edits move
+addresses). Flagged to the user for AdSense: A Game of Thrones' "not for you" note mentions "sexual content involving a young
+teenager"; a softer wording is the user's call (via the tool).
+
 **2026-11-17: four user requests, all live** (DECISIONS.md, same date): (1) column pages' "See more" is a filled button in
 the column colour with the count left; (2) the Studio says "story elements" / "description" for tags / blurb (labels only);
 (3) Challenge month headings drop the bracketed occasions; (4) **ranking pages** `/thriller-book-lists`, `/dark-fantasy-book-lists`,
@@ -112,7 +118,7 @@ article links its 15 books. **User's Search Console, 2026-11-04: 47 pages indexe
 book pages), so they are being indexed; the user is satisfied and doesn't need ranking numbers now. If many later show
 "Crawled, currently not indexed", add original content per page.
 
-**Tool notes: one waiting (2026-11-14): `TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md`** (send Thriller's notes without the held-back tags). `TOOL_HANDOVER_2026-11-14_FIT_NOTES.md` was acted on (Dark Fantasy sent). Before that, none waiting (checked 2026-11-04): All six notes in `docs/handover/` have been acted on by the tool
+**Tool notes waiting: `TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md` and `TOOL_HANDOVER_2026-11-17_BOOK_PAGES.md`** (send Thriller's notes without the held-back tags). `TOOL_HANDOVER_2026-11-14_FIT_NOTES.md` was acted on (Dark Fantasy sent). Before that, none waiting (checked 2026-11-04): All six notes in `docs/handover/` have been acted on by the tool
 (its commits `e9c55fc`, `29934d3`, `1da72d8`, `02af582`; checked read-only in the Studio): ideas send `column: "up-next"`
 (idea 53 re-sent with it and its 12 groups; no idea carries the old code); 53 of 54 books have year and series, and 411
 of 415 tags have a category; nothing uses `bookamonth`. Left with the user, not the tool: the two high-overlap idea pairs

@@ -3282,3 +3282,35 @@ and an intro. Built before the AdSense resubmit (user's choice), since it adds a
 
 **Verified**: type check, schema validation, production build; locally against live content: both pages 200, an unknown
 `/nope-book-lists` 404, the redirect, the sitemap entries, the article pill (desktop and phone), footer shape unchanged.
+
+## 2026-11-17 — Book pages move to /<title>-by-<author> and become an SEO page
+
+**Decision** (user's structure and address; my SEO wording accepted; look approved from a local preview at laptop and phone
+width): every book's page (was `/where-to-read/<slug>`, 2026-10-02) is now at **`/<title>-by-<author>`**, e.g.
+`/the-silent-patient-by-alex-michaelides`, rebuilt in this order:
+1. **Banner** (slate, as before): cover; the `h1` "“Title” by Author" with the author on its own line; page count + reading
+   time pills on **one row** (no wrapping, smaller under 380px); the story elements (ranking pills + first 4, "+N more",
+   moved here from the About panel; the dashed pill restyled for the dark band).
+2. **Jump links** (user picked): What it's about · Where to read · Questions · Should you read it? · Books like it · In our lists.
+3. **"What is “Title” about?"** (the blurb). 4. **"Where to read “Title”"** (`id="where-to-read"`; the direct answer moved
+   here from the banner, then the four stores). 5. **"About “Title”"**: questions as `h3`s, each shown only when the data can
+   answer it truthfully: pages, reading time, who wrote it (+ links to the author's other featured books), when published,
+   genre (= its website rankings, linking their "book lists" pages), series (standalone / book N of T, complete / ongoing).
+   `FAQPage` JSON-LD from the same text. 6. **"Should you read “Title”?"** (the two fit-note boxes, labels now `h3`).
+   7. **"Books like “Title”"**. 8. **"“Title” has appeared in these reading lists on FNFE"** (user's wording).
+- **Address**: worked out from title + author every time (`lib/books/path.ts`, never stored; all 134 unique when built);
+  `next.config.mjs` rewrites `/…-by-…` to `app/book/[slug]`, which finds the book by that computed slug. `/book/<slug>` 308s
+  to the public address; **old `/where-to-read/<slug>` and `/find-it/<id>` 308 to `/<new>#where-to-read`**. Every link moved:
+  articles' "Where to read X →" (now `#where-to-read`), article JSON-LD, sitemap, IndexNow paths, Reading Room issue links.
+  **Known limit**: if the tool changes a title or author, the book's new-style address changes and the previous one 404s
+  (the `/where-to-read/` one keeps working, it uses the stored slug).
+- **Not built**: "What is the correct order to read {series}?" (user asked whether it's worth it; my view: worth having
+  later, not urgent, and the tool must first send each series' titles in order; asked in
+  `docs/handover/TOOL_HANDOVER_2026-11-17_BOOK_PAGES.md`). A visible breadcrumb trail (offered, not chosen).
+- Unchanged: indexed only when the book is in a live list; links around the page still open in a new tab (2026-10-02).
+- Title tag "{Title} by {Author}: Pages, Series & Where to Read" (shorter fallbacks under 60 characters); JSON-LD `Book`
+  gains `numberOfPages`, `datePublished`, `genre`, `isPartOf` (`BookSeries`) + `position`.
+
+**Verified** (local production build against live content): new addresses 200, unknown `…-by-…` 404, old addresses 308 to the
+new one + `#where-to-read`, `/book/…` 308, other top-level pages unaffected, sitemap 129 book pages at new addresses,
+heading order as above, FAQ JSON-LD present; screenshots at 1280, 390 and 320px.

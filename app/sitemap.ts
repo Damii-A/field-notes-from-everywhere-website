@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATEGORY_LIST, getRankingListsIndex, getSitemapDates, getWhereToReadSlugs, rankingListsPath } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
+import { bookPagePath } from "@/lib/books/path";
 
 /**
  * Every date here is a real "last changed" date (DECISIONS.md, 2026-11-03): search engines
@@ -32,9 +33,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entries.push({ url: `${SITE_URL}${rankingListsPath(r.slug)}`, lastModified: new Date(r.changed) });
   }
 
-  // "Where to read" pages, only for books in a published list (the others are noindex).
+  // Book pages (/<title>-by-<author>), only for books in a published list (the others are noindex).
   for (const b of await getWhereToReadSlugs()) {
-    entries.push({ url: `${SITE_URL}/where-to-read/${b.slug}`, lastModified: new Date(b.updatedAt) });
+    entries.push({ url: `${SITE_URL}${bookPagePath(b.title, b.author)}`, lastModified: new Date(b.updatedAt) });
   }
 
   return entries;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./WhereToRead.module.css";
+import styles from "./BookPage.module.css";
 
 /**
  * The "About" section's tags: the first `shown`, then a "+N more" pill that expands the rest in

@@ -11,6 +11,7 @@ import { NewsletterSignupButton } from "./NewsletterSignupButton";
 import styles from "./ArticleView.module.css";
 import popupStyles from "./Popup.module.css";
 import { sectionHeading, sectionStartingAt } from "@/lib/content/sections";
+import { whereToReadHref } from "@/lib/books/path";
 import type { Article, CategorySlug } from "@/lib/content";
 import { formatArticleDate } from "@/lib/content/dates";
 import { splitParagraphs } from "@/lib/content/paragraphs";
@@ -278,7 +279,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {book.slug ? (
                           // The book's "Where to read" page (DECISIONS.md, 2026-10-02); also how
                           // search engines find those pages.
-                          <Link href={`/where-to-read/${book.slug}`} className={styles.whereToRead} style={{ color: style.titleColor }} target="_blank" rel="noopener">
+                          <Link href={whereToReadHref(book.title, book.author)} className={styles.whereToRead} style={{ color: style.titleColor }} target="_blank" rel="noopener">
                             Where to read {book.title} &rarr;
                           </Link>
                         ) : null}

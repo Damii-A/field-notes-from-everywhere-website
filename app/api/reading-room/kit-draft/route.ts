@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { bookPagePath } from "@/lib/books/path";
 import { BOOK_TAGS_SHOWN, isPublicTag } from "@/lib/content";
 import { readingRoomIssueHtml, type IssueEmail } from "@/lib/email/readingRoomIssueEmail";
 import { KitDraftLockedError, saveReadingRoomDraft } from "@/lib/integrations/kit";
@@ -114,7 +115,7 @@ export async function POST(req: Request) {
         // tags: Kit reports clicks per issue, and every byte of the URL is
         // repeated inside Kit's tracking link, which counts against Gmail's
         // clip limit. A book with no slug yet gets no link rather than a dead one.
-        pageUrl: slug ? `${SITE_URL}/where-to-read/${slug}` : undefined,
+        pageUrl: slug ? `${SITE_URL}${bookPagePath(b.title, b.author)}` : undefined,
       };
     }),
   });

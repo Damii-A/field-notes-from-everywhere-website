@@ -22,7 +22,7 @@ export default defineType({
       name: "slug",
       title: "Web address",
       description:
-        "The end of this book's \"Where to read\" page address (fieldnotesfromeverywhere.com/where-to-read/…). Click Generate after filling in the title and author. Avoid changing it once the book is in a published list: old links would stop working.",
+        "The book's internal id for its old \"Where to read\" address (/where-to-read/…), which now forwards to its page at /<title>-by-<author>. Set by the internal tool.",
       type: "slug",
       options: { source: (doc) => `${doc.title ?? ""} ${doc.author ?? ""}`, maxLength: 96 },
       validation: (r) => r.required(),

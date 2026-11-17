@@ -1,4 +1,5 @@
 import { CATEGORIES } from "./categories";
+import { bookPagePath } from "@/lib/books/path";
 import { articlePath } from "./index";
 import type { Article } from "./types";
 import { SITE_URL } from "@/lib/siteUrl";
@@ -6,7 +7,7 @@ import { SITE_URL } from "@/lib/siteUrl";
 /**
  * Structured data for an article page (DECISIONS.md, 2026-11-03), invisible to readers:
  * the article itself, its books as an ordered list (each linking to its "Where to read"
- * page), and the breadcrumb trail. Book pages have their own (app/where-to-read).
+ * page), and the breadcrumb trail. Book pages have their own (app/book).
  */
 export function articleJsonLd(article: Article): object[] {
   const url = `${SITE_URL}${articlePath(article)}`;
@@ -39,7 +40,7 @@ export function articleJsonLd(article: Article): object[] {
           "@type": "Book",
           name: b.title,
           author: { "@type": "Person", name: b.author },
-          ...(b.slug ? { url: `${SITE_URL}/where-to-read/${b.slug}` } : {}),
+          ...(b.slug ? { url: `${SITE_URL}${bookPagePath(b.title, b.author)}` } : {}),
         },
       })),
     },

@@ -42,6 +42,8 @@ const nextConfig = {
       { source: "/book-club-book-picks/:slug", destination: "/up-next/:slug", permanent: true },
       // Ranking book-list pages live at /<slug>-book-lists (DECISIONS.md, 2026-11-17); the internal path forwards there.
       { source: "/book-lists/:slug", destination: "/:slug-book-lists", permanent: true },
+      // Book pages live at /<title>-by-<author> (DECISIONS.md, 2026-11-17); the internal path forwards there.
+      { source: "/book/:slug", destination: "/:slug", permanent: true },
     ];
   },
   async rewrites() {
@@ -49,6 +51,7 @@ const nextConfig = {
       { source: "/feed.xml", destination: "/rss" },
       { source: "/llms.txt", destination: "/llms" }, // see app/llms/route.ts
       { source: "/:slug([a-z0-9-]+)-book-lists", destination: "/book-lists/:slug" },
+      { source: "/:slug([a-z0-9-]+-by-[a-z0-9-]+)", destination: "/book/:slug" },
     ];
   },
 };

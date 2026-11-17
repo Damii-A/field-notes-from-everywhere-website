@@ -2,6 +2,7 @@ import { NextResponse, after, type NextRequest } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { parseBody } from "next-sanity/webhook";
 import { notifyIndexNow } from "@/lib/integrations/indexnow";
+import { bookPagePath } from "@/lib/books/path";
 
 /**
  * Sanity → this app on publish (create/update/delete of published documents),
@@ -13,6 +14,8 @@ import { notifyIndexNow } from "@/lib/integrations/indexnow";
 
 type WebhookBody = {
   _type?: string;
+  title?: string;
+  author?: string;
   slug?: { current?: string };
   category?: string;
   publishedAt?: string;
@@ -31,18 +34,18 @@ const TOKEN = process.env.SANITY_API_TOKEN || process.env.SANITY_API_READ_TOKEN;
  * The webhook body only has book ids, so their slugs are looked up.
  */
 async function whereToReadPaths(body: WebhookBody): Promise<string[]> {
-  if (body._type === "book") return body.slug?.current ? [`/where-to-read/${body.slug.current}`] : [];
+  if (body._type === "book") return body.title && body.author ? [bookPagePath(body.title, body.author)] : [];
   if (body._type !== "article" || changedPaths(body).length === 0) return [];
   const ids = (body.bookEntries ?? []).map((e) => e.book?._ref).filter((id): id is string => !!id);
   if (ids.length === 0 || !PROJECT_ID || !TOKEN) return [];
   const url = new URL(`https://${PROJECT_ID}.api.sanity.io/v2025-02-19/data/query/${DATASET}`);
-  url.searchParams.set("query", `*[_type == "book" && _id in $ids && defined(slug.current)].slug.current`);
+  url.searchParams.set("query", `*[_type == "book" && _id in $ids && defined(slug.current)]{ title, author }`);
   url.searchParams.set("$ids", JSON.stringify(ids));
   url.searchParams.set("perspective", "published");
   const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` }, cache: "no-store" });
   if (!res.ok) throw new Error(`Sanity book-slug lookup failed: ${res.status}`);
-  const { result } = (await res.json()) as { result: string[] };
-  return result.map((slug) => `/where-to-read/${slug}`);
+  const { result } = (await res.json()) as { result: { title: string; author: string }[] };
+  return result.map((b) => bookPagePath(b.title, b.author));
 }
 
 /** Public pages a change to this document affects, or none. */
