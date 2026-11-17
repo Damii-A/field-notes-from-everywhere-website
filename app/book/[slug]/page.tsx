@@ -72,14 +72,17 @@ interface Question {
 /** The "About {Book}" questions (user's list, plus reading time, year and genre), only those we can answer truthfully. */
 function questions(book: WhereToReadBook, quoted: string): Question[] {
   const out: Question[] = [];
+  // Questions name the author too: they get quoted on their own (search answers, AI tools), and several books share a title
+  // (user, 2026-11-17). "Who wrote" is the exception, for obvious reasons.
+  const named = `${quoted} by ${book.author}`;
   if (book.pageCount) {
     const text = `${quoted} has about ${book.pageCount.toLocaleString("en-US")} pages. Page counts vary a little between editions.`;
-    out.push({ q: `How many pages is ${quoted}?`, text, body: text });
+    out.push({ q: `How many pages is ${named}?`, text, body: text });
   }
   if (book.readingHours) {
     const h = `${book.readingHours} hour${book.readingHours === 1 ? "" : "s"}`;
     const text = `About ${h} at an average reading pace of around 60 pages an hour.`;
-    out.push({ q: `How long does it take to read ${quoted}?`, text, body: text });
+    out.push({ q: `How long does it take to read ${named}?`, text, body: text });
   }
   {
     const base = `${quoted} was written by ${book.author}.`;
@@ -106,14 +109,14 @@ function questions(book: WhereToReadBook, quoted: string): Question[] {
   }
   if (book.publishedYear) {
     const text = `${quoted} was published in ${book.publishedYear}.`;
-    out.push({ q: `When was ${quoted} published?`, text, body: text });
+    out.push({ q: `When was ${named} published?`, text, body: text });
   }
   if (book.genres.length) {
     const names = book.genres.map((g) => g.name.toLowerCase());
     const base = `${quoted} is ${article(names[0]!)} ${joinAnd(names)} book.`;
     const linked = book.genres.filter((g) => g.href);
     out.push({
-      q: `What genre is ${quoted}?`,
+      q: `What genre is ${named}?`,
       text: base,
       body: (
         <>
@@ -145,7 +148,7 @@ function questions(book: WhereToReadBook, quoted: string): Question[] {
           ? `Yes, ${quoted} is book ${s.number}${s.total ? ` of ${s.total}` : ""} in ${seriesPhrase(s.name)}, which is complete.`
           : `Yes, ${quoted} is book ${s.number} in ${seriesPhrase(s.name)}, which is still ongoing${s.total ? ` (${s.total} books so far)` : ""}.`;
     } else if (s.name) text = `Yes, ${quoted} is part of ${seriesPhrase(s.name)}.`;
-    if (text) out.push({ q: `Is ${quoted} part of a series?`, text, body: text });
+    if (text) out.push({ q: `Is ${named} part of a series?`, text, body: text });
   }
   return out;
 }
@@ -272,7 +275,7 @@ export default async function BookPage({ params }: Props) {
             )}
 
             <section aria-labelledby={WHERE_TO_READ_ID} className={styles.section}>
-              <h2 id={WHERE_TO_READ_ID} className={styles.heading}>Where to read {quoted}</h2>
+              <h2 id={WHERE_TO_READ_ID} className={styles.heading}>Where to read {quoted} by {book.author}</h2>
               <p className={styles.text}>{answer(quoted, book.author)}</p>
               <ul className={styles.stores}>
                 {STORES.map((st) => (

@@ -3340,3 +3340,12 @@ picked, because "Start article" fills each entry's "Story elements shown here" a
 then the book's other story elements (no repeats, hidden tags still hidden); shown before "+N more": the pills plus at least
 4, and always every pick. Same in the "send this list" email (it follows `tagsShown`). Nothing changed in the Studio or the
 data. Not chosen: ignoring the picks; keeping picks only.
+
+## 2026-11-17 — Book pages: the author in "Where to read" and the questions; title arrow centred
+
+**Decision** (user raised that several books share a title; my recommendation, user's pick of three): on book pages the
+"Where to read" heading and the questions now say "“Title” by Author" ("How many pages is “Rebecca” by Daphne du Maurier?";
+"Who wrote “Rebecca”?" stays as is). Those are the parts quoted on their own by search answers and AI tools; the page as a
+whole is already identified by its tab title, `h1`, address and JSON-LD, so the other headings stay short (repeating the
+author in all six reads clunky and edges toward keyword stuffing). Not chosen: every heading; leaving it.
+Also (user): the arrow after article book titles is vertically centred beside the title (`vertical-align: middle`).

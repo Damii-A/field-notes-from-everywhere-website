@@ -246,6 +246,7 @@
 
 .titleArrow {
   font-size: 0.7em; /* the arrow at full heading size was too big (user, 2026-11-17) */
+  vertical-align: middle; /* centred beside the title, not on its baseline (user, 2026-11-17) */
 }
 
 /* Smaller still on wider screens, where the title is bigger: about the phone arrow's size (user, 2026-11-17). */
