@@ -3353,3 +3353,6 @@ Also (user): the arrow after article book titles is vertically centred beside th
 
 **Same day (user)**: the book page banner's title has no quotation marks ("A Game Of Thrones by George R. R. Martin"); the
 section headings and body text keep them (2026-10-02).
+**Same day (user)**: the lists section heading is "“Title” has appeared in these reading lists" ("on FNFE" dropped) with no
+explainer line under it. The "Where to read" answer sentence stays (user, after I recommended keeping it: it's the direct
+answer search and AI tools quote).

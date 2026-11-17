@@ -343,12 +343,8 @@ export default async function BookPage({ params }: Props) {
             {book.lists.length > 0 && (
               <section aria-labelledby="reading-lists" className={`${styles.section} ${styles.boxed}`}>
                 <h2 id="reading-lists" className={styles.heading}>
-                  {quoted} has appeared in {book.lists.length === 1 ? "this reading list" : "these reading lists"} on FNFE
+                  {quoted} has appeared in {book.lists.length === 1 ? "this reading list" : "these reading lists"}
                 </h2>
-                <p className={styles.text}>
-                  {quoted} made {book.lists.length === 1 ? "one of our reading lists" : `${book.lists.length} of our reading lists`}, built
-                  from what real readers recommend in book discussions.
-                </p>
                 <ul className={styles.lists}>
                   {book.lists.map((l) => (
                     <li key={l.href}>
