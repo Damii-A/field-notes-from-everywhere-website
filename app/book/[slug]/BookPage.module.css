@@ -199,6 +199,7 @@
 
 .card:hover {
   transform: translateY(-2px);
+  text-decoration: none; /* store and list cards lift instead of underlining */
 }
 
 .card:focus-visible,
@@ -400,4 +401,15 @@
     padding: 4px 9px;
     font-size: var(--text-xs);
   }
+}
+
+/* Same colours as in articles (user, 2026-11-17). */
+.fitYes {
+  background: color-mix(in srgb, var(--sage-500) 30%, var(--paper-050));
+  border-color: var(--sage-600);
+}
+
+.fitNo {
+  background: var(--clay-100);
+  border-color: var(--clay-500);
 }

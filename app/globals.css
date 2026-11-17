@@ -64,6 +64,14 @@ a:hover {
   color: var(--text-link-hover);
 }
 
+/* Text links underline on hover and keyboard focus, so they read as links (user, 2026-11-17).
+   Links that wrap a card (an image, a block, an icon) keep their own hover (lift, colour) instead. */
+a:is(:hover, :focus-visible):not(:has(div, img, svg, p, h2, h3, picture)) {
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.18em;
+}
+
 /* Legal-page headings are link targets (/terms#refund-policy): land them
    below the pinned header rather than under it. */
 .legal-body :is(h2, h3) {

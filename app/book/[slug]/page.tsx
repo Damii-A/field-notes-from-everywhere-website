@@ -305,13 +305,13 @@ export default async function BookPage({ params }: Props) {
                 <h2 id="should-you-read" className={styles.heading}>Should you read {quoted}?</h2>
                 {/* "This book might (not) be for you", as in articles (user, 2026-11-14). */}
                 {book.forYou && (
-                  <div className={styles.fitBox}>
+                  <div className={`${styles.fitBox} ${styles.fitYes}`}>
                     <h3 className={styles.fitLabel}>This book might be for you</h3>
                     <p className={styles.fitText}>{book.forYou}</p>
                   </div>
                 )}
                 {book.notForYou && (
-                  <div className={styles.fitBox}>
+                  <div className={`${styles.fitBox} ${styles.fitNo}`}>
                     <h3 className={styles.fitLabel}>This book might not be for you</h3>
                     <p className={styles.fitText}>{book.notForYou}</p>
                   </div>

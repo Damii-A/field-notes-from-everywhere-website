@@ -3314,3 +3314,17 @@ width): every book's page (was `/where-to-read/<slug>`, 2026-10-02) is now at **
 **Verified** (local production build against live content): new addresses 200, unknown `…-by-…` 404, old addresses 308 to the
 new one + `#where-to-read`, `/book/…` 308, other top-level pages unaffected, sitemap 129 book pages at new addresses,
 heading order as above, FAQ JSON-LD present; screenshots at 1280, 390 and 320px.
+
+## 2026-11-17 — Article book titles link to book pages; pills on one row; hover underline on every text link; coloured fit boxes
+
+All user-directed the same day; seen in local screenshots before going live.
+- **Book titles in articles** link to the book's page (`/<title>-by-<author>`, new tab, like "Where to read …"), styled like
+  that link: always underlined, with " →" (hidden from screen readers so the `h2` still reads as the title).
+- **Column pill and "All {ranking} lists →" pill on one row** under the article title (`.pillRow`; wraps on narrow phones).
+- **Hover**: links showed no change on hover (no underline at rest; many set their own colour, which cancelled the global
+  hover colour). Now every text link underlines on hover and keyboard focus (`app/globals.css`, `a:is(:hover, :focus-visible)`
+  excluding links that wrap a card: an image, a block or an icon, `:has(div, img, svg, p, h2, h3, picture)`). Cards keep their
+  lift; the header menu opts out (`.navLink:hover`); the book page's store/list cards opt out.
+- **"This book might (not) be for you" boxes** (articles and book pages): the plain bordered boxes didn't stand out as useful.
+  Now a soft green box for "might be for you" (`--sage-500` 30% into `--paper-050`, `--sage-600` border) and a soft peach one
+  for "might not be" (`--clay-100`, `--clay-500` border). User's pick of two previews (other: both ochre).

@@ -11,7 +11,7 @@ import { NewsletterSignupButton } from "./NewsletterSignupButton";
 import styles from "./ArticleView.module.css";
 import popupStyles from "./Popup.module.css";
 import { sectionHeading, sectionStartingAt } from "@/lib/content/sections";
-import { whereToReadHref } from "@/lib/books/path";
+import { bookPagePath, whereToReadHref } from "@/lib/books/path";
 import type { Article, CategorySlug } from "@/lib/content";
 import { formatArticleDate } from "@/lib/content/dates";
 import { splitParagraphs } from "@/lib/content/paragraphs";
@@ -173,6 +173,8 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
           <h1 className={styles.title} style={{ color: style.titleColor }}>
             {article.title}
           </h1>
+          {/* Column pill and the ranking's "All … lists" pill on one row (user, 2026-11-17). */}
+          <div className={styles.pillRow}>
           <Link
             href={`/${category}`}
             className={styles.categoryTag}
@@ -190,6 +192,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
               All {article.ranking.name} lists →
             </Link>
           ) : null}
+          </div>
 
           <div className={styles.bylineRow}>
             <span className={styles.byline}>By {article.author}</span>
@@ -266,7 +269,15 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                     />
                     <div className={styles.bookBody}>
                       <h2 className={styles.bookTitle} style={{ color: style.titleColor }}>
-                        {book.title}
+                        {/* The title links to the book's page (user, 2026-11-17); new tab, like "Where to read …". */}
+                        {book.slug ? (
+                          <Link href={bookPagePath(book.title, book.author)} className={styles.bookTitleLink} target="_blank" rel="noopener">
+                            {book.title}
+                            <span aria-hidden="true"> &rarr;</span>
+                          </Link>
+                        ) : (
+                          book.title
+                        )}
                       </h2>
                       <span className={styles.bookAuthor}>{book.author}</span>
                       <BookFactsRow pageCount={book.pageCount} readingHours={book.readingHours} border={style.methodologyBorder} />
@@ -275,7 +286,7 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
                         {splitParagraphs(book.blurb).map((p, k) => (
                           <p key={k}>{p}</p>
                         ))}
-                        <BookFit forYou={book.forYou} notForYou={book.notForYou} border={style.methodologyBorder} />
+                        <BookFit forYou={book.forYou} notForYou={book.notForYou} />
                         {book.slug ? (
                           // The book's "Where to read" page (DECISIONS.md, 2026-10-02); also how
                           // search engines find those pages.
@@ -595,19 +606,19 @@ function BookFactsRow({ border, ...facts }: BookFacts & { border: string }) {
  * "This book might be for you" / "…might not be for you" (user, 2026-11-14): our own notes from the
  * internal tool, in the methodology box's style. Nothing shows when neither is set.
  */
-function BookFit({ forYou, notForYou, border }: { forYou?: string; notForYou?: string; border: string }) {
+function BookFit({ forYou, notForYou }: { forYou?: string; notForYou?: string }) {
   if (!forYou && !notForYou) return null;
-  // Two separate plain containers with a border in the column's colour (user, 2026-11-14).
+  // Two separate boxes (user, 2026-11-14), green and peach since 2026-11-17.
   return (
     <>
       {forYou ? (
-        <div className={styles.fitBox} style={{ borderColor: border }}>
+        <div className={`${styles.fitBox} ${styles.fitYes}`}>
           <span className={styles.fitLabel}>This book might be for you</span>
           <p className={styles.fitText}>{forYou}</p>
         </div>
       ) : null}
       {notForYou ? (
-        <div className={styles.fitBox} style={{ borderColor: border }}>
+        <div className={`${styles.fitBox} ${styles.fitNo}`}>
           <span className={styles.fitLabel}>This book might not be for you</span>
           <p className={styles.fitText}>{notForYou}</p>
         </div>

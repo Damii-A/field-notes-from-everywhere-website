@@ -52,6 +52,7 @@
 
 .navLink:hover {
   color: var(--ink-900);
+  text-decoration: none; /* the menu keeps its own hover (colour; the active page has its underline bar) */
 }
 
 .navLinkActive {

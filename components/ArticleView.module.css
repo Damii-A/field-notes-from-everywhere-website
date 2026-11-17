@@ -39,8 +39,19 @@
 }
 
 /* The ranking's "book lists" link, a pill under the column pill (user, 2026-11-17). */
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.pillRow .categoryTag {
+  margin: 0;
+}
+
 .rankingTag {
-  margin-top: 10px;
   background: transparent;
   border: 1px solid;
   text-decoration: none;
@@ -201,6 +212,19 @@
   font: var(--weight-bold) clamp(18px, 2vw, 25px) / 1.18 var(--font-display);
   letter-spacing: var(--tracking-tight);
   text-wrap: pretty;
+}
+
+.bookTitleLink {
+  color: inherit;
+  /* Underlined with an arrow, like "Where to read …" under the blurb (user, 2026-11-17). */
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.14em;
+}
+
+.bookTitleLink:hover,
+.bookTitleLink:focus-visible {
+  text-decoration-thickness: 2px;
 }
 
 .bookAuthor {
@@ -610,6 +634,18 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+/* Coloured so they stand out as useful (user, 2026-11-17, version A of two previews):
+   a soft green for "might be for you", a soft peach for "might not be". */
+.fitYes {
+  background: color-mix(in srgb, var(--sage-500) 30%, var(--paper-050));
+  border-color: var(--sage-600);
+}
+
+.fitNo {
+  background: var(--clay-100);
+  border-color: var(--clay-500);
 }
 
 /* Headings in the book text's own font, not the mono caps label (user, 2026-11-14). */
