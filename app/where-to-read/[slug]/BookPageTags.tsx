@@ -12,7 +12,7 @@ export function BookPageTags({ tags, shown }: { tags: string[]; shown: number })
   const hidden = Math.max(0, tags.length - shown);
   const visible = open || hidden === 0 ? tags : tags.slice(0, shown);
   return (
-    <ul className={styles.tags} aria-label="Tags">
+    <ul className={styles.tags} aria-label="Story elements">
       {visible.map((t) => (
         <li key={t} className={styles.tag}>
           {t}

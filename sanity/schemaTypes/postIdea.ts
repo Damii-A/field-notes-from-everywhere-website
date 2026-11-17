@@ -113,8 +113,8 @@ export default defineType({
             defineField({ name: "book", title: "Book", type: "reference", to: [{ type: "book" }] }),
             defineField({
               name: "tagsShown",
-              title: "Tags that put it in this idea",
-              description: "\"Start article\" makes these the article entry's \"Tags shown here\".",
+              title: "Story elements that put it in this idea",
+              description: "\"Start article\" makes these the article entry's \"Story elements shown here\".",
               type: "array",
               of: [{ type: "reference", to: [{ type: "tag" }] }],
             }),
@@ -132,8 +132,8 @@ export default defineType({
     }),
     defineField({
       name: "sharedTags",
-      title: "Shared tags",
-      description: "Up to 8 tags most of the books share (for a future \"Why you'll love these\" box).",
+      title: "Shared story elements",
+      description: "Up to 8 story elements most of the books share (for a future \"Why you'll love these\" box).",
       type: "array",
       of: [{ type: "reference", to: [{ type: "tag" }] }],
     }),

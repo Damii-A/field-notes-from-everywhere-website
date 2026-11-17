@@ -101,13 +101,13 @@ export function RankingBookPicker({
         ))}
         {hiddenTagCount > 0 || allTags ? (
           <button type="button" style={{ ...pill(false), borderStyle: "dashed" }} onClick={() => setAllTags(!allTags)}>
-            {allTags ? "Show fewer tags" : `+ ${hiddenTagCount} more tags (one book each)`}
+            {allTags ? "Show fewer story elements" : `+ ${hiddenTagCount} more story elements (one book each)`}
           </button>
         ) : null}
       </div>
       <p style={{ margin: "0 0 12px", fontSize: 12, opacity: 0.75 }}>
         {filter.size === 0 ? (
-          "Click tags to show only books that have any of them."
+          "Click story elements to show only books that have any of them."
         ) : (
           <>
             Showing {visible.length} of {books.length} books with any of the chosen tags.{" "}

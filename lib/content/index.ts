@@ -11,6 +11,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
 import { CATEGORIES } from "./categories";
 import { formatArticleDate } from "./dates";
+import { sectionHeading } from "./sections";
 import { pickWhatToReadNext, type NextCandidate } from "./whatToReadNext";
 import type { Article, ArticleSummary, BookEntry, CategorySlug, LegalPage, SiteSettings, ThemeRef, WhereToReadBook } from "./types";
 
@@ -121,6 +122,7 @@ interface RawArticle extends RawArticleSummary {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   introText: any[] | undefined;
   bookEntries: RawBookEntry[] | null;
+  format: string | null;
 }
 
 function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
@@ -212,7 +214,9 @@ function toArticle(raw: RawArticle, whatToReadNext: ArticleSummary[]): Article {
     introParagraphs: portableTextToParagraphs(raw.introText),
     books: (raw.bookEntries ?? [])
       .map((entry, i) => toBookEntry(entry, isRanked ? i + 1 : undefined))
-      .filter((b): b is BookEntry => b !== null),
+      .filter((b): b is BookEntry => b !== null)
+      // Challenge lists show just the month, without the occasions in brackets (user, 2026-11-17).
+      .map((b) => (raw.format === "challenge" && b.section ? { ...b, section: sectionHeading(b.section).title } : b)),
     whatToReadNext,
   };
 }
@@ -249,6 +253,7 @@ const FULL_ARTICLE_PROJECTION = `{
   methodologySentence,
   heroImage{ "url": asset->url, alt, hotspot, crop, "dimensions": asset->metadata.dimensions },
   "themes": themes[]->{ "label": name, "slug": slug.current, group },
+  format,
   author,
   "pinterestPin": pinterestPin.asset->url,
   pinDescription,

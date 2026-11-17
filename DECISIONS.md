@@ -3236,3 +3236,20 @@ production build against live content (laptop and phone; no sideways scroll, no 
 sitemap URLs answer 200. Thriller's books still have no notes (the tool holds that send for a tag re-edit); asked for a
 notes-only send in `docs/handover/TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md`. **The user resubmits to AdSense only once
 every live list has notes** (user's choice).
+
+## 2026-11-17 — "Story elements" and "Description" in place of "Tags" and "Blurb"; Challenge months without the occasions
+
+**Wording (user)**: wherever the words are seen, "tags" now reads **"story elements"** and "blurb" reads **"description"**. In
+practice that's the Studio (the sidebar section, the "Story elements" tab on rankings, book, article-entry and post-idea field
+labels and help text, the "Choose books from ranking" filter, the Fill-from-ranking warning) and one screen-reader label on
+"Where to read" pages; no public page printed either word. **Labels only**: the stored field names (`tags`, `canonicalBlurb`,
+`blurb`, `tagsShown`, `sharedTags`) and document type `tag` are unchanged, because the internal tool's sends write them. Known
+overlap: one of a tag's own categories (from the tool) is also called "Story Elements".
+
+**Challenge lists (user)**: month headings in Challenge-format articles show just the month ("January"), without the
+occasions in brackets ("Winter, New Year") that showed beneath. Done where the article loads (`toArticle`,
+`lib/content/index.ts`), so the page and the "send this list" email both change; the post idea and the article's stored
+section text are untouched, and other formats with sections would still show the bracketed note.
+
+**Verified**: type check, schema validation, production build; the live Dark Fantasy challenge article in that build shows the
+12 months with no notes.

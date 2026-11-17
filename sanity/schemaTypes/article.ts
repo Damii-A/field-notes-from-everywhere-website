@@ -45,12 +45,12 @@ export const bookEntry = {
   name: "bookEntry",
   fields: [
     defineField({ name: "book", title: "Book", type: "reference", to: [{ type: "book" }], validation: (r) => r.required() }),
-    defineField({ name: "blurb", title: "Blurb (overrides the book's canonical blurb)", type: "text", rows: 3 }),
+    defineField({ name: "blurb", title: "Description (overrides the book's own description)", type: "text", rows: 3 }),
     defineField({
       name: "tags",
-      title: "Tags shown here (overrides the book's own tags)",
+      title: "Story elements shown here (overrides the book's own story elements)",
       description:
-        "Leave empty to show all of this book's own tags. Fill in just the ones relevant to THIS list to show only those instead — e.g. a book tagged dark fantasy, brutal, and emotionally devastating on its own record can show just \"dark fantasy\" here if that's the only one relevant to this particular list.",
+        "Leave empty to show all of this book's own story elements. Fill in just the ones relevant to THIS list to show only those instead — e.g. a book tagged dark fantasy, brutal, and emotionally devastating on its own record can show just \"dark fantasy\" here if that's the only one relevant to this particular list.",
       type: "array",
       of: [{ type: "reference", to: [{ type: "tag" }] }],
     }),

@@ -116,7 +116,7 @@ export const structure: StructureResolver = (S, { documentStore }) =>
       S.documentTypeListItem("theme").title("Themes"),
       S.documentTypeListItem("book").title("Books"),
       S.documentTypeListItem("ranking").title("Rankings"),
-      S.documentTypeListItem("tag").title("Tags"),
+      S.documentTypeListItem("tag").title("Story elements"),
       S.divider(),
       S.documentTypeListItem("legalPage").title("Legal pages"),
       S.listItem()

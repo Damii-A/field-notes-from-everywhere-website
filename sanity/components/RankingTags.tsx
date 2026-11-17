@@ -52,7 +52,7 @@ export function RankingTags({ books }: { books: RankingBook[] }) {
   return (
     <div style={{ padding: 24, lineHeight: 1.45, fontSize: 14, maxWidth: 820 }}>
       <p style={{ margin: "0 0 4px" }}>
-        <strong>{tags.length} tags</strong> across this ranking&rsquo;s {books.length} books. Click a tag to see its books.
+        <strong>{tags.length} story elements</strong> across this ranking&rsquo;s {books.length} books. Click one to see its books.
       </p>
       {untagged > 0 ? (
         <p style={{ margin: "0 0 4px", fontSize: 13, opacity: 0.8 }}>
@@ -71,7 +71,7 @@ export function RankingTags({ books }: { books: RankingBook[] }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Find a tag…"
-          aria-label="Find a tag"
+          aria-label="Find a story element"
           style={{ font: "inherit", fontSize: 13, padding: "4px 10px", borderRadius: 999, border: "1px solid rgba(128,128,128,0.5)", background: "transparent", color: "inherit", minWidth: 180 }}
         />
         {open.size > 0 ? (
@@ -120,7 +120,7 @@ export function RankingTags({ books }: { books: RankingBook[] }) {
             </div>
           );
         })}
-        {shown.length === 0 ? <p style={{ padding: "12px 4px", opacity: 0.75 }}>{tags.length === 0 ? "No tags on these books yet." : "No tag matches that search."}</p> : null}
+        {shown.length === 0 ? <p style={{ padding: "12px 4px", opacity: 0.75 }}>{tags.length === 0 ? "No story elements on these books yet." : "No story element matches that search."}</p> : null}
       </div>
     </div>
   );

@@ -112,7 +112,7 @@ export function FillFromRankingAction(props: DocumentActionProps) {
       if (existing > 0) {
         setDialog({
           type: "confirm",
-          message: `This replaces the ${existing} book${existing === 1 ? "" : "s"} already in this ${isIssue ? "issue" : "article"}, including any blurb or tag overrides on them. Continue?`,
+          message: `This replaces the ${existing} book${existing === 1 ? "" : "s"} already in this ${isIssue ? "issue" : "article"}, including any description or story element overrides on them. Continue?`,
           onConfirm: () => fill(rankingId, count),
           onCancel: () => {
             setDialog(null);

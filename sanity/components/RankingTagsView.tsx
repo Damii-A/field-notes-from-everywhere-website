@@ -35,7 +35,7 @@ export function RankingTagsView({ document }: { document: { displayed: { books?:
     };
   }, [client, key]);
 
-  if (error) return <p style={{ padding: 24 }}>Couldn&rsquo;t load the tags: {error}</p>;
+  if (error) return <p style={{ padding: 24 }}>Couldn&rsquo;t load the story elements: {error}</p>;
   if (!books) return <p style={{ padding: 24, opacity: 0.75 }}>Loading tags…</p>;
   return <RankingTags books={books} />;
 }

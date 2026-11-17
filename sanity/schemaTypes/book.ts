@@ -37,8 +37,8 @@ export default defineType({
         r.custom((v: string | undefined) => (!v || /^https:\/\/www\.goodreads\.com\/book\/show\//.test(v) ? true : "Use a goodreads.com/book/show/… link")),
     }),
     defineField({ name: "coverImage", title: "Cover image", type: "image", options: { hotspot: true } }),
-    defineField({ name: "canonicalBlurb", title: "Canonical blurb", type: "text", rows: 3 }),
-    defineField({ name: "tags", title: "Tags", type: "array", of: [{ type: "reference", to: [{ type: "tag" }] }] }),
+    defineField({ name: "canonicalBlurb", title: "Description", type: "text", rows: 3 }),
+    defineField({ name: "tags", title: "Story elements", type: "array", of: [{ type: "reference", to: [{ type: "tag" }] }] }),
     defineField({
       name: "pageCount",
       title: "Page count",
@@ -57,14 +57,14 @@ export default defineType({
     defineField({
       name: "forYou",
       title: "This book might be for you",
-      description: "Set by \"Send books to Studio\". One or two sentences, starting \"If you…\". Shown under the book's blurb in articles.",
+      description: "Set by \"Send books to Studio\". One or two sentences, starting \"If you…\". Shown under the book's description in articles.",
       type: "text",
       rows: 2,
     }),
     defineField({
       name: "notForYou",
       title: "This book might not be for you",
-      description: "Set by \"Send books to Studio\". One or two sentences, starting \"If you…\". Shown under the book's blurb in articles.",
+      description: "Set by \"Send books to Studio\". One or two sentences, starting \"If you…\". Shown under the book's description in articles.",
       type: "text",
       rows: 2,
     }),

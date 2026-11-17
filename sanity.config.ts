@@ -39,7 +39,7 @@ export default defineConfig({
       // Rankings get a "Tags" tab beside the form: tag counts across the ranking's books,
       // for planning tag-focused lists (DECISIONS.md, 2026-10-28).
       defaultDocumentNode: (S, { schemaType }) =>
-        schemaType === "ranking" ? S.document().views([S.view.form(), S.view.component(RankingTagsView).title("Tags")]) : S.document(),
+        schemaType === "ranking" ? S.document().views([S.view.form(), S.view.component(RankingTagsView).title("Story elements")]) : S.document(),
     }),
     // "Preview" — the real site, showing unpublished/scheduled content,
     // inside the Studio (DECISIONS.md, 2026-09-24). Preview is switched on
