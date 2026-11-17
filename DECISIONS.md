@@ -3347,5 +3347,6 @@ data. Not chosen: ignoring the picks; keeping picks only.
 "Where to read" heading and the questions now say "“Title” by Author" ("How many pages is “Rebecca” by Daphne du Maurier?";
 "Who wrote “Rebecca”?" stays as is). Those are the parts quoted on their own by search answers and AI tools; the page as a
 whole is already identified by its tab title, `h1`, address and JSON-LD, so the other headings stay short (repeating the
-author in all six reads clunky and edges toward keyword stuffing). Not chosen: every heading; leaving it.
+author in all six reads clunky and edges toward keyword stuffing). Not chosen: every heading; leaving it. **Same day, user**: "Books like “Title” by Author" too (the section most
+likely to be shown alone as a list answer; checked wrapping on a phone).
 Also (user): the arrow after article book titles is vertically centred beside the title (`vertical-align: middle`).

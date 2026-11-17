@@ -324,7 +324,7 @@ export default async function BookPage({ params }: Props) {
 
             {book.related.length > 0 && (
               <section aria-labelledby="books-like" className={`${styles.section} ${styles.boxed}`}>
-                <h2 id="books-like" className={styles.heading}>Books like {quoted}</h2>
+                <h2 id="books-like" className={styles.heading}>Books like {quoted} by {book.author}</h2>
                 <ul className={styles.related}>
                   {book.related.map((r) => (
                     <li key={r.slug}>
