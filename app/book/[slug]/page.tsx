@@ -236,8 +236,9 @@ export default async function BookPage({ params }: Props) {
           <header className={styles.hero}>
             <div className={styles.heroInner}>
               <BookCover title={book.title} author={book.author} src={book.coverUrl} alt={`Cover of ${book.title} by ${book.author}`} width={140} />
+              {/* No quotation marks in the banner (user, 2026-11-17); the section headings keep them. */}
               <h1 className={styles.title}>
-                {quoted}
+                {book.title}
                 <span className={styles.author}> by {book.author}</span>
               </h1>
               {facts.length > 0 && (

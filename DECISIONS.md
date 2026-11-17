@@ -3350,3 +3350,6 @@ whole is already identified by its tab title, `h1`, address and JSON-LD, so the 
 author in all six reads clunky and edges toward keyword stuffing). Not chosen: every heading; leaving it. **Same day, user**: "Books like “Title” by Author" too (the section most
 likely to be shown alone as a list answer; checked wrapping on a phone).
 Also (user): the arrow after article book titles is vertically centred beside the title (`vertical-align: middle`).
+
+**Same day (user)**: the book page banner's title has no quotation marks ("A Game Of Thrones by George R. R. Martin"); the
+section headings and body text keep them (2026-10-02).
