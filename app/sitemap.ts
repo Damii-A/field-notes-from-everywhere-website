@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { CATEGORY_LIST, getSitemapDates, getWhereToReadSlugs } from "@/lib/content";
+import { CATEGORY_LIST, getRankingListsIndex, getSitemapDates, getWhereToReadSlugs, rankingListsPath } from "@/lib/content";
 import { SITE_URL } from "@/lib/siteUrl";
 
 /**
@@ -25,6 +25,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const inColumn = articles.filter((a) => a.category === cat.slug);
     entries.push({ url: `${SITE_URL}/${cat.slug}`, lastModified: latest(inColumn.map((a) => a.changed)) });
     for (const a of inColumn) entries.push({ url: `${SITE_URL}/${cat.slug}/${a.slug}`, lastModified: new Date(a.changed) });
+  }
+
+  // Each ranking's "book lists" page (DECISIONS.md, 2026-11-17).
+  for (const r of await getRankingListsIndex()) {
+    entries.push({ url: `${SITE_URL}${rankingListsPath(r.slug)}`, lastModified: new Date(r.changed) });
   }
 
   // "Where to read" pages, only for books in a published list (the others are noindex).

@@ -102,3 +102,8 @@
   font: var(--type-small);
   color: var(--ink-700);
 }
+
+/* "Book lists by genre" under the Explore links (DECISIONS.md, 2026-11-17). */
+.subLabel {
+  margin-top: 20px;
+}

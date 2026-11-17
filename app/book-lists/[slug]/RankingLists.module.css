@@ -1,0 +1,30 @@
+/* "{Ranking} book lists" page: the hub's band and card grid (CategoryHub.module.css), one section per column. */
+.name {
+  max-width: 16ch;
+}
+
+.group {
+  padding: clamp(40px, 5vw, 72px) var(--gutter-screen);
+}
+
+.groupHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+  margin: 0 0 clamp(24px, 3vw, 40px);
+}
+
+.groupLink {
+  text-decoration: none;
+}
+
+.groupLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.count {
+  font: var(--type-body);
+  color: var(--ink-700);
+}

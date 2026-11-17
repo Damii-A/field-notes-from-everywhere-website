@@ -9,7 +9,7 @@
 import { groqFetch } from "@/lib/sanity/groqFetch";
 import { pageMetadata } from "@/lib/metadata";
 import { portableTextToHtml, portableTextToParagraphs } from "./portableText";
-import { CATEGORIES } from "./categories";
+import { CATEGORIES, CATEGORY_LIST } from "./categories";
 import { formatArticleDate } from "./dates";
 import { sectionHeading } from "./sections";
 import { pickWhatToReadNext, type NextCandidate } from "./whatToReadNext";
@@ -123,6 +123,7 @@ interface RawArticle extends RawArticleSummary {
   introText: any[] | undefined;
   bookEntries: RawBookEntry[] | null;
   format: string | null;
+  ranking: { name: string; slug: string | null } | null;
 }
 
 function toArticleSummary(raw: RawArticleSummary): ArticleSummary {
@@ -210,6 +211,7 @@ function toArticle(raw: RawArticle, whatToReadNext: ArticleSummary[]): Article {
     author: raw.author,
     publishedAt: raw.publishedAt,
     methodologySentence: raw.methodologySentence ?? "",
+    ranking: raw.ranking?.slug ? { name: raw.ranking.name, slug: raw.ranking.slug } : undefined,
     pinterestPin: raw.pinterestPin ? { url: raw.pinterestPin, description: raw.pinDescription?.trim() || undefined } : undefined,
     introParagraphs: portableTextToParagraphs(raw.introText),
     books: (raw.bookEntries ?? [])
@@ -254,6 +256,7 @@ const FULL_ARTICLE_PROJECTION = `{
   heroImage{ "url": asset->url, alt, hotspot, crop, "dimensions": asset->metadata.dimensions },
   "themes": themes[]->{ "label": name, "slug": slug.current, group },
   format,
+  "ranking": ranking->{ name, "slug": slug.current },
   author,
   "pinterestPin": pinterestPin.asset->url,
   pinDescription,
@@ -685,4 +688,72 @@ export function articleMetadata(article: Article | null) {
     image: article.heroImage ? { url: article.heroImage.url, alt: article.heroImage.alt } : undefined,
     publishedTime: article.publishedAt,
   });
+}
+
+/**
+ * "{Ranking} book lists" pages (user, 2026-11-17): every live article made from one ranking,
+ * at /<ranking slug>-book-lists (rewritten to /book-lists/<slug>). Only rankings with at
+ * least one live article get a page.
+ */
+export const rankingListsPath = (slug: string) => `/${slug}-book-lists`;
+
+export interface RankingListsSummary {
+  name: string;
+  slug: string;
+  /** Newest change across its live articles (sitemap). */
+  changed: string;
+}
+
+export interface RankingListsPage extends RankingListsSummary {
+  intro?: string;
+  recommendationCount?: number;
+  /** Live articles by column, in column order, newest first; empty columns left out. */
+  groups: { category: CategorySlug; articles: ArticleSummary[] }[];
+  total: number;
+}
+
+export async function getRankingListsIndex(): Promise<RankingListsSummary[]> {
+  const raws = await groqFetch<{ name: string; slug: string | null; changed: string | null }[]>(
+    `*[_type == "ranking" && defined(slug.current) && count(*[_type == "article" && references(^._id) && ${RELEASED}]) > 0] | order(name asc){
+      name, "slug": slug.current,
+      "changed": *[_type == "article" && references(^.^._id) && ${RELEASED}] | order(_updatedAt desc)[0]{ "d": select(_updatedAt > publishedAt => _updatedAt, publishedAt) }.d
+    }`,
+    {},
+    { tags: ["article", "ranking"], revalidate: 300 },
+  );
+  return raws.filter((r) => r.slug).map((r) => ({ name: r.name, slug: r.slug!, changed: r.changed ?? new Date().toISOString() }));
+}
+
+export async function getRankingListsPage(slug: string): Promise<RankingListsPage | null> {
+  const raw = await groqFetch<{
+    name: string;
+    slug: string;
+    listsIntro: string | null;
+    recommendationCount: number | null;
+    articles: (RawArticleSummary & { changed: string })[];
+  } | null>(
+    `*[_type == "ranking" && slug.current == $slug][0]{
+      name, "slug": slug.current, listsIntro, recommendationCount,
+      "articles": *[_type == "article" && references(^._id) && defined(slug.current) && ${RELEASED}] | order(publishedAt desc){
+        ...${SUMMARY_PROJECTION},
+        "changed": select(_updatedAt > publishedAt => _updatedAt, publishedAt)
+      }
+    }`,
+    { slug },
+    { tags: ["article", "ranking"], revalidate: 300 },
+  );
+  if (!raw || raw.articles.length === 0) return null;
+  const groups = CATEGORY_LIST.map((c) => ({
+    category: c.slug,
+    articles: raw.articles.filter((a) => a.category === c.slug).map(toArticleSummary),
+  })).filter((g) => g.articles.length > 0);
+  return {
+    name: raw.name,
+    slug: raw.slug,
+    intro: raw.listsIntro?.trim() || undefined,
+    recommendationCount: raw.recommendationCount ?? undefined,
+    groups,
+    total: raw.articles.length,
+    changed: raw.articles.map((a) => a.changed).reduce((a, b) => (a > b ? a : b)),
+  };
 }

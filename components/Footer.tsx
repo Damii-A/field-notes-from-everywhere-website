@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./Footer.module.css";
 import { Icon } from "./ds/Icon";
-import { CATEGORY_LIST, getSiteSettings } from "@/lib/content";
+import { CATEGORY_LIST, getRankingListsIndex, getSiteSettings, rankingListsPath } from "@/lib/content";
 import { FooterNewsletterForm } from "./FooterNewsletterForm";
 import { CookieSettingsLink } from "./CookieSettingsLink";
 
@@ -17,7 +17,7 @@ const SITE_LINKS = [
 
 /** Ported from the design's `Site Footer.dc.html`, imported on every page. */
 export async function Footer() {
-  const { socialLinks } = await getSiteSettings();
+  const [{ socialLinks }, rankingLists] = await Promise.all([getSiteSettings(), getRankingListsIndex()]);
   return (
     <footer className={styles.footer}>
       <div className={styles.columns}>
@@ -28,6 +28,17 @@ export async function Footer() {
               {cat.name}
             </Link>
           ))}
+          {rankingLists.length > 0 ? (
+            // Each ranking's "book lists" page (user, 2026-11-17), under the columns so the footer keeps its shape.
+            <>
+              <span className={`${styles.columnLabel} ${styles.subLabel}`}>Book lists by genre</span>
+              {rankingLists.map((r) => (
+                <Link key={r.slug} href={rankingListsPath(r.slug)} className={styles.siteLink}>
+                  {r.name}
+                </Link>
+              ))}
+            </>
+          ) : null}
         </div>
         <div className={styles.column}>
           <span className={styles.columnLabel}>Field Notes From Everywhere</span>

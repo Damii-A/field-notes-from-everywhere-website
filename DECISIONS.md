@@ -3262,3 +3262,23 @@ filled in the column's accent (`identity.accent`: sage / clay / slate, `--paper-
 how many are hidden: "See 4 more articles ↓", or "See more articles (12 left)" when more than one batch (6) remains
 (`components/CategoryHub.tsx`). Paging unchanged (9, then +6). Not chosen: a "Showing 9 of 13" line by the heading, a
 divider line through the button.
+
+## 2026-11-17 — "{Ranking} book lists" pages
+
+**Decision** (user's idea; look approved from a local preview at laptop and phone width; not in the design): each ranking with
+at least one live article has a page listing every live article made from it, grouped by column (The Shortlist, What to Read
+When, Up Next; each band in its column's page colour, the hub's card grid, newest first), under a band with "{Name} Book Lists"
+and an intro. Built before the AdSense resubmit (user's choice), since it adds a page of the site's own text per ranking.
+- **Address `/<ranking slug>-book-lists`** (user's pick, e.g. `/thriller-book-lists`): a rewrite to `app/book-lists/[slug]`;
+  `/book-lists/<slug>` 308-redirects to it. The plain names (`/thriller-books`, `/books/thriller`) are deliberately left free
+  for a possible future page of just books (user).
+- **Intro**: `ranking.listsIntro` (editable in the Studio, "Intro on its book lists page"); the tool's send patches only its
+  own ranking fields, so it survives. Empty → a standard sentence with the recommendation count.
+- **Links in** (user's picks): an outlined pill "All {Name} lists →" under the column pill on every article made from a
+  ranking (`article.ranking`), and "Book lists by genre" under the Explore links in the footer (a separate footer column
+  pushed the social buttons to a new row). **Not** the ranking pills on books (user: those may one day lead to a books page).
+- Sitemap entries (dated by the newest change among its articles), `CollectionPage` + `ItemList` + `BreadcrumbList` JSON-LD.
+  Data: `getRankingListsIndex` / `getRankingListsPage` / `rankingListsPath` (`lib/content/index.ts`).
+
+**Verified**: type check, schema validation, production build; locally against live content: both pages 200, an unknown
+`/nope-book-lists` 404, the redirect, the sitemap entries, the article pill (desktop and phone), footer shape unchanged.

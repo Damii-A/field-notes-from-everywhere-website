@@ -38,6 +38,19 @@
   letter-spacing: var(--tracking-display);
 }
 
+/* The ranking's "book lists" link, a pill under the column pill (user, 2026-11-17). */
+.rankingTag {
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid;
+  text-decoration: none;
+}
+
+.rankingTag:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 /* Share row under the byline: only where the floating rail doesn't fit
    (the rail shows from 1308px, see ArticleView's roomForShare). */
 .bylineShare {

@@ -128,6 +128,7 @@ what would force adding one (building the logged-in Reading Room product).
 | `/contact` | Contact | static, mailto link only |
 | `/llms.txt` | llms.txt (rewrite to `/llms`) | Markdown site overview for AI tools, built from published articles (`app/llms/route.ts`) |
 | `/where-to-read/[slug]` | Where to read {Book} | per-book page for "where to read X" searches: answer, Amazon / Bookshop.org / Goodreads / library (OverDrive→Libby) searches (`lib/books/stores.ts`), full blurb + tags, the published lists featuring it, related books; JSON-LD `Book`; indexed + in sitemap only when the book is in a published article. Linked from every article book and Reading Room issue. `/find-it/[bookId]` 308-redirects here |
+| `/<ranking>-book-lists` | "{Ranking} Book Lists" | every live article made from one ranking, by column (rewrite to `app/book-lists/[slug]`; `/book-lists/<slug>` 308s here); linked from the pill under each article's title and the footer; in sitemap (2026-11-17) |
 | `/unsubscribe` | Unsubscribe confirm | from email footer links; noindex, not in the design |
 | `/studio` | Sanity Studio | embedded, editor-auth'd, not a public route |
 | `/api/reading-room/kit-draft` | (POST only) | Studio "Create Kit draft" button → Kit draft broadcast; accepts only a fresh Studio-written request id (§9) |
@@ -204,7 +205,7 @@ in the built pages (e.g. `{{ b.title }}`, `{{ b.author }}`, `{{ b.blurb }}`, `{{
   `slug`; `books[]`: ordered, unique references to `book`). Rank is array position, same
   derived-from-order rule as `article.bookEntries`. A book can appear in many rankings at
   different positions, plus `recommendationCount` and `toolTagId` (read-only, set by the internal
-  tool's "Send to website"; the count fills "Write draft sentence"'s number). This is the site's
+  tool's "Send to website"; the count fills "Write draft sentence"'s number). `listsIntro` (editable) is the intro on its "book lists" page (2026-11-17). This is the site's
   research data, stored independently of any article (added 2026-09-23 — see `DECISIONS.md`); pages
   read it only for the ranking pills (see `book`). Articles reference one via
   `article.ranking`. Shortlist articles (and Reading Room issues) use the Studio's "Fill books

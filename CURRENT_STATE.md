@@ -17,6 +17,12 @@ Then (user): notes redesigned as two plain bordered boxes and added to "Where to
 **Resubmit only once every live list has notes** (user's choice). Waiting on: the tool's Thriller notes
 (`docs/handover/TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md`, asks for a notes-only send), then a live check here.
 
+**2026-11-17: four user requests, all live** (DECISIONS.md, same date): (1) column pages' "See more" is a filled button in
+the column colour with the count left; (2) the Studio says "story elements" / "description" for tags / blurb (labels only);
+(3) Challenge month headings drop the bracketed occasions; (4) **ranking pages** `/thriller-book-lists`, `/dark-fantasy-book-lists`,
+linked from a pill under each article title and the footer. Optional for the user: write each ranking's intro in the Studio
+(Rankings → "Intro on its book lists page"); until then a standard sentence shows. Still waiting on: the Thriller notes (above).
+
 **2026-10-28: access check.** Working: GitHub push, live site, Resend, Kit, Sanity read **and write**
 (new local Editor key "Claude Code local", made by the user; the old one returned "Session not found",
 i.e. deleted), and the Claude Design project via `DesignSync` (user ran `/design-login`). **Standalone

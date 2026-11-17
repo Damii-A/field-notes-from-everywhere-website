@@ -125,6 +125,8 @@ export interface Article extends ArticleSummary {
   author: string;
   publishedAt: string; // ISO date
   methodologySentence: string;
+  /** The ranking the article was made from, for the pill linking to its "{name} book lists" page (user, 2026-11-17). */
+  ranking?: { name: string; slug: string };
   /** The article's own Pinterest pin, which the Pinterest share button uses instead of the hero image (user, 2026-11-03). */
   pinterestPin?: { url: string; description?: string };
   /** Each paragraph is a run of text segments; a segment with `href` is a link (internal "/..." or external). */

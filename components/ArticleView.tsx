@@ -179,6 +179,16 @@ export function ArticleView({ article, shareUrl }: { article: Article; shareUrl:
           >
             {CATEGORY_LABEL[category]}
           </Link>
+          {article.ranking ? (
+            // Every list from the same ranking, on its "{name} book lists" page (user, 2026-11-17).
+            <Link
+              href={`/${article.ranking.slug}-book-lists`}
+              className={`${styles.categoryTag} ${styles.rankingTag}`}
+              style={{ borderColor: style.tagBg, color: style.titleColor }}
+            >
+              All {article.ranking.name} lists →
+            </Link>
+          ) : null}
 
           <div className={styles.bylineRow}>
             <span className={styles.byline}>By {article.author}</span>

@@ -40,12 +40,15 @@ const nextConfig = {
       // Third column renamed "Up Next" (DECISIONS.md, 2026-11-03): old links and Pins keep working.
       { source: "/book-club-book-picks", destination: "/up-next", permanent: true },
       { source: "/book-club-book-picks/:slug", destination: "/up-next/:slug", permanent: true },
+      // Ranking book-list pages live at /<slug>-book-lists (DECISIONS.md, 2026-11-17); the internal path forwards there.
+      { source: "/book-lists/:slug", destination: "/:slug-book-lists", permanent: true },
     ];
   },
   async rewrites() {
     return [
       { source: "/feed.xml", destination: "/rss" },
       { source: "/llms.txt", destination: "/llms" }, // see app/llms/route.ts
+      { source: "/:slug([a-z0-9-]+)-book-lists", destination: "/book-lists/:slug" },
     ];
   },
 };

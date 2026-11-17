@@ -35,6 +35,14 @@ export default defineType({
       validation: (r) => r.unique(),
     }),
     defineField({
+      name: "listsIntro",
+      title: "Intro on its book lists page",
+      description:
+        "A short intro at the top of this ranking's \"book lists\" page (e.g. /thriller-book-lists), which links every live article made from it. Leave empty for the standard sentence.",
+      type: "text",
+      rows: 4,
+    }),
+    defineField({
       name: "recommendationCount",
       title: "Reader recommendations analysed",
       description:
