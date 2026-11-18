@@ -1,0 +1,2028 @@
+[
+  {
+    "_createdAt": "2026-09-23T23:22:14Z",
+    "_id": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+    "_rev": "O34Wp09pyVg3RXTMJRqxy0",
+    "_system": {
+      "base": {
+        "id": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+        "rev": "hlahQPTMTkKNuourWSlrF0"
+      }
+    },
+    "_type": "article",
+    "_updatedAt": "2026-11-17T16:34:32Z",
+    "author": "The FNFE Team",
+    "bookEntries": [
+      {
+        "_key": "pvnvz1d1pi",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-family-upstairs-lisa-jewell",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "9z5alljkrw",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-never-lie-freida-mcfadden",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "hbfgs5t5ef",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-and-then-there-were-none-agatha-christie",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "ahez2a1h1g",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-look-closer-david-ellis",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "w3hb5qgq34",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-kill-for-me-kill-for-you-steve-cavanagh",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "0x6f87873h",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-shutter-island-dennis-lehane",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "et1cqotaim",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-girl-with-the-dragon-tattoo-stieg-larsson",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "zmtp94tlgn",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-fourth-monkey-j-d-barker",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "owkt475rrh",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-gone-girl-gillian-flynn",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "9ws9qoekjt",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-sharp-objects-gillian-flynn",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "9sev0zg4x9",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-push-ashley-audrain",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "yglrhhsw2y",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-pretty-girls-karin-slaughter",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "3jmdgcmles",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-dark-places-gillian-flynn",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "leriw2ua9y",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-intensity-dean-koontz",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "5hsbpxiwu3",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-behind-closed-doors-b-a-paris",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "qmp0lpifnj",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-local-woman-missing-mary-kubica",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "km9k2ibu8m",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-silent-patient-alex-michaelides",
+          "_type": "reference"
+        }
+      }
+    ],
+    "category": "what-to-read-when",
+    "format": "mood",
+    "heroImage": {
+      "_type": "image",
+      "alt": "hero image for a post about mindbending thriller books",
+      "asset": {
+        "_ref": "image-bee39d8a0792f3a197eb568f496044bb52aabf8c-2400x1000-png",
+        "_type": "reference"
+      }
+    },
+    "introText": [
+      {
+        "_key": "23b64fc0b447",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d4c3059b9462",
+            "_type": "span",
+            "marks": [],
+            "text": "For this list, we went looking for thrillers that give you very few reasons to trust your first impression."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "1383cdbe1b88",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "959d7cfc2f83",
+            "_type": "span",
+            "marks": [],
+            "text": "Some will make you suspicious of the people at the center of the story."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "9d8f6f4ecfac",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "163bf25d643b",
+            "_type": "span",
+            "marks": [],
+            "text": "Others will have you questioning whether you can trust the story itself."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "f096421aa64d",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "3b2e940e3de1",
+            "_type": "span",
+            "marks": [],
+            "text": "And a few will let you "
+          },
+          {
+            "_key": "b4b36dbd7be4",
+            "_type": "span",
+            "marks": [
+              "4eba66497d16"
+            ],
+            "text": "settle comfortably into a theory before giving you a very good reason to throw it out the window"
+          },
+          {
+            "_key": "61ce197f6883",
+            "_type": "span",
+            "marks": [],
+            "text": "."
+          }
+        ],
+        "markDefs": [
+          {
+            "_key": "4eba66497d16",
+            "_type": "internalLink",
+            "reference": {
+              "_ref": "83486678-0dad-451e-8946-e210eb34f542",
+              "_type": "reference"
+            }
+          }
+        ],
+        "style": "normal"
+      },
+      {
+        "_key": "420c1bd35762",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e33228f3c9e7",
+            "_type": "span",
+            "marks": [],
+            "text": "Here are 17 thrillers to read when you’re in the mood to doubt everything."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "metaDescription": "From unreliable narrators to secrets that change everything, these reader-recommended thrillers reward a healthy amount of suspicion.",
+    "methodologySentence": "To create this article, we analysed 2,181 reader recommendations. We pulled the 17 books on this list from a larger list of the top 50 most-recommended books.",
+    "pinterestPin": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-a253677dd8a39e528e36047bee72007e21d2eab1-1000x1500-png",
+        "_type": "reference"
+      }
+    },
+    "publishedAt": "2026-09-27T14:39:49.937Z",
+    "ranking": {
+      "_ref": "ranking-thriller",
+      "_type": "reference"
+    },
+    "rankingCount": 17,
+    "slug": {
+      "_type": "slug",
+      "current": "these-17-thrillers-will-have-you-questioning-everything-and-everyone"
+    },
+    "title": "These 17 Thrillers Will Have You Questioning Everything and Everyone",
+    "whatToReadNext": [
+      {
+        "_key": "321b0cdae79c",
+        "_ref": "53587f3f-d994-481a-bee3-d0839e044a1d",
+        "_type": "reference"
+      },
+      {
+        "_key": "49f3867d3e4f",
+        "_ref": "83486678-0dad-451e-8946-e210eb34f542",
+        "_type": "reference"
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-11-04T10:12:08Z",
+    "_id": "4b4eff29-9277-4264-9704-311a0e960500",
+    "_rev": "NCP8m5C1F4GYpogd7S3WxA",
+    "_system": {
+      "base": {
+        "id": "4b4eff29-9277-4264-9704-311a0e960500",
+        "rev": "76jsw0LOflvbGlqukJhUxb"
+      }
+    },
+    "_type": "article",
+    "_updatedAt": "2026-11-14T14:31:57Z",
+    "author": "The FNFE Team",
+    "bookEntries": [
+      {
+        "_key": "ldmahnvyop",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-kill-for-me-kill-for-you-steve-cavanagh",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "fhkowmra08",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "vxrt4bef4r",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-fourth-monkey-j-d-barker",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "senuzeq0kt",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "puylx2ailu",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-kind-worth-killing-peter-swanson",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "867em4loyh",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "x2ce6dlhtx",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-i-am-pilgrim-terry-hayes",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "ztw1z5byl2",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "1difq62dq5",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-nightwatching-tracy-sierra",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "ga76jr8jbz",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "qrqe6u54oz",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-orphan-x-gregg-hurwitz",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "vb1uw9q98n",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "hz1qrge14o",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-eye-of-the-needle-ken-follett",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "d1qqdfl0co",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "4kkpvw2z47",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-intensity-dean-koontz",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "kqdofusx09",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "syt1nhcfxj",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-day-of-the-jackal-frederick-forsyth",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "6rwmlbgw6a",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "4gwo2eze7h",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-chestnut-man-soren-sveistrup",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "cn6lu9x92g",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "o73lu23008",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-silence-of-the-lambs-thomas-harris",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "qe33pn9o0s",
+            "_ref": "tag-cat-and-mouse",
+            "_type": "reference"
+          }
+        ]
+      }
+    ],
+    "category": "what-to-read-when",
+    "format": "blend",
+    "heroImage": {
+      "_type": "image",
+      "alt": "hero image for blog posts about cat and mouse thriller books",
+      "asset": {
+        "_ref": "image-d6892e16554882ed08f1dc342c02f8fe79822d72-2400x1000-png",
+        "_type": "reference"
+      }
+    },
+    "introText": [
+      {
+        "_key": "leya9nmpk4",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ymril0hdsk",
+            "_type": "span",
+            "marks": [],
+            "text": "The best chases keep you switching sides, never quite sure who is hunting whom. These are the cat and mouse thriller books fans kept naming, and once the first chase starts, you'll see why."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "metaDescription": "In these cat and mouse thriller books the hunter can quickly become the hunted, whether it's a lone assassin in 1960s France or a killer's game in Chicago.",
+    "methodologySentence": "The books recommended in this post were pulled from the top 53 of a larger list of 1,028 books compiled from an analysis of 2,181 real reader recommendations.",
+    "pinterestPin": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-fddee3f791809644ec6cb96951c2c4bac0c7a518-2000x3000-png",
+        "_type": "reference"
+      }
+    },
+    "postIdea": {
+      "_ref": "postIdea-23",
+      "_type": "reference",
+      "_weak": true
+    },
+    "publishedAt": "2026-11-04T10:17:07.460Z",
+    "ranking": {
+      "_ref": "ranking-thriller",
+      "_type": "reference"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "cat-and-mouse-thriller-books"
+    },
+    "title": "If You Love a Game of Cat and Mouse, Read These 11 Thrillers"
+  },
+  {
+    "_createdAt": "2026-11-04T09:47:21Z",
+    "_id": "5f29a32d-d884-4313-8cc0-a1d6a7f97073",
+    "_rev": "NCP8m5C1F4GYpogd7S2c4p",
+    "_system": {
+      "base": {
+        "id": "5f29a32d-d884-4313-8cc0-a1d6a7f97073",
+        "rev": "au2og3C4ulRdIC4jSDEajR"
+      }
+    },
+    "_type": "article",
+    "_updatedAt": "2026-11-14T14:26:17Z",
+    "author": "The FNFE Team",
+    "bookEntries": [
+      {
+        "_key": "h35gq76fmj",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-dark-places-gillian-flynn",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "irbpf43nqx",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "e70frq84xv",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-jar-of-hearts-jennifer-hillier",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "ratagdyw76",
+            "_ref": "tag-dark",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "ac7t7la4d4",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-kill-for-me-kill-for-you-steve-cavanagh",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "rpxk92ljxv",
+            "_ref": "tag-dark",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "dn4fkfafgm",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-mystic-river-dennis-lehane",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "c821dck88y",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "dluhp4s44x",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-razorblade-tears-s-a-cosby",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "nk3i1jsuq9",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "5gqbrdx8ri",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-red-dragon-thomas-harris",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "rz4crr8ku2",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "l94hsl9h7n",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-chestnut-man-soren-sveistrup",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "4ymce3n9oy",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "k7c57osmug",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-kind-worth-killing-peter-swanson",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "xse3vrgy63",
+            "_ref": "tag-dark",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "nr2n1oxpfg",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-push-ashley-audrain",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "h4crvvrrw8",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "4rrkzrfvxf",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-we-are-all-guilty-here-karin-slaughter",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "7mmuj6l55d",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "jbv4djfvo7",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-gone-girl-gillian-flynn",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "r2dzrycch6",
+            "_ref": "tag-dark",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "5ttd5z6ib6",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-look-closer-david-ellis",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "qnvt7j68oz",
+            "_ref": "tag-dark",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "ot1ojgujx4",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-pretty-girls-karin-slaughter",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "cox56usho2",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "wpgemujobb",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-sharp-objects-gillian-flynn",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "0j5vfz00sb",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "ozdrgyfqcz",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-girl-with-the-dragon-tattoo-stieg-larsson",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "8wbq5ma04l",
+            "_ref": "tag-bleak",
+            "_type": "reference"
+          }
+        ]
+      }
+    ],
+    "category": "what-to-read-when",
+    "format": "mood",
+    "heroImage": {
+      "_type": "image",
+      "alt": "hero image for a blog post about dark thriller books for 2027",
+      "asset": {
+        "_ref": "image-0aa2949da8a7bae2450249fa53222e59fd2161f0-2400x1000-png",
+        "_type": "reference"
+      }
+    },
+    "introText": [
+      {
+        "_key": "2uk3ntagkf",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "clbf5udo6m",
+            "_type": "span",
+            "marks": [],
+            "text": "Three Gillian Flynn novels, two Nordic noirs and Dennis Lehane's Mystic River sit side by side here, and none of these dark thriller books pulls its punches. If you like your reading with the lights turned all the way down, you're in the right place."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "metaDescription": "If you want dark thriller books that don't hold back, this list of real reader favorites runs from Gone Girl and Sharp Objects to Mystic River.",
+    "methodologySentence": "The books recommended in this post were pulled from the top 53 of a larger list of 1,028 books compiled from an analysis of 2,181 real reader recommendations.",
+    "pinterestPin": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-6b7d94b6a4c5e4e0830b2031f147d632dfa53494-2000x3000-png",
+        "_type": "reference"
+      }
+    },
+    "postIdea": {
+      "_ref": "postIdea-13",
+      "_type": "reference",
+      "_weak": true
+    },
+    "publishedAt": "2026-11-04T10:00:16.744Z",
+    "ranking": {
+      "_ref": "ranking-thriller",
+      "_type": "reference"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "dark-thriller-books"
+    },
+    "title": "Bleak, Brutal and Brilliant: 15 Dark Thriller Books To Read In 2027"
+  },
+  {
+    "_createdAt": "2026-11-04T11:03:02Z",
+    "_id": "a779ac83-c2ec-4e1c-987a-d77139550696",
+    "_rev": "NCP8m5C1F4GYpogd7SfucZ",
+    "_system": {
+      "base": {
+        "id": "a779ac83-c2ec-4e1c-987a-d77139550696",
+        "rev": "hXIPOb7vJnToWfg6FW0xaH"
+      }
+    },
+    "_type": "article",
+    "_updatedAt": "2026-11-14T18:00:07Z",
+    "author": "The FNFE Team",
+    "bookEntries": [
+      {
+        "_key": "2y1z1x3c32",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-none-of-this-is-true-lisa-jewell",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "wm8mcrm3w3",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "qigu5pkn4v",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-woman-in-the-window-a-j-finn",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "5ca5fyz6er",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "7rkpgiduqg",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-last-house-on-needless-street-catriona-ward",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "qc6434kux6",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "i76ue2pssv",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-verity-colleen-hoover",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "5of7kfasua",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "21mlm98bf4",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-shutter-island-dennis-lehane",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "4cu0q5v2l1",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "3mgh93wj4t",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-what-lies-between-us-john-marrs",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "c75ah4penw",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "f0ghgsbne8",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-girl-on-the-train-paula-hawkins",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "ebhppuxnhy",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "4kh71j2sgv",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-gone-girl-gillian-flynn",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "os8ebli96j",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "yobog2x78b",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-his-hers-alice-feeney",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "m546bp0lae",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "phkpbr5tgr",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-push-ashley-audrain",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "umsqsanle1",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "z1ip72wf7x",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-nightwatching-tracy-sierra",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "5krsncwdo1",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "vkrapdn02s",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-murder-of-roger-ackroyd-agatha-christie",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "3a1c1m3wky",
+            "_ref": "tag-unreliable-narrator",
+            "_type": "reference"
+          }
+        ]
+      }
+    ],
+    "category": "what-to-read-when",
+    "format": "blend",
+    "heroImage": {
+      "_type": "image",
+      "alt": "hero image for blog post about thriller books with unreliable narrators",
+      "asset": {
+        "_ref": "image-70adbf89623c591b6968223ba8e36dc02ae7a1b7-2400x1000-png",
+        "_type": "reference"
+      }
+    },
+    "introText": [
+      {
+        "_key": "khg159n700",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "lgirarn71s",
+            "_type": "span",
+            "marks": [],
+            "text": "Trust nobody on this list, least of all the person telling the story. These thrillers with unreliable narrators are the ones fans keep handing to each other, and each is ready to make you doubt what you've just read."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "metaDescription": "Thrillers with unreliable narrators keep you guessing to the end, and these favorites, including Gone Girl and The Girl on the Train, do it better than most.",
+    "methodologySentence": "The books recommended in this post were pulled from the top 53 of a larger list of 1,028 books compiled from an analysis of 2,181 real reader recommendations.",
+    "pinterestPin": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-f07c70be955f57d5c38784bbe82725051830c39b-2000x3000-png",
+        "_type": "reference"
+      }
+    },
+    "postIdea": {
+      "_ref": "postIdea-28",
+      "_type": "reference",
+      "_weak": true
+    },
+    "publishedAt": "2026-11-04T11:03:16.104Z",
+    "ranking": {
+      "_ref": "ranking-thriller",
+      "_type": "reference"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "thrillers-with-unreliable-narrators"
+    },
+    "title": "12 Thriller Books With an Unreliable Narrator"
+  },
+  {
+    "_createdAt": "2026-11-04T10:20:38Z",
+    "_id": "ae267d73-1746-4481-bf14-e3ce601cea36",
+    "_rev": "nxTKF3HrnwSofKL5HlW6G8",
+    "_system": {
+      "base": {
+        "id": "ae267d73-1746-4481-bf14-e3ce601cea36",
+        "rev": "au2og3C4ulRdIC4jSDOmF2"
+      }
+    },
+    "_type": "article",
+    "_updatedAt": "2026-11-14T14:40:40Z",
+    "author": "The FNFE Team",
+    "bookEntries": [
+      {
+        "_key": "g046nk2otd",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-and-then-there-were-none-agatha-christie",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "hbgv2fj19a",
+            "_ref": "tag-retribution",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "fiop9jkg5l",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-razorblade-tears-s-a-cosby",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "l2cilonln2",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "20hcjoukr1",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-what-lies-between-us-john-marrs",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "3bo2de50vw",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "1t7d9mhdub",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-kill-for-me-kill-for-you-steve-cavanagh",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "pe1pr8uz82",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "hw5boea31n",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-kind-worth-killing-peter-swanson",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "gldjtx4xdp",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "hzz9q6iv41",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-his-hers-alice-feeney",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "w6b0o2t1hh",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "og7zv12g32",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-i-am-pilgrim-terry-hayes",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "h6gvmcbrjl",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "lar6u3u2rg",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-mystic-river-dennis-lehane",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "1wtt0te9k8",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "qfuvqc7z0o",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-chestnut-man-soren-sveistrup",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "luc9wiw6t",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "pxhob6fj2i",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-fourth-monkey-j-d-barker",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "o6pr7irjpc",
+            "_ref": "tag-revenge",
+            "_type": "reference"
+          }
+        ]
+      }
+    ],
+    "category": "what-to-read-when",
+    "format": "blend",
+    "heroImage": {
+      "_type": "image",
+      "alt": "hero image for blog post about revenge thriller books",
+      "asset": {
+        "_ref": "image-c41af1eaa9812d2f2c85568be7ce6f83719c9e97-2400x1000-png",
+        "_type": "reference"
+      }
+    },
+    "introText": [
+      {
+        "_key": "qnj1xfc340",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "wq8wgsow9p",
+            "_type": "span",
+            "marks": [],
+            "text": "Payback is rarely tidy, and these revenge thriller books prove it. The list opens on an island where ten strangers learn why they were invited."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "metaDescription": "Want revenge thriller books with real bite? This list takes you from Agatha Christie's island of guilty guests to two grieving fathers in Razorblade Tears.",
+    "methodologySentence": "The books recommended in this post were pulled from the top 53 of a larger list of 1,028 books compiled from an analysis of 2,181 real reader recommendations.",
+    "pinterestPin": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-ab7ca56437ab2d9d2714af1c7321ba26ddfa15f0-2000x3000-png",
+        "_type": "reference"
+      }
+    },
+    "postIdea": {
+      "_ref": "postIdea-26",
+      "_type": "reference",
+      "_weak": true
+    },
+    "publishedAt": "2026-11-04T10:21:44.302Z",
+    "ranking": {
+      "_ref": "ranking-thriller",
+      "_type": "reference"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "revenge-thriller-books"
+    },
+    "title": "10 Thriller Books for Readers Who Love a Good Revenge Story"
+  },
+  {
+    "_createdAt": "2026-11-03T15:47:44Z",
+    "_id": "b7721e67-0030-4770-a0ff-5dd8455b2783",
+    "_rev": "76jsw0LOflvbGlqukJakgX",
+    "_system": {
+      "base": {
+        "id": "b7721e67-0030-4770-a0ff-5dd8455b2783",
+        "rev": "hXIPOb7vJnToWfg6FVUAmj"
+      }
+    },
+    "_type": "article",
+    "_updatedAt": "2026-11-04T11:22:29Z",
+    "author": "The FNFE Team",
+    "bookEntries": [
+      {
+        "_key": "knef94y0vb",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-silent-patient-alex-michaelides",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "j25o8704ms",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-never-lie-freida-mcfadden",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "xp2erd17lv",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-housemaid-freida-mcfadden",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "5bgt6hcqx8",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-rock-paper-scissors-alice-feeney",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "57og6rxrtj",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-girl-on-the-train-paula-hawkins",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "snwwl2im8o",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-plot-jean-hanff-korelitz",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "uw31vb2ppd",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-verity-colleen-hoover",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "0zob08x0xj",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-his-hers-alice-feeney",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "nidg7m3e05",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-sharp-objects-gillian-flynn",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "w28zczey2c",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-behind-her-eyes-sarah-pinborough",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "yjbrh32uqb",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-family-upstairs-lisa-jewell",
+          "_type": "reference"
+        }
+      }
+    ],
+    "category": "what-to-read-when",
+    "format": "pace",
+    "heroImage": {
+      "_type": "image",
+      "alt": "a hero image for a blog post about short thriller books",
+      "asset": {
+        "_ref": "image-4cfc85887551f8cd99160f251ed65333b092d04e-2400x1000-png",
+        "_type": "reference"
+      }
+    },
+    "introText": [
+      {
+        "_key": "ks0o18knxh",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "czz45zcfgg",
+            "_type": "span",
+            "marks": [],
+            "text": "Not every great thriller needs a week of your evenings. Every one of these short thriller books comes in under 350 pages, so a Saturday, a long flight or a rainy afternoon is all the time you'll need."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "metaDescription": "Pressed for time? These short thriller books all come in under 350 pages, and The Silent Patient and Sharp Objects are among them.",
+    "methodologySentence": "The books recommended in this post were pulled from the top 53 of a larger list of 1,028 books compiled from an analysis of 2,181 real reader recommendations.",
+    "pinterestPin": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-2fd6f61f1f74c9d8b22675ef28162418e3f1fc52-2000x3000-png",
+        "_type": "reference"
+      }
+    },
+    "postIdea": {
+      "_ref": "postIdea-16",
+      "_type": "reference",
+      "_weak": true
+    },
+    "publishedAt": "2026-11-03T18:28:59.992Z",
+    "ranking": {
+      "_ref": "ranking-thriller",
+      "_type": "reference"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "short-thriller-books"
+    },
+    "title": "11 Thrillers You Can Read in a Day",
+    "whatToReadNext": [
+      {
+        "_key": "0f61e8431dda",
+        "_ref": "2bf68af9-f38c-44c4-ad79-624ca9179cfe",
+        "_type": "reference"
+      },
+      {
+        "_key": "de90194917db",
+        "_ref": "53587f3f-d994-481a-bee3-d0839e044a1d",
+        "_type": "reference"
+      },
+      {
+        "_key": "b1d22c584141",
+        "_ref": "83486678-0dad-451e-8946-e210eb34f542",
+        "_type": "reference"
+      }
+    ]
+  },
+  {
+    "_createdAt": "2026-11-04T10:05:58Z",
+    "_id": "b9938bca-d5ab-41d4-83eb-743edbe561ac",
+    "_rev": "NCP8m5C1F4GYpogd7S3zas",
+    "_system": {
+      "base": {
+        "id": "b9938bca-d5ab-41d4-83eb-743edbe561ac",
+        "rev": "au2og3C4ulRdIC4jSDHP4P"
+      }
+    },
+    "_type": "article",
+    "_updatedAt": "2026-11-14T14:36:43Z",
+    "author": "The FNFE Team",
+    "bookEntries": [
+      {
+        "_key": "eewcl8lrjx",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-red-dragon-thomas-harris",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "otva8tf6fb",
+            "_ref": "tag-criminal-profiler",
+            "_type": "reference"
+          },
+          {
+            "_key": "s2evgl8jf1",
+            "_ref": "tag-fbi-agent",
+            "_type": "reference"
+          },
+          {
+            "_key": "bw2uz1f5jt",
+            "_ref": "tag-fbi-profiler",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "9iad2upxgs",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-likeness-tana-french",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "8vnzjjm3zg",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          },
+          {
+            "_key": "7r7f8y858k",
+            "_ref": "tag-undercover-detective",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "ur66g0osjq",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-silence-of-the-lambs-thomas-harris",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "9i29sd7623",
+            "_ref": "tag-fbi-agent",
+            "_type": "reference"
+          },
+          {
+            "_key": "q8rse03lfd",
+            "_ref": "tag-fbi-trainee-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "illyvfp17l",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-day-of-the-jackal-frederick-forsyth",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "ubhg82kuxa",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "ptqtiirr25",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-in-the-woods-tana-french",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "z4a5xq3uc3",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "xahvevwl14",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-shutter-island-dennis-lehane",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "gcorc6xaeq",
+            "_ref": "tag-us-marshal",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "81d19p4oxn",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-i-let-you-go-clare-mackintosh",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "2uttcw08fn",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "driepuc213",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-look-closer-david-ellis",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "13xf46pazj",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "ko5bafp3x6",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-murder-of-roger-ackroyd-agatha-christie",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "tc9so4t6o2",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "zcj4srpyyh",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-chestnut-man-soren-sveistrup",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "q8eoa1vv0h",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "9f2silzboz",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-fourth-monkey-j-d-barker",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "gs3m175ecf",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "vlta0z5juy",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-we-are-all-guilty-here-karin-slaughter",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "e781av6dcy",
+            "_ref": "tag-police-officer-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "pwmoekf4l2",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-jar-of-hearts-jennifer-hillier",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "qiui8mmtpx",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "s64dle81yo",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-mystic-river-dennis-lehane",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "ctr8qwmovx",
+            "_ref": "tag-detective-mc",
+            "_type": "reference"
+          }
+        ]
+      }
+    ],
+    "category": "what-to-read-when",
+    "format": "blend",
+    "heroImage": {
+      "_type": "image",
+      "alt": "hero image for post about detective thriller books",
+      "asset": {
+        "_ref": "image-f2cda9f205b0b2c7d483acdef8773b7e0ae8ef2b-2400x1000-png",
+        "_type": "reference"
+      }
+    },
+    "introText": [
+      {
+        "_key": "iksxfco86v",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "03rfj5f4fu",
+            "_type": "span",
+            "marks": [],
+            "text": "Ever wanted to sit in on an investigation from the very first clue? These detective thriller books put you right beside the people working the hunt. Pull up a chair; the first case is already open."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "metaDescription": "Love detective thriller books? Follow FBI profilers, small-town cops and a US Marshal through the cases thriller fans keep coming back to.",
+    "methodologySentence": "The books recommended in this post were pulled from the top 53 of a larger list of 1,028 books compiled from an analysis of 2,181 real reader recommendations.",
+    "pinterestPin": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-15f3ddb25fe469ac222be8d5e499be104b1dce30-2000x3000-png",
+        "_type": "reference"
+      }
+    },
+    "postIdea": {
+      "_ref": "postIdea-19",
+      "_type": "reference",
+      "_weak": true
+    },
+    "publishedAt": "2026-11-04T10:09:45.815Z",
+    "ranking": {
+      "_ref": "ranking-thriller",
+      "_type": "reference"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "detective-thriller-books"
+    },
+    "title": "Watch the Experts Work the Case in These 14 Thrillers"
+  },
+  {
+    "_createdAt": "2026-11-04T11:06:06Z",
+    "_id": "de2d5df3-ea85-4150-bf5d-fe04fd657607",
+    "_rev": "NCP8m5C1F4GYpogd7S1CXN",
+    "_system": {
+      "base": {
+        "id": "de2d5df3-ea85-4150-bf5d-fe04fd657607",
+        "rev": "hXIPOb7vJnToWfg6FW2CyL"
+      }
+    },
+    "_type": "article",
+    "_updatedAt": "2026-11-14T14:09:49Z",
+    "author": "The FNFE Team",
+    "bookEntries": [
+      {
+        "_key": "kwvt2pi0ey",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-murder-of-roger-ackroyd-agatha-christie",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "wicigy2c54",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "9lyq5f7ckg",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "6vl9y7vx35",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-in-the-woods-tana-french",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "7klhgxdl1t",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "8p2idu0enp",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "z4rl9oithb",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-red-dragon-thomas-harris",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "xc5gsnf1uz",
+            "_ref": "tag-forensic-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "kivxtb9cc2",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "583z8wtpbu",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-sharp-objects-gillian-flynn",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "i9ewa4kztq",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "ydfsr0esdc",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "1xz1cnejpq",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-girl-with-the-dragon-tattoo-stieg-larsson",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "czudozo3vp",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "pf6pz2os2f",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "rjvug1kjqd",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-we-are-all-guilty-here-karin-slaughter",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "ff9mb3ovj2",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "mhid49cvbw",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "5iu46tqhxp",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-mystic-river-dennis-lehane",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "alpgahee6a",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "x2gbkrhliq",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "bh5ta0qqth",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-silent-patient-alex-michaelides",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "lxra76abol",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "jqdr39svfm",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "eky0larhr9",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-woman-in-the-window-a-j-finn",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "bleaitmes3",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "guf948g5f6",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "77zv631thg",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-gone-girl-gillian-flynn",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "vfghd5rpui",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "ap2jwsfcn3",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      },
+      {
+        "_key": "w2un1ve6bm",
+        "_type": "bookEntry",
+        "book": {
+          "_ref": "book-the-girl-on-the-train-paula-hawkins",
+          "_type": "reference"
+        },
+        "tags": [
+          {
+            "_key": "shywlqzm0q",
+            "_ref": "tag-murder-investigation",
+            "_type": "reference"
+          },
+          {
+            "_key": "rmfir4271w",
+            "_ref": "tag-mystery",
+            "_type": "reference"
+          }
+        ]
+      }
+    ],
+    "category": "what-to-read-when",
+    "format": "blend",
+    "heroImage": {
+      "_type": "image",
+      "alt": "hero image for blog post for murder mystery thrillers",
+      "asset": {
+        "_ref": "image-797dc47fc401bd352b2a3b3266982bea070f24c5-2400x1000-png",
+        "_type": "reference"
+      }
+    },
+    "introText": [
+      {
+        "_key": "baml9u1s49",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "f7ua88qyr6",
+            "_type": "span",
+            "marks": [],
+            "text": "The Murder of Roger Ackroyd came out in 1926, and almost a century later it still comes up whenever people swap whodunit recommendations, right next to Gone Girl and The Silent Patient. Keep a notebook handy, because these murder mystery books reward anyone who watches the clues."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "metaDescription": "Can you solve it before the detective does? These murder mystery books, from The Murder of Roger Ackroyd to In the Woods, will test your powers of deduction.",
+    "methodologySentence": "The books recommended in this post were pulled from the top 53 of a larger list of 1,028 books compiled from an analysis of 2,181 real reader recommendations.",
+    "pinterestPin": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-6339d96c02dd3bfa4d1c24419914da3fd4852c6c-2000x3000-png",
+        "_type": "reference"
+      }
+    },
+    "postIdea": {
+      "_ref": "postIdea-34",
+      "_type": "reference",
+      "_weak": true
+    },
+    "publishedAt": "2026-11-04T13:17:28.717Z",
+    "ranking": {
+      "_ref": "ranking-thriller",
+      "_type": "reference"
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "murder-mystery-books"
+    },
+    "title": "11 Murder Mystery Thrillers"
+  }
+]

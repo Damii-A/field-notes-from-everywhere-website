@@ -3369,3 +3369,8 @@ Thriller send never reached it. Changed in Sanity by API (only that entry's book
 existed); backup `backups/2026-11-18-up-next-the-risk-before.json`. The Risk stays in Sanity (no list uses it now).
 
 **Verified**: live page shows Dark Matter, no The Risk, 12 fit boxes; all 20 live lists show a fit box on every book.
+
+**Same day (user)**: the "top N" ranking size in live Thriller lists' methodology boxes updated to the ranking's current 52
+(was 50 in two hand-written sentences, 53 in seven tool-written evidence lines; only the number changed; backup
+`backups/2026-11-18-thriller-top-n-before.json`; checked live). The tool lines' "larger list of 1,028 books" can't be checked
+from the website and was left as is. Then every sitemap URL (159) was sent to IndexNow (accepted, 200) after the week's changes.
