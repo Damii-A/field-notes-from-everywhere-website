@@ -3356,3 +3356,16 @@ section headings and body text keep them (2026-10-02).
 **Same day (user)**: the lists section heading is "“Title” has appeared in these reading lists" ("on FNFE" dropped) with no
 explainer line under it. The "Where to read" answer sentence stays (user, after I recommended keeping it: it's the direct
 answer search and AI tools quote).
+
+## 2026-11-18 — The Risk swapped for Dark Matter in the September Up Next list
+
+**Decision** (user's picks: swap over the tool writing its notes, removing it, or leaving it; Dark Matter over Rock Paper
+Scissors, No Exit, Behind Closed Doors): in "12 Thriller Books That Will Have Everyone Comparing Theories" (Up Next, made
+2026-09-23 from the first spreadsheet-based Thriller ranking), The Risk (S.T. Abby) is replaced by Dark Matter (Blake Crouch,
+#6 in the Thriller ranking, in one other live list) in the same position. **Why**: The Risk was the last book in a live list
+without fit notes, which the user wants on every list before the AdSense resubmit. It was in the original ranking but not in
+the tool's (the tool files it as Dark Romance), and articles keep their own copy of their books (2026-09-23), so the tool's
+Thriller send never reached it. Changed in Sanity by API (only that entry's book reference; revision-checked; no draft
+existed); backup `backups/2026-11-18-up-next-the-risk-before.json`. The Risk stays in Sanity (no list uses it now).
+
+**Verified**: live page shows Dark Matter, no The Risk, 12 fit boxes; all 20 live lists show a fit box on every book.

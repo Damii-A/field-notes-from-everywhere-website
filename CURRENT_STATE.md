@@ -1,6 +1,13 @@
 # Current state — Field Notes From Everywhere
 
-Last updated: 2026-11-17. Full reasoning is in `DECISIONS.md`; this is the short version.
+Last updated: 2026-11-18. Full reasoning is in `DECISIONS.md`; this is the short version.
+
+**2026-11-18: every live list now has fit notes; ready for the AdSense resubmit.** The tool sent Thriller (full send after the
+user's repass, 2026-11-18 17:13 UTC; ranking now 52 books, all with notes). The one gap, The Risk (pre-tool leftover in the
+September Up Next list, not in the tool's Thriller ranking), was swapped for Dark Matter (user's pick; DECISIONS.md, same date;
+backup `backups/2026-11-18-up-next-the-risk-before.json`). **Checked live**: all 20 live lists show a fit box on every book.
+**Next (user)**: tick the policy box and press Resubmit in AdSense. If refused again, look next at the "Where to read" pages.
+No tool notes waiting: the tool answered both (its `WEBSITE_HANDOVER_2026-11-17_GOT_NOTE.md`; A Game of Thrones' wording softened).
 
 **2026-11-14: AdSense turned the site down; "might be for you" notes built** (DECISIONS.md, same date). Google named no
 reason (screen: "meet AdSense program policies"; email hints at content quality). Built and approved from a preview: books take
@@ -124,13 +131,13 @@ article links its 15 books. **User's Search Console, 2026-11-04: 47 pages indexe
 book pages), so they are being indexed; the user is satisfied and doesn't need ranking numbers now. If many later show
 "Crawled, currently not indexed", add original content per page.
 
-**Tool notes waiting: `TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md` and `TOOL_HANDOVER_2026-11-17_BOOK_PAGES.md`** (send Thriller's notes without the held-back tags). `TOOL_HANDOVER_2026-11-14_FIT_NOTES.md` was acted on (Dark Fantasy sent). Before that, none waiting (checked 2026-11-04): All six notes in `docs/handover/` have been acted on by the tool
+**Tool notes: none waiting (checked 2026-11-18)**; `TOOL_HANDOVER_2026-11-14_THRILLER_NOTES.md` was superseded by the full Thriller send, `TOOL_HANDOVER_2026-11-17_BOOK_PAGES.md` was read by the tool. `TOOL_HANDOVER_2026-11-14_FIT_NOTES.md` was acted on (Dark Fantasy sent). Before that, none waiting (checked 2026-11-04): All six notes in `docs/handover/` have been acted on by the tool
 (its commits `e9c55fc`, `29934d3`, `1da72d8`, `02af582`; checked read-only in the Studio): ideas send `column: "up-next"`
 (idea 53 re-sent with it and its 12 groups; no idea carries the old code); 53 of 54 books have year and series, and 411
 of 415 tags have a category; nothing uses `bookamonth`. Left with the user, not the tool: the two high-overlap idea pairs
 in `…_BOOK_DETAILS.md` (a review in the tool; not recorded as done). At session start, mention any new note added here.
 
-**Start the next session here: the 2026-11-14 AdSense section at the top of this file** (nothing unpushed). Older start notes (end of 2026-11-03): Every non-dated open item was worked through
+**Start the next session here: the 2026-11-18 note at the top of this file** (nothing unpushed). Older start notes (end of 2026-11-03): Every non-dated open item was worked through
 today (see the numbered list and "Open" below). **Waiting on the user, small checks**: (a) the Twists draft was deleted
 (checked: no article for `postIdea-8`; the idea carries its text), so "Start article" on it should now come prefilled;
 (b) "Start article" on idea 53 (month sections); (c) a Pinterest pin on one article + the Pinterest button; (d) the
