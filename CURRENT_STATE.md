@@ -6,7 +6,7 @@ Last updated: 2026-11-18. Full reasoning is in `DECISIONS.md`; this is the short
 user's repass, 2026-11-18 17:13 UTC; ranking now 52 books, all with notes). The one gap, The Risk (pre-tool leftover in the
 September Up Next list, not in the tool's Thriller ranking), was swapped for Dark Matter (user's pick; DECISIONS.md, same date;
 backup `backups/2026-11-18-up-next-the-risk-before.json`). **Checked live**: all 20 live lists show a fit box on every book.
-**Next (user)**: tick the policy box and press Resubmit in AdSense. If refused again, look next at the "Where to read" pages.
+**AdSense review requested by the user 2026-11-18** (second try; at that point 34% of live list text was the site's own, from ~3%). Expect a few days to 2-4 weeks. AdSense showed ads.txt "Not found" (last checked by it 2026-11-08); the live file was checked correct and reachable by Google's crawlers the same day, so it's a stale status. If refused again: more of the book pages' own text, and/or keep ads off them. Don't let ads run before the consent pop-up and US link are in.
 Also 2026-11-18: methodology boxes say "top 52" (all live Thriller lists); all 159 sitemap URLs sent to IndexNow. Done by the user the same day: sitemap resubmitted in Search Console, "Request indexing" on the two book-lists pages.
 **Around 2026-12-09**: look at book-page indexing in Search Console (Pages report; watch "Crawled – currently not indexed"). A separate book-pages sitemap was offered and declined for now (user: wait and see).
 No tool notes waiting: the tool answered both (its `WEBSITE_HANDOVER_2026-11-17_GOT_NOTE.md`; A Game of Thrones' wording softened).
