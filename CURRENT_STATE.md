@@ -7,7 +7,7 @@ user's repass, 2026-11-18 17:13 UTC; ranking now 52 books, all with notes). The 
 September Up Next list, not in the tool's Thriller ranking), was swapped for Dark Matter (user's pick; DECISIONS.md, same date;
 backup `backups/2026-11-18-up-next-the-risk-before.json`). **Checked live**: all 20 live lists show a fit box on every book.
 **Next (user)**: tick the policy box and press Resubmit in AdSense. If refused again, look next at the "Where to read" pages.
-Also 2026-11-18: methodology boxes say "top 52" (all live Thriller lists); all 159 sitemap URLs sent to IndexNow. Suggested to the user: Search Console → resubmit `sitemap.xml` and "Request indexing" on key pages.
+Also 2026-11-18: methodology boxes say "top 52" (all live Thriller lists); all 159 sitemap URLs sent to IndexNow. Done by the user the same day: sitemap resubmitted in Search Console, "Request indexing" on the two book-lists pages.
 **Around 2026-12-09**: look at book-page indexing in Search Console (Pages report; watch "Crawled – currently not indexed"). A separate book-pages sitemap was offered and declined for now (user: wait and see).
 No tool notes waiting: the tool answered both (its `WEBSITE_HANDOVER_2026-11-17_GOT_NOTE.md`; A Game of Thrones' wording softened).
 
