@@ -2,7 +2,7 @@
 
 Last updated: 2026-11-18. Full reasoning is in `DECISIONS.md`; this is the short version.
 
-**2026-11-18: every live list now has fit notes; ready for the AdSense resubmit.** The tool sent Thriller (full send after the
+**2026-11-18: every live list now has fit notes; AdSense resubmitted (waiting on Google). Start the next session here.** The tool sent Thriller (full send after the
 user's repass, 2026-11-18 17:13 UTC; ranking now 52 books, all with notes). The one gap, The Risk (pre-tool leftover in the
 September Up Next list, not in the tool's Thriller ranking), was swapped for Dark Matter (user's pick; DECISIONS.md, same date;
 backup `backups/2026-11-18-up-next-the-risk-before.json`). **Checked live**: all 20 live lists show a fit box on every book.
