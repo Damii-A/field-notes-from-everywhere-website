@@ -329,6 +329,14 @@ This replaces every "Tue 2026-11-10" note in this file.
 
 ## Open, raise one at a time (nothing blocking)
 
+- **AI visibility check (2026-11-20)**: FNFE isn't cited by ChatGPT yet. Checked the same day: ChatGPT/OpenAI, Bing,
+  Perplexity and Claude crawler user agents all get full article HTML (books, fit notes), robots.txt allows all but
+  /studio, every list in the sitemap (only the user agent can be tested from here, not the crawlers' real IPs). Diagnosis
+  shared with the user: young site + little outside recognition, not a technical fault. **Fixed questions to re-ask monthly**
+  (ChatGPT temporary chat, Perplexity, Google AI): `docs/AI_VISIBILITY_QUESTIONS.md`, no baseline run yet. Asked the user to
+  read Bing Webmaster Tools' indexed-page count (ChatGPT search leans on Bing); not reported yet. Also: the site
+  description / llms.txt now say "free newsletter" (was "free weekly", out of step with the 2026-11-04 "occasional" wording).
+
 - **ChatGPT business profile (2026-11-20, paused by the user; don't raise unprompted).** Started at chatgpt.com/business-hub
   ("Businesses in ChatGPT", beta since 2026-11-10; main use for FNFE would be ChatGPT mention/click numbers; product
   listings and Business Agents don't apply). Done: domain check record added at Cloudflare (TXT `openai-business-profile`,
