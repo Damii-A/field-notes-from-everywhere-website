@@ -335,9 +335,10 @@ This replaces every "Tue 2026-11-10" note in this file.
   shared with the user: young site + little outside recognition, not a technical fault. **Fixed questions to re-ask monthly**
   (ChatGPT temporary chat, Perplexity, Google AI): `docs/AI_VISIBILITY_QUESTIONS.md`, no baseline run yet. **Bing (user's screenshots,
   2026-11-20)**: sitemap read 2026-11-18, 160 URLs, 0 errors; a leftover WordPress `sitemap.xml.gz` (found 2026-06-07, now
-  404) suggested for removal in Bing; recommendation "lacks inbound links from high-quality domains" (moderate);
+  404) **removed in Bing by the user**; recommendation "lacks inbound links from high-quality domains" (moderate);
   **AI Performance: 8 citations**, all on two book pages (No Exit, And Then There Were None), logged in the questions doc. Also: the site
-  description / llms.txt now say "free newsletter" (was "free weekly", out of step with the 2026-11-04 "occasional" wording).
+  description / llms.txt now say "free newsletter" (was "free weekly", out of step with the 2026-11-04 "occasional" wording; checked live). The paused `/the-reading-room` meta description
+  still says "free weekly newsletter": **left as is on purpose** (user, 2026-11-20: the page is paused, noindex).
 
 - **ChatGPT business profile (2026-11-20, paused by the user; don't raise unprompted).** Started at chatgpt.com/business-hub
   ("Businesses in ChatGPT", beta since 2026-11-10; main use for FNFE would be ChatGPT mention/click numbers; product
