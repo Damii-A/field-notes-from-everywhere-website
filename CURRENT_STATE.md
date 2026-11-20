@@ -333,8 +333,10 @@ This replaces every "Tue 2026-11-10" note in this file.
   Perplexity and Claude crawler user agents all get full article HTML (books, fit notes), robots.txt allows all but
   /studio, every list in the sitemap (only the user agent can be tested from here, not the crawlers' real IPs). Diagnosis
   shared with the user: young site + little outside recognition, not a technical fault. **Fixed questions to re-ask monthly**
-  (ChatGPT temporary chat, Perplexity, Google AI): `docs/AI_VISIBILITY_QUESTIONS.md`, no baseline run yet. Asked the user to
-  read Bing Webmaster Tools' indexed-page count (ChatGPT search leans on Bing); not reported yet. Also: the site
+  (ChatGPT temporary chat, Perplexity, Google AI): `docs/AI_VISIBILITY_QUESTIONS.md`, no baseline run yet. **Bing (user's screenshots,
+  2026-11-20)**: sitemap read 2026-11-18, 160 URLs, 0 errors; a leftover WordPress `sitemap.xml.gz` (found 2026-06-07, now
+  404) suggested for removal in Bing; recommendation "lacks inbound links from high-quality domains" (moderate);
+  **AI Performance: 8 citations**, all on two book pages (No Exit, And Then There Were None), logged in the questions doc. Also: the site
   description / llms.txt now say "free newsletter" (was "free weekly", out of step with the 2026-11-04 "occasional" wording).
 
 - **ChatGPT business profile (2026-11-20, paused by the user; don't raise unprompted).** Started at chatgpt.com/business-hub

@@ -71,6 +71,14 @@ Page = the FNFE page that would be a good answer.
 | D2 | Where can I read The Silent Patient? | /the-silent-patient-by-alex-michaelides |
 | D3 | What books are similar to Gone Girl? | /gone-girl-by-gillian-flynn |
 
+## Bing AI Performance (Bing Webmaster Tools → AI Performance, beta)
+
+Bing's own count of citations of FNFE in its AI answers (Copilot etc.). Read it at each run.
+
+| Date read | Total citations | Cited pages | Notes |
+| --- | --- | --- | --- |
+| 2026-11-20 | 8 | `/where-to-read/no-exit-taylor-adams` (4), `/where-to-read/and-then-there-were-none-agatha-christie` (4) | Two spikes, ~4 Nov and ~13 Nov. Both are book pages at their old addresses (308 to `/<title>-by-<author>#where-to-read` since 2026-11-17, checked). No article cited yet. |
+
 ## Results log
 
 One row per question per tool per run. Mentioned / Cited: yes or no. "Cited instead" = the top 2-3
