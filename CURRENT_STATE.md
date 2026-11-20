@@ -325,6 +325,16 @@ This replaces every "Tue 2026-11-10" note in this file.
 
 ## Open, raise one at a time (nothing blocking)
 
+- **ChatGPT business profile (2026-11-20, paused by the user; don't raise unprompted).** Started at chatgpt.com/business-hub
+  ("Businesses in ChatGPT", beta since 2026-11-10; main use for FNFE would be ChatGPT mention/click numbers; product
+  listings and Business Agents don't apply). Done: domain check record added at Cloudflare (TXT `openai-business-profile`,
+  checked live on 1.1.1.1 and 8.8.8.8; Zoho MX untouched); profile filled with category "Online media company", the About
+  page's first sentence, hello@ as email, no phone, delivery/returns "not available". **Stuck at business verification**: a
+  placeholder legal business name was typed by mistake and the flow now only offers the tax-info page for it, with no way
+  back. Nothing wrong was submitted. To resume: ask OpenAI support to reset the legal name, then verify with the user's own
+  full name + TIN (private to OpenAI, never on the profile) if they decide it's worth it. The TXT record is harmless; leave
+  it or delete it (a restart issues a new code anyway).
+
 - ~~Cancelling the old WordPress hosting~~ **Settled 2026-11-03**: it's a Namecheap Stellar shared plan the user keeps
   for Livo, so it stays. DNS checked: nothing on fieldnotesfromeverywhere.com uses it (site on Vercel, mail on Zoho MX,
   registration at Namecheap, separate). Suggested, optional: remove the old FNFE WordPress install from that cPanel (an
