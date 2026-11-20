@@ -77,7 +77,7 @@ Bing's own count of citations of FNFE in its AI answers (Copilot etc.). Read it 
 
 | Date read | Total citations | Cited pages | Notes |
 | --- | --- | --- | --- |
-| 2026-11-20 | 8 | `/where-to-read/no-exit-taylor-adams` (4), `/where-to-read/and-then-there-were-none-agatha-christie` (4) | Two spikes, ~4 Nov and ~13 Nov. Both are book pages at their old addresses (308 to `/<title>-by-<author>#where-to-read` since 2026-11-17, checked). No article cited yet. |
+| 2026-11-20 | 8 | `/where-to-read/no-exit-taylor-adams` (4), `/where-to-read/and-then-there-were-none-agatha-christie` (4) | Two spikes, ~4 Nov and ~13 Nov. Both are book pages at their old addresses (308 to `/<title>-by-<author>#where-to-read` since 2026-11-17, checked). No article cited yet. Grounding Queries tab: "no data available". |
 
 ## Results log
 
