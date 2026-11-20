@@ -89,4 +89,8 @@ other sites in the answer.
 
 | Date | Tool | # | Mentioned | Cited (which page) | Cited instead |
 | --- | --- | --- | --- | --- | --- |
-| | | | | | |
+| 2026-11-20 | ChatGPT (logged out) | A1 | no | no | Goodreads, The StoryGraph, Reddit |
+| 2026-11-20 | ChatGPT (logged out) | A2 | no | no | none: answered without searching (only image credits) |
+| 2026-11-20 | ChatGPT (logged out) | A3 | no (source only) | **yes**, listed first: /the-shortlist/dark-fantasy-book-recommendations | Grimdark Magazine |
+| 2026-11-20 | ChatGPT (logged out) | B1 | yes | yes: homepage, About | none. Accurate core, but from an old copy (Reading Room open, Tue/Thu/Sat) |
+| 2026-11-20 | ChatGPT (logged out) | B2 | yes | yes: About | none. Accurate method; "Reading Room newsletter" stale |
