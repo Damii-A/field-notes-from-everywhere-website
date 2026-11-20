@@ -333,7 +333,9 @@ This replaces every "Tue 2026-11-10" note in this file.
   Perplexity and Claude crawler user agents all get full article HTML (books, fit notes), robots.txt allows all but
   /studio, every list in the sitemap (only the user agent can be tested from here, not the crawlers' real IPs). Diagnosis
   shared with the user: young site + little outside recognition, not a technical fault. **Fixed questions to re-ask monthly**
-  (ChatGPT temporary chat, Perplexity, Google AI): `docs/AI_VISIBILITY_QUESTIONS.md`, no baseline run yet. **Bing (user's screenshots,
+  (ChatGPT temporary chat, Perplexity, Google AI): `docs/AI_VISIBILITY_QUESTIONS.md`. **First run (ChatGPT, logged out) part done 2026-11-20: A1-C5 logged**
+  (FNFE cited for A3 dark fantasy, listed first, and for B1/B2; not for A1, A2, C1-C5). **Stopped by the user before C6**:
+  C6-C17 and D1-D3 still to ask in ChatGPT, then Perplexity and Google another day. **Bing (user's screenshots,
   2026-11-20)**: sitemap read 2026-11-18, 160 URLs, 0 errors; a leftover WordPress `sitemap.xml.gz` (found 2026-06-07, now
   404) **removed in Bing by the user**; recommendation "lacks inbound links from high-quality domains" (moderate);
   **AI Performance: 8 citations**, all on two book pages (No Exit, And Then There Were None), logged in the questions doc. Also: the site
