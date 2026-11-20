@@ -18,7 +18,10 @@ at the end when new lists go live (with the date added); don't edit old ones.
   answer was visibly shaped by the user's account (it named FNFE in a tacked-on paragraph using FNFE's
   own list titles as examples); a Temporary chat skips memory but likely still applies the account's
   custom instructions.
+- **Fresh guest session per question**: close every private window, open a new one, then ask. (From
+  2026-11-20 C1 onwards; A1-B2 of the first run shared one guest window.)
 - One question per new chat. Paste it as is; don't mention FNFE (except the two brand questions).
+- **Ask the brand questions (B1, B2) last**, so naming FNFE can't influence the others.
 - For each answer, note: was FNFE **mentioned** (named), was an FNFE page **cited** (linked as a
   source), and the **top 2-3 other sites** cited. Skip anything else.
 
