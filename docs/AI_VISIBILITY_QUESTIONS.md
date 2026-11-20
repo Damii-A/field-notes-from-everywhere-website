@@ -13,8 +13,11 @@ at the end when new lists go live (with the date added); don't edit old ones.
 - **When**: about once a month, and a few weeks after a batch of new lists goes live.
 - **Where**: ChatGPT (with search on), Perplexity, and Google (AI Overview at the top of normal
   results, or AI Mode).
-- **Use a clean session.** In ChatGPT, use a **Temporary chat** (or a logged-out window): your own
-  account remembers FNFE and would skew the answer. For Google, a private/incognito window.
+- **Use a clean session: a private/incognito window, logged out**, for every tool. In ChatGPT, use it
+  as a guest (don't log in). **Not a Temporary chat**: tried on the first run (2026-11-20) and the
+  answer was visibly shaped by the user's account (it named FNFE in a tacked-on paragraph using FNFE's
+  own list titles as examples); a Temporary chat skips memory but likely still applies the account's
+  custom instructions.
 - One question per new chat. Paste it as is; don't mention FNFE (except the two brand questions).
 - For each answer, note: was FNFE **mentioned** (named), was an FNFE page **cited** (linked as a
   source), and the **top 2-3 other sites** cited. Skip anything else.
