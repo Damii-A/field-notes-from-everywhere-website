@@ -97,3 +97,8 @@ other sites in the answer.
 | 2026-11-20 | ChatGPT (logged out) | A3 | no (source only) | **yes**, listed first: /the-shortlist/dark-fantasy-book-recommendations | Grimdark Magazine |
 | 2026-11-20 | ChatGPT (logged out) | B1 | yes | yes: homepage, About | none. Accurate core, but from an old copy (Reading Room open, Tue/Thu/Sat) |
 | 2026-11-20 | ChatGPT (logged out) | B2 | yes | yes: About | none. Accurate method; "Reading Room newsletter" stale |
+| 2026-11-20 | ChatGPT (logged out) | C1 | no | no | BookFilter +3 |
+| 2026-11-20 | ChatGPT (logged out) | C2 | no | no | penguin.co.uk +3 |
+| 2026-11-20 | ChatGPT (logged out) | C3 | no | no | Little Stack, Pan Macmillan (searched only for the last few books) |
+| 2026-11-20 | ChatGPT (logged out) | C4 | no | no | MysteryTribune (dated 2026-11-12), What We Reading, Barnes & Noble, penguin.co.uk |
+| 2026-11-20 | ChatGPT (logged out) | C5 | no | no | ThrillerRanked (dated 2026-11-09), Women, Kobo Books Blog +1 |
