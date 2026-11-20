@@ -331,9 +331,9 @@ This replaces every "Tue 2026-11-10" note in this file.
   checked live on 1.1.1.1 and 8.8.8.8; Zoho MX untouched); profile filled with category "Online media company", the About
   page's first sentence, hello@ as email, no phone, delivery/returns "not available". **Stuck at business verification**: a
   placeholder legal business name was typed by mistake and the flow now only offers the tax-info page for it, with no way
-  back. Nothing wrong was submitted. To resume: ask OpenAI support to reset the legal name, then verify with the user's own
-  full name + TIN (private to OpenAI, never on the profile) if they decide it's worth it. The TXT record is harmless; leave
-  it or delete it (a restart issues a new code anyway).
+  back. Nothing wrong was submitted. **Then the user deleted the draft profile (same day)**, so a restart begins from
+  scratch (no support request needed): new domain code, then the legal name = the user's own full name + TIN (private to
+  OpenAI, never on the profile) if they decide it's worth it. The old TXT record is harmless; leave it or delete it.
 
 - ~~Cancelling the old WordPress hosting~~ **Settled 2026-11-03**: it's a Namecheap Stellar shared plan the user keeps
   for Livo, so it stays. DNS checked: nothing on fieldnotesfromeverywhere.com uses it (site on Vercel, mail on Zoho MX,
